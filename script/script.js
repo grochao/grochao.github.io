@@ -8,8 +8,8 @@ $(function() {
             var listID = '8c5863c8e2';
             $.ajax({
                 type: "get",
-                url: "https://us10.api.mailchimp.com/2.0/lists/subscribe.json",
-                data: "apikey=" + apikey + "&id=" + listID + "&email[email]=" + correo + "&merge_vars[FNAME]=" + nombre + "&merge_vars[MENSAJE]=" + mensaje + "&double_optin=false&send_welcome=false",
+                crossDomain: true,
+                url: "https://us10.api.mailchimp.com/2.0/lists/subscribe.json?apikey=" + apikey + "&id=" + listID + "&email[email]=" + correo + "&merge_vars[FNAME]=" + nombre + "&merge_vars[MENSAJE]=" + mensaje + "&double_optin=false&send_welcome=false",
                 dataType: "json",
                 success: function(response) {
                     if (typeof response.status !== 'undefined') {
