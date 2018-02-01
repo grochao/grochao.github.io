@@ -2,8 +2,8 @@ $(function() {
     $(window).on('load', function() {
         $("#send-contact").click(function() {
             var correo = $("#mchp-correo").val();
-            var nombre = $("#mchp-nombre").val();
-            var mensaje = $("#mchp-mensaje").val();
+            var nombre = encodeURI($("#mchp-nombre").val());
+            var mensaje = encodeURI($("#mchp-mensaje").val());
             var apikey = '0c2c7ec792b6ce40f842df4691c63a11-us10';
             var listID = '8c5863c8e2';
             $.ajax({
