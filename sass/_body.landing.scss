@@ -1,24 +1,48 @@
 & {
-    background-color: #F6F8FA;
-    footer {
-        #mchp-contacto {
-            input,
-            textarea {
-                width: 100%;
-                padding: 7px 15px;
-                color: #000;
-                font-family: 'Hind', sans-serif;
-                font-size: 18px;
-                border: #000 solid 1px;
-                border-radius: 3px;
+    background-color: #1a2027;
+    .img-fluid {
+        width: 100%;
+        display: block;
+        height: auto;
+        &.img-max-width-70percent {
+            max-width: 70%;
+        }
+    }
+    section {
+        & {
+            background-color: #fff;
+            @include css3-prefix(box-shadow, 0px 0px 12px 1px rgba(0, 0, 0, 0.55));
+            width: 100%;
+            max-width: 1200px;
+            display: block;
+            margin: 0 auto;
+        }
+        header {
+            width: 100%;
+            height: 300px;
+            background-image: url(../images/programming-code-coding-or-hacker-background-vector.webp);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+            img {
+                width: 250px;
+                height: auto;
+                display: block;
+                border: 10px #fff solid;
+                position: absolute;
+                bottom: -115px;
+                left: 50px;
+                @include css3-prefix(box-shadow, 0px 0px 12px 1px rgba(0, 0, 0, 0.55));
             }
-            button {
-                padding: 7px 15px;
-                background-color: chocolate;
-                color: #000;
-                font-family: 'Hind', sans-serif;
-                font-size: 18px;
-            }
+        }
+    }
+    @media print {
+        .page {
+            width: 21cm;
+            min-height: 29.7cm;
+            padding: 2.29cm 57px 1.7cm 57px;
+            margin: 1cm auto;
         }
     }
 }

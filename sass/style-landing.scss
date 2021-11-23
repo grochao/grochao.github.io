@@ -9,6 +9,11 @@
 @import "resources/owl.carousel";
 //@import "resources.owl.theme.default";
 body {
+    * {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        font-size: 10pt;
+    }
     @import "03.header";
     @import "body.landing";
     @import "04.footer";
