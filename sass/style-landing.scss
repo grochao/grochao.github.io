@@ -9,6 +9,10 @@
 @import "resources/owl.carousel";
 //@import "resources.owl.theme.default";
 body {
+    & {
+        margin: 0;
+        padding: 0;
+    }
     * {
         box-sizing: border-box;
         -moz-box-sizing: border-box;
@@ -20,3 +24,54 @@ body {
 }
 
 @import "05.responsive";
+.canva {
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    border: 1px solid #000;
+    position: relative;
+    #dimension-cuarto {
+        position: absolute;
+        overflow: hidden;
+        outline: rgba(255, 255, 255, 0.747) 1px solid;
+        top: 15px;
+        left: 15px;
+        .roda-pie {
+            position: absolute;
+            /*width: 2px;
+            height: 20px;*/
+            z-index: 2;
+            &._impar {
+                background-color: #fb0909;
+            }
+            &._par {
+                background-color: #fff;
+            }
+        }
+        .loza-piso {
+            position: absolute;
+            z-index: 1;
+            &._impar {
+                background-color: rgba(255, 255, 255, 0.623);
+            }
+            &._par {
+                background-color: #fff;
+            }
+        }
+        .cama {
+            position: absolute;
+            z-index: 3;
+            background-color: rgba(6, 160, 199, 0.562);
+        }
+        .mesa {
+            background-color: #8c5a00;
+            background-image: url(../images/mesa01.jpg);
+            /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+            position: absolute;
+            z-index: 3;
+            //background-color: rgba(6, 160, 199, 0.562);
+            opacity: 0.75;
+            background-size: 100px auto;
+        }
+    }
+}
