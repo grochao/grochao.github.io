@@ -58,6 +58,20 @@ body {
                 background-color: #fff;
             }
         }
+        .centro {
+            position: absolute;
+            outline: green 1px solid;
+            display: block;
+            width: 0px;
+            height: 0px;
+            z-index: 9999;
+            .decorado_centro {
+                width: 2107px;
+                height: 1787px;
+                position: relative;
+                background: rgba(0, 0, 0, 0.5);
+            }
+        }
         .cama {
             position: absolute;
             z-index: 3;

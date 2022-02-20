@@ -65,7 +65,7 @@ $(function() {
         Color2 = "#fff"
 
         width = cm_to_mm(280);
-        height = cm_to_mm(237); /* 148*/
+        height = cm_to_mm(248) - cm_to_mm(10); /* 248/237 */
 
         loza = {
             width: trasnform_escale(cm_to_mm(33)),
@@ -138,7 +138,28 @@ $(function() {
                 //return_piso
             }
         }
-        var _cama_ = $('<div class="cama">');
+
+        var _centro_ = $('<div class="centro">');
+        _centro_.css({
+            /* width: width - (loza.width * 7),
+             height: height - (loza.height * 7),*/
+            top: '50%',
+            left: '50%'
+        })
+
+        var _decorado_centro_ = $('<div class="decorado_centro">');
+        _decorado_centro_.css({
+            width: (loza.width * 8),
+            height: (loza.height * 6),
+            left: (-1) * (((loza.width * 8)) / 2),
+            top: (-1) * (((loza.height * 6)) / 2),
+
+        })
+        _centro_.append(_decorado_centro_);
+
+        $('#dimension-cuarto').append(_centro_);
+
+        /* var _cama_ = $('<div class="cama">');
         _cama_.css({
             width: trasnform_escale(cm_to_mm(108)),
             height: trasnform_escale(cm_to_mm(197)),
@@ -155,6 +176,6 @@ $(function() {
             right: 0
         })
         $('#dimension-cuarto').append(_mesa_)
-
+*/
     });
 });
