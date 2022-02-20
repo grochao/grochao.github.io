@@ -65,7 +65,7 @@ $(function() {
         Color2 = "#fff"
 
         width = cm_to_mm(280);
-        height = cm_to_mm(248) - cm_to_mm(10); /* 248/237 */
+        height = cm_to_mm(248) - cm_to_mm(10); /* ..248/237.. */
 
         loza = {
             width: trasnform_escale(cm_to_mm(33)),
