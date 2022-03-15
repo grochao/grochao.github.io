@@ -17,7 +17,7 @@ $(function() {
                     top: 0,
                     left: left,
                     width: loza_size.width,
-                    height: 2
+                    height: 6
                 });
 
                 break;
@@ -25,7 +25,7 @@ $(function() {
                 _loza_.css({
                     top: top,
                     left: 0,
-                    width: 2,
+                    width: 6,
                     height: loza_size.width
                 });
 
@@ -34,7 +34,7 @@ $(function() {
                 _loza_.css({
                     top: top,
                     right: 0,
-                    width: 2,
+                    width: 6,
                     height: loza_size.width
                 });
 
@@ -55,22 +55,28 @@ $(function() {
             width: loza_size.width,
             height: loza_size.width
         });
-        _loza_.html('<span>' + Num + '</span>')
+        //_loza_.html('<span>' + Num + '</span>')
 
         return _loza_;
     }
-    $(window).on('load', function() {
 
+    function cal_total(w_loza, h_loza) {
+
+        if ($('.roda-pie').length) {
+            $('.roda-pie').remove();
+        }
         Color1 = '#fff';
         Color2 = "#fff"
 
-        width = cm_to_mm(280);
-        height = cm_to_mm(248) - cm_to_mm(10); /* ..248/237.. */
+        width = cm_to_mm(274); //274
+        height = cm_to_mm(234); /* ..248/237.. */
+
 
         loza = {
-            width: trasnform_escale(cm_to_mm(33)),
-            height: trasnform_escale(cm_to_mm(33))
+            width: trasnform_escale(cm_to_mm(w_loza)),
+            height: trasnform_escale(cm_to_mm(h_loza))
         };
+
         /* Crea el área de trabajo*/
         mm_w = trasnform_escale(width);
         mm_h = trasnform_escale(height);
@@ -82,10 +88,12 @@ $(function() {
         /* RODA PIES TOP*/
         totalW = mm_w / loza.width;
         totalW = totalW > parseInt(totalW) ? parseInt(totalW) + 1 : (totalW);
-
+        console.clear();
+        console.log(w_loza + 'x' + h_loza);
         for (i = 1; i <= totalW; i++) {
             ispar = (i % 2 == 0) ? '_par' : '_impar';
             $('#dimension-cuarto').append(return_rodapie('top', 0, ((loza.width * i) - loza.width), loza, ispar));
+            // console.log(i);
         }
 
 
@@ -107,13 +115,13 @@ $(function() {
 
 
 
-
-        loza = {
-            width: trasnform_escale(cm_to_mm(33)),
-            height: trasnform_escale(cm_to_mm(33))
-        };
+        hipotenusa = trasnform_escale(cm_to_mm(Math.sqrt(Math.pow(33, 2) + Math.pow(33, 2))));
+        /*loza = {
+            width: trasnform_escale(cm_to_mm(hipotenusa)),
+            height: trasnform_escale(cm_to_mm(hipotenusa))
+        };*/
         // Crea el área de trabajo
-        mm_w = trasnform_escale(width);
+        /*mm_w = trasnform_escale(width);
         mm_h = trasnform_escale(height);
         ispar = '';
         NumLozaPar = 0;
@@ -128,38 +136,42 @@ $(function() {
                 }
                 if (ispar == '_par') {
                     NumLozaPar++;
-                    Num = NumLozaPar;
+                    Num = NumLozaPar; 
                 } else {
                     NumLozaImPar++;
                     Num = NumLozaImPar;
                 }
-                console.log(Num);
+                //console.log(Num);
                 $('#dimension-cuarto').append(return_piso(((loza.height * row) - loza.height), ((loza.width * col) - loza.width), loza, ispar, Num));
                 //return_piso
             }
-        }
+        }*/
+        var _border_ = trasnform_escale(cm_to_mm($('#input_border').val()));
+        $('.borde').css({
+            "border-width": _border_,
+            "background-size": hipotenusa + "px auto"
 
-        var _centro_ = $('<div class="centro">');
-        _centro_.css({
-            /* width: width - (loza.width * 7),
-             height: height - (loza.height * 7),*/
-            top: '50%',
-            left: '50%'
-        })
+        });
 
-        var _decorado_centro_ = $('<div class="decorado_centro">');
+        /*var _decorado_centro_ = $('<div class="decorado_centro">');
         _decorado_centro_.css({
-            width: (loza.width * 8),
-            height: (loza.height * 6),
-            left: (-1) * (((loza.width * 8)) / 2),
-            top: (-1) * (((loza.height * 6)) / 2),
+                width: mm_w - trasnform_escale(cm_to_mm(10 * 2)),
+                height: mm_h - trasnform_escale(cm_to_mm(10 * 2)),
+                left: trasnform_escale(cm_to_mm(10)),
+                top: trasnform_escale(cm_to_mm(10)),
 
-        })
-        _centro_.append(_decorado_centro_);
+            })
+            //_centro_.append(_decorado_centro_);
 
-        $('#dimension-cuarto').append(_centro_);
-
-        /* var _cama_ = $('<div class="cama">');
+        $('#dimension-cuarto').append(_decorado_centro_);*/
+        /*var _centro_ = $('<div class="centro">');
+    _centro_.css({
+        
+    top: '50%',
+        left: '50%'
+})
+$('#dimension-cuarto').append(_centro_); * /
+/* var _cama_ = $('<div class="cama">');
         _cama_.css({
             width: trasnform_escale(cm_to_mm(108)),
             height: trasnform_escale(cm_to_mm(197)),
@@ -177,5 +189,23 @@ $(function() {
         })
         $('#dimension-cuarto').append(_mesa_)
 */
+    }
+    $('body').on('click', '#btn_calculate', function() {
+        var h_loza = $('#input_height').val();
+        var w_loza = $('#input_width').val();
+        cal_total(w_loza, h_loza);
     });
+
+
+
+    $(window).on('load', function() {
+
+
+        $('#input_height').val(33);
+        $('#input_width').val(33)
+        var h_loza = $('#input_height').val();
+        var w_loza = $('#input_width').val();
+        cal_total(w_loza, h_loza);
+    });
+
 });
