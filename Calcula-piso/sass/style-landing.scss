@@ -1,0 +1,129 @@
+@import "resources/css3_mixins";
+//@import "bootstrap/01.bootstrap";
+//@import "bootstrap/02.bootstrap.reboot";
+@import "bootstrap/03.bootstrap.grid";
+@import "01.variables";
+//@import "02.fonts";
+@import "resources/animated";
+@import "resources/fm.scrollator.jquery";
+@import "resources/owl.carousel";
+//@import "resources.owl.theme.default";
+body {
+    & {
+        margin: 0;
+        padding: 0;
+    }
+    * {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        font-size: 10pt;
+    }
+    @import "03.header";
+    @import "body.landing";
+    @import "04.footer";
+}
+
+@import "05.responsive";
+.canva {
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    border: 1px solid #000;
+    position: relative;
+    label {
+        color: #fff;
+        font-size: 12px;
+        padding: 7px 15px;
+        display: inline-block;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        input {
+            padding: 7px 15px;
+            margin: 0 0 0 7px;
+            font-size: 12px;
+        }
+    }
+    button {
+        cursor: pointer;
+        display: inline-block;
+        padding: 6px 15px;
+        margin: 0;
+        font-size: 16px;
+        line-height: 1em;
+        height: 32px;
+    }
+    #dimension-cuarto {
+        position: absolute;
+        overflow: hidden;
+        outline: rgba(255, 255, 255, 0.747) 1px solid;
+        top: 60px;
+        left: 15px;
+        .roda-pie {
+            position: absolute;
+            /*width: 2px;
+            height: 20px;*/
+            z-index: 3;
+            &._impar {
+                background-color: #082bec;
+            }
+            &._par {
+                background-color: #08f318;
+            }
+        }
+        .borde {
+            z-index: 2;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: block;
+            border: 10px solid rgb(248, 167, 74);
+            background-image: url(../images/loza-01.png);
+            background-position: center;
+            background-size: 100% auto;
+            background-color: antiquewhite;
+            border-image: url(../images/borde-image.png) 40 round;
+        }
+        .loza-piso {
+            position: absolute;
+            z-index: 1;
+            /*&._impar {
+                background-color: rgba(255, 255, 255, 0.623);
+            }
+            &._par {
+                background-color: #fff;
+            }*/
+        }
+        /*.decorado_centro {
+            width: 0;
+            height: 0;
+            position: absolute;
+            background: rgba(0, 0, 0, 0.98);
+            z-index: 9;
+            //transform: rotate(45deg);
+        }*/
+        .centro {
+            position: absolute;
+            outline: green 1px solid;
+            display: block;
+            width: 0px;
+            height: 0px;
+            z-index: 9999;
+        }
+        .cama {
+            position: absolute;
+            z-index: 3;
+            background-color: rgba(6, 160, 199, 0.562);
+        }
+        .mesa {
+            background-color: #8c5a00;
+            background-image: url(../images/mesa01.jpg);
+            /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+            position: absolute;
+            z-index: 3;
+            //background-color: rgba(6, 160, 199, 0.562);
+            opacity: 0.75;
+            background-size: 100px auto;
+        }
+    }
+}
