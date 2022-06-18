@@ -29,6 +29,10 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-tiktok:before {
+    content: "\e900";
+}
+
 .icon-google:before {
     content: "\ea88";
 }
