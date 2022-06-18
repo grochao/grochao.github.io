@@ -38,13 +38,26 @@ body {
         }
         input {
             width: 100%;
-            padding: 10px 15px;
+            padding: 11px 15px 10px 40px;
+            background-color: #d3d3d3;
             @include css3-prefix(border-radius, 100px);
             &,
             &:focus,
             &:hover {
                 border: none;
                 outline: none;
+            }
+            &.logo-google-svg {
+                background-image: url(../images/logo-google.svg);
+                background-position: 7px center;
+                background-repeat: no-repeat;
+                background-size: 24px auto;
+            }
+            &.logo-whatsapp-svg {
+                background-image: url(../images/logo-whatsapp.svg);
+                background-position: 7px center;
+                background-repeat: no-repeat;
+                background-size: 24px auto;
             }
         }
         button {
