@@ -29,8 +29,16 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-tiktok:before {
+.icon-ventusky:before {
     content: "\e900";
+}
+
+.icon-windy:before {
+    content: "\e901";
+}
+
+.icon-tiktok:before {
+    content: "\e902";
 }
 
 .icon-google:before {
@@ -45,8 +53,16 @@
     content: "\ea93";
 }
 
-.icon-spotify:before {
-    content: "\ea94";
+.icon-telegram:before {
+    content: "\ea95";
+}
+
+.icon-twitter:before {
+    content: "\ea96";
+}
+
+.icon-youtube:before {
+    content: "\ea9d";
 }
 
 .icon-pinterest:before {

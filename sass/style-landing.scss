@@ -87,7 +87,7 @@ body {
     .containe-box {
         display: flex;
         width: 100%;
-        max-width: 600px;
+        max-width: 850px;
         align-items: center;
         vertical-align: middle;
         margin: 0 auto;
@@ -96,16 +96,26 @@ body {
             max-width: 320px;
             padding: 0 10px;
         }
+        h2 {
+            display: block;
+            width: 100%;
+            clear: both;
+            flex: 0 0 100%;
+            padding: 0 8px;
+            color: #fff;
+            text-shadow: 0px 0px 2px #000000;
+        }
         .box-link {
             & {
                 padding: 3px;
+                width: 100%;
                 @include media-breakpoint-max($md) {
                     flex: 0 0 33.333333333%;
-                    width: 33.333333333%;
+                    max-width: 33.333333333%;
                 }
                 @include media-breakpoint-min($lg) {
-                    flex: 0 0 80px;
-                    width: 80px;
+                    flex: 0 0 110px;
+                    max-width: 110px;
                 }
             }
             .link {
@@ -122,6 +132,9 @@ body {
                     &:hover,
                     &:focus {
                         background-color: rgba(26, 65, 18, 0.7);
+                    }
+                    @include media-breakpoint-min($lg) {
+                        height: 110px;
                     }
                 }
                 &,
@@ -145,6 +158,13 @@ body {
                             text-align: center;
                             font-size: 20px;
                         }
+                        @include media-breakpoint-min($lg) {
+                            width: 46px;
+                            height: 46px;
+                            &::before {
+                                font-size: 25px;
+                            }
+                        }
                     }
                     &.icon-whatsapp {
                         background-color: #25D366;
@@ -160,7 +180,22 @@ body {
                     }
                     &.icon-tiktok {
                         background-color: #000000;
-                        color: #00f2ea
+                        color: #00f2ea;
+                    }
+                    &.icon-windy {
+                        background-color: #a51e25;
+                        color: #ffffff;
+                        &::before {
+                            font-size: 31px;
+                        }
+                    }
+                    &.icon-ventusky {
+                        background-color: #0b5383;
+                        background: linear-gradient(0deg, rgba(11, 83, 131, 1) 0%, rgba(54, 147, 204, 1) 100%);
+                        color: #fff;
+                        &::before {
+                            font-size: 31px;
+                        }
                     }
                 }
                 span {
