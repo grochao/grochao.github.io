@@ -29,11 +29,11 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-ventusky:before {
+.icon-windy:before {
     content: "\e900";
 }
 
-.icon-windy:before {
+.icon-ventusky:before {
     content: "\e901";
 }
 
@@ -42,15 +42,36 @@
 }
 
 .icon-google:before {
-    content: "\ea88";
+    content: "\f1a0";
+}
+
+.icon-pinterest:before {
+    content: "\f231";
+}
+
+.icon-sphere:before,
+.icon-google-fiber:before {
+    content: "\e9c9";
+}
+
+.icon-earth:before {
+    content: "\e9ca";
 }
 
 .icon-facebook:before {
     content: "\ea90";
 }
 
+.icon-instagram:before {
+    content: "\ea92";
+}
+
 .icon-whatsapp:before {
     content: "\ea93";
+}
+
+.icon-spotify:before {
+    content: "\ea94";
 }
 
 .icon-telegram:before {
@@ -63,8 +84,4 @@
 
 .icon-youtube:before {
     content: "\ea9d";
-}
-
-.icon-pinterest:before {
-    content: "\ead1";
 }

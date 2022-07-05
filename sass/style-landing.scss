@@ -177,6 +177,10 @@ body {
                     &.icon-pinterest {
                         background-color: #E60023;
                         color: #fff;
+                        &::before {
+                            font-size: 37px;
+                            padding-top: 8px;
+                        }
                     }
                     &.icon-tiktok {
                         background-color: #000000;
@@ -188,6 +192,11 @@ body {
                         &::before {
                             font-size: 31px;
                         }
+                    }
+                    &.icon-google-fiber {
+                        background-color: #fdc717;
+                        color: #188038;
+                        position: relative;
                     }
                     &.icon-ventusky {
                         background-color: #0b5383;
