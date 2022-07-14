@@ -16,18 +16,112 @@
 
 [class^="icon-"],
 [class*=" icon-"] {
-    /* use !important to prevent issues with browser extensions that change fonts */
-    font-family: 'icomoon' !important;
-    speak: never;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    /* Better Font Rendering =========== */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    &,
+    [class*="path"] {
+        /* use !important to prevent issues with browser extensions that change fonts */
+        font-family: 'icomoon' !important;
+        speak: never;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        /* Better Font Rendering =========== */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
 }
+
+.icon-outlook:before {
+    content: "\e908";
+}
+
+.icon-fast:before {
+    content: "\e909";
+}
+
+.icon-google-fiber .path1:before {
+    content: "\e900";
+    color: rgb(66, 133, 244);
+}
+
+.icon-google-fiber .path2:before {
+    content: "\e901";
+    margin-left: -1em;
+    color: rgb(52, 168, 83);
+}
+
+.icon-google-fiber .path3:before {
+    content: "\e903";
+    margin-left: -1em;
+    color: rgb(251, 188, 4);
+}
+
+.icon-google-fiber .path4:before {
+    content: "\e904";
+    margin-left: -1em;
+    color: rgb(234, 67, 53);
+}
+
+.icon-windy:before {
+    content: "\e905";
+}
+
+.icon-ventusky:before {
+    content: "\e906";
+}
+
+.icon-tiktok:before {
+    content: "\e902";
+}
+
+.icon-pinterest-p:before {
+    content: "\e907";
+}
+
+.icon-sphere:before {
+    content: "\e9c9";
+}
+
+.icon-earth:before {
+    content: "\e9ca";
+}
+
+.icon-google:before {
+    content: "\ea88";
+}
+
+.icon-facebook:before {
+    content: "\ea90";
+}
+
+.icon-instagram:before {
+    content: "\ea92";
+}
+
+.icon-whatsapp:before {
+    content: "\ea93";
+}
+
+.icon-telegram:before {
+    content: "\ea95";
+}
+
+.icon-twitter:before {
+    content: "\ea96";
+}
+
+.icon-youtube:before {
+    content: "\ea9d";
+}
+
+.icon-pinterest:before {
+    content: "\ead1";
+}
+
+
+/*
+
 
 .icon-windy:before {
     content: "\e900";
@@ -84,4 +178,4 @@
 
 .icon-youtube:before {
     content: "\ea9d";
-}
+}*/

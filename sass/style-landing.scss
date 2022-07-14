@@ -104,6 +104,7 @@ body {
             padding: 0 8px;
             color: #fff;
             text-shadow: 0px 0px 2px #000000;
+            margin: 14px 0 0 0;
         }
         .box-link {
             & {
@@ -144,7 +145,8 @@ body {
                 &:active {
                     text-decoration: none;
                 }
-                i {
+                i,
+                [class*="icon-"] {
                     & {
                         display: flex;
                         align-items: center;
@@ -174,7 +176,7 @@ body {
                         background-color: #4267B2;
                         color: #fff;
                     }
-                    &.icon-pinterest {
+                    &.icon-pinterest-p {
                         background-color: #E60023;
                         color: #fff;
                         &::before {
@@ -194,9 +196,11 @@ body {
                         }
                     }
                     &.icon-google-fiber {
-                        background-color: #fdc717;
-                        color: #188038;
-                        position: relative;
+                        background-color: #fff;
+                        padding-left: 11px;
+                         ::before {
+                            font-size: 25px;
+                        }
                     }
                     &.icon-ventusky {
                         background-color: #0b5383;
@@ -206,8 +210,15 @@ body {
                             font-size: 31px;
                         }
                     }
+                    &.icon-fast {
+                        background-color: #fff;
+                        &::before {
+                            color: red;
+                            font-size: 25px;
+                        }
+                    }
                 }
-                span {
+                .title {
                     line-height: 0.9em!important;
                     color: #fff;
                     display: block;
