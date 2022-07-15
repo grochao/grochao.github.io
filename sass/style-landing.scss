@@ -84,17 +84,202 @@ body {
             }
         }
     }
-    .containe-box {
-        display: flex;
+    .center {
         width: 100%;
         max-width: 850px;
-        align-items: center;
-        vertical-align: middle;
         margin: 0 auto;
-        flex-wrap: wrap;
-        @include media-breakpoint-max($md) {
-            max-width: 320px;
+        display: block;
+    }
+    .container-box {
+        & {
+            width: 32%;
+            display: inline-block;
+            text-align: left;
             padding: 0 10px;
+        }
+        @include media-breakpoint-max($sm) {
+            width: 100%;
+            //max-width: 320px;
+        }
+        @include media-breakpoint($md) {
+            width: 32%;
+            //max-width: 320px;
+        }
+        .content-col {
+            & {
+                display: flex;
+                width: 100%;
+                max-width: 850px;
+                align-items: center;
+                vertical-align: middle;
+                margin: 0 auto;
+                flex-wrap: wrap;
+            }
+            .box-link {
+                & {
+                    padding: 3px;
+                    width: 100%;
+                    @include media-breakpoint-max($md) {
+                        flex: 0 0 33.333333333%;
+                        max-width: 96px;
+                    }
+                    @include media-breakpoint-min($lg) {
+                        flex: 0 0 110px;
+                        max-width: 110px;
+                    }
+                }
+                .link {
+                    & {
+                        height: 100px;
+                        padding: 8px 0;
+                        display: block;
+                        width: 100%;
+                        background-color: rgba(26, 65, 18, 0.35);
+                        margin: 3px;
+                        text-align: center;
+                        @include transition();
+                        cursor: pointer;
+                        &:hover,
+                        &:focus {
+                            background-color: rgba(26, 65, 18, 0.7);
+                        }
+                        @include media-breakpoint-min($lg) {
+                            height: 110px;
+                        }
+                    }
+                    &,
+                    &:hover,
+                    &:focus,
+                    &:visited,
+                    &:active {
+                        text-decoration: none;
+                    }
+                    i,
+                    [class*="icon-"] {
+                        & {
+                            display: flex;
+                            align-items: center;
+                            text-align: center;
+                            width: 36px;
+                            height: 36px;
+                            margin: 5px auto;
+                            @include css3-prefix(border-radius, 100px);
+                            &::before {
+                                width: 100%;
+                                text-align: center;
+                                font-size: 20px;
+                            }
+                            @include media-breakpoint-min($lg) {
+                                width: 46px;
+                                height: 46px;
+                                &::before {
+                                    font-size: 25px;
+                                }
+                            }
+                        }
+                        &.icon-whatsapp {
+                            background-color: #25D366;
+                            color: #fff;
+                            &::before {
+                                font-size: 30px!important;
+                            }
+                        }
+                        &.icon-telegram {
+                            background-color: #229ED9;
+                            color: #fff;
+                            border: 3px solid #fff;
+                        }
+                        &.icon-facebook {
+                            background-color: #4267B2;
+                            color: #fff;
+                        }
+                        &.icon-pinterest {
+                            background-color: #E60023;
+                            color: #fff;
+                            &::before {
+                                font-size: 34px;
+                                padding-top: 8px;
+                            }
+                            @include media-breakpoint-max($md) {
+                                &::before {
+                                    font-size: 27px;
+                                }
+                            }
+                        }
+                        &.icon-tiktok {
+                            background-color: #000000;
+                            color: #00f2ea;
+                        }
+                        &.icon-windy {
+                            background-color: #a51e25;
+                            color: #ffffff;
+                            &::before {
+                                font-size: 31px;
+                            }
+                        }
+                        &.icon-fast {
+                            background-color: #fff;
+                            padding-left: 7px;
+                             ::before {
+                                font-size: 31px;
+                                top: -4px;
+                                position: relative;
+                                font-size: 31px;
+                            }
+                            @include media-breakpoint-max($md) {
+                                padding-left: 3px;
+                            }
+                        }
+                        &.icon-google-fiber {
+                            background-color: #fff;
+                            padding-left: 11px;
+                             ::before {
+                                font-size: 25px;
+                            }
+                            @include media-breakpoint-max($md) {
+                                padding-left: 9px;
+                                 ::before {
+                                    font-size: 20px;
+                                }
+                            }
+                        }
+                        &.icon-ventusky {
+                            background-color: #0b5383;
+                            background: linear-gradient(0deg, rgba(11, 83, 131, 1) 0%, rgba(54, 147, 204, 1) 100%);
+                            color: #fff;
+                            &::before {
+                                font-size: 31px;
+                            }
+                        }
+                        &.icon-fast {
+                            background-color: #fff;
+                            &::before {
+                                color: red;
+                                font-size: 25px;
+                            }
+                        }
+                        &.icon-outlook {
+                            background-color: #0072C6;
+                            &::before {
+                                color: #fff;
+                            }
+                        }
+                        &.icon-office365 {
+                            background-color: #DC3E15;
+                            &::before {
+                                color: #fff;
+                            }
+                        }
+                    }
+                    .title {
+                        line-height: 0.9em!important;
+                        color: #fff;
+                        display: block;
+                        margin-top: 17px;
+                        padding: 0 7px;
+                    }
+                }
+            }
         }
         h2 {
             display: block;
@@ -105,150 +290,6 @@ body {
             color: #fff;
             text-shadow: 0px 0px 2px #000000;
             margin: 14px 0 0 0;
-        }
-        .box-link {
-            & {
-                padding: 3px;
-                width: 100%;
-                @include media-breakpoint-max($md) {
-                    flex: 0 0 33.333333333%;
-                    max-width: 33.333333333%;
-                }
-                @include media-breakpoint-min($lg) {
-                    flex: 0 0 110px;
-                    max-width: 110px;
-                }
-            }
-            .link {
-                & {
-                    height: 100px;
-                    padding: 8px 0;
-                    display: block;
-                    width: 100%;
-                    background-color: rgba(26, 65, 18, 0.35);
-                    margin: 3px;
-                    text-align: center;
-                    @include transition();
-                    cursor: pointer;
-                    &:hover,
-                    &:focus {
-                        background-color: rgba(26, 65, 18, 0.7);
-                    }
-                    @include media-breakpoint-min($lg) {
-                        height: 110px;
-                    }
-                }
-                &,
-                &:hover,
-                &:focus,
-                &:visited,
-                &:active {
-                    text-decoration: none;
-                }
-                i,
-                [class*="icon-"] {
-                    & {
-                        display: flex;
-                        align-items: center;
-                        text-align: center;
-                        width: 36px;
-                        height: 36px;
-                        margin: 5px auto;
-                        @include css3-prefix(border-radius, 100px);
-                        &::before {
-                            width: 100%;
-                            text-align: center;
-                            font-size: 20px;
-                        }
-                        @include media-breakpoint-min($lg) {
-                            width: 46px;
-                            height: 46px;
-                            &::before {
-                                font-size: 25px;
-                            }
-                        }
-                    }
-                    &.icon-whatsapp {
-                        background-color: #25D366;
-                        color: #fff;
-                    }
-                    &.icon-facebook {
-                        background-color: #4267B2;
-                        color: #fff;
-                    }
-                    &.icon-pinterest-p {
-                        background-color: #E60023;
-                        color: #fff;
-                        &::before {
-                            font-size: 37px;
-                            padding-top: 8px;
-                        }
-                        @include media-breakpoint-max($md) {
-                            &::before {
-                                font-size: 29px;
-                            }
-                        }
-                    }
-                    &.icon-tiktok {
-                        background-color: #000000;
-                        color: #00f2ea;
-                    }
-                    &.icon-windy {
-                        background-color: #a51e25;
-                        color: #ffffff;
-                        &::before {
-                            font-size: 31px;
-                        }
-                    }
-                    &.icon-google-fiber {
-                        background-color: #fff;
-                        padding-left: 11px;
-                         ::before {
-                            font-size: 25px;
-                        }
-                        @include media-breakpoint-max($md) {
-                            padding-left: 9px;
-                             ::before {
-                                font-size: 20px;
-                            }
-                        }
-                    }
-                    &.icon-ventusky {
-                        background-color: #0b5383;
-                        background: linear-gradient(0deg, rgba(11, 83, 131, 1) 0%, rgba(54, 147, 204, 1) 100%);
-                        color: #fff;
-                        &::before {
-                            font-size: 31px;
-                        }
-                    }
-                    &.icon-fast {
-                        background-color: #fff;
-                        &::before {
-                            color: red;
-                            font-size: 25px;
-                        }
-                    }
-                    &.icon-outlook {
-                        background-color: #0072C6;
-                        &::before {
-                            color: #fff;
-                        }
-                    }
-                    &.icon-office365 {
-                        background-color: #DC3E15;
-                        &::before {
-                            color: #fff;
-                        }
-                    }
-                }
-                .title {
-                    line-height: 0.9em!important;
-                    color: #fff;
-                    display: block;
-                    margin-top: 17px;
-                    padding: 0 7px;
-                }
-            }
         }
     }
 }

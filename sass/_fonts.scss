@@ -4,11 +4,11 @@
 
 @font-face {
     font-family: 'icomoon';
-    src: url('../fonts/icomoon.eot?avr9pi');
-    src: url('../fonts/icomoon.eot?avr9pi#iefix') format('embedded-opentype'), /***/
-    url('../fonts/icomoon.ttf?avr9pi') format('truetype'), /***/
-    url('../fonts/icomoon.woff?avr9pi') format('woff'), /***/
-    url('../fonts/icomoon.svg?avr9pi#icomoon') format('svg');
+    src: url('../fonts/icomoon.eot?g1jbbd');
+    src: url('../fonts/icomoon.eot?g1jbbd#iefix') format('embedded-opentype'), //*
+    url('../fonts/icomoon.ttf?g1jbbd') format('truetype'), //*
+    url('../fonts/icomoon.woff?g1jbbd') format('woff'), //*
+    url('../fonts/icomoon.svg?g1jbbd#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -32,151 +32,123 @@
     }
 }
 
-.icon-outlook:before {
-    content: "\e908";
+.icon-whatsapp:before {
+    content: "\e900";
 }
 
-.icon-fast:before {
+.icon-fast .path1:before {
+    content: "\e901";
+    color: rgb(0, 0, 0);
+}
+
+.icon-fast .path2:before {
+    content: "\e902";
+    margin-left: -1em;
+    color: rgb(182, 0, 0);
+}
+
+.icon-telegram:before {
+    content: "\e903";
+}
+
+.icon-tiktok:before {
+    content: "\e904";
+}
+
+.icon-pinterest:before {
+    content: "\e905";
+}
+
+.icon-microsoft .path1:before {
+    content: "\e906";
+    color: rgb(242, 80, 34);
+}
+
+.icon-microsoft .path2:before {
+    content: "\e907";
+    margin-left: -1em;
+    color: rgb(127, 186, 0);
+}
+
+.icon-microsoft .path3:before {
+    content: "\e908";
+    margin-left: -1em;
+    color: rgb(0, 164, 239);
+}
+
+.icon-microsoft .path4:before {
     content: "\e909";
+    margin-left: -1em;
+    color: rgb(255, 185, 0);
+}
+
+.icon-office365:before {
+    content: "\e90a";
+}
+
+.icon-link:before {
+    content: "\e90b";
+}
+
+.icon-twitter:before {
+    content: "\e90c";
+}
+
+.icon-facebook:before {
+    content: "\e90d";
+}
+
+.icon-instagram:before {
+    content: "\e90e";
+}
+
+.icon-google:before {
+    content: "\e90f";
+}
+
+.icon-youtube:before {
+    content: "\e910";
+}
+
+.icon-world-2:before {
+    content: "\e911";
+}
+
+.icon-world:before {
+    content: "\e912";
+}
+
+.icon-outlook:before {
+    content: "\e913";
 }
 
 .icon-google-fiber .path1:before {
-    content: "\e900";
+    content: "\e914";
     color: rgb(66, 133, 244);
 }
 
 .icon-google-fiber .path2:before {
-    content: "\e901";
+    content: "\e915";
     margin-left: -1em;
     color: rgb(52, 168, 83);
 }
 
 .icon-google-fiber .path3:before {
-    content: "\e903";
+    content: "\e916";
     margin-left: -1em;
     color: rgb(251, 188, 4);
 }
 
 .icon-google-fiber .path4:before {
-    content: "\e904";
+    content: "\e917";
     margin-left: -1em;
     color: rgb(234, 67, 53);
 }
 
 .icon-windy:before {
-    content: "\e905";
+    content: "\e918";
 }
 
 .icon-ventusky:before {
-    content: "\e906";
+    content: "\e919";
 }
-
-.icon-office365:before {
-    content: "\e90a";
-    //color: #e74025;
-}
-
-.icon-tiktok:before {
-    content: "\e902";
-}
-
-.icon-pinterest-p:before {
-    content: "\e907";
-}
-
-.icon-sphere:before {
-    content: "\e9c9";
-}
-
-.icon-earth:before {
-    content: "\e9ca";
-}
-
-.icon-google:before {
-    content: "\ea88";
-}
-
-.icon-facebook:before {
-    content: "\ea90";
-}
-
-.icon-instagram:before {
-    content: "\ea92";
-}
-
-.icon-whatsapp:before {
-    content: "\ea93";
-}
-
-.icon-telegram:before {
-    content: "\ea95";
-}
-
-.icon-twitter:before {
-    content: "\ea96";
-}
-
-.icon-youtube:before {
-    content: "\ea9d";
-}
-
-
-/*
-
-
-.icon-windy:before {
-    content: "\e900";
-}
-
-.icon-ventusky:before {
-    content: "\e901";
-}
-
-.icon-tiktok:before {
-    content: "\e902";
-}
-
-.icon-google:before {
-    content: "\f1a0";
-}
-
-.icon-pinterest:before {
-    content: "\f231";
-}
-
-.icon-sphere:before,
-.icon-google-fiber:before {
-    content: "\e9c9";
-}
-
-.icon-earth:before {
-    content: "\e9ca";
-}
-
-.icon-facebook:before {
-    content: "\ea90";
-}
-
-.icon-instagram:before {
-    content: "\ea92";
-}
-
-.icon-whatsapp:before {
-    content: "\ea93";
-}
-
-.icon-spotify:before {
-    content: "\ea94";
-}
-
-.icon-telegram:before {
-    content: "\ea95";
-}
-
-.icon-twitter:before {
-    content: "\ea96";
-}
-
-.icon-youtube:before {
-    content: "\ea9d";
-}*/

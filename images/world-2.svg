@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="500"
+   height="500"
+   viewBox="0 0 500 500"
+   version="1.1"
+   preserveAspectRatio="xMidYMid"
+   id="svg1674"
+   sodipodi:docname="world-svgrepo-com.svg"
+   inkscape:version="1.2 (56b05e47e7, 2022-06-09, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs1678" />
+  <sodipodi:namedview
+     id="namedview1676"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     showgrid="false"
+     inkscape:zoom="1.1162205"
+     inkscape:cx="286.23378"
+     inkscape:cy="22.397009"
+     inkscape:window-width="1920"
+     inkscape:window-height="962"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1674" />
+  <title
+     id="title1664">world-solid</title>
+  <path
+     id="path1666"
+     class="clr-i-solid clr-i-solid-path-1"
+     d="M 250,0.5 A 249.5,249.5 0 1 0 499.5,250 249.5,249.5 0 0 0 250,0.5 Z M 237.05597,31.6875 H 250 263.40089 v 119.146 h 94.96349 A 313.90218,313.90219 0 0 0 289.92854,34.794068 216.59718,216.59719 0 0 1 334.6692,47.28125 347.11688,347.11688 0 0 1 385.65344,150.04163 h 58.81159 a 216.59718,216.59719 0 0 1 11.84759,28.23322 H 392.99347 A 341.19125,341.19125 0 0 1 400.63806,250 a 346.18125,346.18125 0 0 1 -8.8933,76.87232 h 62.375 a 217.37688,217.37687 0 0 1 -13.55317,27.77637 h -56.46644 a 339.94375,339.94375 0 0 1 -46.78125,93.5625 216.12938,216.12937 0 0 1 -46.78125,14.34502 315.14968,315.14969 0 0 0 65.17701,-108.24255 H 263.40089 V 465.81507 H 250 237.05597 V 354.64869 H 144.28534 A 315.14968,315.14969 0 0 0 209.46235,463.01306 216.12938,216.12937 0 0 1 163.62524,448.9726 339.94375,339.94375 0 0 1 116.84399,354.64869 H 59.433411 A 217.37688,217.37687 0 0 1 46.489381,326.41547 H 108.86438 A 346.18125,346.18125 0 0 1 99.81879,250 a 341.19125,341.19125 0 0 1 7.4923,-70.96374 H 43.535095 A 216.44125,216.44125 0 0 1 55.382689,150.8335 H 114.80341 A 347.11688,347.11688 0 0 1 165.93993,47.28125 216.12938,216.12937 0 0 1 210.71106,34.184936 313.90218,313.90219 0 0 0 142.09246,150.34619 h 94.96351 z M 134.2956,179.03626 A 320.45157,320.45156 0 0 0 126.04187,250 a 319.04813,319.04813 0 0 0 9.65474,76.87232 h 101.0548 V 179.03626 Z m 128.95299,0 v 147.83606 h 101.0548 A 319.04813,319.04813 0 0 0 374.75,250 320.45157,320.45156 0 0 0 366.64856,179.03626 Z"
+     style="stroke-width:15.5937" />
+  <metadata
+     id="metadata2160">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>world-solid</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>
