@@ -183,6 +183,11 @@ body {
                             font-size: 37px;
                             padding-top: 8px;
                         }
+                        @include media-breakpoint-max($md) {
+                            &::before {
+                                font-size: 29px;
+                            }
+                        }
                     }
                     &.icon-tiktok {
                         background-color: #000000;
@@ -201,6 +206,12 @@ body {
                          ::before {
                             font-size: 25px;
                         }
+                        @include media-breakpoint-max($md) {
+                            padding-left: 9px;
+                             ::before {
+                                font-size: 20px;
+                            }
+                        }
                     }
                     &.icon-ventusky {
                         background-color: #0b5383;
@@ -215,6 +226,18 @@ body {
                         &::before {
                             color: red;
                             font-size: 25px;
+                        }
+                    }
+                    &.icon-outlook {
+                        background-color: #0072C6;
+                        &::before {
+                            color: #fff;
+                        }
+                    }
+                    &.icon-office365 {
+                        background-color: #DC3E15;
+                        &::before {
+                            color: #fff;
                         }
                     }
                 }
