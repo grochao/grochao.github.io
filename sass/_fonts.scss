@@ -4,11 +4,11 @@
 
 @font-face {
     font-family: 'icomoon';
-    src: url('../fonts/icomoon.eot?g1jbbd');
-    src: url('../fonts/icomoon.eot?g1jbbd#iefix') format('embedded-opentype'), //*
-    url('../fonts/icomoon.ttf?g1jbbd') format('truetype'), //*
-    url('../fonts/icomoon.woff?g1jbbd') format('woff'), //*
-    url('../fonts/icomoon.svg?g1jbbd#icomoon') format('svg');
+    src: url('../fonts/icomoon.eot?4yv03b');
+    src: url('../fonts/icomoon.eot?4yv03b#iefix') format('embedded-opentype'), //*
+    url('../fonts/icomoon.ttf?4yv03b') format('truetype'), //*
+    url('../fonts/icomoon.woff?4yv03b') format('woff'), //*
+    url('../fonts/icomoon.svg?4yv03b#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -30,6 +30,10 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
+}
+
+.icon-justwatch:before {
+    content: "\e91a";
 }
 
 .icon-whatsapp:before {
