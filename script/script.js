@@ -35,7 +35,7 @@ $(function() {
             $(".link-whatsapp").parent().attr({
                 "href": ''
             })
-            $(".shownumber").text('');
+            $(".shownumber").text('==========');
         }
     });
 
