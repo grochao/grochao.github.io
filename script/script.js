@@ -43,9 +43,9 @@ $(function() {
 
     $('body').on('keyup touchend', '.text-msg', function() {
         if ($(this).val() !== "") {
-            var text = '?text=' + encodeURIComponent($(this).val());
-            var number = encodeURIComponent((((((text.replaceAll(" ", '')).replaceAll("-", '')).replaceAll("(", '')).replaceAll(")", '')).replaceAll('+', '')).replaceAll('.', ''));
-
+            var text = $.trim($(this).val());
+            var text = '?text=' + encodeURIComponent((((((text.replaceAll(" ", '')).replaceAll("-", '')).replaceAll("(", '')).replaceAll(")", '')).replaceAll('+', '')).replaceAll('.', ''));
+            var number = $("#input-text").val()
             $(".link-whatsapp").attr({
                 "href": "https://wa.me/" + number + text
             });
