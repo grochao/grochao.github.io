@@ -6,7 +6,12 @@ $(function() {
     }
 
     function validateOnlyNumbers(phone) {
-        return phone.match(/^\+?\(?([0-9]{3})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/);
+        if (phone.match(/^\+?\(?([0-9]{3})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/)) {
+            return true;
+        } else if (phone.match(/^[0-9]{4}[-\s\.]{0,1}[0-9]{4}$/)) {
+            return true;
+        }
+        //return phone.match(/^\+?\(?([0-9]{3})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/);
     }
 
     function escapeRegExp(string) {
