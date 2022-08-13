@@ -23,20 +23,39 @@ $(function() {
 
     $('body').on('keyup touchend', '#input-text', function() {
         var text = $(this).val();
-        console.log(text);
+        var number = '';
+        // console.log(text);
         if (validateOnlyNumbers(text)) {
-            $('.link-whatsapp').show();
-            $(".link-whatsapp").parent().attr({
-                "href": "https://wa.me/" + (((text.replaceAll(" ", '')).replaceAll("-", '')).replaceAll("(", '')).replaceAll(")", '')
+            number = encodeURIComponent((((((text.replaceAll(" ", '')).replaceAll("-", '')).replaceAll("(", '')).replaceAll(")", '')).replaceAll('+', '')).replaceAll('.', ''));
+            $('.link-whatsapp-msg').show();
+            $(".link-whatsapp").attr({
+                "href": "https://wa.me/" + number
             });
-            $(".shownumber").text("https://wa.me/" + (((text.replaceAll(" ", '')).replaceAll("-", '')).replaceAll("(", '')).replaceAll(")", ''));
+            $('.text-msg').val('');
         } else {
-            $('.link-whatsapp').hide();
-            $(".link-whatsapp").parent().attr({
+            $('.link-whatsapp-msg').hide();
+            $(".link-whatsapp").attr({
                 "href": ''
-            })
-            $(".shownumber").text('==========');
+            });
+            $('.text-msg').val('');
         }
+    });
+
+    $('body').on('keyup touchend', '.text-msg', function() {
+        if ($(this).val() !== "") {
+            var text = '?text=' + encodeURIComponent($(this).val());
+            var number = encodeURIComponent((((((text.replaceAll(" ", '')).replaceAll("-", '')).replaceAll("(", '')).replaceAll(")", '')).replaceAll('+', '')).replaceAll('.', ''));
+
+            $(".link-whatsapp").attr({
+                "href": "https://wa.me/" + number + text
+            });
+        } else {
+            $(".link-whatsapp").attr({
+                "href": "https://wa.me/" + number
+            });
+        }
+
+
     });
 
 

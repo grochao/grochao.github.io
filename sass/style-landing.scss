@@ -37,21 +37,28 @@ body {
             max-width: 600px;
         }
         .link-whatsapp-msg {
+            display: none;
             background: #fff;
             position: absolute;
             top: 58px;
             width: 80%;
             left: 10%;
             padding: 7px;
-            textarea {
+            .text-msg {
                 width: 100%;
                 height: 70px;
                 resize: none;
-                padding: 15px;
+                padding: 15px 67px 15px 15px;
                 border: #b1b2b3 solid 1px;
+                font-size: 18px;
+                &,
+                &:focus,
+                &:hover {
+                    outline: none;
+                }
             }
             &,
-            textarea {
+            .text-msg {
                 -webkit-border-radius: 4px;
                 -moz-border-radius: 4px;
                 border-radius: 4px;
@@ -94,8 +101,7 @@ body {
                 background-size: 24px auto;
             }
         }
-        button,
-        .button {
+        button {
             position: absolute;
             top: 15px;
             right: 15px;
@@ -123,19 +129,35 @@ body {
                 position: relative;
                 top: 2px;
             }
-            &.link-whatsapp {
-                display: none;
-                right: 60px;
-                background-color: #25D366;
-                i {
-                    color: #fff;
-                    &::before {
-                        color: #fff;
-                        font-size: 25px;
-                        top: 3px;
-                        position: relative;
-                    }
-                }
+        }
+    }
+    .link-whatsapp {
+        cursor: pointer;
+        background-color: #25D366;
+        position: absolute;
+        top: 17px;
+        right: 15px;
+        width: 50px;
+        height: 50px;
+        line-height: 0em;
+        border-radius: 200px;
+        &,
+        &:focus,
+        &:hover {
+            border: none;
+            outline: none;
+            text-decoration: none;
+        }
+        i {
+            line-height: 0em;
+            width: 100%;
+            text-align: center;
+            display: block;
+            padding-top: 24px;
+            color: #fff;
+            &::before {
+                color: #fff;
+                font-size: 35px;
             }
         }
     }
