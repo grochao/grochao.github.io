@@ -32,12 +32,15 @@ $(function() {
                 "href": "https://wa.me/" + number
             });
             $('.text-msg').val('');
+            $('.opaque').show();
         } else {
             $('.link-whatsapp-msg').hide();
             $(".link-whatsapp").attr({
                 "href": ''
             });
             $('.text-msg').val('');
+            $('.opaque').hide();
+
         }
     });
 

@@ -24,8 +24,15 @@ body {
         background-repeat: no-repeat;
         background-size: cover;
     }
-    .shownumber {
-        color: #25D366;
+    .opaque {
+        display: none;
+        background-color: rgba(0, 0, 0, 0.55);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
     }
     .search {
         width: 100%;
@@ -33,6 +40,7 @@ body {
         margin: 30px auto;
         display: block;
         position: relative;
+        z-index: 99;
         @include media-breakpoint-min($lg) {
             max-width: 600px;
         }
