@@ -60,7 +60,8 @@ body {
                 background-size: 24px auto;
             }
         }
-        button {
+        button,
+        .button {
             position: absolute;
             top: 15px;
             right: 15px;
@@ -81,6 +82,26 @@ body {
                 border: none;
                 outline: none;
                 background-color: #ddd;
+            }
+            .search-google i.icon-google::before {
+                color: #4285F4;
+                font-size: 20px;
+                position: relative;
+                top: 2px;
+            }
+            &.link-whatsapp {
+                display: none;
+                right: 60px;
+                background-color: #25D366;
+                i {
+                    color: #fff;
+                    &::before {
+                        color: #fff;
+                        font-size: 25px;
+                        top: 3px;
+                        position: relative;
+                    }
+                }
             }
         }
     }
