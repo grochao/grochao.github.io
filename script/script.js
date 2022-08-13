@@ -21,20 +21,6 @@ $(function() {
 
 
 
-    /*$('body').on('keyup', '#input-text', function() {
-        var text = $(this).val();
-        if (validateOnlyNumbers(text)) {
-            $('.link-whatsapp').show();
-            $(".link-whatsapp").parent().attr({
-                "href": (((text.replaceAll(" ", '')).replaceAll("-", '')).replaceAll("(", '')).replaceAll(")", '')
-            });
-        } else {
-            $('.link-whatsapp').hide();
-            $(".link-whatsapp").parent().attr({
-                "href": ''
-            })
-        }
-    });*/
     $('body').on('keyup touchend', '#input-text', function() {
         var text = $(this).val();
         console.log(text);
@@ -43,11 +29,13 @@ $(function() {
             $(".link-whatsapp").parent().attr({
                 "href": (((text.replaceAll(" ", '')).replaceAll("-", '')).replaceAll("(", '')).replaceAll(")", '')
             });
+            $(".shownumber").text((((text.replaceAll(" ", '')).replaceAll("-", '')).replaceAll("(", '')).replaceAll(")", ''));
         } else {
             $('.link-whatsapp').hide();
             $(".link-whatsapp").parent().attr({
                 "href": ''
             })
+            $(".shownumber").text('');
         }
     });
 
