@@ -27,9 +27,9 @@ $(function() {
         if (validateOnlyNumbers(text)) {
             $('.link-whatsapp').show();
             $(".link-whatsapp").parent().attr({
-                "href": (((text.replaceAll(" ", '')).replaceAll("-", '')).replaceAll("(", '')).replaceAll(")", '')
+                "href": "https://wa.me/" + (((text.replaceAll(" ", '')).replaceAll("-", '')).replaceAll("(", '')).replaceAll(")", '')
             });
-            $(".shownumber").text((((text.replaceAll(" ", '')).replaceAll("-", '')).replaceAll("(", '')).replaceAll(")", ''));
+            $(".shownumber").text("https://wa.me/" + (((text.replaceAll(" ", '')).replaceAll("-", '')).replaceAll("(", '')).replaceAll(")", ''));
         } else {
             $('.link-whatsapp').hide();
             $(".link-whatsapp").parent().attr({
