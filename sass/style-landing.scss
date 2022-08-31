@@ -19,7 +19,7 @@ body {
     }
     & {
         background-attachment: fixed;
-        background-image: url(https://grochao.github.io/images/bk3.jpg);
+        background-image: url(https://grochao.github.io/images/bk2.png);
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
@@ -380,14 +380,14 @@ body {
                             background-color: rgb(224, 171, 24);
                             &::before {
                                 color: #282930;
-                                font-size: 28px;
+                                font-size: 20px;
                             }
                         }
                         &.icon-video-camera.b {
                             background-color: #78c4e9;
                             &::before {
                                 color: #282930;
-                                font-size: 28px;
+                                font-size: 20px;
                             }
                         }
                     }
