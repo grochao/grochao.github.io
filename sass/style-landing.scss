@@ -1,4 +1,5 @@
 @import "resources/css3_mixins";
+@import "bootstrap/03.bootstrap.grid";
 @import "fonts";
 @import "variables";
 body {
@@ -23,9 +24,17 @@ body {
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
+        background-color: #011b1a;
         @include media-breakpoint-max($xs) {
             background-image: url(https://grochao.github.io/images/bk3.jpg);
         }
+    }
+    .all-content {
+        display: block;
+        width: 100%;
+        height: 100vh;
+        overflow: auto;
+        padding: 0 0 30px 0;
     }
     .opaque {
         display: none;
@@ -172,49 +181,22 @@ body {
             }
         }
     }
-    .center {
+    /*.center {
         width: 100%;
         max-width: 850px;
         margin: 0 auto;
         display: block;
-    }
+    }*/
     .container-box {
-        & {
-            width: 32%;
-            display: inline-block;
-            text-align: left;
-            padding: 0 10px;
-        }
-        @include media-breakpoint-max($sm) {
-            width: 100%;
-            //max-width: 320px;
-        }
-        @include media-breakpoint($md) {
-            width: 32%;
-            //max-width: 320px;
-        }
+        margin-left: -7px;
+        margin-right: -7px;
         .content-col {
-            & {
-                display: flex;
-                width: 100%;
-                max-width: 850px;
-                align-items: center;
-                vertical-align: middle;
-                margin: 0 auto;
-                flex-wrap: wrap;
-            }
+            & {}
             .box-link {
                 & {
-                    padding: 3px;
-                    width: 100%;
-                    @include media-breakpoint-max($md) {
-                        flex: 0 0 33.333333333%;
-                        max-width: 96px;
-                    }
-                    @include media-breakpoint-min($lg) {
-                        flex: 0 0 110px;
-                        max-width: 110px;
-                    }
+                    display: inline;
+                    //  width: 50%;
+                    padding: 5px;
                 }
                 .link {
                     & {
@@ -224,7 +206,7 @@ body {
                         width: 100%;
                         //background-color: rgba(26, 65, 18, 0.35);
                         background-color: rgba(255, 255, 255, 0.06);
-                        margin: 3px;
+                        // margin: 3px;
                         text-align: center;
                         @include transition();
                         cursor: pointer;
@@ -232,6 +214,9 @@ body {
                         &:focus {
                             //background-color: rgba(26, 65, 18, 0.7);
                             background-color: rgba(0, 0, 0, 0.144);
+                        }
+                        @include media-breakpoint-max($md) {
+                            height: 100px;
                         }
                         @include media-breakpoint-min($lg) {
                             height: 110px;
