@@ -1,4 +1,10 @@
-$(function() {
+(function($) {
+
+    $(window).load(function() {
+        $(".card").attr("style", "background-image: url(images/0" + getRandomInt(1, 13) + ".png)");
+        $(".all-content").removeClass('hide');
+
+    });
 
     function validateEmail(email) {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -21,9 +27,9 @@ $(function() {
     function replaceAll(str, find, replace) {
         return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
     }
-    const input = document.querySelector("input");
+    /*  const input = document.querySelector("input");
     const h1 = document.querySelector("h1");
-
+*/
 
 
     $('body').on('keyup touchend', '#input-text', function() {
@@ -67,18 +73,29 @@ $(function() {
     });
 
 
-    $('body').on('click', '#btn_calculate', function() {
-        var h_loza = $('#input_height').val();
-        var w_loza = $('#input_width').val();
-        cal_total(w_loza, h_loza);
+    $('body').on('click', '.click-cuentas', function() {
+
+        $('.container-card').addClass('show');
+        return false;
+    });
+
+    $('body').on('dblclick', ".container-card", function() {
+        if ($(this).hasClass("show")) {
+            $('.container-card').removeClass('show');
+        }
+        return false;
     });
 
 
 
-    $(window).on('load', function() {
 
 
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        number = Math.floor(Math.random() * (max - min + 1)) + min;
+        return (number < 10) ? '0' + number : number;
+    }
 
-    });
 
-});
+})(jQuery);
