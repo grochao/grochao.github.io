@@ -61,9 +61,9 @@
         .content-field {
             width: 100%;
             max-width: 500px;
-            margin: 15px auto;
+            margin: 15px auto 0 auto;
             display: block;
-            padding: 15px;
+            padding: 15px 20px 0 20px;
         }
         
         .content-field * {
@@ -73,7 +73,7 @@
         .content-field .form {
             display: block;
             width: 100%;
-            padding: 15px;
+            padding: 15px 25px;
             border: 1px solid rgb(199, 199, 199);
             box-shadow: 1px 1px 17px 0px rgba(0, 0, 0, 0.28);
             -webkit-box-shadow: 1px 1px 17px 0px rgba(0, 0, 0, 0.28);
@@ -102,7 +102,16 @@
         
         .ui-widget-header {
             background-image: none;
-            background-color: rgb(255, 200, 0);
+            background-color: rgb(42, 146, 10)!important;
+        }
+        
+        .ui-slider-horizontal .ui-slider-range {
+            background-color: rgb(42, 146, 10)!important;
+        }
+        
+        .ui-state-active {
+            background-color: #c85000!important;
+            border-color: #c85000!important;
         }
         
         #slider-vertical-nombre,
@@ -134,14 +143,13 @@
             box-sizing: border-box;
             color: #fff;
             cursor: pointer;
-            font-family: system-ui, -apple-system, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
             font-size: 20px;
             font-weight: 600;
             justify-content: center;
             line-height: 1.25;
-            margin: 30px auto 60px auto;
+            margin: 30px auto 30px auto;
             min-height: 3rem;
-            padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+            padding: 12px 25px;
             position: relative;
             text-decoration: none;
             transition: all 250ms;
@@ -167,6 +175,13 @@
             background-color: #c85000;
             box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
             transform: translateY(0);
+        }
+        
+        .contact {
+            font-size: 15px;
+            text-align: center;
+            display: block;
+            padding: 30px 15px 15px 15px;
         }
     </style>
 </head>
@@ -203,10 +218,11 @@
                 <input type="hidden" id="size-frase">
             </p>
             <div id="slider-vertical-frase"></div>
+            <button id="btnDescargar" class="button">DESCARGAR</button>
         </div>
-    </div>
 
-    <button id="btnDescargar" class="button">Descargar</button>
+        <span class="contact">Desarrollado por: <a href="mailto:g.rocha.o@live.com">Guillermo Rocha</a></span>
+    </div>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
