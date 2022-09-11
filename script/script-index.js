@@ -218,7 +218,7 @@ var tmp_imagen = 1;
         $('body').on('click', '#btnDescargar', function() {
             var enlace = document.createElement('a');
             // El título
-            enlace.download = "pefil.png";
+            enlace.download = "perfil.png";
 
             var _PICTURE_ = document.getElementById('myCanvas');
             // Convertir la imagen a Base64 y ponerlo en el enlace
