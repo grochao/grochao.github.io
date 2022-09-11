@@ -121,6 +121,12 @@ body {
     font-family: Inter, -apple-system, system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
+.loading {
+    * {
+        opacity: 0;
+    }
+}
+
 #contenainer-style-background {
     display: table;
     table-layout: fixed;
@@ -142,6 +148,7 @@ body {
         height: 60px;
         background-repeat: no-repeat;
         background-size: 50% auto;
+        font-family: Inter, -apple-system, system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
         cursor: pointer;
         &.ave {
             background-image: url(../images/tumb-ave.png);
