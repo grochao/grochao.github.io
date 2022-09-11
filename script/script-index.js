@@ -225,6 +225,7 @@ var tmp_imagen = 1;
             enlace.href = _PICTURE_.toDataURL();
             // Hacer click en él
             enlace.click();
+            gtag('event', 'click', { 'event_category': 'button', 'event_label': 'descargar' });
         });
 
         $("#slider-vertical-frase").slider({
