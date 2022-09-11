@@ -22,8 +22,8 @@ function AddCircle(context, centerX, centerY, radius) {
     context.save();
     context.moveTo(0, 0);
     context.beginPath();
-    context.lineWidth = 2;
-    context.strokeStyle = '#0067c6';
+    context.lineWidth = 3;
+    context.strokeStyle = '#EFB810';
     context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
 
     context.stroke();
@@ -55,7 +55,7 @@ function AddBackGround(context, Text, centerX, centerY) {
     context.beginPath();
     drawing = new Image()
     drawing.src = "https://grochao.github.io/images/bk.png"
-    context.drawImage(drawing, 0, 0, 600, 600);
+    context.drawImage(drawing, 0, 0, 500, 500);
     context.stroke();
     context.restore();
 }
