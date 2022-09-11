@@ -50,7 +50,7 @@ function AddName(context, Text, centerX, centerY, size) {
     var textString = Text;
 
 
-    context.fillText(textString, centerX, centerY - 20);
+    context.fillText(textString, centerX, centerY - 30);
 
 
     context.stroke();
