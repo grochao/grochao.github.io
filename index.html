@@ -12,12 +12,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!--
 
-    
-    -->
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=The+Nautigal:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oxygen:wght@700&display=swap" rel="stylesheet">
+
+
 
 
 
@@ -29,9 +28,12 @@
             overflow: hidden;
         }
         
-        .pixel p {
+        .pixel p.font1 {
             font-family: 'Great Vibes', cursive;
-            font-family: 'The Nautigal', cursive;
+        }
+        
+        .pixel p.font2 {
+            font-family: 'Oxygen', sans-serif;
         }
         
         #myCanvas {
@@ -48,11 +50,12 @@
 </head>
 
 <body>
-    azul= #0067c6
+
     <div class="pixel">
-        <p>&nbsp;</p>
+        <p class="font1">&nbsp;</p>
+        <p class="font2">&nbsp;</p>
     </div>
-    <canvas id="myCanvas" width="600" height="600" style="outline: red 1px solid;"></canvas>
+    <canvas id="myCanvas" width="600" height="600" style="outline: rgb(78, 78, 78) 1px solid;"></canvas>
 
 
     <button id="btnDescargar">Descargar</button>
