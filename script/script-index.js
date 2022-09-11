@@ -137,8 +137,8 @@ function CreateImagen() {
         $("#slider-vertical-frase").slider({
             orientation: "Horizontal",
             range: "min",
-            min: 0,
-            max: 100,
+            min: 10,
+            max: 200,
             value: 25,
             slide: function(event, ui) {
                 $("#size-frase").val(ui.value);
@@ -153,8 +153,8 @@ function CreateImagen() {
         $("#slider-vertical-nombre").slider({
             orientation: "Horizontal",
             range: "min",
-            min: 0,
-            max: 100,
+            min: 10,
+            max: 200,
             value: 60,
             slide: function(event, ui) {
                 $("#size-nombre").val(ui.value);
