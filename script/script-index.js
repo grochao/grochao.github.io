@@ -82,7 +82,6 @@ function AddBackGround(context, Text, centerX, centerY) {
     drawing = new Image()
     drawing.crossOrigin = "Anonymous";
     drawing.src = "https://grochao.github.io/images/bk-diagonal-flower.png"
-
     context.drawImage(drawing, 0, 0, 600, 600);
     context.stroke();
     context.restore();
@@ -123,21 +122,13 @@ function CreateImagen() {
 
 
 
-        $btnDescargar = document.querySelector("#btnDescargar");
-
-
-
-
-
-        $btnDescargar.addEventListener("click", () => {
-            // Crear un elemento <a>
+        $('body').on('click', '#btnDescargar', function() {
             var enlace = document.createElement('a');
             // El título
             enlace.download = "pefil.png";
 
             var _PICTURE_ = document.getElementById('myCanvas');
             // Convertir la imagen a Base64 y ponerlo en el enlace
-
             enlace.href = _PICTURE_.toDataURL();
             // Hacer click en él
             enlace.click();
