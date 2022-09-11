@@ -80,7 +80,9 @@ function AddBackGround(context, Text, centerX, centerY) {
     context.moveTo(0, 0);
     context.beginPath();
     drawing = new Image()
+    drawing.crossOrigin = "Anonymous";
     drawing.src = "https://grochao.github.io/images/bk-diagonal-flower.png"
+
     context.drawImage(drawing, 0, 0, 600, 600);
     context.stroke();
     context.restore();
