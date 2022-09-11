@@ -23,6 +23,15 @@ function drawTextAlongArc(context, str, centerX, centerY, radius, angle) {
 var context;
 var canvas;
 
+function reset_value() {
+    tmp_nombre = $('#name').val();
+    tmp_frase = $('#frase').val();
+    tmp_size_nombre = $('#size-nombre').val();
+    tmp_size_frase = $('#size-frase').val();
+    tmp_position_frase = $('#position-frase').val();
+    tmp_position_nombre = $('#position-nombre').val();
+}
+
 function AddCircle(context, centerX, centerY, radius) {
 
     context.save();
@@ -50,7 +59,7 @@ function AddName(context, Text, centerX, centerY, size) {
     var textString = Text;
 
 
-    context.fillText(textString, centerX, centerY - 80);
+    context.fillText(textString, centerX, centerY);
 
 
     context.stroke();
@@ -68,7 +77,7 @@ function AddLabel(context, Text, centerX, centerY, size) {
     context.textAlign = "center";
     context.textBaseline = 'middle';
     var textString = Text;
-    context.fillText(textString, centerX, centerY + 40);
+    context.fillText(textString, centerX, centerY);
     context.stroke();
     context.restore();
 }
@@ -81,7 +90,11 @@ function AddBackGround(context, Text, centerX, centerY) {
     context.beginPath();
     drawing = new Image()
     drawing.crossOrigin = "Anonymous";
-    drawing.src = "https://grochao.github.io/images/bk-diagonal-flower.png"
+    //drawing.src = "https://grochao.github.io/images/flor.png";
+    //  drawing.src = "images/flor.png";
+    drawing.src = tmp_imagen;
+
+
     context.drawImage(drawing, 0, 0, 600, 600);
     context.stroke();
     context.restore();
@@ -99,8 +112,13 @@ function CreateImagen() {
 
     var size_name = ($("#size-nombre").val());
     var size_label = ($("#size-frase").val());
-    var str_name = $("#name").val();
-    var str_label = $("#frase").val();
+    // var str_name = $("#name").val();
+    // var str_label = $("#frase").val();
+    var position_frase = $("#position-frase").val();
+    var position_nombre = $("#position-nombre").val();
+
+
+    //$("#position-frase").val(ui.value);
 
     AddBackGround(context, centerX, centerY, );
 
@@ -108,18 +126,79 @@ function CreateImagen() {
     var frase = $.trim($("#frase").val());
     nombre = nombre == '' ? "Tu Nombre" : nombre;
     frase = frase == '' ? "Tu Frase" : frase;
-    AddName(context, nombre, centerX, centerY, size_name);
-    AddLabel(context, "¡" + frase + "!", centerX, centerY, size_label);
+    AddName(context, nombre, centerX, position_nombre, size_name);
+    AddLabel(context, "¡" + frase + "!", centerX, position_frase, size_label);
     context.stroke();
     context.save();
     // drawTextAlongArc(context, "¡ES MAS NICA QUE EL PINOL!", centerX, centerY, radius, angle)
 
+
+
 }
+var tmp_nombre = '';
+var tmp_frase = '';
+var tmp_size_nombre = 0;
+var tmp_size_frase = 0;
+var tmp_position_frase = 0;
+var tmp_position_nombre = 0;
+var tmp_imagen = 'images/flor.png';
 (function($) {
 
     $(window).load(function() {
 
+        $('body').on('click', '#myCanvas', function() {
+            $("#instruction").addClass('show');
+        });
+        $('body').on('click', '#btnContinuar', function() {
+            $("#instruction").removeClass('show');
+            CreateImagen();
+        });
 
+        $('body').on('click', '#contenainer-style-background span.ave', function() {
+
+            tmp_imagen = 'images/ave.png';
+            CreateImagen();
+
+        });
+        $('body').on('click', '#contenainer-style-background span.flor', function() {
+
+            tmp_imagen = 'images/flor.png';
+            CreateImagen();
+
+        });
+        $('body').on('click', '#btnEditarNombre', function() {
+            $('.box .col, .calltoaction:not(.edit), #contenainer-position-nombre, #contenainer-position-frase').removeClass('show');
+            $('.box-edit-nombre, .calltoaction.edit, #contenainer-position-nombre').addClass('show');
+
+            reset_value();
+
+        });
+        $('body').on('click', '#btnEditarFrase', function() {
+            $('.box .col, .calltoaction:not(.edit), #contenainer-position-nombre, #contenainer-position-frase').removeClass('show');
+            $('.box-edit-frase, .calltoaction.edit, #contenainer-position-frase').addClass('show');
+            reset_value
+        });
+        $('body').on('click', '#btnAceptar', function() {
+            $('.box .col, .calltoaction, #contenainer-position-nombre, #contenainer-position-frase').removeClass('show');
+
+            $('.calltoaction:not(.edit)').addClass('show');
+            $('.calltoaction.edit').removeClass('show');
+
+        });
+        $('body').on('click', '#btnCalcelar', function() {
+            $('.box .col, .calltoaction, #contenainer-position-nombre, #contenainer-position-frase').removeClass('show');
+
+            $('.calltoaction:not(.edit)').addClass('show');
+            $('#name').val(tmp_nombre);
+            $('#frase').val(tmp_frase);
+            $('#size-nombre').val(tmp_size_nombre);
+            $('#size-frase').val(tmp_size_frase);
+            $('#position-frase').val(tmp_position_frase);
+            $('#position-nombre').val(tmp_position_nombre);
+            reset_value();
+            CreateImagen();
+
+        });
 
 
         $('body').on('click', '#btnDescargar', function() {
@@ -143,15 +222,13 @@ function CreateImagen() {
             slide: function(event, ui) {
                 $("#size-frase").val(ui.value);
                 CreateImagen();
-                var g = parseInt(ui.value <= 50 ? 255 : 255 - ((ui.value - 50) * (255 / 50)));
-                var r = parseInt(ui.value >= 50 ? 255 : 255 - ((50 - ui.value) * (255 / 50)));
-                $(".ui-widget-header").css("background-color", "rgb(255,165,0)");
+
             }
         });
         $("#size-frase").val($("#slider-vertical-frase").slider("value"));
 
         $("#slider-vertical-nombre").slider({
-            orientation: "Horizontal",
+            orientation: "horizontal",
             range: "min",
             min: 10,
             max: 200,
@@ -159,19 +236,67 @@ function CreateImagen() {
             slide: function(event, ui) {
                 $("#size-nombre").val(ui.value);
                 CreateImagen();
-                var g = parseInt(ui.value <= 50 ? 255 : 255 - ((ui.value - 50) * (255 / 50)));
-                var r = parseInt(ui.value >= 50 ? 255 : 255 - ((50 - ui.value) * (255 / 50)));
-                $(".ui-widget-header").css("background-color", "rgb(255,165,0)");
+
             }
         });
         $("#size-nombre").val($("#slider-vertical-nombre").slider("value"));
-        CreateImagen();
+
+        $("#slider-position-nombre").slider({
+            orientation: "vertical",
+            range: "min",
+            min: 0,
+            max: 500,
+            value: 300,
+            slide: function(event, ui) {
+                $("#position-nombre").val(600 - (ui.value));
+                CreateImagen();
+
+            }
+        });
+        $("#position-nombre").val($("#slider-position-nombre").slider("value"));
+
+
+        $("#slider-position-frase").slider({
+            orientation: "vertical",
+            range: "min",
+            min: 0,
+            max: 500,
+            value: 350,
+            slide: function(event, ui) {
+                $("#position-frase").val(600 - ui.value);
+                CreateImagen();
+            }
+        });
+        $("#position-frase").val($("#slider-position-frase").slider("value"));
+
+
+
         $('body').on('keyup touchend', '.create', function() {
             CreateImagen();
         });
+        ResetSize();
+        $(window).resize(function() {
+            ResetSize();
+        });
+        CreateImagen();
     });
 
+    function ResetSize() {
+        var _SCEERN_WIDTH_ = parseInt($(window).width());
 
+        _SCEERN_WIDTH_ = (($('.form').outerWidth() - 50) * 100) / 600;
+
+        if ((parseInt($(window).width())) <= 767) {
+            $('#myCanvas').css({
+                zoom: (_SCEERN_WIDTH_) + "%"
+            });
+        } else {
+            $('#myCanvas').css({
+                zoom: "100%"
+            });
+        }
+
+    }
 
 
 })(jQuery);

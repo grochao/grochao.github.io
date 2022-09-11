@@ -15,191 +15,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Oxygen:wght@700&display=swap" rel="stylesheet">
-
-
-
-
-
-    <style>
-        body {
-            padding: 0;
-            margin: 0;
-        }
-        
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            font-size: 10pt;
-        }
-        
-        .pixel {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            overflow: hidden;
-        }
-        
-        .pixel p.font1 {
-            font-family: 'Great Vibes', cursive;
-        }
-        
-        .pixel p.font2 {
-            font-family: 'Oxygen', sans-serif;
-        }
-        
-        #myCanvas {
-            margin: 15px auto;
-            display: block;
-        }
-        
-        .style-form {
-            padding: 30px 0 0 0;
-        }
-        
-        .content-field {
-            width: 100%;
-            max-width: 500px;
-            margin: 15px auto 0 auto;
-            display: block;
-            padding: 15px 20px 0 20px;
-        }
-        
-        .content-field * {
-            font-family: 'Oxygen', sans-serif;
-        }
-        
-        .content-field .form {
-            display: block;
-            width: 100%;
-            padding: 15px 25px;
-            border: 1px solid rgb(199, 199, 199);
-            box-shadow: 1px 1px 17px 0px rgba(0, 0, 0, 0.28);
-            -webkit-box-shadow: 1px 1px 17px 0px rgba(0, 0, 0, 0.28);
-            -moz-box-shadow: 1px 1px 17px 0px rgba(0, 0, 0, 0.28);
-        }
-        
-        .content-field label {
-            display: block;
-            width: 100%;
-            margin-bottom: 5px;
-font-size:18px;
-
-        }
-        
-        .content-field input[type="text"] {
-            display: block;
-            width: 100%;
-            margin-bottom: 0px;
-            padding: 15px;
-            font-size: 15px;
-        }
-        
-        .content-field input[type="text"],
-        .content-field input[type="text"]:focus,
-        .content-field input[type="text"]:hover {
-            outline: none;
-        }
-        
-        .ui-widget-header {
-            background-image: none;
-            background-color: rgb(42, 146, 10)!important;
-        }
-        
-        .ui-slider-horizontal .ui-slider-range {
-            background-color: rgb(42, 146, 10)!important;
-        }
-        
-        .ui-state-active {
-            background-color: #c85000!important;
-            border-color: #c85000!important;
-        }
-        
-        #slider-vertical-nombre,
-        #slider-vertical-frase {
-            width: 60%;
-        }
-        
-        .content-field p {
-            margin: 25px 0 0 0;
-padding:0;
-        }
-        .content-field p label{
-            margin: 7px 0x;
-padding:0;
-        }
-        @media all and (max-width:600px) {
-            #myCanvas {
-                zoom: 50%;
-            }
-            #slider-vertical-nombre,
-            #slider-vertical-frase {
-                width: 60%;
-            }
-        }
-h1{
-text-align:center;
-color:#0099DD;
-font-size:21px;
-margin: 5px 0;
-padding:0 15px;
-}
-        strong{
-color:#038C7F; margin:0 7px 0 0;
-font-size:18px;
-}
-        .button {
-            align-items: center;
-            background-clip: padding-box;
-            background-color: #fa6400;
-            border: 1px solid transparent;
-            border-radius: .25rem;
-            box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
-            box-sizing: border-box;
-            color: #fff;
-            cursor: pointer;
-            font-size: 20px;
-            font-weight: 600;
-            justify-content: center;
-            line-height: 1.25;
-            margin: 30px auto 30px auto;
-            min-height: 3rem;
-            padding: 12px 25px;
-            position: relative;
-            text-decoration: none;
-            transition: all 250ms;
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
-            vertical-align: baseline;
-            width: auto;
-            display: block;
-        }
-        
-        .button:hover,
-        .button:focus {
-            background-color: #fb8332;
-            box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
-        }
-        
-        .button:hover {
-            transform: translateY(-1px);
-        }
-        
-        .button:active {
-            background-color: #c85000;
-            box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
-            transform: translateY(0);
-        }
-        
-        .contact {
-            font-size: 15px;
-            text-align: center;
-            display: block;
-            padding: 30px 15px 15px 15px;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style-profile-picture.min.css">
 </head>
 
 <body>
@@ -207,34 +23,115 @@ font-size:18px;
     <div class="pixel">
         <p class="font1">&nbsp;</p>
         <p class="font2">&nbsp;</p>
+        <img src="images/flor.png" alt="">
+        <img src="images/ave.png" alt="">
+
     </div>
-    <canvas id="myCanvas" width="600" height="600" style="outline: rgb(78, 78, 78) 1px solid;"></canvas>
+    <div id="instruction" class="show">
+        <div class="center">
+            <div class="box-instruction">
+                <h1>INSTRUCCIONES</h1>
+                <ol>
+                    <li>Para cambiar "Tu Nombre" o la "Tu Frase" haga clic en los botones "Cambiar Nombre" o "Cambiar Frase" en la parte inferior de la imagen</li>
+                    <li>Para descargar la imagen a su dispositivo haga Clic en el botón naranja "DESCARGAR"</li>
+                </ol>
+                <div class="button-content">
+                    <button id="btnContinuar" class="btn blue">Continuar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-canvas">
+        <canvas id="myCanvas" width="600" height="600"></canvas>
+        <div id="contenainer-position-nombre">
+            <div id="slider-position-nombre"></div>
+            <input type="hidden" id="position-nombre">
+
+        </div>
+        <div id="contenainer-position-frase">
+            <div id="slider-position-frase"></div>
+            <input type="hidden" id="position-frase">
+
+        </div>
+        <div id="contenainer-style-background">
+
+            <span class="ave">
+                Fondo 1
+            </span>
+            <span class="flor">
+             Fondo 2
+            </span>
+        </div>
+    </div>
     <div class="content-field">
         <div class="form">
-<h1>INSTRUCCIONES</h1>
-            <div class="style-form">
-                <label for=""><strong>PASO #1:</strong> Escriba su nombre en el siguiente cuadro:</label>
-                <input type="text" id="name" class="create" placeholder="Escribí tu nombre aquí">
+
+            <div class="box">
+                <div class="col box-edit-nombre">
+                    <div class="style-form">
+                        <label for="">Escriba su nombre en el siguiente cuadro:</label>
+                        <input type="text" id="name" class="create" placeholder="Escribí tu nombre aquí">
+                        <p>
+                            <label for="size-nombre">Desliza la siguiente barra de izquierda a derecha para cambiar el tamaño del nombre:</label>
+                            <input type="hidden" id="size-nombre">
+                            <div id="slider-vertical-nombre"></div>
+                        </p>
+                    </div>
+                </div>
+                <div class="col box-edit-frase">
+                    <div class="style-form">
+                        <label for="">Escriba una frase de su elección en el siguiente cuadro</label>
+                        <input type="text" id="frase" class="create" placeholder="Escribí una frase aquí">
+                        <p>
+                            <label for="size-frase">Desliza la siguiente barra de izquierda a derecha para cambiar el tamaño de la frase:</label>
+                            <input type="hidden" id="size-frase">
+                            <div id="slider-vertical-frase"></div>
+                        </p>
+                    </div>
+                </div>
+
             </div>
-            <p>
-                <label for="size-nombre"><strong>PASO #2:</strong>Desliza la siguiente barra de izquierda a derecha para cambiar el tamaño del nombre:</label>
-                <input type="hidden" id="size-nombre">
+            <div class="calltoaction show">
 
+                <div class="two-col">
+                    <div class="col">
+                        <div class="button-content">
+                            <button id="btnEditarNombre" class="btn blue">Cambiar Nombre</button>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="button-content">
 
-            </p>
-            <div id="slider-vertical-nombre"></div>
+                            <button id="btnEditarFrase" class="btn blue">Cambiar Frase</button>
+                        </div>
 
-            <div class="style-form">
-                <label for=""><strong>PASO #3:</strong> Escriba una frase de su elección en el siguiente cuadro</label>
-                <input type="text" id="frase" class="create" placeholder="Escribí una frase aquí">
+                    </div>
+                </div>
+                <div class="button-content">
+                    <button id="btnDescargar" class="btn orange">DESCARGAR</button>
+                </div>
             </div>
 
-            <p>
-                <label for="size-frase"><strong>PASO #4:</strong> Desliza la siguiente barra de izquierda a derecha para cambiar el tamaño de la frase:</label>
-                <input type="hidden" id="size-frase">
-            </p>
-            <div id="slider-vertical-frase"></div>
-            <button id="btnDescargar" class="button">DESCARGAR</button>
+            <div class="calltoaction edit">
+                <div class="two-col">
+                    <div class="col">
+                        <div class="button-content">
+                            <button id="btnCalcelar" class="btn gray">Cancelar</button>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="button-content">
+
+                            <button id="btnAceptar" class="btn gray">Aceptar</button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
         </div>
 
         <span class="contact">Desarrollado por: <a href="mailto:g.rocha.o@live.com">Guillermo Rocha</a></span>
