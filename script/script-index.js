@@ -50,7 +50,7 @@ function AddName(context, Text, centerX, centerY, size) {
     var textString = Text;
 
 
-    context.fillText(textString, centerX, centerY - 10);
+    context.fillText(textString, centerX, centerY - 20);
 
 
     context.stroke();
@@ -68,7 +68,7 @@ function AddLabel(context, Text, centerX, centerY, size) {
     context.textAlign = "center";
     context.textBaseline = 'middle';
     var textString = Text;
-    context.fillText(textString, centerX, centerY + 50);
+    context.fillText(textString, centerX, centerY + 40);
     context.stroke();
     context.restore();
 }
