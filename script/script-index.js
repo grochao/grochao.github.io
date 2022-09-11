@@ -22,8 +22,8 @@ function AddCircle(context, centerX, centerY, radius) {
     context.save();
     context.moveTo(0, 0);
     context.beginPath();
-    context.lineWidth = 4;
-    context.strokeStyle = '#ffffff';
+    context.lineWidth = 2;
+    context.strokeStyle = '#0067c6';
     context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
 
     context.stroke();
@@ -35,7 +35,7 @@ function AddText(context, Text, centerX, centerY) {
     context.save();
     context.moveTo(0, 0);
     context.beginPath();
-    context.fillStyle = '#EFB810';
+    context.fillStyle = '#0067c6';
     context.font = '85pt The Nautigal';
     //drawTextAlongArc(context, 'Guillermo Rocha', centerX, centerY, radius, angle);
     context.textAlign = "center";
@@ -54,8 +54,8 @@ function AddBackGround(context, Text, centerX, centerY) {
     context.moveTo(0, 0);
     context.beginPath();
     drawing = new Image()
-    drawing.src = "https://cdn.pixabay.com/photo/2014/02/27/16/10/flowers-276014_960_720.jpg"
-    context.drawImage(drawing, 0, 0);
+    drawing.src = "https://grochao.github.io/images/bk.png"
+    context.drawImage(drawing, 0, 0, 600, 600);
     context.stroke();
     context.restore();
 }
@@ -91,8 +91,8 @@ function AddBackGround(context, Text, centerX, centerY) {
 
 
         AddCircle(context, centerX, centerY, radius);
-        AddText(context, "Guillermo Rocha", centerX, centerY);
-        AddCircle(context, centerX, centerY, 295);
+        AddText(context, "Guillermo", centerX, centerY);
+        //AddCircle(context, centerX, centerY, 295);
         $btnDescargar = document.querySelector("#btnDescargar");
 
 
