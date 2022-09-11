@@ -21,6 +21,7 @@ function drawTextAlongArc(context, str, centerX, centerY, radius, angle) {
     context.restore();
 }
 var context;
+var canvas;
 
 function AddCircle(context, centerX, centerY, radius) {
 
@@ -87,7 +88,7 @@ function AddBackGround(context, Text, centerX, centerY) {
 
 
 function CreateImagen() {
-    var canvas = document.getElementById('myCanvas');
+    canvas = document.getElementById('myCanvas');
     context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
     var centerX = canvas.width / 2;
@@ -108,8 +109,8 @@ function CreateImagen() {
     frase = frase == '' ? "Tu Frase" : frase;
     AddName(context, nombre, centerX, centerY, size_name);
     AddLabel(context, "¡" + frase + "!", centerX, centerY, size_label);
-
-
+    context.stroke();
+    context.save();
     // drawTextAlongArc(context, "¡ES MAS NICA QUE EL PINOL!", centerX, centerY, radius, angle)
 
 }
@@ -128,11 +129,14 @@ function CreateImagen() {
 
         $btnDescargar.addEventListener("click", () => {
             // Crear un elemento <a>
-            let enlace = document.createElement('a');
+            var enlace = document.createElement('a');
             // El título
             enlace.download = "pefil.png";
+
+            var _PICTURE_ = document.getElementById('myCanvas');
             // Convertir la imagen a Base64 y ponerlo en el enlace
-            enlace.href = canvas.toDataURL();
+
+            enlace.href = _PICTURE_.toDataURL();
             // Hacer click en él
             enlace.click();
         });
