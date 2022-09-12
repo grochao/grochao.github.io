@@ -229,7 +229,7 @@ var tmp_imagen = 1;
             console.log(_imagen_);
             enlace.click();
 
-            // gtag('event', 'click', { 'event_category': 'button', 'event_label': 'descargar' });
+            gtag('event', 'click', { 'event_category': 'button', 'event_label': 'descargar' });
         });
 
         $("#slider-vertical-frase").slider({
