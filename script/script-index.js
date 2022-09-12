@@ -222,7 +222,7 @@ var tmp_imagen = 1;
 
             var _PICTURE_ = document.getElementById('myCanvas');
             // Convertir la imagen a Base64 y ponerlo en el enlace
-            _imagen_ = _PICTURE_.toDataURL(image/png);
+            _imagen_ = _PICTURE_.toDataURL("image/png");
             _imagen_ = _imagen_.replace("image/png", "image/octet-stream");
             document.location.href = _imagen_;
 // Hacer click en él
