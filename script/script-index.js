@@ -222,9 +222,11 @@ var tmp_imagen = 1;
 
             var _PICTURE_ = document.getElementById('myCanvas');
             // Convertir la imagen a Base64 y ponerlo en el enlace
-            enlace.href = _PICTURE_.toDataURL();
-            // Hacer click en él
-            enlace.click();
+            _imagen_ = _PICTURE_.toDataURL(image/png);
+            _imagen_ = _imagen_.replace("image/png", "image/octet-stream");
+            document.location.href = _imagen_;
+// Hacer click en él
+            //enlace.click();
             gtag('event', 'click', { 'event_category': 'button', 'event_label': 'descargar' });
         });
 
