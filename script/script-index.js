@@ -224,6 +224,7 @@ var tmp_imagen = 1;
             // Convertir la imagen a Base64 y ponerlo en el enlace
             _imagen_ = _PICTURE_.toDataURL("image/png");
             _imagen_ = _imagen_.replace("image/png", "image/octet-stream");
+_imagen_ = _imagen_.replace(/^data:application\/octet-stream/, 'data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=perfil.png');
             document.location.href = _imagen_;
 // Hacer click en él
             //enlace.click();
