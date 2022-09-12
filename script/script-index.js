@@ -216,19 +216,20 @@ var tmp_imagen = 1;
 
 
         $('body').on('click', '#btnDescargar', function() {
+
+            var _PICTURE_ = document.getElementById('myCanvas');
+            _imagen_ = _PICTURE_.toDataURL("image/png");
+            _imagen_ = _imagen_.replace(/^data:image\/[^;]*/, 'data:application/octet-stream');
+            _imagen_ = _imagen_.replace(/^data:application\/octet-stream/, 'data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=perfil.png');
+
             var enlace = document.createElement('a');
             // El título
             enlace.download = "perfil.png";
+            enlace.href = _imagen_;
+            console.log(_imagen_);
+            enlace.click();
 
-            var _PICTURE_ = document.getElementById('myCanvas');
-            // Convertir la imagen a Base64 y ponerlo en el enlace
-            _imagen_ = _PICTURE_.toDataURL("image/png");
-            _imagen_ = _imagen_.replace("image/png", "image/octet-stream");
-_imagen_ = _imagen_.replace(/^data:application\/octet-stream/, 'data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=perfil.png');
-            document.location.href = _imagen_;
-// Hacer click en él
-            //enlace.click();
-            gtag('event', 'click', { 'event_category': 'button', 'event_label': 'descargar' });
+            // gtag('event', 'click', { 'event_category': 'button', 'event_label': 'descargar' });
         });
 
         $("#slider-vertical-frase").slider({
@@ -250,7 +251,7 @@ _imagen_ = _imagen_.replace(/^data:application\/octet-stream/, 'data:application
             range: "min",
             min: 10,
             max: 200,
-            value: 60,
+            value: 80,
             slide: function(event, ui) {
                 $("#size-nombre").val(ui.value);
                 CreateImagen();
