@@ -402,6 +402,15 @@ body {
                                 position: relative;
                             }
                         }
+                        &.icon-google-translate {
+                            background: #fff;
+                            display: block;
+                            span::before {
+                                font-size: 27px;
+                                position: relative;
+                                top: 8px;
+                            }
+                        }
                     }
                     .title {
                         line-height: 0.9em!important;

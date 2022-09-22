@@ -92,80 +92,87 @@
     content: "\e90b";
 }
 
-.icon-google-translate:before {
+.icon-google-translate .path1:before {
     content: "\e90c";
+    color: rgb(101, 126, 141);
+}
+
+.icon-google-translate .path2:before {
+    content: "\e90d";
+    margin-left: -1em;
+    color: rgb(66, 133, 244);
 }
 
 .icon-instagram:before {
-    content: "\e90d";
-}
-
-.icon-justwatch:before {
     content: "\e90e";
 }
 
-.icon-lafise:before {
+.icon-justwatch:before {
     content: "\e90f";
 }
 
-.icon-link:before {
+.icon-lafise:before {
     content: "\e910";
 }
 
-.icon-office365:before {
+.icon-link:before {
     content: "\e911";
 }
 
-.icon-outlook:before {
+.icon-office365:before {
     content: "\e912";
 }
 
-.icon-pinterest:before {
+.icon-outlook:before {
     content: "\e913";
 }
 
-.icon-telegram:before {
+.icon-pinterest:before {
     content: "\e914";
 }
 
-.icon-tiktok:before {
+.icon-telegram:before {
     content: "\e915";
 }
 
-.icon-twitter:before {
+.icon-tiktok:before {
     content: "\e916";
 }
 
-.icon-unicomer:before {
+.icon-twitter:before {
     content: "\e917";
 }
 
-.icon-ventusky:before {
+.icon-unicomer:before {
     content: "\e918";
 }
 
-.icon-video-camera:before {
+.icon-ventusky:before {
     content: "\e919";
 }
 
-.icon-whatsapp:before {
+.icon-video-camera:before {
     content: "\e91a";
 }
 
-.icon-windy:before {
+.icon-whatsapp:before {
     content: "\e91b";
 }
 
-.icon-world-1:before {
+.icon-windy:before {
     content: "\e91c";
 }
 
-.icon-world-2:before {
+.icon-world-1:before {
     content: "\e91d";
 }
 
-.icon-youtube:before {
+.icon-world-2:before {
     content: "\e91e";
+}
+
+.icon-youtube:before {
+    content: "\e91f";
 }
 
 @font-face {
