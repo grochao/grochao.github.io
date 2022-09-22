@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="google" content="notranslate" />
 
-    <title>Yo amo a Nicaragua</title>
+    <title>¡Felices Fiestas!</title>
     <meta http-equiv="X-UA-Compatible" content="IE=9,IE=8,IE=7,IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,14 +19,13 @@
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZCQ3QV2SZ"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
+        /*window.dataLayer = window.dataLayer || [];
 
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-
-        gtag('config', 'G-0ZCQ3QV2SZ');
+                             function gtag() {
+                            dataLayer.push(arguments);
+                                    }
+                                 gtag('js', new Date());
+                         gtag('config', 'G-0ZCQ3QV2SZ');*/
     </script>
 </head>
 
@@ -39,69 +38,101 @@
 
     </div>
 
-    <div id="instruction" class="show">
+    <div id="instruction" class="-show">
         <div class="center">
             <div class="box-instruction">
-                <h1>INSTRUCCIONES</h1>
-                <ol>
-                    <li>Para cambiar "Tu Nombre" o "Tu Frase" hacé Clic en los botones "Cambiar Nombre" o "Cambiar Frase" en la parte inferior de la imagen.</li>
-                    <li>Para para mover de arriba a abajo "Tu Nombre" o "Tu Frase" puedes rarrastras la barra verde que aparece a la derecha de la imagen después de hacer Clic en "Cambiar Nombre" o "Cambiar Frase".</li>
-                    <li>Para descargar la imagen a su dispositivo haga Clic en el botón de color naranja que dice "DESCARGAR".</li>
+                <div id="carrousel-help">
+                    <div class="item">
+                        <img src="images/help/help-01.png" alt="">
+                        <h2>Personaliza tu nombre en la imagen</h2>
+                        <p>Precione en botón en la parte inferior que dice "Cambiar Nombre" y escribe tu nombre o palabra preferida</p>
+                    </div>
+                    <!--<div class="item">
+                        <img src="images/help/help-01-1.png" alt="">
+                        <h2>Personaliza tu nombre en la imagen</h2>
+                        <p>Precione en botón en la parte inferior que dice "Cambiar Nombre" y escribe tu nombre o palabra preferida</p>
+                    </div>-->
+                    <div class="item">
+                        <img src="images/help/help-02.png" alt="">
+                        <h2>Personaliza tu frase en la imagen</h2>
+                        <p>Precione en botón en la parte inferior que dice "Cambiar Frase" y escribe tu frace preferida</p>
+                    </div>
+                    <div class="item">
+                        <img src="images/help/help-03.png" alt="">
+                        <h2>Descargar Imagen <br><sup>(Opción 1)</sup></h2>
+                        <p>Presione el botón "Descargar" en la parte inferior</p>
+                    </div>
 
-                </ol>
+                    <div class="item">
+                        <img src="images/help/help-04.png" alt="">
+                        <h2>Descargar Imagen <br><sup>(Opción 1)</sup></h2>
+                        <p>Presione el botón "Descargar" en la parte inferior</p>
+                    </div>
+
+                </div>
                 <div class="button-content">
-                    <button id="btnContinuar" class="btn blue">Continuar</button>
+                    <button id="btnContinuar" class="btn blue">Siguiente</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="content-canvas">
-        <canvas id="myCanvas" width="600" height="600"></canvas>
-        <div id="contenainer-position-nombre">
-            <div id="slider-position-nombre"></div>
-            <input type="hidden" id="position-nombre">
-
+    https://longviewcoder.com/2020/12/15/the-konva-transformer-a-shape-with-a-very-particular-set-of-skills/
+    <div class="content-image-canva show-download">
+        <div id="content-canvas">
+            <!--canvas id="myCanvas" width="600" height="600"></canvas>
+            <div id="contenainer-position-nombre">
+                <div id="slider-position-nombre"></div>
+                <input type="hidden" id="position-nombre">
+    
+            </div>
+            <div id="contenainer-position-frase">
+                <div id="slider-position-frase"></div>
+                <input type="hidden" id="position-frase">
+    
+            </div>
+            <div id="contenainer-style-background">
+    
+                <span class="ave">
+                    Fondo 1
+                </span>
+                <span class="flor">
+                 Fondo 2
+                </span>
+            </div-->
         </div>
-        <div id="contenainer-position-frase">
-            <div id="slider-position-frase"></div>
-            <input type="hidden" id="position-frase">
-
-        </div>
-        <div id="contenainer-style-background">
-
-            <span class="ave">
-                Fondo 1
-            </span>
-            <span class="flor">
-             Fondo 2
-            </span>
+        <div id="render-image">
+            <img src="" id="this">
         </div>
     </div>
+
+
+
     <div class="content-field">
         <div class="form">
 
             <div class="box">
-                <div class="col box-edit-nombre">
+                <div class="col box-edit">
                     <div class="style-form">
                         <label for="">Escriba su nombre en el siguiente cuadro:</label>
-                        <input type="text" id="name" class="create" placeholder="Escribí tu nombre aquí">
-                        <p>
+                        <input type="text" id="nombre" class="editText" placeholder="Escribí tu nombre aquí">
+
+                        <!--<p>
                             <label for="size-nombre">Desliza la siguiente barra de izquierda a derecha para cambiar el tamaño del nombre:</label>
-                            <input type="hidden" id="size-nombre">
                             <div id="slider-vertical-nombre"></div>
-                        </p>
+                        </p>-->
                     </div>
-                </div>
-                <div class="col box-edit-frase">
                     <div class="style-form">
                         <label for="">Escriba una frase de su elección en el siguiente cuadro</label>
-                        <input type="text" id="frase" class="create" placeholder="Escribí una frase aquí">
-                        <p>
+                        <textarea type="text" id="frase" class="editText" placeholder="Escribí una frase aquí"></textarea>
+                        <!-- <p>
                             <label for="size-frase">Desliza la siguiente barra de izquierda a derecha para cambiar el tamaño de la frase:</label>
-                            <input type="hidden" id="size-frase">
                             <div id="slider-vertical-frase"></div>
-                        </p>
+                        </p>-->
                     </div>
+
+                </div>
+                <div class="col box-edit-frase">
+
                 </div>
 
             </div>
@@ -110,36 +141,23 @@
                 <div class="two-col">
                     <div class="col">
                         <div class="button-content">
-                            <button id="btnEditarNombre" class="btn blue">Cambiar Nombre</button>
+                            <button id="btnEditar" class="btn blue">EDITAR</button>
                         </div>
                     </div>
                     <div class="col">
                         <div class="button-content">
+                            <button id="btnDescargar" class="btn orange">DESCARGAR</button>
 
-                            <button id="btnEditarFrase" class="btn blue">Cambiar Frase</button>
                         </div>
 
                     </div>
                 </div>
-                <div class="button-content">
-                    <button id="btnDescargar" class="btn orange">DESCARGAR</button>
-                </div>
+
             </div>
 
-            <div class="calltoaction edit">
-                <div class="two-col">
-                    <div class="col">
-                        <div class="button-content">
-                            <button id="btnCalcelar" class="btn gray">Cancelar</button>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="button-content">
-
-                            <button id="btnAceptar" class="btn gray">Aceptar</button>
-                        </div>
-
-                    </div>
+            <div class="calltoaction edit ">
+                <div class="button-content">
+                    <button id="btnAceptar" class="btn blue">ACEPTAR</button>
                 </div>
 
             </div>
@@ -148,13 +166,15 @@
 
         </div>
 
-        <span class="contact">Desarrollado por: <a href="mailto:g.rocha.o@live.com">Guillermo Rocha</a></span>
     </div>
+    <span class="contact">Desarrollado por: <a href="mailto:g.rocha.o@live.com">Guillermo Rocha</a></span>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script src="script/jquery.ui.touch-punch.min.js"></script>
 
+    <script src="script/slick.min.js"></script>
+    <script src="script/konva.js"></script>
 
     <script src="script/script-index.js"></script>
 </body>
