@@ -20,13 +20,13 @@ body {
     }
     & {
         background-attachment: fixed;
-        background-image: url(https://grochao.github.io/images/bk2.jpg);
+        background-image: url(https://grochao.github.io/launch/images/bk2.jpg);
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
         background-color: #011b1a;
         @include media-breakpoint-max($xs) {
-            background-image: url(https://grochao.github.io/images/bk3.jpg);
+            background-image: url(https://grochao.github.io/launch/images/bk3.jpg);
         }
     }
     .all-content {
