@@ -79,6 +79,7 @@
         return false;
     });
 
+    
     $('body').on('click', '.click-recarga-tigo', function() {
 
         $('#recargas').addClass('show');
