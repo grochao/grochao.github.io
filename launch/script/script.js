@@ -75,10 +75,18 @@
 
     $('body').on('click', '.click-cuentas', function() {
 
-        $('.container-card').addClass('show');
+        $('#credit-card').addClass('show');
         return false;
     });
 
+    $('body').on('click', '.click-recarga-tigo', function() {
+
+        $('#recargas').addClass('show');
+        return false;
+    });
+
+
+    
     $('body').on('dblclick', ".container-card", function() {
         if ($(this).hasClass("show")) {
             $('.container-card').removeClass('show');
