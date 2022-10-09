@@ -1,7 +1,7 @@
 (function($) {
 
     $(window).load(function() {
-        $(".card").attr("style", "background-image: url(images/0" + getRandomInt(1, 13) + ".png)");
+        $(".card.credit-card").attr("style", "background-image: url(images/0" + getRandomInt(1, 13) + ".png)");
         $(".all-content").removeClass('hide');
 
     });
@@ -72,6 +72,30 @@
 
     });
 
+    $('body').on('keyup touchend', '#txt_number', function() {
+        var number = $.trim($(this).val());
+        var prefix='';
+        if (number !== "" && number.length==8 ) {
+           
+            $("#list-tigo a").each(function(i){
+                prefix = $(this).data('prefix');
+                codigo = 'tel:' + encodeURIComponent(prefix+number+"*1234*#");
+                $(this).attr({
+                    "href": codigo
+                });
+            });
+            
+
+            
+        }else{
+            $("#list-tigo a").attr({
+                "href": "#"
+            }); 
+        }
+
+
+    });
+
 
     $('body').on('click', '.click-cuentas', function() {
 
@@ -79,7 +103,7 @@
         return false;
     });
 
-    
+
     $('body').on('click', '.click-recarga-tigo', function() {
 
         $('#recargas').addClass('show');

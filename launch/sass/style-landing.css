@@ -2125,7 +2125,7 @@ body .container-card .center .card.credit-card span.name {
 }
 
 body .container-card .center .card.recargas {
-  background-image: url(images/008.png);
+  background-color: #00377b;
 }
 
 body .container-card .center .card.recargas [type="text"] {
@@ -2141,4 +2141,74 @@ body .container-card .center .card.recargas [type="text"] {
 body .container-card .center .card.recargas [type="text"], body .container-card .center .card.recargas [type="text"]:focus, body .container-card .center .card.recargas [type="text"]:hover {
   outline: none;
   appearance: none;
+}
+
+body .container-card .center .card.recargas .list {
+  height: 369px;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.271);
+}
+
+body .container-card .center .card.recargas .list #list-tigo {
+  list-style: none;
+  padding: 7px;
+  margin: 0;
+}
+
+body .container-card .center .card.recargas .list #list-tigo li {
+  padding: 0;
+  margin: 0;
+}
+
+body .container-card .center .card.recargas .list #list-tigo li a {
+  display: block;
+  width: 100%;
+  padding: 12px 7px;
+  border-bottom: rgba(255, 255, 255, 0.501) solid 1px;
+  font-size: 20px;
+  position: relative;
+}
+
+body .container-card .center .card.recargas .list #list-tigo li a, body .container-card .center .card.recargas .list #list-tigo li a:hover, body .container-card .center .card.recargas .list #list-tigo li a:visited, body .container-card .center .card.recargas .list #list-tigo li a:active, body .container-card .center .card.recargas .list #list-tigo li a:focus {
+  text-decoration: none;
+}
+
+body .container-card .center .card.recargas .list #list-tigo li a span {
+  font-size: 0.7em;
+  display: block;
+  width: 100%;
+  padding: 7px 16px;
+}
+
+body .container-card .center .card.recargas .list #list-tigo li a span div {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  /* outline: red 1px solid; */
+  text-align: center;
+  border-radius: 5px;
+}
+
+body .container-card .center .card.recargas .list #list-tigo li a span div.icon-whatsapp {
+  background: #25D366;
+}
+
+body .container-card .center .card.recargas .list #list-tigo li a i {
+  display: block;
+  text-transform: uppercase;
+  font-style: normal;
+  background-color: #e58305;
+  padding: 9px 7px 7px 7px;
+  border-radius: 500px;
+  width: 95px;
+  position: absolute;
+  top: 6px;
+  right: 0;
+  line-height: 1em;
+  font-size: 13px;
+  text-align: center;
+}
+
+body .container-card .center .card.recargas .list #list-tigo li:last-child a {
+  border-bottom: none;
 }
