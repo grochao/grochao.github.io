@@ -530,29 +530,7 @@ body {
             height: 1px;
 
             .card {
-                & {
-                    display: block;
-                    width: 500px;
-                    height: 313px;
-                    position: relative;
-                    top: -156px;
-                    left: -250px;
-                    background-color: #ffffff;
-                    background-position: center;
-                    background-repeat: no-repeat;
-                    background-size: cover;
-                    padding: 20px;
 
-                    @include media-breakpoint-max($sm) {
-                        height: 463px;
-                        width: 290px;
-                        left: -145px;
-                        top: -231px;
-                        padding: 20px;
-                    }
-
-                    @include css3-prefix(border-radius, 20px);
-                }
 
                 * {
                     //font-family: 'Wellfleet', cursive;
@@ -563,8 +541,32 @@ body {
                 }
 
                 &.credit-card {
-                    @include media-breakpoint-max($sm) {
-                        padding: 70px 20px 20px 20px;
+                    & {
+                        display: block;
+                        width: 500px;
+                        height: 313px;
+                        position: fixed!important;
+                        top: -156px;
+                        left: -250px;
+                        background-color: #ffffff;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: cover;
+                        padding: 20px;
+
+                        @include media-breakpoint-max($sm) {
+                            padding: 70px 20px 20px 20px;
+                        }
+
+                        @include media-breakpoint-max($sm) {
+                            height: 463px;
+                            width: 290px;
+                            left: -145px;
+                            top: -231px;
+                            padding: 20px;
+                        }
+
+                        @include css3-prefix(border-radius, 20px);
                     }
 
                     .icon-chip {
@@ -641,107 +643,121 @@ body {
                     }
                 }
 
-                &.recargas {
-                    background-color: #00377b;
+               
+            }
+        }
+        .recargas {
+            background-color: #00377b;
+            display: block;
+            position: relative;
+            padding: 20px;
 
-                    [type="text"] {
-                        display: block;
-                        border: #ddd solid 1px;
-                        background-color: #ececec;
-                        width: 100%;
-                        padding: 11px 15px 7px 15px;
-                        font-size: 30px;
-                        color: #000 !important;
+            [type="text"] {
+                display: block;
+                border: #ddd solid 1px;
+                background-color: #ececec;
+                width: 100%;
+                padding: 11px 15px 7px 15px;
+                font-size: 30px;
+                color: #000 !important;
 
-                        &,
-                        &:focus,
-                        &:hover {
-                            outline: none;
-                            appearance: none;
-                        }
-                    }
+                &,
+                &:focus,
+                &:hover {
+                    outline: none;
+                    appearance: none;
+                }
+            }
 
-                    .list {
-                        & {
-                            height: 369px;
-                            overflow: auto;
-                            background-color: rgba(0, 0, 0, 0.271);
-                        }
+            .list {
+                & {
+                    height: 369px;
+                    overflow: auto;
+                    background-color: rgba(0, 0, 0, 0.271);
+                }
 
-                        #list-tigo {
-                            list-style: none;
-                            padding: 7px;
-                            margin: 0;
+                #list-tigo {
+                    list-style: none;
+                    padding: 7px;
+                    margin: 0;
 
 
-                            li {
-                                padding: 0;
-                                margin: 0;
+                    li {
+                        padding: 0;
+                        margin: 0;
 
-                                a {
-                                    display: block;
-                                    width: 100%;
-                                    padding: 12px 7px;
-                                    border-bottom: rgba(255, 255, 255, 0.501) solid 1px;
-                                    font-size: 20px;
-                                    position: relative;
+                        a {
+                            color: #fff;
+                            display: block;
+                            width: 100%;
+                            padding: 12px 7px;
+                            border-bottom: rgba(255, 255, 255, 0.501) solid 1px;
+                            font-size: 20px;
+                            position: relative;
 
-                                    &,
-                                    &:hover,
-                                    &:visited,
-                                    &:active,
-                                    &:focus {
-                                        text-decoration: none;
-                                    }
+                            &,
+                            &:hover,
+                            &:visited,
+                            &:active,
+                            &:focus {
+                                text-decoration: none;
+                            }
 
-                                    span {
-                                        font-size: 0.7em;
-                                        display: block;
-                                        width: 100%;
-                                        padding: 7px 16px;
+                            span {
+                                font-size: 0.7em;
+                                display: block;
+                                width: 100%;
+                                padding: 7px 16px;
 
-                                        div {
-                                            display: inline-block;
-                                            width: 25px;
-                                            height: 25px;
-                                            /* outline: red 1px solid; */
-                                            text-align: center;
-                                            border-radius: 5px;
-                                            &.icon-whatsapp{background: #25D366;}
-                                           
+                                div {
+                                    display: inline-block;
+                                    width: 25px;
+                                    height: 25px;
+                                    /* outline: red 1px solid; */
+                                    text-align: center;
+                                    border-radius: 5px;
+
+                                    &.icon-whatsapp {
+                                        background: #25D366;
+                                        &::before{
+                                            content: "\e917";
+                                            font-size: 17px;
+                                            position: relative;
+                                            top: 3px;
                                         }
                                     }
 
-                                    i {
-
-                                        display: block;
-                                        text-transform: uppercase;
-                                        font-style: normal;
-                                        background-color: #e58305;
-                                        padding: 9px 7px 7px 7px;
-                                        border-radius: 500px;
-                                        width: 95px;
-                                        position: absolute;
-                                        top: 6px;
-                                        right: 0;
-                                        line-height: 1em;
-                                        font-size: 13px;
-                                        text-align: center;
-                                    }
-                                }
-
-                                &:last-child {
-                                    a {
-                                        border-bottom: none;
-                                    }
                                 }
                             }
 
+                            i {
+
+                                display: block;
+                                text-transform: uppercase;
+                                font-style: normal;
+                                background-color: #e58305;
+                                padding: 9px 7px 7px 7px;
+                                border-radius: 500px;
+                                width: 95px;
+                                position: absolute;
+                                top: 6px;
+                                right: 0;
+                                line-height: 1em;
+                                font-size: 13px;
+                                text-align: center;
+                            }
+                        }
+
+                        &:last-child {
+                            a {
+                                border-bottom: none;
+                            }
                         }
                     }
 
                 }
             }
+
         }
     }
 }

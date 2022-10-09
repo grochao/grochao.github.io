@@ -2006,11 +2006,18 @@ body .container-card .center {
   height: 1px;
 }
 
-body .container-card .center .card {
+body .container-card .center .card * {
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1.2em;
+  font-size: 18px;
+}
+
+body .container-card .center .card.credit-card {
   display: block;
   width: 500px;
   height: 313px;
-  position: relative;
+  position: fixed !important;
   top: -156px;
   left: -250px;
   background-color: #ffffff;
@@ -2027,25 +2034,18 @@ body .container-card .center .card {
 }
 
 @media (max-width: 767px) {
-  body .container-card .center .card {
+  body .container-card .center .card.credit-card {
+    padding: 70px 20px 20px 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  body .container-card .center .card.credit-card {
     height: 463px;
     width: 290px;
     left: -145px;
     top: -231px;
     padding: 20px;
-  }
-}
-
-body .container-card .center .card * {
-  text-transform: uppercase;
-  color: #fff;
-  line-height: 1.2em;
-  font-size: 18px;
-}
-
-@media (max-width: 767px) {
-  body .container-card .center .card.credit-card {
-    padding: 70px 20px 20px 20px;
   }
 }
 
@@ -2124,11 +2124,14 @@ body .container-card .center .card.credit-card span.name {
   text-shadow: -1px -1px 1px white, 1px 1px 1px rgba(92, 92, 92, 0.9), 2px -2px 4px rgba(255, 255, 255, 0.308), -2px -2px 2px rgba(0, 0, 0, 0.9), -2px 2px 1px rgba(0, 0, 0, 0.4);
 }
 
-body .container-card .center .card.recargas {
+body .container-card .recargas {
   background-color: #00377b;
+  display: block;
+  position: relative;
+  padding: 20px;
 }
 
-body .container-card .center .card.recargas [type="text"] {
+body .container-card .recargas [type="text"] {
   display: block;
   border: #ddd solid 1px;
   background-color: #ececec;
@@ -2138,29 +2141,30 @@ body .container-card .center .card.recargas [type="text"] {
   color: #000 !important;
 }
 
-body .container-card .center .card.recargas [type="text"], body .container-card .center .card.recargas [type="text"]:focus, body .container-card .center .card.recargas [type="text"]:hover {
+body .container-card .recargas [type="text"], body .container-card .recargas [type="text"]:focus, body .container-card .recargas [type="text"]:hover {
   outline: none;
   appearance: none;
 }
 
-body .container-card .center .card.recargas .list {
+body .container-card .recargas .list {
   height: 369px;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.271);
 }
 
-body .container-card .center .card.recargas .list #list-tigo {
+body .container-card .recargas .list #list-tigo {
   list-style: none;
   padding: 7px;
   margin: 0;
 }
 
-body .container-card .center .card.recargas .list #list-tigo li {
+body .container-card .recargas .list #list-tigo li {
   padding: 0;
   margin: 0;
 }
 
-body .container-card .center .card.recargas .list #list-tigo li a {
+body .container-card .recargas .list #list-tigo li a {
+  color: #fff;
   display: block;
   width: 100%;
   padding: 12px 7px;
@@ -2169,18 +2173,18 @@ body .container-card .center .card.recargas .list #list-tigo li a {
   position: relative;
 }
 
-body .container-card .center .card.recargas .list #list-tigo li a, body .container-card .center .card.recargas .list #list-tigo li a:hover, body .container-card .center .card.recargas .list #list-tigo li a:visited, body .container-card .center .card.recargas .list #list-tigo li a:active, body .container-card .center .card.recargas .list #list-tigo li a:focus {
+body .container-card .recargas .list #list-tigo li a, body .container-card .recargas .list #list-tigo li a:hover, body .container-card .recargas .list #list-tigo li a:visited, body .container-card .recargas .list #list-tigo li a:active, body .container-card .recargas .list #list-tigo li a:focus {
   text-decoration: none;
 }
 
-body .container-card .center .card.recargas .list #list-tigo li a span {
+body .container-card .recargas .list #list-tigo li a span {
   font-size: 0.7em;
   display: block;
   width: 100%;
   padding: 7px 16px;
 }
 
-body .container-card .center .card.recargas .list #list-tigo li a span div {
+body .container-card .recargas .list #list-tigo li a span div {
   display: inline-block;
   width: 25px;
   height: 25px;
@@ -2189,11 +2193,18 @@ body .container-card .center .card.recargas .list #list-tigo li a span div {
   border-radius: 5px;
 }
 
-body .container-card .center .card.recargas .list #list-tigo li a span div.icon-whatsapp {
+body .container-card .recargas .list #list-tigo li a span div.icon-whatsapp {
   background: #25D366;
 }
 
-body .container-card .center .card.recargas .list #list-tigo li a i {
+body .container-card .recargas .list #list-tigo li a span div.icon-whatsapp::before {
+  content: "\e917";
+  font-size: 17px;
+  position: relative;
+  top: 3px;
+}
+
+body .container-card .recargas .list #list-tigo li a i {
   display: block;
   text-transform: uppercase;
   font-style: normal;
@@ -2209,6 +2220,6 @@ body .container-card .center .card.recargas .list #list-tigo li a i {
   text-align: center;
 }
 
-body .container-card .center .card.recargas .list #list-tigo li:last-child a {
+body .container-card .recargas .list #list-tigo li:last-child a {
   border-bottom: none;
 }

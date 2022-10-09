@@ -1,6 +1,6 @@
-(function($) {
+(function ($) {
 
-    $(window).load(function() {
+    $(window).load(function () {
         $(".card.credit-card").attr("style", "background-image: url(images/0" + getRandomInt(1, 13) + ".png)");
         $(".all-content").removeClass('hide');
 
@@ -32,7 +32,7 @@
 */
 
 
-    $('body').on('keyup touchend', '#input-text', function() {
+    $('body').on('keyup touchend', '#input-text', function () {
         var text = $(this).val();
         var number = '';
         // console.log(text);
@@ -55,7 +55,7 @@
         }
     });
 
-    $('body').on('keyup touchend', '.text-msg', function() {
+    $('body').on('keyup touchend', '.text-msg', function () {
         if ($(this).val() !== "") {
             var text = $.trim($(this).val());
             var text = '?text=' + encodeURIComponent((((((text.replaceAll(" ", '')).replaceAll("-", '')).replaceAll("(", '')).replaceAll(")", '')).replaceAll('+', '')).replaceAll('.', ''));
@@ -72,47 +72,63 @@
 
     });
 
-    $('body').on('keyup touchend', '#txt_number', function() {
+    $('body').on('keyup touchend', '#txt_number', function () {
         var number = $.trim($(this).val());
-        var prefix='';
-        if (number !== "" && number.length==8 ) {
-           
-            $("#list-tigo a").each(function(i){
+        var prefix = '';
+        if (number !== "" && number.length == 8) {
+
+            $("#list-tigo a").each(function (i) {
                 prefix = $(this).data('prefix');
-                codigo = 'tel:' + encodeURIComponent(prefix+number+"*1234*#");
+                codigo = 'tel:' + encodeURIComponent(prefix + number + "*1234*#");
                 $(this).attr({
                     "href": codigo
                 });
             });
-            
 
-            
-        }else{
+
+
+        } else {
             $("#list-tigo a").attr({
                 "href": "#"
-            }); 
+            });
         }
 
 
     });
 
 
-    $('body').on('click', '.click-cuentas', function() {
+    $('body').on('click', '.click-cuentas', function () {
 
         $('#credit-card').addClass('show');
         return false;
     });
 
 
-    $('body').on('click', '.click-recarga-tigo', function() {
+    $('body').on('click', '.click-recarga-tigo', function () {
 
         $('#recargas').addClass('show');
+
+        var ScreenW=$(window).outerWidth(true);
+        var ScreenH=$(window).outerHeight(true);
+        var BoxW=ScreenW-30;
+        var BoxH=ScreenH-30;
+        $('.card.recargas').css(
+            {
+                'width': ScreenW-30,
+                'height':ScreenH-30,
+                'top':(ScreenH-BoxH)/2,
+                'left':(ScreenW-BoxW)/2,
+            }
+        );
+        $('.list').css({
+            "height": $('.card.recargas').outerHeight(true)-$(".content-number").outerHeight(true)-40
+        });
         return false;
     });
 
 
-    
-    $('body').on('dblclick', ".container-card", function() {
+
+    $('body').on('dblclick', ".container-card", function () {
         if ($(this).hasClass("show")) {
             $('.container-card').removeClass('show');
         }
