@@ -545,7 +545,7 @@ body {
                         display: block;
                         width: 500px;
                         height: 313px;
-                        position: fixed!important;
+                        position: fixed !important;
                         top: -156px;
                         left: -250px;
                         background-color: #ffffff;
@@ -643,9 +643,10 @@ body {
                     }
                 }
 
-               
+
             }
         }
+
         .recargas {
             background-color: #00377b;
             display: block;
@@ -674,6 +675,13 @@ body {
                     height: 369px;
                     overflow: auto;
                     background-color: rgba(0, 0, 0, 0.271);
+
+                }
+
+                &.disable {
+                    filter: grayscale(100%);
+                    opacity: 0.5;
+                    pointer-events: none;
                 }
 
                 #list-tigo {
@@ -716,16 +724,41 @@ body {
                                     /* outline: red 1px solid; */
                                     text-align: center;
                                     border-radius: 5px;
+                                    margin-right: 5px;
+
+                                    &::before {
+
+                                        font-size: 15px;
+                                        position: relative;
+                                        top: 5px;
+                                    }
 
                                     &.icon-whatsapp {
                                         background: #25D366;
-                                        &::before{
-                                            content: "\e917";
-                                            font-size: 17px;
-                                            position: relative;
-                                            top: 3px;
-                                        }
+
                                     }
+
+                                    &.icon-facebook {
+                                        background: #4267B2;
+
+                                    }
+
+                                    &.icon-messenger {
+                                        background: rgb(0, 178, 255);
+                                        background: linear-gradient(180deg, rgba(0, 178, 255, 1) 0%, rgba(0, 106, 255, 1) 82%);
+
+                                    }
+
+                                    &.icon-instagram {
+                                        background: #C13584;
+
+                                    }
+
+                                    &.icon-twitter {
+                                        background: #1DA1F2;
+
+                                    }
+
 
                                 }
                             }

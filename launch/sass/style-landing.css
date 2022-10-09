@@ -1424,7 +1424,7 @@ html {
   content: "\e918";
 }
 
-.icon-world-1:before, .icon-claro:before, .icon-tigo:before {
+.icon-world-1:before, .icon-claro:before, .icon-tigo:before, .icon-messenger:before {
   content: "\e919";
 }
 
@@ -2152,6 +2152,12 @@ body .container-card .recargas .list {
   background-color: rgba(0, 0, 0, 0.271);
 }
 
+body .container-card .recargas .list.disable {
+  filter: grayscale(100%);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 body .container-card .recargas .list #list-tigo {
   list-style: none;
   padding: 7px;
@@ -2191,17 +2197,34 @@ body .container-card .recargas .list #list-tigo li a span div {
   /* outline: red 1px solid; */
   text-align: center;
   border-radius: 5px;
+  margin-right: 5px;
+}
+
+body .container-card .recargas .list #list-tigo li a span div::before {
+  font-size: 15px;
+  position: relative;
+  top: 5px;
 }
 
 body .container-card .recargas .list #list-tigo li a span div.icon-whatsapp {
   background: #25D366;
 }
 
-body .container-card .recargas .list #list-tigo li a span div.icon-whatsapp::before {
-  content: "\e917";
-  font-size: 17px;
-  position: relative;
-  top: 3px;
+body .container-card .recargas .list #list-tigo li a span div.icon-facebook {
+  background: #4267B2;
+}
+
+body .container-card .recargas .list #list-tigo li a span div.icon-messenger {
+  background: #00b2ff;
+  background: linear-gradient(180deg, #00b2ff 0%, #006aff 82%);
+}
+
+body .container-card .recargas .list #list-tigo li a span div.icon-instagram {
+  background: #C13584;
+}
+
+body .container-card .recargas .list #list-tigo li a span div.icon-twitter {
+  background: #1DA1F2;
 }
 
 body .container-card .recargas .list #list-tigo li a i {

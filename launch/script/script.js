@@ -85,12 +85,13 @@
                 });
             });
 
-
+            $('.list') .removeClass('disable');
 
         } else {
             $("#list-tigo a").attr({
                 "href": "#"
             });
+            $('.list') .addClass('disable');
         }
 
 
@@ -123,6 +124,8 @@
         $('.list').css({
             "height": $('.card.recargas').outerHeight(true)-$(".content-number").outerHeight(true)-40
         });
+
+       
         return false;
     });
 
