@@ -1,10 +1,41 @@
-(function ($) {
+(function($) {
 
-    $(window).load(function () {
+    $(window).load(function() {
         $(".card.credit-card").attr("style", "background-image: url(images/0" + getRandomInt(1, 13) + ".png)");
         $(".all-content").removeClass('hide');
+        $("#txt_number").inputmask({ mask: "9999 9999", greedy: false, jitMasking: true });
+        $("#txt_minutos").inputmask({ mask: "999", greedy: false, jitMasking: true });
 
     });
+
+    function SetRecargaNormal() {
+        var numero = (($.trim($('#txt_number').val())).replace(" ", ''));
+        var minute = (($.trim($('#txt_minutos').val())).replace(" ", ''));
+        var prefix = '*108*';
+
+        numero = (numero == '') ? 0 : parseInt(numero);
+        minute = (minute == '') ? 0 : parseInt(minute);
+
+        console.log(numero.length + " " + minute)
+        if ((numero !== 0 && $.trim(numero).length == 8) && (minute !== 0)) {
+
+            $("a#txt_call").each(function(i) {
+                prefix = $(this).data('prefix');
+                codigo = 'tel:' + encodeURIComponent(prefix + minute + '*' + numero + "*1234*#");
+                $(this).attr({
+                    "href": codigo
+                });
+            });
+
+
+
+        } else {
+            $("a#txt_call").attr({
+                "href": "#"
+            });
+
+        }
+    }
 
     function validateEmail(email) {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -32,7 +63,7 @@
 */
 
 
-    $('body').on('keyup touchend', '#input-text', function () {
+    $('body').on('keyup touchend', '#input-text', function() {
         var text = $(this).val();
         var number = '';
         // console.log(text);
@@ -55,7 +86,7 @@
         }
     });
 
-    $('body').on('keyup touchend', '.text-msg', function () {
+    $('body').on('keyup touchend', '.text-msg', function() {
         if ($(this).val() !== "") {
             var text = $.trim($(this).val());
             var text = '?text=' + encodeURIComponent((((((text.replaceAll(" ", '')).replaceAll("-", '')).replaceAll("(", '')).replaceAll(")", '')).replaceAll('+', '')).replaceAll('.', ''));
@@ -72,12 +103,19 @@
 
     });
 
-    $('body').on('keyup touchend', '#txt_number', function () {
-        var number = $.trim($(this).val());
+
+    $('body').on('keyup touchend', '#txt_minutos', function() {
+        SetRecargaNormal();
+
+
+    });
+    $('body').on('keyup touchend', '#txt_number', function() {
+        var number = (($.trim($(this).val())).replace(" ", '')).replace("_", '');
         var prefix = '';
+        SetRecargaNormal();
         if (number !== "" && number.length == 8) {
 
-            $("#list-tigo a").each(function (i) {
+            $("#list-tigo a").each(function(i) {
                 prefix = $(this).data('prefix');
                 codigo = 'tel:' + encodeURIComponent(prefix + number + "*1234*#");
                 $(this).attr({
@@ -85,53 +123,72 @@
                 });
             });
 
-            $('.list') .removeClass('disable');
+            $('.list').removeClass('disable');
 
         } else {
             $("#list-tigo a").attr({
                 "href": "#"
             });
-            $('.list') .addClass('disable');
+            $('.list').addClass('disable');
         }
 
 
     });
 
 
-    $('body').on('click', '.click-cuentas', function () {
+    $('body').on('click', '.click-cuentas', function() {
 
         $('#credit-card').addClass('show');
         return false;
     });
 
+    $('body').on('click', '.click-recarga-tigo-minutos', function() {
 
-    $('body').on('click', '.click-recarga-tigo', function () {
+        $('#recargas,.content-minute,.content-calltoaction,.content-calltoaction-direct').addClass('show');
+        $('.list').removeClass('show');
 
-        $('#recargas').addClass('show');
-
-        var ScreenW=$(window).outerWidth(true);
-        var ScreenH=$(window).outerHeight(true);
-        var BoxW=ScreenW-30;
-        var BoxH=ScreenH-30;
-        $('.card.recargas').css(
-            {
-                'width': ScreenW-30,
-                'height':ScreenH-30,
-                'top':(ScreenH-BoxH)/2,
-                'left':(ScreenW-BoxW)/2,
-            }
-        );
-        $('.list').css({
-            "height": $('.card.recargas').outerHeight(true)-$(".content-number").outerHeight(true)-40
+        var ScreenW = $(window).outerWidth(true);
+        var ScreenH = $(window).outerHeight(true);
+        var BoxW = ScreenW - 30;
+        var BoxH = ScreenH - 30;
+        $('.card.recargas').css({
+            'width': ScreenW - 30,
+            'height': ScreenH - 30,
+            'top': (ScreenH - BoxH) / 2,
+            'left': (ScreenW - BoxW) / 2,
         });
 
-       
+
+
+        return false;
+    });
+
+    $('body').on('click', '.click-recarga-tigo-internet', function() {
+
+        $('#recargas').addClass('show');
+        $('.list').addClass('show');
+        $('.content-minute,.content-calltoaction,.content-calltoaction-direct').removeClass('show');
+        var ScreenW = $(window).outerWidth(true);
+        var ScreenH = $(window).outerHeight(true);
+        var BoxW = ScreenW - 30;
+        var BoxH = ScreenH - 30;
+        $('.card.recargas').css({
+            'width': ScreenW - 30,
+            'height': ScreenH - 30,
+            'top': (ScreenH - BoxH) / 2,
+            'left': (ScreenW - BoxW) / 2,
+        });
+        $('.list').css({
+            "height": $('.card.recargas').outerHeight(true) - $(".content-number").outerHeight(true) - 40
+        });
+
+
         return false;
     });
 
 
 
-    $('body').on('dblclick', ".container-card", function () {
+    $('body').on('dblclick', ".container-card", function() {
         if ($(this).hasClass("show")) {
             $('.container-card').removeClass('show');
         }
