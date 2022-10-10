@@ -444,7 +444,7 @@ body {
             background-color: #00377b;
             display: block;
             position: relative;
-            padding: 50px 20px 20px 20px;
+            padding: 50px 15px 20px 15px;
             overflow: auto;
             width: 95%;
             height: 90vh;
@@ -561,7 +561,6 @@ body {
                     height: auto;
                     width: 100%;
                     overflow: auto;
-                    background-color: rgba(0, 0, 0, 0.271);
                 }
                 &.disable {
                     //  filter: grayscale(100%);
@@ -574,7 +573,7 @@ body {
                 }
                 #list-tigo {
                     list-style: none;
-                    padding: 7px;
+                    padding: 0px;
                     margin: 0;
                     li {
                         padding: 0;
@@ -584,10 +583,12 @@ body {
                             display: block;
                             width: 100%;
                             padding: 17px 7px;
-                            border-bottom: rgba(255, 255, 255, 0.501) solid 1px;
+                            //border-bottom: rgba(255, 255, 255, 0.501) solid 1px;
                             font-size: 20px;
                             position: relative;
+                            margin: 7px 0;
                             font-weight: bold;
+                            background-color: rgba(0, 0, 0, 0.271);
                             &,
                             &:hover,
                             &:visited,
@@ -596,11 +597,16 @@ body {
                                 text-decoration: none;
                             }
                             sup {
-                                animation: blinker 1s linear infinite;
+                                animation: blinker 2.5s linear infinite;
                                 color: #fff;
-                                background: #eb8e16;
-                                padding: 1px 7px;
+                                background: #e58305;
+                                padding: 1px 9px;
                                 font-size: 10px;
+                                border-radius: 10px;
+                                position: absolute;
+                                top: 4px;
+                                z-index: 99;
+                                left: 7px;
                             }
                             span {
                                 font-size: 0.7em;
@@ -650,8 +656,8 @@ body {
                                 border-radius: 500px;
                                 width: 110px;
                                 position: absolute;
-                                top: 17px;
-                                right: 6px;
+                                top: 15px;
+                                right: 10px;
                                 line-height: 1em;
                                 font-size: 14px;
                                 text-align: center;
