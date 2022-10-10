@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="500"
+   height="500"
+   viewBox="0 0 500 500"
+   version="1.1"
+   enable-background="new 0 0 76.00 76.00"
+   xml:space="preserve"
+   id="svg11830"
+   sodipodi:docname="office-365-logo-svgrepo-com.svg"
+   inkscape:version="1.2 (56b05e47e7, 2022-06-09, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs11834" /><sodipodi:namedview
+   id="namedview11832"
+   pagecolor="#505050"
+   bordercolor="#ffffff"
+   borderopacity="1"
+   inkscape:showpageshadow="0"
+   inkscape:pageopacity="0"
+   inkscape:pagecheckerboard="1"
+   inkscape:deskcolor="#505050"
+   showgrid="false"
+   inkscape:zoom="0.43919289"
+   inkscape:cx="60.337953"
+   inkscape:cy="125.22971"
+   inkscape:window-width="1920"
+   inkscape:window-height="962"
+   inkscape:window-x="0"
+   inkscape:window-y="27"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg11830" />
+	<path
+   fill="#000000"
+   fill-opacity="1"
+   stroke-width="2.14286"
+   stroke-linejoin="round"
+   d="m 57.142855,389.28571 85.714285,-32.14285 v -225 L 303.57142,89.285714 V 421.42857 L 67.856069,391.96536 303.57142,475 442.85714,442.85714 V 57.142857 L 303.57142,25 57.142855,110.71429 Z"
+   id="path11828" />
+</svg>

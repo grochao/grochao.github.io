@@ -144,7 +144,7 @@
 
     $('body').on('click', '.click-recarga-tigo-minutos', function() {
 
-        $('#recargas,.content-minute,.content-calltoaction,.content-calltoaction-direct').addClass('show');
+        $('#recargas,.content-minute,.content-calltoaction,.content-calltoaction-direct,h2').addClass('show');
         $('.list').removeClass('show');
 
         var ScreenW = $(window).outerWidth(true);
@@ -167,7 +167,7 @@
 
         $('#recargas').addClass('show');
         $('.list').addClass('show');
-        $('.content-minute,.content-calltoaction,.content-calltoaction-direct').removeClass('show');
+        $('.content-minute,.content-calltoaction,.content-calltoaction-direct,h2').removeClass('show');
         var ScreenW = $(window).outerWidth(true);
         var ScreenH = $(window).outerHeight(true);
         var BoxW = ScreenW - 30;
