@@ -1,0 +1,27 @@
+total 644
+-rw-r--r-- 1 developer www-data  24431 sep 19 13:36 android-chrome-144x144.png
+-rw-r--r-- 1 developer www-data  40921 sep 19 13:36 android-chrome-192x192.png
+-rw-r--r-- 1 developer www-data  68807 sep 19 13:36 android-chrome-256x256.png
+-rw-r--r-- 1 developer www-data   2496 sep 19 13:36 android-chrome-36x36.png
+-rw-r--r-- 1 developer www-data 139691 sep 19 13:36 android-chrome-384x384.png
+-rw-r--r-- 1 developer www-data   3804 sep 19 13:36 android-chrome-48x48.png
+-rw-r--r-- 1 developer www-data   7311 sep 19 13:36 android-chrome-72x72.png
+-rw-r--r-- 1 developer www-data  11971 sep 19 13:36 android-chrome-96x96.png
+-rw-r--r-- 1 developer www-data  17666 sep 19 13:36 apple-touch-icon-120x120.png
+-rw-r--r-- 1 developer www-data  26875 sep 19 13:36 apple-touch-icon-152x152.png
+-rw-r--r-- 1 developer www-data  36416 sep 19 13:36 apple-touch-icon-180x180.png
+-rw-r--r-- 1 developer www-data   5428 sep 19 13:36 apple-touch-icon-60x60.png
+-rw-r--r-- 1 developer www-data   8016 sep 19 13:36 apple-touch-icon-76x76.png
+-rw-r--r-- 1 developer www-data  36416 sep 19 13:36 apple-touch-icon.png
+-rw-r--r-- 1 developer www-data    585 oct 11 12:05 browserconfig.xml
+-rw-r--r-- 1 developer www-data   1180 sep 19 13:36 favicon-16x16.png
+-rw-r--r-- 1 developer www-data   2129 sep 19 13:36 favicon-32x32.png
+-rw-r--r-- 1 developer www-data  12014 sep 19 13:36 favicon.ico
+-rw-rw-rw- 1 developer www-data   1530 oct 11 12:08 js13kPAW.webanifest
+-rw-rw-r-- 1 developer www-data      0 oct 11 13:31 list.txt
+-rw-r--r-- 1 developer www-data  23431 sep 19 13:36 mstile-150x150.png
+-rw-r--r-- 1 developer www-data  24163 sep 19 13:36 mstile-310x150.png
+-rw-r--r-- 1 developer www-data  86043 sep 19 13:36 mstile-310x310.png
+-rw-r--r-- 1 developer www-data  13710 sep 19 13:36 mstile-70x70.png
+-rw-r--r-- 1 developer www-data  23066 sep 19 13:36 safari-pinned-tab.svg
+-rw-r--r-- 1 developer www-data   1626 oct 11 12:04 site.webmanifest

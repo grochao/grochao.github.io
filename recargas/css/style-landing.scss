@@ -15,21 +15,23 @@ body {
             -moz-box-sizing: border-box;
             font-size: 10pt;
         }
-        font-family: 'Hind',
-        sans-serif;
+        font-family: Verdana,
+        Arial,
+        Tahoma,
+        Serif;
     }
     .show {
         display: block !important;
     }
     & {
         background-attachment: fixed;
-        background-image: url(https://grochao.github.io/launch/images/bk2.jpg);
+        background-image: url(../img/bk2.jpg);
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
         background-color: #011b1a;
         @include media-breakpoint-max($xs) {
-            background-image: url(https://grochao.github.io/launch/images/bk3.jpg);
+            background-image: url(../img/bk3.jpg);
         }
     }
     .all-content {
@@ -52,145 +54,6 @@ body {
         bottom: 0;
         z-index: 1;
     }
-    .search {
-        width: 100%;
-        max-width: 350px;
-        margin: 30px auto;
-        display: block;
-        position: relative;
-        z-index: 99;
-        @include media-breakpoint-min($lg) {
-            max-width: 600px;
-        }
-        .link-whatsapp-msg {
-            display: none;
-            background: #fff;
-            position: absolute;
-            top: 58px;
-            width: 80%;
-            left: 10%;
-            padding: 7px;
-            .text-msg {
-                width: 100%;
-                height: 70px;
-                resize: none;
-                padding: 15px 67px 15px 15px;
-                border: #b1b2b3 solid 1px;
-                font-size: 18px;
-                &,
-                &:focus,
-                &:hover {
-                    outline: none;
-                }
-            }
-            &,
-            .text-msg {
-                @include css3-prefix(border-radius, 4px);
-            }
-        }
-    }
-    .search-google {
-        & {
-            width: 100%;
-            max-width: 350px;
-            padding: 15px 15px;
-            margin: 30px auto;
-            display: block;
-            position: relative;
-            @include media-breakpoint-min($lg) {
-                max-width: 600px;
-            }
-        }
-        input {
-            width: 100%;
-            padding: 11px 15px 10px 40px;
-            background-color: #d3d3d3;
-            @include css3-prefix(border-radius, 100px);
-            &,
-            &:focus,
-            &:hover {
-                border: none;
-                outline: none;
-            }
-            &.logo-google-svg {
-                background-image: url(../images/logo-google.svg);
-                background-position: 7px center;
-                background-repeat: no-repeat;
-                background-size: 24px auto;
-            }
-            &.logo-whatsapp-svg {
-                background-image: url(../images/logo-whatsapp.svg);
-                background-position: 7px center;
-                background-repeat: no-repeat;
-                background-size: 24px auto;
-            }
-        }
-        button {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 40px;
-            height: 40px;
-            line-height: 0em;
-            @include css3-prefix(border-radius, 200px);
-            i {
-                font-size: 21px;
-                line-height: 0em;
-                &::before {
-                    color: #4285F4;
-                }
-            }
-            &,
-            &:focus,
-            &:hover {
-                border: none;
-                outline: none;
-                background-color: #ddd;
-            }
-            .search-google i.icon-google::before {
-                color: #4285F4;
-                font-size: 20px;
-                position: relative;
-                top: 2px;
-            }
-        }
-    }
-    .link-whatsapp {
-        cursor: pointer;
-        background-color: #25D366;
-        position: absolute;
-        top: 17px;
-        right: 15px;
-        width: 50px;
-        height: 50px;
-        line-height: 0em;
-        @include css3-prefix(border-radius, 200px);
-        &,
-        &:focus,
-        &:hover {
-            border: none;
-            outline: none;
-            text-decoration: none;
-        }
-        i {
-            line-height: 0em;
-            width: 100%;
-            text-align: center;
-            display: block;
-            padding-top: 24px;
-            color: #fff;
-            &::before {
-                color: #fff;
-                font-size: 35px;
-            }
-        }
-    }
-    /*.center {
-        width: 100%;
-        max-width: 850px;
-        margin: 0 auto;
-        display: block;
-    }*/
     .container-box {
         margin-left: -7px;
         margin-right: -7px;
@@ -200,7 +63,7 @@ body {
                 & {
                     display: inline;
                     //  width: 50%; 
-                    padding: 5px;
+                    // padding: 5px; 
                 }
                 .link {
                     & {
