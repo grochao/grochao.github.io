@@ -40,7 +40,7 @@
     ],
     "start_url": "index.html",
     "display": "fullscreen",
-    "orientation": "portraint",
+    "orientation": "portrait",
     "theme_color": "#00377b",
     "background_color": "#00377b"
 }
