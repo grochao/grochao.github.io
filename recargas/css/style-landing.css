@@ -1855,7 +1855,8 @@ body .container-card .recargas .close::before {
 }
 
 body .container-card .recargas .content-number,
-body .container-card .recargas .content-minute {
+body .container-card .recargas .content-minute,
+body .container-card .recargas .content-filter {
   background-color: #ececec;
   border: #ddd solid 1px;
 }
@@ -1893,6 +1894,22 @@ body .container-card .recargas .content-minute {
 
 body .container-card .recargas .content-minute::before {
   content: 'Minutos:';
+  font-size: 20px;
+  position: absolute;
+  top: 18px;
+  left: 5px;
+  color: #606060;
+}
+
+body .container-card .recargas .content-filter {
+  display: none;
+  margin: 15px 0 0 0;
+  padding: 0 0 0 90px;
+  position: relative;
+}
+
+body .container-card .recargas .content-filter::before {
+  content: 'Precio:';
   font-size: 20px;
   position: absolute;
   top: 18px;
@@ -1947,7 +1964,8 @@ body .container-card .recargas .content-calltoaction-direct .call {
   text-decoration: none;
 }
 
-body .container-card .recargas [type="text"] {
+body .container-card .recargas [type="text"],
+body .container-card .recargas select {
   display: block;
   background-color: transparent;
   width: 100%;
@@ -1956,7 +1974,10 @@ body .container-card .recargas [type="text"] {
   color: #000 !important;
 }
 
-body .container-card .recargas [type="text"], body .container-card .recargas [type="text"]:focus, body .container-card .recargas [type="text"]:hover {
+body .container-card .recargas [type="text"], body .container-card .recargas [type="text"]:focus, body .container-card .recargas [type="text"]:hover,
+body .container-card .recargas select,
+body .container-card .recargas select:focus,
+body .container-card .recargas select:hover {
   outline: none;
   appearance: none;
   border: none;

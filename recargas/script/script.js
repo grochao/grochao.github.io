@@ -84,7 +84,7 @@
 
 
     $('body').on('click', '.close', function() {
-        $('#recargas,.content-minute,.content-calltoaction,.content-calltoaction-direct,h3').removeClass('show');
+        $('#recargas,.content-minute,.content-calltoaction,.content-calltoaction-direct,h3,.content-filter').removeClass('show');
     });
 
     $('body').on('click', '.click-recarga-tigo-minutos', function() {
@@ -104,7 +104,7 @@
     $('body').on('click', '.click-recarga-tigo-internet', function() {
 
         $('#recargas').addClass('show');
-        $('.list').addClass('show');
+        $('.list,.content-filter').addClass('show');
         $('.content-minute,.content-calltoaction,.content-calltoaction-direct,h3').removeClass('show');
         resizeBoxPopup();
         $('.list').css({

@@ -322,7 +322,8 @@ body {
                 }
             }
             .content-number,
-            .content-minute {
+            .content-minute,
+            .content-filter {
                 background-color: #ececec;
                 border: #ddd solid 1px;
             }
@@ -354,6 +355,20 @@ body {
                 position: relative;
                 &::before {
                     content: 'Minutos:';
+                    font-size: 20px;
+                    position: absolute;
+                    top: 18px;
+                    left: 5px;
+                    color: #606060;
+                }
+            }
+            .content-filter {
+                display: none;
+                margin: 15px 0 0 0;
+                padding: 0 0 0 90px;
+                position: relative;
+                &::before {
+                    content: 'Precio:';
                     font-size: 20px;
                     position: absolute;
                     top: 18px;
@@ -403,7 +418,8 @@ body {
                     text-decoration: none;
                 }
             }
-            [type="text"] {
+            [type="text"],
+            select {
                 display: block;
                 background-color: transparent;
                 width: 100%;
