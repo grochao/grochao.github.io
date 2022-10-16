@@ -758,3 +758,87 @@ body {
         opacity: 0;
     }
 }
+
+.no-padding,
+.no-padding h2 {
+    padding: 0px!important;
+}
+
+.padding-7px {
+    padding-right: 7px!important;
+    padding-left: 7px!important;
+}
+
+.background-black {
+    margin: 7px -2px!important;
+    .box {
+        .title {
+            display: block;
+            width: 100%;
+            padding: 25px 0;
+            position: relative;
+            h2 {
+                margin: 0px!important;
+                line-height: 1em!important;
+            }
+            .switch {
+                position: absolute;
+                top: 15px;
+                right: 0;
+                background-color: rgba(5, 110, 11, 0.685);
+                color: #fff;
+                padding: 7px 13px;
+                @include css3-prefix(border-radius, 100px);
+                i {
+                    font-style: normal;
+                    font-weight: bold;
+                }
+            }
+        }
+        padding: 15px 15px;
+        background-color: rgba(0, 0, 0, 0.568);
+        @include css3-prefix(border-radius, 4px);
+        max-width: 450px;
+        width: 100%;
+        .box-cambio {
+            display: flex;
+            span {
+                & {
+                    margin: 15px 0;
+                    color: #fff;
+                    display: inline-block;
+                    width: 50%;
+                    padding: 12px 0px;
+                    position: relative;
+                    height: 46px;
+                    flex: 0 0 50%;
+                    max-width: 50%;
+                    font-size: 17px;
+                    font-weight: bold;
+                    &:last-child {
+                        padding-left: 4px;
+                    }
+                }
+                input {
+                    display: block;
+                    width: calc(100% - 30px);
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    appearance: none;
+                    border: 1px solid #fff;
+                    background: rgba(0, 0, 0, 0.341);
+                    color: #fff;
+                    text-align: right;
+                    padding: 7px 5px;
+                    font-size: 19px;
+                    &,
+                    &:focus,
+                    &:hover {
+                        outline: none;
+                    }
+                }
+            }
+        }
+    }
+}

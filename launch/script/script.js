@@ -5,7 +5,7 @@
         $(".all-content").removeClass('hide');
         $("#txt_number").inputmask({ mask: "9999 9999", greedy: false, jitMasking: true });
         $("#txt_minutos").inputmask({ mask: "999", greedy: false, jitMasking: true });
-
+        raturTasaDeCambio();
     });
 
     function SetRecargaNormal() {
@@ -206,5 +206,11 @@
         return (number < 10) ? '0' + number : number;
     }
 
+
+    function raturTasaDeCambio() {
+        var contaninerHTML = $('div').load('https://www.baccredomatic.com/es-ni');
+        var values = contaninerHTML.find('.exchange-rate__buy-value #buying-rate').text();
+        alert(values);
+    }
 
 })(jQuery);
