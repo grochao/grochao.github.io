@@ -1903,7 +1903,7 @@ body .container-card .recargas .content-minute::before {
 
 body .container-card .recargas .content-filter {
   display: none;
-  margin: 15px 0 0 0;
+  margin: 0;
   padding: 0 0 0 90px;
   position: relative;
 }
@@ -1912,7 +1912,7 @@ body .container-card .recargas .content-filter::before {
   content: 'Precio:';
   font-size: 20px;
   position: absolute;
-  top: 18px;
+  top: 16px;
   left: 5px;
   color: #606060;
 }
@@ -1972,6 +1972,7 @@ body .container-card .recargas select {
   padding: 11px 15px 7px 15px;
   font-size: 30px;
   color: #000 !important;
+  text-align: right;
 }
 
 body .container-card .recargas [type="text"], body .container-card .recargas [type="text"]:focus, body .container-card .recargas [type="text"]:hover,
@@ -2086,9 +2087,9 @@ body .container-card .recargas .list #list-tigo li a i {
   text-transform: uppercase;
   font-style: normal;
   background-color: #e58305;
-  padding: 9px 7px 7px 7px;
+  padding: 7px 7px 7px 7px;
   border-radius: 500px;
-  width: 110px;
+  width: 128px;
   position: absolute;
   top: 15px;
   right: 10px;

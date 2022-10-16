@@ -3,7 +3,7 @@
     $(window).load(function() {
 
         $(".all-content").removeClass('hide');
-        $("#txt_number").inputmask({ mask: "9999 9999", greedy: false, jitMasking: true });
+        $("#txt_number").inputmask({ mask: "99999999", greedy: false, jitMasking: true });
         $("#txt_minutos").inputmask({ mask: "999", greedy: false, jitMasking: true });
 
     });
@@ -108,8 +108,19 @@
         $('.content-minute,.content-calltoaction,.content-calltoaction-direct,h3').removeClass('show');
         resizeBoxPopup();
         $('.list').css({
-            "height": $('.card.recargas').outerHeight(true) - $(".content-number").outerHeight(true) - 70
+            "height": $('.card.recargas').outerHeight(true) - $(".content-number").outerHeight(true) - $(".content-filter").outerHeight(true) - 70
         });
+        return false;
+    });
+
+    $('body').on('change', '#txt_filter', function() {
+        var filter = parseInt($(this).val());
+        if (filter) {
+            $("#list-tigo li").hide();
+            $("#list-tigo li.filter-" + $(this).val()).show();
+        } else {
+            $("#list-tigo li").show();
+        }
         return false;
     });
 
