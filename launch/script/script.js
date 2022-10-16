@@ -5,7 +5,7 @@
         $(".all-content").removeClass('hide');
         $("#txt_number").inputmask({ mask: "9999 9999", greedy: false, jitMasking: true });
         $("#txt_minutos").inputmask({ mask: "999", greedy: false, jitMasking: true });
-        raturTasaDeCambio();
+        // raturTasaDeCambio();
     });
 
     function SetRecargaNormal() {
@@ -207,10 +207,10 @@
     }
 
 
-    function raturTasaDeCambio() {
+    /*function raturTasaDeCambio() {
         var contaninerHTML = $('<div>').load('https://www.banprogrupopromerica.com.ni');
         //var values = contaninerHTML.find('.exchange-rate__buy-value #buying-rate').text();
         alert(contaninerHTML.html());
-    }
+    }*/
 
 })(jQuery);
