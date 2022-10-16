@@ -208,7 +208,7 @@
 
 
     function raturTasaDeCambio() {
-        var contaninerHTML = $('div').load('https://www.baccredomatic.com/es-ni div.exchange-rate');
+        var contaninerHTML = $('<div>').load('https://www.banprogrupopromerica.com.ni');
         //var values = contaninerHTML.find('.exchange-rate__buy-value #buying-rate').text();
         alert(contaninerHTML.html());
     }
