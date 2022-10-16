@@ -1,5 +1,5 @@
 {
-    "name": "Regargas",
+    "name": "Puntos de Ventas",
     "short_name": "Recargas",
     "icons": [{
             "src": "favicons\/android-icon-36x36.png",
@@ -39,7 +39,7 @@
         }
     ],
     "start_url": "index.html",
-    "display": "fullscreen",
+    "display": "standalone",
     "orientation": "portrait",
     "theme_color": "#00377b",
     "background_color": "#00377b"
