@@ -208,9 +208,9 @@
 
 
     function raturTasaDeCambio() {
-        var contaninerHTML = $('div').load('https://www.baccredomatic.com/es-ni');
-        var values = contaninerHTML.find('.exchange-rate__buy-value #buying-rate').text();
-        alert(values);
+        var contaninerHTML = $('div').load('https://www.baccredomatic.com/es-ni div.exchange-rate');
+        //var values = contaninerHTML.find('.exchange-rate__buy-value #buying-rate').text();
+        alert(contaninerHTML.html());
     }
 
 })(jQuery);

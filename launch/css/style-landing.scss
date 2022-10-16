@@ -759,6 +759,24 @@ body {
     }
 }
 
+footer p {
+    color: #fff;
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    text-shadow: 0px 0px 2px #000000;
+    a {
+        &,
+        &:hover,
+        &:visited,
+        &:focus {
+            font-size: 18px;
+            color: #fff;
+        }
+    }
+}
+
 .no-padding,
 .no-padding h2 {
     padding: 0px!important;
