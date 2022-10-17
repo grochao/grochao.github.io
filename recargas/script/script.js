@@ -5,7 +5,7 @@
         $(".all-content").removeClass('hide');
         $("#txt_number").inputmask({ mask: "9999 9999", greedy: false, jitMasking: true });
         $("#txt_minutos").inputmask({ mask: "999", greedy: false, jitMasking: true });
-        raturTasaDeCambio();
+        //  raturTasaDeCambio();
     });
 
     function resizeBoxPopup() {
@@ -144,10 +144,10 @@
         return (number < 10) ? '0' + number : number;
     }
 
-    function raturTasaDeCambio() {
-        var contaninerHTML = $('<div>').load('https://www.delepesoasuspesos.com/indicadores-economicos/cambio-del-dolar table#igsv-1-14DCOXWYFSMrw9UqLogh9sys6pBDA1OPnbtNsUWbXek4');
-        //var values = contaninerHTML.find('.exchange-rate__buy-value #buying-rate').text();
-        alert(contaninerHTML.html());
-    }
+    /* function raturTasaDeCambio() {
+         var contaninerHTML = $('<div>').load('https://www.delepesoasuspesos.com/indicadores-economicos/cambio-del-dolar table#igsv-1-14DCOXWYFSMrw9UqLogh9sys6pBDA1OPnbtNsUWbXek4');
+         //var values = contaninerHTML.find('.exchange-rate__buy-value #buying-rate').text();
+         alert(contaninerHTML.html());
+     }*/
 
 })(jQuery);
