@@ -28,7 +28,7 @@
         numero = (numero == '') ? 0 : parseInt(numero);
         minute = (minute == '') ? 0 : parseInt(minute);
 
-        console.log(numero.length + " " + minute)
+        //console.log(numero.length + " " + minute)
         if ((numero !== 0 && $.trim(numero).length == 8) && (minute >= 10)) {
 
             $("a#txt_call").each(function(i) {
@@ -126,12 +126,12 @@
 
 
 
-    $('body').on('dblclick', ".container-card", function() {
-        if ($(this).hasClass("show")) {
-            $('.container-card').removeClass('show');
-        }
-        return false;
-    });
+    /* $('body').on('dblclick', ".container-card", function() {
+         if ($(this).hasClass("show")) {
+             $('.container-card').removeClass('show');
+         }
+         return false;
+     });*/
 
 
 
