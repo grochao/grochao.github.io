@@ -21,10 +21,11 @@
     }
 
     function SetRecargaNormal() {
-        var numero = (($.trim($('#txt_number').val())).replace(" ", '').replace("-", ''));
-        var minute = (($.trim($('#txt_minutos').val())).replace(" ", '').replace("-", ''));
+        var numero = ($.trim($('#txt_number').val())).replace(" ", '').replace("-", '');
+        var minute = ($.trim($('#txt_minutos').val())).replace(" ", '').replace("-", '');
         var prefix = '*108*';
 
+        console.log(numero);
         numero = (numero == '') ? 0 : parseInt(numero);
         minute = (minute == '') ? 0 : parseInt(minute);
 
@@ -57,7 +58,7 @@
         SetRecargaNormal();
     });
     $('body').on('keyup touchend', '#txt_number', function() {
-        var number = (($.trim($(this).val())).replace(" ", '')).replace("_", '');
+        var number = (($.trim($(this).val())).replace(" ", '')).replace("_", '').replace("-", '');
         var prefix = '';
         SetRecargaNormal();
         if (number !== "" && number.length == 8) {

@@ -1966,6 +1966,7 @@ body .container-card .recargas .content-calltoaction-direct .call {
 
 body .container-card .recargas [type="text"],
 body .container-card .recargas [type="number"],
+body .container-card .recargas [type="tel"],
 body .container-card .recargas select {
   display: block;
   background-color: transparent;
@@ -1980,6 +1981,9 @@ body .container-card .recargas [type="text"], body .container-card .recargas [ty
 body .container-card .recargas [type="number"],
 body .container-card .recargas [type="number"]:focus,
 body .container-card .recargas [type="number"]:hover,
+body .container-card .recargas [type="tel"],
+body .container-card .recargas [type="tel"]:focus,
+body .container-card .recargas [type="tel"]:hover,
 body .container-card .recargas select,
 body .container-card .recargas select:focus,
 body .container-card .recargas select:hover {
