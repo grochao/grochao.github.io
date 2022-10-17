@@ -3,7 +3,7 @@
     $(window).load(function() {
 
         $(".all-content").removeClass('hide');
-        $("#txt_number").inputmask({ mask: "9999 9999", greedy: false, jitMasking: true });
+        $("#txt_number").inputmask({ mask: "9999-9999", greedy: false, jitMasking: true });
         $("#txt_minutos").inputmask({ mask: "999", greedy: false, jitMasking: true });
         //  raturTasaDeCambio();
     });
@@ -21,8 +21,8 @@
     }
 
     function SetRecargaNormal() {
-        var numero = (($.trim($('#txt_number').val())).replace(" ", ''));
-        var minute = (($.trim($('#txt_minutos').val())).replace(" ", ''));
+        var numero = (($.trim($('#txt_number').val())).replace(" ", '').replace("-", ''));
+        var minute = (($.trim($('#txt_minutos').val())).replace(" ", '').replace("-", ''));
         var prefix = '*108*';
 
         numero = (numero == '') ? 0 : parseInt(numero);
