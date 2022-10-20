@@ -73,6 +73,7 @@ self.addEventListener('fetch', (e) => {
     })());
 });
 
+/*
 self.addEventListener('activate', async() => {
     // after we've taken over, iterate over all the current clients (windows)
     const tabs = await self.clients.matchAll({ type: 'window' })
@@ -80,4 +81,4 @@ self.addEventListener('activate', async() => {
         // ...and refresh each one of them
         tab.navigate(tab.url)
     })
-})
+})*/
