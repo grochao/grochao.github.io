@@ -1999,22 +1999,22 @@ body .container-card .recargas .list {
   overflow: auto;
 }
 
-body .container-card .recargas .list.disable #list-tigo a {
+body .container-card .recargas .list.disable .list-code a {
   pointer-events: none;
 }
 
-body .container-card .recargas .list #list-tigo {
+body .container-card .recargas .list .list-code {
   list-style: none;
   padding: 0px;
   margin: 0;
 }
 
-body .container-card .recargas .list #list-tigo li {
+body .container-card .recargas .list .list-code li {
   padding: 0;
   margin: 0;
 }
 
-body .container-card .recargas .list #list-tigo li a {
+body .container-card .recargas .list .list-code li a {
   color: #fff;
   display: block;
   width: 100%;
@@ -2026,11 +2026,11 @@ body .container-card .recargas .list #list-tigo li a {
   background-color: rgba(0, 0, 0, 0.271);
 }
 
-body .container-card .recargas .list #list-tigo li a, body .container-card .recargas .list #list-tigo li a:hover, body .container-card .recargas .list #list-tigo li a:visited, body .container-card .recargas .list #list-tigo li a:active, body .container-card .recargas .list #list-tigo li a:focus {
+body .container-card .recargas .list .list-code li a, body .container-card .recargas .list .list-code li a:hover, body .container-card .recargas .list .list-code li a:visited, body .container-card .recargas .list .list-code li a:active, body .container-card .recargas .list .list-code li a:focus {
   text-decoration: none;
 }
 
-body .container-card .recargas .list #list-tigo li a sup {
+body .container-card .recargas .list .list-code li a sup {
   animation: blinker 2.5s linear infinite;
   color: #fff;
   background: #e58305;
@@ -2043,7 +2043,7 @@ body .container-card .recargas .list #list-tigo li a sup {
   left: 7px;
 }
 
-body .container-card .recargas .list #list-tigo li a span {
+body .container-card .recargas .list .list-code li a span {
   font-size: 0.7em;
   display: block;
   width: 100%;
@@ -2052,7 +2052,7 @@ body .container-card .recargas .list #list-tigo li a span {
   line-height: 1.3em;
 }
 
-body .container-card .recargas .list #list-tigo li a span div {
+body .container-card .recargas .list .list-code li a span div {
   display: inline-block;
   width: 25px;
   height: 25px;
@@ -2063,34 +2063,34 @@ body .container-card .recargas .list #list-tigo li a span div {
   margin-top: 8px;
 }
 
-body .container-card .recargas .list #list-tigo li a span div::before {
+body .container-card .recargas .list .list-code li a span div::before {
   font-size: 15px;
   position: relative;
   top: 5px;
 }
 
-body .container-card .recargas .list #list-tigo li a span div.icon-whatsapp {
+body .container-card .recargas .list .list-code li a span div.icon-whatsapp {
   background: #25D366;
 }
 
-body .container-card .recargas .list #list-tigo li a span div.icon-facebook {
+body .container-card .recargas .list .list-code li a span div.icon-facebook {
   background: #4267B2;
 }
 
-body .container-card .recargas .list #list-tigo li a span div.icon-messenger {
+body .container-card .recargas .list .list-code li a span div.icon-messenger {
   background: #00b2ff;
   background: linear-gradient(180deg, #00b2ff 0%, #006aff 82%);
 }
 
-body .container-card .recargas .list #list-tigo li a span div.icon-instagram {
+body .container-card .recargas .list .list-code li a span div.icon-instagram {
   background: #C13584;
 }
 
-body .container-card .recargas .list #list-tigo li a span div.icon-twitter {
+body .container-card .recargas .list .list-code li a span div.icon-twitter {
   background: #1DA1F2;
 }
 
-body .container-card .recargas .list #list-tigo li a i {
+body .container-card .recargas .list .list-code li a i {
   display: block;
   text-transform: uppercase;
   font-style: normal;
@@ -2107,7 +2107,7 @@ body .container-card .recargas .list #list-tigo li a i {
   font-weight: bold;
 }
 
-body .container-card .recargas .list #list-tigo li:last-child a {
+body .container-card .recargas .list .list-code li:last-child a {
   border-bottom: none;
 }
 

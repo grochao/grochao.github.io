@@ -1,74 +1,63 @@
-// Generating content based on the template
-
-/*
-let content = '';
-for (let i = 0; i < games.length; i++) {
-  let entry = template.replace(/POS/g, (i + 1))
-    .replace(/SLUG/g, games[i].slug)
-    .replace(/NAME/g, games[i].name)
-    .replace(/AUTHOR/g, games[i].author)
-    .replace(/TWITTER/g, games[i].twitter)
-    .replace(/WEBSITE/g, games[i].website)
-    .replace(/GITHUB/g, games[i].github);
-  entry = entry.replace('<a href=\'http:///\'></a>', '-');
-  content += entry;
-}
-document.getElementById('content').innerHTML = content;
-*/
-
 // Registering Service Worker
+/*
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
-}
-/*
-// Requesting permission for Notifications after clicking on the button
-const button = document.getElementById('notifications');
-button.addEventListener('click', () => {
-    Notification.requestPermission().then((result) => {
-        if (result === 'granted') {
-            randomNotification();
-        }
-    });
-});
-
-// Setting up random Notification
-function randomNotification() {
-    const randomItem = Math.floor(Math.random() * games.length);
-    const notifTitle = games[randomItem].name;
-    const notifBody = `Created by ${games[randomItem].author}.`;
-    const notifImg = `data/img/${games[randomItem].slug}.jpg`;
-    const options = {
-        body: notifBody,
-        icon: notifImg,
-    };
-    new Notification(notifTitle, options);
-    setTimeout(randomNotification, 30000);
-}
-*/
-// Progressive loading images
-/*const imagesToLoad = document.querySelectorAll('img[data-src]');
-const loadImages = (image) => {
-    image.setAttribute('src', image.getAttribute('data-src'));
-    image.onload = () => {
-        image.removeAttribute('data-src');
-    };
-};*/
-
-/*
-if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((items) => {
-        items.forEach((item) => {
-            if (item.isIntersecting) {
-                loadImages(item.target);
-                observer.unobserve(item.target);
-            }
-        });
-    });
-    imagesToLoad.forEach((img) => {
-        observer.observe(img);
-    });
-} else {
-    imagesToLoad.forEach((img) => {
-        loadImages(img);
-    });
+    if ('serviceWorker' in navigator && ['localhost', '127'].indexOf(location.hostname) === -1) {
+        navigator.serviceWorker.register('service-worker.js');
+    } else {
+        console.error("Localhost not working");
+    }
 }*/
+
+function invokeServiceWorkerUpdateFlow(registration) {
+    // TODO implement your own UI notification element
+    notification.show("New version of the app is available. Refresh now?");
+    notification.addEventListener('click', () => {
+        if (registration.waiting) {
+            // let waiting Service Worker know it should became active
+            registration.waiting.postMessage('SKIP_WAITING')
+        }
+    })
+}
+
+// check if the browser supports serviceWorker at all
+if ('serviceWorker' in navigator) {
+    // wait for the page to load
+    window.addEventListener('load', async() => {
+        // register the service worker from the file specified
+        const registration = await navigator.serviceWorker.register('service-worker.js')
+
+        // ensure the case when the updatefound event was missed is also handled
+        // by re-invoking the prompt when there's a waiting Service Worker
+        if (registration.waiting) {
+            invokeServiceWorkerUpdateFlow(registration)
+        }
+
+        // detect Service Worker update available and wait for it to become installed
+        registration.addEventListener('updatefound', () => {
+            if (registration.installing) {
+                // wait until the new Service worker is actually installed (ready to take over)
+                registration.installing.addEventListener('statechange', () => {
+                    if (registration.waiting) {
+                        // if there's an existing controller (previous Service Worker), show the prompt
+                        if (navigator.serviceWorker.controller) {
+                            invokeServiceWorkerUpdateFlow(registration)
+                        } else {
+                            // otherwise it's the first install, nothing to do
+                            console.log('Service Worker initialized for the first time')
+                        }
+                    }
+                })
+            }
+        })
+
+        let refreshing = false;
+
+        // detect controller change and refresh the page
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (!refreshing) {
+                window.location.reload()
+                refreshing = true
+            }
+        })
+    })
+}

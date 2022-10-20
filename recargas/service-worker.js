@@ -1,7 +1,7 @@
-self.importScripts('data/games.js');
+//self.importScripts('data/games.js');
 
 // Files to cache
-const cacheName = 'js13kPWA-v1';
+const cacheName = 'update-recargas-app-v1';
 const appShellFiles = [
     '/',
     'img/bk2.jpg',
@@ -72,3 +72,12 @@ self.addEventListener('fetch', (e) => {
         return response;
     })());
 });
+
+self.addEventListener('activate', async() => {
+    // after we've taken over, iterate over all the current clients (windows)
+    const tabs = await self.clients.matchAll({ type: 'window' })
+    tabs.forEach((tab) => {
+        // ...and refresh each one of them
+        tab.navigate(tab.url)
+    })
+})

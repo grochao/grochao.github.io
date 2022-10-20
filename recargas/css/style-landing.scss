@@ -447,13 +447,13 @@ body {
                 &.disable {
                     //  filter: grayscale(100%);
                     // opacity: 0.5;
-                    #list-tigo {
+                    .list-code {
                         a {
                             pointer-events: none;
                         }
                     }
                 }
-                #list-tigo {
+                .list-code {
                     list-style: none;
                     padding: 0px;
                     margin: 0;
