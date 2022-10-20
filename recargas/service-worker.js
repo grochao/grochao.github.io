@@ -67,53 +67,9 @@ self.addEventListener('fetch', (e) => {
         if (r) return r;
         const response = await fetch(e.request);
         const cache = await caches.open(cacheName);
-        displayNotificationUPDATE();
+
         console.log(`[Service Worker] Caching new resource: ${e.request.url}`);
         cache.put(e.request, response.clone());
         return response;
     })());
 });
-
-/*
-self.addEventListener('activate', async() => {
-    // after we've taken over, iterate over all the current clients (windows)
-    const tabs = await self.clients.matchAll({ type: 'window' })
-    tabs.forEach((tab) => {
-        // ...and refresh each one of them
-        tab.navigate(tab.url)
-    })
-})*/
-
-function displayNotificationUPDATE() {
-    if (window.Notification && Notification.permission === "granted") {
-        notification();
-    }
-    // If the user hasn't told if he wants to be notified or not
-    // Note: because of Chrome, we are not sure the permission property
-    // is set, therefore it's unsafe to check for the "default" value.
-    else if (window.Notification && Notification.permission !== "denied") {
-        Notification.requestPermission(status => {
-            if (status === "granted") {
-                notification();
-            } else {
-                alert("You denied or dismissed permissions to notifications.");
-            }
-        });
-    } else {
-        // If the user refuses to get notified
-        alert(
-            "You denied permissions to notifications. Please go to your browser or phone setting to allow notifications."
-        );
-    }
-}
-
-function notification() {
-    const options = {
-        body: "Se encontró una nueva actualización del app. <br>¡App Actualizada!",
-        icon: "img/information.png",
-        vibrate: [200, 100, 200, 100, 200, 100, 200],
-        image: "img/banner.png",
-        requireInteraction: true,
-    };
-    swRegistration.showNotification("Nueva Actualiación", options);
-}
