@@ -11,7 +11,7 @@ let swRegistration = null;
 initializeApp();
 
 function initializeApp() {
-    if ("serviceWorker" in navigator && "PushManager" in window) {
+    if ("serviceWorker" in navigator && "PushManager" in window && ['localhost', '127'].indexOf(location.hostname) === -1) {
         console.log("Service Worker and Push is supported");
 
         //Register the service worker
@@ -22,25 +22,24 @@ function initializeApp() {
 
                 swRegistration = swReg;
 
-                displayNotification();
+                //displayNotification2();
                 //initializeUi();
             })
             .catch(error => {
                 console.error("Service Worker Error", error);
             });
     } else {
+        if (['localhost', '127'].indexOf(location.hostname) !== -1) {
+            console.info("Sistema de Cache no está abilitado para localhost");
+        }
         console.warn("Push messaging is not supported");
-        notificationButton.textContent = "Push Not Supported";
+        //notificationButton.textContent = "Push Not Supported";
     }
 }
 
-function initializeUi() {
-    notificationButton.addEventListener("click", () => {
-        displayNotification();
-    });
-}
 
-function displayNotification() {
+
+function displayNotification2() {
     if (window.Notification && Notification.permission === "granted") {
         notification();
     }
@@ -50,7 +49,7 @@ function displayNotification() {
     else if (window.Notification && Notification.permission !== "denied") {
         Notification.requestPermission(status => {
             if (status === "granted") {
-                notification();
+                notification2();
             } else {
                 alert("You denied or dismissed permissions to notifications.");
             }
@@ -62,12 +61,14 @@ function displayNotification() {
         );
     }
 }
-
-function notification() {
+/*
+function notification2() {
     const options = {
-        body: "Sistem de automaticación de recargas para puntos de venta",
+        body: "Sistema de automaticación de recargas para puntos de venta",
         icon: "img/information.png",
         vibrate: [200, 100, 200, 100, 200, 100, 200],
+        image: "img/banner.png",
+        requireInteraction: true,
     };
     swRegistration.showNotification("Recargas Claro/Tigo", options);
-}
+}*/

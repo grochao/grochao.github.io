@@ -2090,6 +2090,10 @@ body .container-card .recargas .list .list-code li a span div.icon-twitter {
   background: #1DA1F2;
 }
 
+body .container-card .recargas .list .list-code li a span div.icon-youtube {
+  background: #FF0000;
+}
+
 body .container-card .recargas .list .list-code li a i {
   display: block;
   text-transform: uppercase;
