@@ -1462,7 +1462,7 @@ html {
 /*Breackpoint Bootstrap*/
 body {
   margin: 0;
-  padding: 155px 0 0 0;
+  padding: 197px 0 0 0;
 }
 
 body * {
@@ -1481,27 +1481,33 @@ body .show {
 
 body {
   background-attachment: fixed;
-  background-image: url(../img/bk2.jpg);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-color: #011b1a;
 }
 
-@media (max-width: 575px) {
-  body {
-    background-image: url(../img/bk3.jpg);
-  }
+body.bk-tigo {
+  background-image: linear-gradient(330deg, #00064d 0%, #021974 14%, #053199 29%, #094fb9 43%, #095dc3 57%, #054fa8 71%, #024392 86%, #00377a 100%);
+}
+
+body.bk-tigo header {
+  background-color: #00377b;
+}
+
+body.bk-tigo .list .background-blue {
+  background-color: #00377b;
+}
+
+body.bk-claro {
+  background-image: linear-gradient(350deg, #570000 0%, #8a0000 36%, #b80000 56%, #e60000 70%, #e60000 81%, #b80000 90%, #8a0000 97%, #570000 100%);
+}
+
+body.bk-claro header {
+  background-color: #8a0000;
+}
+
+body.bk-claro .list .background-blue {
+  background-color: #8a0000;
 }
 
 body header {
-  position: fixed;
-  background-color: #00377b;
-  padding: 0;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 999;
   /*h3 {
             display: none;
             color: #fff;
@@ -1510,6 +1516,16 @@ body header {
             text-transform: uppercase;
             margin: 0;
         }*/
+}
+
+body header {
+  position: fixed;
+  padding: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.291);
 }
 
 body header h1 {
@@ -1533,7 +1549,7 @@ body .list.disable .list-code a {
 }
 
 body .list .background-blue {
-  background-color: #00377b;
+  background-color: rgba(0, 0, 0, 0.291);
 }
 
 body .list .list-code {
@@ -1549,33 +1565,43 @@ body .list .list-code li {
 
 body .list .list-code li .box-blue {
   padding: 7px 15px;
+  max-width: 309px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 body .list .list-code li .box-blue a {
-  background-color: #00377b;
+  background-color: rgba(0, 0, 0, 0.291);
+  color: white;
 }
 
-body .list .list-code li a {
+body .list .list-code li a:not(.call) {
   color: #fff;
   display: block;
   width: 100%;
-  padding: 17px 7px;
+  height: 145px;
+  padding: 17px 95px 7px 7px;
   font-size: 20px;
   position: relative;
   font-weight: bold;
   background-color: rgba(0, 0, 0, 0.271);
 }
 
-body .list .list-code li a, body .list .list-code li a:hover, body .list .list-code li a:visited, body .list .list-code li a:active, body .list .list-code li a:focus {
+body .list .list-code li a:not(.call), body .list .list-code li a:not(.call):hover, body .list .list-code li a:not(.call):visited, body .list .list-code li a:not(.call):active, body .list .list-code li a:not(.call):focus {
   text-decoration: none;
 }
 
-body .list .list-code li a sup {
+body .list .list-code li a:not(.call) sup {
   animation: blinker 2.5s linear infinite;
   color: #fff;
   background: #e58305;
   padding: 1px 9px;
   font-size: 10px;
+  -webkit-border-radius: 10px;
+  -khtml-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
   border-radius: 10px;
   position: absolute;
   top: 4px;
@@ -1583,7 +1609,7 @@ body .list .list-code li a sup {
   left: 7px;
 }
 
-body .list .list-code li a span {
+body .list .list-code li a:not(.call) > span {
   font-size: 0.7em;
   display: block;
   width: 100%;
@@ -1592,62 +1618,92 @@ body .list .list-code li a span {
   line-height: 1.3em;
 }
 
-body .list .list-code li a span div {
+body .list .list-code li a:not(.call) > span div {
   display: inline-block;
   width: 25px;
   height: 25px;
   text-align: center;
+  -webkit-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
   border-radius: 5px;
   margin-right: 5px;
   margin-top: 8px;
 }
 
-body .list .list-code li a span div::before {
+body .list .list-code li a:not(.call) > span div::before {
   font-size: 15px;
   position: relative;
   top: 5px;
 }
 
-body .list .list-code li a span div.icon-whatsapp {
+body .list .list-code li a:not(.call) > span div.icon-whatsapp {
   background: #25D366;
 }
 
-body .list .list-code li a span div.icon-facebook {
+body .list .list-code li a:not(.call) > span div.icon-facebook {
   background: #4267B2;
 }
 
-body .list .list-code li a span div.icon-messenger {
+body .list .list-code li a:not(.call) > span div.icon-messenger {
   background: #00b2ff;
   background: linear-gradient(180deg, #00b2ff 0%, #006aff 82%);
 }
 
-body .list .list-code li a span div.icon-instagram {
+body .list .list-code li a:not(.call) > span div.icon-instagram {
   background: #C13584;
 }
 
-body .list .list-code li a span div.icon-twitter {
+body .list .list-code li a:not(.call) > span div.icon-twitter {
   background: #1DA1F2;
 }
 
-body .list .list-code li a span div.icon-youtube {
+body .list .list-code li a:not(.call) > span div.icon-youtube {
   background: #FF0000;
 }
 
-body .list .list-code li a i {
+body .list .list-code li a:not(.call) i {
   display: block;
   text-transform: uppercase;
   font-style: normal;
   background-color: #e58305;
-  padding: 7px 7px 7px 7px;
-  border-radius: 500px;
-  width: 128px;
+  padding: 7px 0;
+  -webkit-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  width: 75px;
   position: absolute;
-  top: 15px;
+  top: 23px;
   right: 10px;
   line-height: 1em;
-  font-size: 14px;
   text-align: center;
   font-weight: bold;
+  height: 95px;
+}
+
+body .list .list-code li a:not(.call) i span {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 15px;
+  line-height: 1em;
+}
+
+body .list .list-code li a:not(.call) i .price {
+  font-size: 21px;
+  margin-bottom: 15px;
+  padding: 7px 0;
+  line-height: 1em;
+  background-color: rgba(0, 0, 0, 0.55);
+}
+
+body .list .list-code li a:not(.call) i .day {
+  font-size: 14px;
 }
 
 body .filter-custom {
@@ -1716,13 +1772,28 @@ body .content-calltoaction {
 
 body .content-calltoaction .call {
   line-height: 1em;
-  background-color: #099106 !important;
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#9dd53a+0,a1d54f+50,80c217+51,7cbc0a+100;Green+Gloss+%231 */
+  background: #9dd53a;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #9dd53a 0%, #a1d54f 50%, #80c217 51%, #7cbc0a 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #9dd53a 0%, #a1d54f 50%, #80c217 51%, #7cbc0a 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #9dd53a 0%, #a1d54f 50%, #80c217 51%, #7cbc0a 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   border: 0;
   display: block;
   margin: 0;
   text-align: center;
   font-style: normal;
   text-decoration: none;
+  color: #fff;
+  color: #053e06;
+  padding: 14px 15px;
+  border-radius: 12px;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 1px 1px rgba(255, 255, 255, 0.856);
 }
 
 body .content-calltoaction .call#txt_call:not(.isclick) {
@@ -1757,6 +1828,83 @@ body select:hover {
   appearance: none;
   border: none;
   border-left: #00377b solid 1px !important;
+}
+
+body .checkbox {
+  display: none;
+}
+
+body .switch {
+  width: 72px;
+  height: 26px;
+  background: transparent;
+  z-index: 0;
+  margin: 0;
+  padding: 0;
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  -webkit-border-radius: 16px;
+  -khtml-border-radius: 16px;
+  -moz-border-radius: 16px;
+  -ms-border-radius: 16px;
+  -o-border-radius: 16px;
+  border-radius: 16px;
+  display: block;
+  margin: 7px auto 15px auto;
+}
+
+body .switch:before {
+  content: 'Tigo';
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  width: 70px;
+  height: 26px;
+  background: rgba(0, 0, 0, 0.18);
+  z-index: 1;
+  -webkit-border-radius: 16px;
+  -khtml-border-radius: 16px;
+  -moz-border-radius: 16px;
+  -ms-border-radius: 16px;
+  -o-border-radius: 16px;
+  border-radius: 16px;
+  color: #fff;
+  padding: 3px 5px;
+  text-align: right;
+  border: #ffffff8f 2px solid;
+}
+
+body .switch:after {
+  content: ' ';
+  height: 25px;
+  width: 25px;
+  border-radius: 28px;
+  background: #FFFFFF;
+  background: #e2e2e2;
+  background: -moz-linear-gradient(left, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%);
+  background: -webkit-gradient(left top, right top, color-stop(0%, #e2e2e2), color-stop(50%, #dbdbdb), color-stop(51%, #d1d1d1), color-stop(100%, #fefefe));
+  background: -webkit-linear-gradient(left, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%);
+  background: -o-linear-gradient(left, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%);
+  background: -ms-linear-gradient(left, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%);
+  background: linear-gradient(to right, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%);
+  position: absolute;
+  z-index: 2;
+  top: 1px;
+  left: 1px;
+  -webkit-transition-duration: 300ms;
+  transition-duration: 300ms;
+}
+
+body .switchOn,
+body .switchOn:before {
+  text-align: left;
+  content: "Claro" !important;
+}
+
+body .switchOn:after {
+  left: 47px !important;
 }
 
 .blink_me {
@@ -1831,7 +1979,7 @@ body select:hover {
                         margin: 0 auto;
                         //                        outline: red 1px solid;
                         overflow: hidden;
-                        @include css3-prefix(border-radius, 100px);
+                       
                     }
                     i,
                     [class*="icon-"] {

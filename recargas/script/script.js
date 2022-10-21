@@ -5,7 +5,24 @@
         $(".all-content").removeClass('hide');
         $("#txt_number").inputmask({ mask: "9999-9999", greedy: false, jitMasking: true });
         $("#txt_minutos").inputmask({ mask: "999", greedy: false, jitMasking: true });
+
+
         //  raturTasaDeCambio();
+    });
+    $('.switch').click(function() {
+        $(this).toggleClass("switchOn");
+        if ($(this).hasClass('switchOn')) {
+            $('[name="theme-color"],[name="msapplication-TileColor"]').attr('content', '#8a0000');
+
+            $('body').addClass('bk-claro').removeClass('bk-tigo');
+            $('h1').text('RECARGAS CLARO');
+        } else {
+            $('[name="theme-color"],[name="msapplication-TileColor"]').attr('content', '#00377b');
+            $('body').addClass('bk-tigo').removeClass('bk-claro');
+            $('h1').text('RECARGAS TIGO');
+
+
+        }
     });
 
     function resizeBoxPopup() {
@@ -120,14 +137,15 @@
         if (filter === 'custom') {
             $("#list-tigo li").hide();
             $("#list-tigo li.filter-" + filter).show();
-            $('[name="theme-color"],[name="msapplication-TileColor"]').attr('content', '#FF0000');
+
         } else if (filter === 'o') {
             $("#list-tigo li").show();
             $("#list-tigo li.filter-custom").hide();
+
         } else {
             $("#list-tigo li").hide();
             $("#list-tigo li.filter-" + filter).show();
-            $('[name="theme-color"],[name="msapplication-TileColor"]').attr('content', '#00377b');
+
         }
         return false;
     });
