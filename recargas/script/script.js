@@ -120,12 +120,14 @@
         if (filter === 'custom') {
             $("#list-tigo li").hide();
             $("#list-tigo li.filter-" + filter).show();
+            $('[name="theme-color"],[name="msapplication-TileColor"]').attr('content', '#FF0000');
         } else if (filter === 'o') {
             $("#list-tigo li").show();
             $("#list-tigo li.filter-custom").hide();
         } else {
             $("#list-tigo li").hide();
             $("#list-tigo li.filter-" + filter).show();
+            $('[name="theme-color"],[name="msapplication-TileColor"]').attr('content', '#00377b');
         }
         return false;
     });
