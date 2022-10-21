@@ -115,12 +115,17 @@
     });
 
     $('body').on('change', '#txt_filter', function() {
-        var filter = parseInt($(this).val());
-        if (filter) {
+        var filter = $.trim(($(this).val()));
+        console.log(filter);
+        if (filter === 'custom') {
             $("#list-tigo li").hide();
-            $("#list-tigo li.filter-" + $(this).val()).show();
-        } else {
+            $("#list-tigo li.filter-" + filter).show();
+        } else if (filter === 'o') {
             $("#list-tigo li").show();
+            $("#list-tigo li.filter-custom").hide();
+        } else {
+            $("#list-tigo li").hide();
+            $("#list-tigo li.filter-" + filter).show();
         }
         return false;
     });
