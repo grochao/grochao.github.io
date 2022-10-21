@@ -48,31 +48,36 @@
                 <div class="col-12">
                     <div class="content-col row">
                         <div class="col-12">
-                            <h1>RECARGAS TIGO</h1>
-                            <label>
+                            <label class="check-iphone">
+                                <span>RECARGAS: </span>
                                 <input type="checkbox" name="checkboxName" class="checkbox"/>
                                 <div class="switch"></div>
                                 </label>
-                            <div class="content-number">
-                                <input type="tel" id="txt_number" inputmode="numeric">
-                            </div>
                             <div class="content-filter">
                                 <select name="" id="txt_filter">
-                                    <option  value="o">Ver Todo</option>
-                                    <option  value="custom">Personalizado</option>
-                                    <option  value="20">C$20</option>
-                                    <option  value="25">C$25</option>
-                                    <option  value="30">C$30</option> 
-                                    <option  value="40">C$40</option>
-                                    <option  value="50">C$50</option>
-                                    <option  value="55">C$55</option>
-                                    <option  value="70">C$70</option>
-                                    <option  value="110">C$110</option>
-                                    <option  value="200">C$200</option>
-                                    <option  value="300">C$300</option>
-                
-                                </select>
+                                        <option  value="o">VER TODO</option>
+                                        <option  value="custom">OTRO SALDO</option>
+                                        <option  value="solo-minutos">SOLO MINUTOS</option>
+                                        <option  value="solo-sms">SOLO SMS</option>
+                                        <option  value="consultas">CONSULTAS</option>
+                                        <optgroup label="TODO INCLUIDO">
+                                            <option  value="20">C$20</option>
+                                            <option  value="25">C$25</option>
+                                            <option  value="30">C$30</option> 
+                                            <option  value="40">C$40</option>
+                                            <option  value="50">C$50</option>
+                                            <option  value="55">C$55</option>
+                                            <option  value="70">C$70</option>
+                                            <option  value="110">C$110</option>
+                                            <option  value="200">C$200</option>
+                                            <option  value="300">C$300</option>
+                                        </optgroup>
+                                        
+                    
+                                    </select>
                             </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -82,32 +87,38 @@
     </header>
     <div class="list disable">
         <ul id="list-tigo" class="list-code">
-            <li class="filter-20">
+            <li class="filter-numberphone background-blue ">
+                <div class="content-number">
+                    <input type="tel" id="txt_number" inputmode="numeric">
+                </div>
+            </li>
+
+            <li class="filter-solo-minutos">
                 <div class="box-blue">
                     <a href="#" data-prefix="*110*1*">1. HABLA20<i><span class="price">C$20</span><span clss="day">1 día</span></i><span>20 minutos Tigo</span></a>
                 </div>
             </li>
-            <li class="filter-30">
+            <li class="filter-solo-minutos">
                 <div class="box-blue">
                     <a href="#" data-prefix="*110*2*">2. HABLA+2<i><span class="price">C$30</span><span clss="day">2 días</span></i><span>Llamadas Ilimitadas a Tigo <br><div class="icon-whatsapp"></div></span></a>
                 </div>
             </li>
-            <li class="filter-50">
+            <li class="filter-solo-minutos">
                 <div class="box-blue">
                     <a href="#" data-prefix="*110*3*">3. HABLA+4<i><span class="price">C$50</span><span clss="day">4 días</span></i><span>Llamadas Ilimitadas a Tigo <br><div class="icon-whatsapp"></div></span></a>
                 </div>
             </li>
-            <li class="filter-20">
+            <li class="filter-solo-sms">
                 <div class="box-blue">
                     <a href="#" data-prefix="*110*4*">4. CHAT2<i><span class="price">C$20</span><span clss="day"> 2 días</span></i><span>SMS Ilimitados</span></a>
                 </div>
             </li>
-            <li class="filter-20">
+            <li class="filter-solo-minutos">
                 <div class="box-blue">
                     <a href="#" data-prefix="*110*5*">5. CR<i><span class="price">C$20</span><span clss="day">1 día</span></i><span>20 minutos tigo Costa Rica</span></a>
                 </div>
             </li>
-            <li class="filter-20">
+            <li class="filter-solo-minutos">
                 <div class="box-blue">
                     <a href="#" data-prefix="*110*6*">6. USA20<i><span class="price">C$20</span><span clss="day">1 día</span></i><span>20 minutos USA y Canadà</span></a>
                 </div>
@@ -177,6 +188,19 @@
                     </div>
                 </div>
             </li>
+
+            <li class="filter-consultas background-blue ">
+                <div class="box-custom">
+                    <a class="call" href="tel:*109*1*1234%23">MI SALDO</a>
+                    <a class="call" href="tel:*109*3*1234%23">MIS VENTAS</a>
+                    <a class="call" href="tel:*109*2*1234%23">ÚLTIMA RECARGA</a>
+                </div>
+            </li>
+
+
+
+
+
 
 
 

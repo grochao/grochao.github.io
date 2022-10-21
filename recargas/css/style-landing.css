@@ -1462,7 +1462,7 @@ html {
 /*Breackpoint Bootstrap*/
 body {
   margin: 0;
-  padding: 197px 0 0 0;
+  padding: 125px 0 0 0;
 }
 
 body * {
@@ -1508,6 +1508,15 @@ body.bk-claro .list .background-blue {
 }
 
 body header {
+  /*  h1 {
+            text-align: center;
+            width: 100%;
+            display: block;
+            padding: 0;
+            margin: 6px 0;
+            color: #fff;
+            font-size: 30px;
+        }*/
   /*h3 {
             display: none;
             color: #fff;
@@ -1526,16 +1535,6 @@ body header {
   width: 100%;
   z-index: 999;
   background-color: rgba(0, 0, 0, 0.291);
-}
-
-body header h1 {
-  text-align: center;
-  width: 100%;
-  display: block;
-  padding: 0;
-  margin: 6px 0;
-  color: #fff;
-  font-size: 30px;
 }
 
 body .list {
@@ -1561,6 +1560,10 @@ body .list .list-code {
 body .list .list-code li {
   padding: 0;
   margin: 0;
+}
+
+body .list .list-code li.filter-numberphone {
+  padding-bottom: 9px !important;
 }
 
 body .list .list-code li .box-blue {
@@ -1710,6 +1713,32 @@ body .filter-custom {
   display: none;
 }
 
+body .filter-consultas a {
+  display: block;
+  color: #053e06;
+  padding: 12px 15px;
+  width: 100%;
+  max-width: 277px;
+  text-shadow: 1px 1px rgba(255, 255, 255, 0.856);
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#9dd53a+0,a1d54f+50,80c217+51,7cbc0a+100;Green+Gloss+%231 */
+  background: #9dd53a;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #9dd53a 0%, #a1d54f 50%, #80c217 51%, #7cbc0a 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #9dd53a 0%, #a1d54f 50%, #80c217 51%, #7cbc0a 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #9dd53a 0%, #a1d54f 50%, #80c217 51%, #7cbc0a 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  text-align: center;
+  margin: 0 auto 7px auto;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+body .filter-consultas a, body .filter-consultas a:focus, body .filter-consultas a:hover, body .filter-consultas a:visited {
+  text-decoration: none;
+}
+
 body .box-custom {
   padding: 0px 15px 7px 15px;
 }
@@ -1743,7 +1772,7 @@ body .content-filter {
 }
 
 body .content-filter::before {
-  content: 'Precio:';
+  content: 'Tipo:';
   font-size: 20px;
   position: absolute;
   top: 13px;
@@ -1767,7 +1796,7 @@ body .content-minute::before {
 
 body .content-calltoaction {
   max-width: 277px;
-  margin: 7px auto;
+  margin: 15px auto 10px auto;
 }
 
 body .content-calltoaction .call {
@@ -1830,16 +1859,34 @@ body select:hover {
   border-left: #00377b solid 1px !important;
 }
 
-body .checkbox {
+body .check-iphone {
+  width: 100%;
+  display: block;
+  text-align: center;
+  margin-bottom: 9px;
+}
+
+body .check-iphone .checkbox {
   display: none;
 }
 
-body .switch {
-  width: 72px;
-  height: 26px;
+body .check-iphone span {
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  display: inline-block;
+  height: auto;
+  line-height: 1em;
+  padding: 9px 0px;
+}
+
+body .check-iphone .switch {
+  display: inline-block;
+  margin: 15px 0 0 0;
+  width: 100px;
+  height: 35px;
   background: transparent;
   z-index: 0;
-  margin: 0;
   padding: 0;
   appearance: none;
   border: none;
@@ -1851,17 +1898,16 @@ body .switch {
   -ms-border-radius: 16px;
   -o-border-radius: 16px;
   border-radius: 16px;
-  display: block;
-  margin: 7px auto 15px auto;
+  top: 10px;
 }
 
-body .switch:before {
+body .check-iphone .switch:before {
   content: 'Tigo';
   position: absolute;
   left: 1px;
   top: 1px;
-  width: 70px;
-  height: 26px;
+  width: 96px;
+  height: 32px;
   background: rgba(0, 0, 0, 0.18);
   z-index: 1;
   -webkit-border-radius: 16px;
@@ -1871,15 +1917,17 @@ body .switch:before {
   -o-border-radius: 16px;
   border-radius: 16px;
   color: #fff;
-  padding: 3px 5px;
+  padding: 3px 10px;
   text-align: right;
   border: #ffffff8f 2px solid;
+  font-size: 19px;
+  font-weight: bold;
 }
 
-body .switch:after {
+body .check-iphone .switch:after {
   content: ' ';
-  height: 25px;
-  width: 25px;
+  height: 30px;
+  width: 30px;
   border-radius: 28px;
   background: #FFFFFF;
   background: #e2e2e2;
@@ -1891,20 +1939,20 @@ body .switch:after {
   background: linear-gradient(to right, #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%);
   position: absolute;
   z-index: 2;
-  top: 1px;
+  top: 2px;
   left: 1px;
   -webkit-transition-duration: 300ms;
   transition-duration: 300ms;
 }
 
-body .switchOn,
-body .switchOn:before {
+body .check-iphone .switchOn,
+body .check-iphone .switchOn:before {
   text-align: left;
   content: "Claro" !important;
 }
 
-body .switchOn:after {
-  left: 47px !important;
+body .check-iphone .switchOn:after {
+  left: 67px !important;
 }
 
 .blink_me {

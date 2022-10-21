@@ -15,11 +15,9 @@
             $('[name="theme-color"],[name="msapplication-TileColor"]').attr('content', '#8a0000');
 
             $('body').addClass('bk-claro').removeClass('bk-tigo');
-            $('h1').text('RECARGAS CLARO');
         } else {
             $('[name="theme-color"],[name="msapplication-TileColor"]').attr('content', '#00377b');
             $('body').addClass('bk-tigo').removeClass('bk-claro');
-            $('h1').text('RECARGAS TIGO');
 
 
         }
@@ -134,17 +132,23 @@
     $('body').on('change', '#txt_filter', function() {
         var filter = $.trim(($(this).val()));
         console.log(filter);
-        if (filter === 'custom') {
+        $(".filter-numberphone").show();
+        if (filter === 'custom' || filter === 'solo-minutos' || filter === 'solo-sms') {
             $("#list-tigo li").hide();
             $("#list-tigo li.filter-" + filter).show();
+            $(".filter-numberphone").show();
 
         } else if (filter === 'o') {
             $("#list-tigo li").show();
-            $("#list-tigo li.filter-custom").hide();
+            $("#list-tigo li.filter-consultas, #list-tigo li.filter-custom").hide();
 
+        } else if (filter === 'consultas') {
+            $("#list-tigo li").hide();
+            $("#list-tigo li.filter-consultas").show();
         } else {
             $("#list-tigo li").hide();
             $("#list-tigo li.filter-" + filter).show();
+            $(".filter-numberphone").show();
 
         }
         return false;
