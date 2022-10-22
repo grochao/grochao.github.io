@@ -1621,6 +1621,10 @@ body .list .list-code li .box-blue a {
   color: white;
 }
 
+body .list .list-code li a {
+  position: relative;
+}
+
 body .list .list-code li a:not(.call) {
   color: #fff;
   display: block;
@@ -1664,72 +1668,6 @@ body .list .list-code li a:not(.call) > span {
   line-height: 1.3em;
 }
 
-body .list .list-code li a:not(.call) > span div {
-  display: inline-block;
-  width: 25px;
-  height: 25px;
-  text-align: center;
-  -webkit-border-radius: 5px;
-  -khtml-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  border-radius: 5px;
-  margin-right: 5px;
-  margin-top: 8px;
-}
-
-body .list .list-code li a:not(.call) > span div::before {
-  font-size: 15px;
-  position: relative;
-  top: 5px;
-}
-
-body .list .list-code li a:not(.call) > span div.icon-whatsapp {
-  background: #25D366;
-}
-
-body .list .list-code li a:not(.call) > span div.icon-facebook {
-  background: #4267B2;
-}
-
-body .list .list-code li a:not(.call) > span div.icon-messenger {
-  background: #00b2ff;
-  background: linear-gradient(180deg, #00b2ff 0%, #006aff 82%);
-}
-
-body .list .list-code li a:not(.call) > span div.icon-instagram {
-  background: #C13584;
-}
-
-body .list .list-code li a:not(.call) > span div.icon-twitter {
-  background: #1DA1F2;
-}
-
-body .list .list-code li a:not(.call) > span div.icon-youtube {
-  background: #FF0000;
-}
-
-body .list .list-code li a:not(.call) > span div.icon-tigo {
-  background: #00377b;
-  -webkit-border-radius: 100px;
-  -khtml-border-radius: 100px;
-  -moz-border-radius: 100px;
-  -ms-border-radius: 100px;
-  -o-border-radius: 100px;
-  border-radius: 100px;
-}
-
-body .list .list-code li a:not(.call) > span div.icon-claro {
-  background: #FF0000;
-  -webkit-border-radius: 100px;
-  -khtml-border-radius: 100px;
-  -moz-border-radius: 100px;
-  -ms-border-radius: 100px;
-  -o-border-radius: 100px;
-  border-radius: 100px;
-}
-
 body .list .list-code li a:not(.call) i {
   display: block;
   text-transform: uppercase;
@@ -1770,6 +1708,81 @@ body .list .list-code li a:not(.call) i .price {
 
 body .list .list-code li a:not(.call) i .day {
   font-size: 14px;
+}
+
+body .iconos {
+  position: absolute;
+  bottom: 15px;
+  display: block;
+  width: 100%;
+  padding: 0 15px;
+  left: 0;
+}
+
+body .iconos span {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  -webkit-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  margin-right: 5px;
+  margin-top: 8px;
+}
+
+body .iconos span::before {
+  font-size: 15px;
+  position: relative;
+  top: 5px;
+}
+
+body .iconos span.icon-whatsapp {
+  background: #25D366;
+}
+
+body .iconos span.icon-facebook {
+  background: #4267B2;
+}
+
+body .iconos span.icon-messenger {
+  background: #00b2ff;
+  background: linear-gradient(180deg, #00b2ff 0%, #006aff 82%);
+}
+
+body .iconos span.icon-instagram {
+  background: #C13584;
+}
+
+body .iconos span.icon-twitter {
+  background: #1DA1F2;
+}
+
+body .iconos span.icon-youtube {
+  background: #FF0000;
+}
+
+body .iconos span.icon-tigo {
+  background: #00377b;
+  -webkit-border-radius: 100px;
+  -khtml-border-radius: 100px;
+  -moz-border-radius: 100px;
+  -ms-border-radius: 100px;
+  -o-border-radius: 100px;
+  border-radius: 100px;
+}
+
+body .iconos span.icon-claro {
+  background: #FF0000;
+  -webkit-border-radius: 100px;
+  -khtml-border-radius: 100px;
+  -moz-border-radius: 100px;
+  -ms-border-radius: 100px;
+  -o-border-radius: 100px;
+  border-radius: 100px;
 }
 
 body .filter-tiempo-aire {

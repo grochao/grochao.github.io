@@ -3,6 +3,22 @@
         $(".all-content").removeClass('hide');
         $(".filter-numberphone input").inputmask({ mask: "9999-9999", greedy: false, jitMasking: true });
         $(".filter-tiempo-aire input").inputmask({ mask: "999", greedy: false, jitMasking: true });
+        $(".iconos").each(function() {
+            var iconos = (($.trim($(this).attr("class"))).replaceAll("iconos", '').replaceAll(' ', ',')).split(",");
+
+            var html = '';
+            iconos.forEach(classIcon => {
+                if ($.trim(classIcon) !== '') {
+                    html += LoadIcons($.trim(classIcon));
+                }
+            });
+            $(this).html(html);
+        });
+
+        $('.ribbon').each(function() {
+            var data = (($.trim(($.trim($(this).attr("class"))).replaceAll("ribbon", '').replaceAll(' ', ''))).replaceAll("x", '')).split("_");
+            $(this).html(LoadPrice(data));
+        });
     });
     $('.switch').click(function() {
         $(this).toggleClass("switchOn");
@@ -15,6 +31,58 @@
             $('body').addClass('bk-tigo').removeClass('bk-claro');
         }
     });
+
+    function create_html_icons(list) {
+        var _return_ = '';
+        list.forEach(name => {
+            _return_ += '<span class="icon-' + (name).toLowerCase() + '"></span>';
+        });
+        return _return_;
+    }
+
+    function LoadPrice(data) {
+        return '<span class="price">C$' + data[0] + '</span><span class="day">' + data[1] + ' día' + (data[1] > 1 ? 's' : '') + '</span>';
+    }
+
+    function LoadIcons(type) {
+        var html = '';
+        switch (type) {
+            case 'toda-operadora':
+                html = create_html_icons(["claro", "tigo"]);
+                break;
+            case 'todo-incluido':
+                html = create_html_icons(["whatsapp", "facebook", "messenger", "instagram", "twitter"]);
+                break;
+            case 'whatsapp':
+                html = create_html_icons(["whatsapp"]);
+                break;
+            case 'facebook':
+                html = create_html_icons(["facebook"]);
+                break;
+
+            case 'twitter':
+                html = create_html_icons(["twitter"]);
+                break;
+            case 'instagram':
+                html = create_html_icons(["instagram"]);
+                break;
+            case 'messenger':
+                html = create_html_icons(["messenger"]);
+                break;
+            case 'youtube':
+                html = create_html_icons(["youtube"]);
+                break;
+            case 'claro':
+                html = create_html_icons(["claro"]);
+                break;
+            case 'tigo':
+                html = create_html_icons(["tigo"]);
+                break;
+            default:
+                break;
+        }
+        return html;
+    }
 
     function SetRecargaNormal(list) {
         var numero = ($.trim($('#' + list + ' .filter-numberphone input').val())).replace(" ", '').replace("-", '');
@@ -32,15 +100,22 @@
         } else {
             $('.list').addClass('disable');
         }
+        if (list === 'list-tigo') {
+            prefix = '*108*';
+            PIN = '1234';
+
+        } else if (list === 'list-claro') {
+            prefix = '*603*1*';
+            PIN = '2023';
+
+        }
         if ((numero !== 0 && $.trim(numero).length === 8)) {
             if ((monto >= 10)) {
                 if (list === 'list-tigo') {
-                    prefix = '*108*';
-                    PIN = '1234';
+
                     HREF = 'tel:' + encodeURIComponent(prefix + monto + '*' + numero + "*1234*#");
                 } else if (list === 'list-claro') {
-                    prefix = '*603*1*';
-                    PIN = '2023';
+
                     HREF = 'tel:' + encodeURIComponent(prefix + numero + '*' + monto + "*" + PIN + "#");
                 }
                 $('#' + list + " .filter-tiempo-aire a").attr({
@@ -53,21 +128,21 @@
                 }).removeClass('isclick');
             }
             $('#' + list + " li").each(function(i) {
-                if ($(this).hasClass('filter-tiempo-aire') && $(this).hasClass('filter-consultas')) {
-                    return;
-                }
-                var link = $(this).find('a');
-                if (link.length) {
-                    var prefix = link.data('prefix');
-                    if (list === 'list-tigo') {
-                        //alert("aquí");
-                        HREF = 'tel:' + encodeURIComponent(prefix + numero + "*1234#");
-                    } else if (list === 'list-claro') {
-                        HREF = 'tel:' + encodeURIComponent(prefix.replace('PIN', PIN) + numero + "#");
+                if (!$(this).hasClass('filter-tiempo-aire') && !$(this).hasClass('filter-consultas')) {
+                    var link = $(this).find('a');
+                    if (link.length) {
+                        var prefix = link.data('prefix');
+                        console.log(PIN);
+                        if (list === 'list-tigo') {
+
+                            HREF = 'tel:' + encodeURIComponent(prefix + numero + "*" + PIN + "#");
+                        } else if (list === 'list-claro') {
+                            HREF = 'tel:' + encodeURIComponent(prefix.replace('PIN', PIN) + numero + "#");
+                        }
+                        link.attr({
+                            "href": HREF
+                        }).addClass('isclick');
                     }
-                    link.attr({
-                        "href": HREF
-                    }).addClass('isclick');
                 }
             });
 

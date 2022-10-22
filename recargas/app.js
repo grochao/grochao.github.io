@@ -11,7 +11,8 @@ let swRegistration = null;
 initializeApp();
 
 function initializeApp() {
-    if ("serviceWorker" in navigator && "PushManager" in window && ['localhost', '127'].indexOf(location.hostname) === -1) {
+
+    if (("serviceWorker" in navigator && "PushManager" in window) && ['localhost', '127'].indexOf(location.hostname) == -1) {
         console.log("Service Worker and Push is supported");
 
         //Register the service worker

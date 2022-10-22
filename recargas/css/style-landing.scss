@@ -149,6 +149,9 @@ body {
                         color: rgb(255, 255, 255);
                     }
                 }
+                a {
+                    position: relative;
+                }
                 a:not(.call) {
                     color: #fff;
                     display: block;
@@ -186,47 +189,6 @@ body {
                         padding: 7px 0px 0px 21px;
                         font-weight: normal;
                         line-height: 1.3em;
-                        div {
-                            display: inline-block;
-                            width: 25px;
-                            height: 25px;
-                            text-align: center;
-                            @include css3-prefix(border-radius, 5px);
-                            margin-right: 5px;
-                            margin-top: 8px;
-                            &::before {
-                                font-size: 15px;
-                                position: relative;
-                                top: 5px;
-                            }
-                            &.icon-whatsapp {
-                                background: #25D366;
-                            }
-                            &.icon-facebook {
-                                background: #4267B2;
-                            }
-                            &.icon-messenger {
-                                background: rgb(0, 178, 255);
-                                background: linear-gradient(180deg, rgba(0, 178, 255, 1) 0%, rgba(0, 106, 255, 1) 82%);
-                            }
-                            &.icon-instagram {
-                                background: #C13584;
-                            }
-                            &.icon-twitter {
-                                background: #1DA1F2;
-                            }
-                            &.icon-youtube {
-                                background: #FF0000;
-                            }
-                            &.icon-tigo {
-                                background: #00377b;
-                                @include css3-prefix(border-radius, 100px);
-                            }
-                            &.icon-claro {
-                                background: #FF0000;
-                                @include css3-prefix(border-radius, 100px);
-                            }
-                        }
                     }
                     i {
                         display: block;
@@ -262,6 +224,55 @@ body {
                         }
                     }
                 }
+            }
+        }
+    }
+    .iconos {
+        position: absolute;
+        bottom: 15px;
+        display: block;
+        width: 100%;
+        padding: 0 15px;
+        left: 0;
+        span {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            text-align: center;
+            @include css3-prefix(border-radius, 5px);
+            margin-right: 5px;
+            margin-top: 8px;
+            &::before {
+                font-size: 15px;
+                position: relative;
+                top: 5px;
+            }
+            &.icon-whatsapp {
+                background: #25D366;
+            }
+            &.icon-facebook {
+                background: #4267B2;
+            }
+            &.icon-messenger {
+                background: rgb(0, 178, 255);
+                background: linear-gradient(180deg, rgba(0, 178, 255, 1) 0%, rgba(0, 106, 255, 1) 82%);
+            }
+            &.icon-instagram {
+                background: #C13584;
+            }
+            &.icon-twitter {
+                background: #1DA1F2;
+            }
+            &.icon-youtube {
+                background: #FF0000;
+            }
+            &.icon-tigo {
+                background: #00377b;
+                @include css3-prefix(border-radius, 100px);
+            }
+            &.icon-claro {
+                background: #FF0000;
+                @include css3-prefix(border-radius, 100px);
             }
         }
     }
