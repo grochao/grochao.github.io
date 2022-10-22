@@ -53,28 +53,39 @@
                                 <input type="checkbox" name="checkboxName" class="checkbox"/>
                                 <div class="switch"></div>
                                 </label>
-                            <div class="content-filter">
-                                <select name="" id="txt_filter">
-                                        <option  value="o">VER TODO</option>
-                                        <option  value="custom">OTRO SALDO</option>
-                                        <option  value="solo-minutos">SOLO MINUTOS</option>
-                                        <option  value="solo-sms">SOLO SMS</option>
-                                        <option  value="consultas">CONSULTAS</option>
-                                        <optgroup label="TODO INCLUIDO">
-                                            <option  value="20">C$20</option>
-                                            <option  value="25">C$25</option>
-                                            <option  value="30">C$30</option> 
-                                            <option  value="40">C$40</option>
-                                            <option  value="50">C$50</option>
-                                            <option  value="55">C$55</option>
-                                            <option  value="70">C$70</option>
-                                            <option  value="110">C$110</option>
-                                            <option  value="200">C$200</option>
-                                            <option  value="300">C$300</option>
-                                        </optgroup>
-                                        
-                    
-                                    </select>
+                            <div class="content-filter  select-tigo">
+                                <select name="">
+                                    <option  value="todo">VER TODO</option>
+                                    <option  value="tiempo-aire">TIEMPO AIRE</option>
+                                    <option  value="solo-minutos">SOLO MINUTOS</option>
+                                    <option  value="solo-sms">SOLO SMS</option>
+                                    <option  value="consultas">CONSULTAS</option>
+                                    <option  value="todoincluido">TODO INCLUIDO</option>
+                                    
+                                </select>
+                            </div>
+                            <div class="content-filter select-claro">
+                                <select name="">
+                                    <option  value="todo">VER TODO</option>
+                                    <option  value="tiempo-aire">TIEMPO AIRE</option>
+                                    
+                                    <option  value="solo-sms">SOLO SMS</option>
+                                    
+                                    <optgroup label="MINUTOS">
+                                        <option  value="solo-minutos-nic">CLARO 🇳🇮</option>
+                                        <option  value="solo-minutos-us">USA/CAN 🇺🇸/🇨🇦</option>
+                                        <option  value="solo-minutos-cr">COSTA RICA 🇨🇷</option>
+                                        <option  value="solo-minutos-esp">ESPAÑA 🇪🇸</option>
+                                        <option  value="claro-minutos">MULTID ESTINO</option>
+                                    </optgroup>
+                                    <option  value="solo-internet">SOLO INTERNET</option>
+                                    <option  value="consultas">CONSULTAS</option>
+                                    <option  value="todoincluido">TODO INCLUIDO</option>
+
+
+
+                                    
+                                </select>
                             </div>
 
 
@@ -89,7 +100,7 @@
         <ul id="list-tigo" class="list-code">
             <li class="filter-numberphone background-blue ">
                 <div class="content-number">
-                    <input type="tel" id="txt_number" inputmode="numeric">
+                    <input type="tel" inputmode="numeric">
                 </div>
             </li>
 
@@ -115,85 +126,85 @@
             </li>
             <li class="filter-solo-minutos">
                 <div class="box-blue">
-                    <a href="#" data-prefix="*110*5*">5. CR<i><span class="price">C$20</span><span clss="day">1 día</span></i><span>20 minutos tigo Costa Rica</span></a>
+                    <a href="#" data-prefix="*110*5*">5. CR 🇨🇷<i><span class="price">C$20</span><span clss="day">1 día</span></i><span>20 minutos tigo Costa Rica</span></a>
                 </div>
             </li>
             <li class="filter-solo-minutos">
                 <div class="box-blue">
-                    <a href="#" data-prefix="*110*6*">6. USA20<i><span class="price">C$20</span><span clss="day">1 día</span></i><span>20 minutos USA y Canadà</span></a>
+                    <a href="#" data-prefix="*110*6*">6. USA20<i><span class="price">C$20</span><span clss="day">1 día</span></i><span>20 minutos USA y Canadá 🇺🇸/🇨🇦</span></a>
                 </div>
             </li>
-            <li class="filter-20">
+            <li class="filter-todoincluido">
                 <div class="box-blue">
-                    <a href="#" data-prefix="*110*7*">7. MEGA1<i><span class="price">C$20</span><span clss="day">1 día</span></i><span>700MB + 20 minutos Tigo CA y USA<br><div class="icon-whatsapp"></div><div class="icon-facebook"></div><div class="icon-messenger"></div><div class="icon-instagram"></div><div class="icon-twitter"></div></span></a>
+                    <a href="#" data-prefix="*110*7*">7. MEGA1<i><span class="price">C$20</span><span clss="day">1 día</span></i><span>700MB + 20 minutos Tigo CA y USA 🇺🇸<br><div class="icon-whatsapp"></div><div class="icon-facebook"></div><div class="icon-messenger"></div><div class="icon-instagram"></div><div class="icon-twitter"></div></span></a>
                 </div>
             </li>
-            <li class="filter-30">
+            <li class="filter-todoincluido">
                 <div class="box-blue">
-                    <a href="#" data-prefix="*110*8*">8. MEGA2<i><span class="price">C$30</span><span clss="day">2 días</span></i><span>850MB + 30 minutos Tigo CA y USA<br><div class="icon-whatsapp"></div><div class="icon-facebook"></div><div class="icon-messenger"></div><div class="icon-instagram"></div><div class="icon-twitter"></div></span></a>
+                    <a href="#" data-prefix="*110*8*">8. MEGA2<i><span class="price">C$30</span><span clss="day">2 días</span></i><span>850MB + 30 minutos Tigo CA y USA 🇺🇸<br><div class="icon-whatsapp"></div><div class="icon-facebook"></div><div class="icon-messenger"></div><div class="icon-instagram"></div><div class="icon-twitter"></div></span></a>
                 </div>
             </li>
-            <li class="filter-50">
+            <li class="filter-todoincluido">
                 <div class="box-blue">
-                    <a href="#" data-prefix="*110*9*">9. MEGA4<i><span class="price">C$50</span><span clss="day">4 días</span></i><span>2.2GB + 80 Minutos Tigo CA y USA<br><div class="icon-whatsapp"></div><div class="icon-facebook"></div><div class="icon-messenger"></div><div class="icon-instagram"></div><div class="icon-twitter"></div></span></a>
+                    <a href="#" data-prefix="*110*9*">9. MEGA4<i><span class="price">C$50</span><span clss="day">4 días</span></i><span>2.2GB + 80 Minutos Tigo CA y USA 🇺🇸<br><div class="icon-whatsapp"></div><div class="icon-facebook"></div><div class="icon-messenger"></div><div class="icon-instagram"></div><div class="icon-twitter"></div></span></a>
                 </div>
             </li>
-            <li class="filter-70">
+            <li class="filter-todoincluido">
                 <div class="box-blue">
                     <a href="#" data-prefix="*110*10*">10. MEGA5<i><span class="price">C$70</span><span clss="day">5 días</span></i><span>3GB + Llamadas Ilimitdas a Tigo<br><div class="icon-whatsapp"></div><div class="icon-facebook"></div><div class="icon-messenger"></div><div class="icon-instagram"></div><div class="icon-twitter"></div></span></a>
                 </div>
             </li>
-            <li class="filter-110">
+            <li class="filter-todoincluido">
                 <div class="box-blue">
                     <a href="#" data-prefix="*110*11*">11. MEGA7<i><span class="price">C$110</span><span clss="day">7 días</span></i><span>4GB + Llamadas Ilimitadas a Tigo<br><div class="icon-whatsapp"></div><div class="icon-facebook"></div><div class="icon-messenger"></div><div class="icon-instagram"></div><div class="icon-twitter"></div></span></a>
                 </div>
             </li>
-            <li class="filter-200">
+            <li class="filter-todoincluido">
                 <div class="box-blue">
                     <a href="#" data-prefix="*110*12*">12. MEGA15<i><span class="price">C$200</span><span clss="day">15 días</span></i><span>6.2GB + Llaadas Ilimitadas a Tigo<br><div class="icon-whatsapp"></div><div class="icon-facebook"></div><div class="icon-messenger"></div><div class="icon-instagram"></div><div class="icon-twitter"></div></span></a>
                 </div>
             </li>
-            <li class="filter-40">
+            <li class="filter-todoincluido">
                 <div class="box-blue">
-                    <a href="#" data-prefix="*110*13*">13. GAMER2<i><span class="price">C$40</span><span clss="day">2 días</span></i><span>2GB Juegos + 850MP + 30 Min Tigo CA y USA<br><div class="icon-whatsapp"></div><div class="icon-facebook"></div><div class="icon-messenger"></div><div class="icon-instagram"></div><div class="icon-twitter"></div></span></a>
+                    <a href="#" data-prefix="*110*13*">13. GAMER2<i><span class="price">C$40</span><span clss="day">2 días</span></i><span>2GB Juegos + 850MP + 30 Min Tigo CA y USA 🇺🇸<br><div class="icon-whatsapp"></div><div class="icon-facebook"></div><div class="icon-messenger"></div><div class="icon-instagram"></div><div class="icon-twitter"></div></span></a>
                 </div>
             </li>
-            <li class="filter-25">
+            <li class="filter-todoincluido">
                 <div class="box-blue">
-                    <a href="#" data-prefix="*110*14*">14. MEGA1+ <sup>NUEVO</sup><i><span class="price">C$25</span><span clss="day">1 día</span></i><span>850MB + 25 Minutos Tigo CA y usa<br><div class="icon-whatsapp"></div><div class="icon-facebook"></div><div class="icon-messenger"></div><div class="icon-instagram"></div><div class="icon-twitter"></div></span></a>
+                    <a href="#" data-prefix="*110*14*">14. MEGA1+ <sup>NUEVO</sup><i><span class="price">C$25</span><span clss="day">1 día</span></i><span>850MB + 25 Minutos Tigo CA y USA 🇺🇸<br><div class="icon-whatsapp"></div><div class="icon-facebook"></div><div class="icon-messenger"></div><div class="icon-instagram"></div><div class="icon-twitter"></div></span></a>
                 </div>
             </li>
-            <li class="filter-55">
+            <li class="filter-todoincluido">
                 <div class="box-blue">
-                    <a href="#" data-prefix="*110*15*">15. MEGA4+ <sup>NUEVO</sup><i><span class="price">C$55</span><span clss="day">4 días</span></i><span>2.5GB + 80 Minutos TIgo CA y USA<br><div class="icon-whatsapp"></div><div class="icon-facebook"></div><div class="icon-messenger"></div><div class="icon-instagram"></div><div class="icon-twitter"></div></span></a>
+                    <a href="#" data-prefix="*110*15*">15. MEGA4+ <sup>NUEVO</sup><i><span class="price">C$55</span><span clss="day">4 días</span></i><span>2.5GB + 80 Minutos TIgo CA y USA 🇺🇸<br><div class="icon-whatsapp"></div><div class="icon-facebook"></div><div class="icon-messenger"></div><div class="icon-instagram"></div><div class="icon-twitter"></div></span></a>
                 </div>
             </li>
-            <li class="filter-110">
+            <li class="filter-todoincluido">
                 <div class="box-blue">
                     <a href="#" data-prefix="*110*16*">16. 7 PLUS<i><span class="price">C$110</span><span clss="day">7 días</span></i><span>4GB + 30 minutos Multiusos + Llamadas Ilimitdas a Tigo<br><div class="icon-whatsapp"></div><div class="icon-facebook"></div><div class="icon-messenger"></div><div class="icon-instagram"></div><div class="icon-twitter"></div></span></a>
                 </div>
             </li>
-            <li class="filter-300">
+            <li class="filter-todoincluido">
                 <div class="box-blue">
                     <a href="#" data-prefix="*110*17*">17. 15 PLUS<i><span class="price">C$300</span><span clss="day">15 días</span></i><span>9GB + 50 Minutos Multiusos + Llamadas Ilimitdas a Tigo<br><div class="icon-whatsapp"></div><div class="icon-facebook"></div><div class="icon-messenger"></div><div class="icon-instagram"></div><div class="icon-twitter"></div></span></a>
                 </div>
             </li>
-            <li class="filter-custom background-blue ">
+            <li class="filter-tiempo-aire background-blue ">
                 <div class="box-custom">
                     <div class="content-minute">
-                        <input type="text" id="txt_minutos" inputmode="numeric">
+                        <input type="text" inputmode="numeric">
                     </div>
                     <div class="content-calltoaction">
-                        <a class="call" id="txt_call" href="#" data-prefix="*108*">MARCAR</a>
+                        <a class="call txt_call" href="#">MARCAR</a>
                     </div>
                 </div>
             </li>
 
             <li class="filter-consultas background-blue ">
                 <div class="box-custom">
-                    <a class="call" href="tel:*109*1*1234%23">MI SALDO</a>
-                    <a class="call" href="tel:*109*3*1234%23">MIS VENTAS</a>
-                    <a class="call" href="tel:*109*2*1234%23">ÚLTIMA RECARGA</a>
+                    <a class="call isclick" href="tel:*109*1*1234%23">MI SALDO</a>
+                    <a class="call isclick" href="tel:*109*3*1234%23">MIS VENTAS</a>
+                    <a class="call isclick" href="tel:*109*2*1234%23">ÚLTIMA RECARGA</a>
                 </div>
             </li>
 
@@ -204,6 +215,187 @@
 
 
 
+        </ul>
+        <ul id="list-claro" class="list-code">
+            <li class="filter-numberphone background-blue ">
+                <div class="content-number">
+                    <input type="tel" inputmode="numeric">
+                </div>
+            </li>
+
+            <li class="filter-tiempo-aire background-blue ">
+                <div class="box-custom">
+                    <div class="content-minute">
+                        <input type="text" filter-todoincluido inputmode="numeric">
+                    </div>
+                    <div class="content-calltoaction">
+                        <a class="call txt_call" href="#">MARCAR</a>
+                    </div>
+                </div>
+            </li>
+            <li class="filter-solo-sms">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*1*1*">1. Paquete SMS<i><span class="price">C$10</span><span clss="day">1 día</span></i><span>Ilimitado a todas las operadoras<br><div class="icon-claro"></div><div class="icon-tigo"></div></span></a>
+                </div>
+            </li>
+            <li class="filter-solo-sms">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*1*2*">2. Paquete SMS<i><span class="price">C$20</span><span clss="day">2 días</span></i><span>Ilimitado a todas las operadoras<br><div class="icon-claro"></div><div class="icon-tigo"></div></span></a>
+                </div>
+            </li>
+            <li class="filter-solo-sms">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*1*3*">3. Paquete SMS<i><span class="price">C$30</span><span clss="day">4 días</span></i><span>Ilimitado a todas las operadoras<br><div class="icon-claro"></div><div class="icon-tigo"></div></span></a>
+                </div>
+            </li>
+            <li class="filter-solo-sms">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*1*4*">4. Paquete SMS<i><span class="price">C$50</span><span clss="day">10 días</span></i><span>Ilimitado a todas las operadoras<br><div class="icon-claro"></div><div class="icon-tigo"></div></span></a>
+                </div>
+            </li>
+            <li class="filter-solo-sms">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*1*5*">5. Paquete SMS<i><span class="price">C$60</span><span clss="day">15 días</span></i><span>Ilimitado a todas las operadoras<br><div class="icon-claro"></div><div class="icon-tigo"></div></span></a>
+                </div>
+            </li>
+            <li class="filter-solo-internet">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*2*1*">6. Internet Móvil<i><span class="price">C$20</span><span clss="day">1 día</span></i><span>250MB<br><div class="icon-whatsapp"></div><div class="icon-twitter"></div></span></a>
+                </div>
+            </li>
+            <li class="filter-solo-internet">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*2*2*">7. Internet Móvil<i><span class="price">C$30</span><span clss="day">2 días</span></i><span>250MB<br><div class="icon-whatsapp"></div><div class="icon-twitter"></div></span></a>
+                </div>
+            </li>
+            <li class="filter-solo-internet">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*2*3*">8. Internet Móvil<sup>NUEVO</sup><i><span class="price">C$50</span><span clss="day">4 días</span></i><span>1.8GB<br><div class="icon-facebook"></div><div class="icon-whatsapp"></div><div class="icon-twitter"></div><div class="icon-instagram"></div></span></a>
+                </div>
+            </li>
+            <li class="filter-solo-internet">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*2*4*">9. Internet Móvil<i><span class="price">C$80</span><span clss="day">5 días</span></i><span>3GB<br><div class="icon-facebook"></div><div class="icon-whatsapp"></div><div class="icon-twitter"></div><div class="icon-instagram"></div></span></a>
+                </div>
+            </li>
+            <li class="filter-solo-internet">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*2*5*">10. Internet Móvil<i><span class="price">C$110</span><span clss="day">7 días</span></i><span>4.5GB<br><div class="icon-facebook"></div><div class="icon-whatsapp"></div><div class="icon-twitter"></div><div class="icon-instagram"></div></span></a>
+                </div>
+            </li>
+            <li class="filter-solo-internet">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*2*6*">11. Internet Móvil<i><span class="price">C$130</span><span clss="day">7 días</span></i><span>6GB<br><div class="icon-facebook"></div><div class="icon-whatsapp"></div><div class="icon-twitter"></div><div class="icon-instagram"></div></span></a>
+                </div>
+            </li>
+            <li class="filter-solo-internet">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*2*7*">12. Internet Móvil<i><span class="price">C$230</span><span clss="day">15 días</span></i><span>7.5GB<br><div class="icon-facebook"></div><div class="icon-whatsapp"></div><div class="icon-twitter"></div><div class="icon-instagram"></div></span></a>
+                </div>
+            </li>
+            <li class="filter-solo-internet">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*2*8*">13. Internet Móvil<sup>PREGUNTAR</sup><i><span class="price">C$400</span><span clss="day">20 días</span></i><span>3GB<br><div class="icon-facebook"></div><div class="icon-whatsapp"></div><div class="icon-twitter"></div><div class="icon-instagram"></div></span></a>
+                </div>
+            </li>
+
+            <li class="filter-solo-internet">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*2*9*">14. Internet Móvil<i><span class="price">C$600</span><span clss="day">30 días</span></i><span>15GB<br><div class="icon-facebook"></div><div class="icon-whatsapp"></div><div class="icon-twitter"></div><div class="icon-instagram"></div></span></a>
+                </div>
+            </li>
+            <li class="filter-solo-minutos-nic">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*4*1*">15. Minutos 🇳🇮<i><span class="price">C$25</span><span clss="day">1 día</span></i><span>25 min a Claro</span></a>
+                </div>
+            </li>
+            <li class="filter-solo-minutos-nic">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*4*2*">16. Minutos 🇳🇮<i><span class="price">C$20</span><span clss="day">1 día</span></i><span>20 min a Claro</span></a>
+                </div>
+            </li>
+            <li class="filter-solo-minutos-nic">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*4*3*">17. Todo Voz 🇳🇮<sup>NUEVO</sup><i><span class="price">C$30</span><span clss="day">2 días</span></i><span>20 min a Claro</span></a>
+                </div>
+            </li>
+            <li class="filter-solo-minutos-nic">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*4*21*">18. Minutos 🇳🇮<i><span class="price">C$30</span><span clss="day">2 días</span></i><span>30 min a Claro</span></a>
+                </div>
+            </li>
+            <li class="filter-solo-minutos-nic">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*4*4*">19. Minutos 🇳🇮<i><span class="price">C$50</span><span clss="day">3 días</span></i><span>50 min a Claro</span></a>
+                </div>
+            </li>
+            <li class="filter-solo-minutos-nic">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*4*5*">20. Minutos 🇳🇮<i><span class="price">C$60</span><span clss="day">3 días</span></i><span>60 min a Claro</span></a>
+                </div>
+            </li>
+            <li class="filter-solo-minutos-nic">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*4*6*">21. Minutos 🇳🇮<i><span class="price">C$70</span><span clss="day">3 días</span></i><span>70 min a Claro</span></a>
+                </div>
+            </li>
+            <li class="filter-solo-minutos-nic">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*4*7*">22. Minutos 🇳🇮<i><span class="price">C$100</span><span clss="day">3 días</span></i><span>110 min a Claro</span></a>
+                </div>
+            </li>
+            <li class="filter-solo-minutos-us">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*4*8*">23. Minutos 🇺🇸/🇨🇦<i><span class="price">C$30</span><span clss="day">1 días</span></i><span>30 min a USA/Canadá</span></a>
+                </div>
+            </li>
+            <li class="filter-solo-minutos-us">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*4*9*">24. Minutos 🇺🇸/🇨🇦<i><span class="price">C$50</span><span clss="day">1 días</span></i><span>60 min a USA/Canadá</span></a>
+                </div>
+            </li>
+            <li class="filter-solo-minutos-us">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*4*10*">25. Minutos 🇺🇸/🇨🇦<i><span class="price">C$100</span><span clss="day">2 días</span></i><span>60 min a USA/Canadá</span></a>
+                </div>
+            </li>
+            <li class="filter-solo-minutos-cr">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*4*11*">25. Minutos 🇨🇷<i><span class="price">C$60</span><span clss="day">1 día</span></i><span>30 min a Costa Rica</span></a>
+                </div>
+            </li>
+            <li class="filter-solo-minutos-cr">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*4*12*">26. Minutos 🇨🇷<i><span class="price">C$100</span><span clss="day">1 día</span></i><span>60 min a Costa Rica</span></a>
+                </div>
+            </li>
+            <li class="filter-solo-minutos-cr">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*4*13*">27. Minutos 🇨🇷<i><span class="price">C$200</span><span clss="day">2 días</span></i><span>150 min a Costa Rica</span></a>
+                </div>
+            </li>
+            <li class="filter-solo-minutos-esp">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*4*14*">28. Minutos 🇪🇸<i><span class="price">C$50</span><span clss="day">1 día</span></i><span>15 min a España</span></a>
+                </div>
+            </li>
+            <li class="filter-solo-minutos-esp">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*4*15*">29. Minutos 🇪🇸<i><span class="price">C$90</span><span clss="day">1 día</span></i><span>30 min a España</span></a>
+                </div>
+            </li>
+            <li class="filter-solo-minutos-esp">
+                <div class="box-blue">
+                    <a href="#" data-prefix="*321*PIN*4*16*">29. Minutos 🇪🇸<i><span class="price">C$170</span><span clss="day">2 días</span></i><span>60 min a España</span></a>
+                </div>
+            </li>
+            <li class="filter-consultas background-blue ">
+                <div class="box-custom">
+                    <a class="call" href="tel:*603*6*2023%23">MI SALDO</a>
+                    <!--a class="call consulta-recarga" href="tel:*603*4*2*83256836*2023%23">CONSULTA DE RECARGA</a-->
+                    <a class="call" href="tel:*603*3*2023%23">ÚLTIMA RECARGA</a>
+                </div>
+            </li>
         </ul>
     </div>
     <!-- ENVIAR DATOS A UNA HOJA DE GOOGLE 
@@ -303,7 +495,7 @@
             </div>
 
             <div class="content-minute">
-                <input type="text" id="txt_minutos" inputmode="numeric">
+                <input type="text" filter-todoincluido inputmode="numeric">
             </div>
             
 

@@ -3,8 +3,8 @@
     $(window).load(function() {
 
         $(".all-content").removeClass('hide');
-        $("#txt_number").inputmask({ mask: "9999-9999", greedy: false, jitMasking: true });
-        $("#txt_minutos").inputmask({ mask: "999", greedy: false, jitMasking: true });
+        $(".filter-numberphone input").inputmask({ mask: "9999-9999", greedy: false, jitMasking: true });
+        $(".filter-tiempo-aire input").inputmask({ mask: "999", greedy: false, jitMasking: true });
 
 
         //  raturTasaDeCambio();
@@ -23,44 +23,73 @@
         }
     });
 
-    function resizeBoxPopup() {
-        var ScreenW = $(window).outerWidth(true);
-        var ScreenH = $(window).outerHeight(true);
-        var BoxW = $('.card.recargas').outerWidth(true);
-        var BoxH = $('.card.recargas').outerHeight(true);
-        // alert(ScreenW);
-        $('.card.recargas').css({
-            'top': ((ScreenH / 2) - (BoxH / 2)),
-            'left': ((ScreenW / 2) - (BoxW / 2)),
-        });
-    }
 
-    function SetRecargaNormal() {
-        var numero = ($.trim($('#txt_number').val())).replace(" ", '').replace("-", '');
-        var minute = ($.trim($('#txt_minutos').val())).replace(" ", '').replace("-", '');
-        var prefix = '*108*';
 
-        console.log(numero);
+    function SetRecargaNormal(list) {
+        var numero = ($.trim($('#' + list + ' .filter-numberphone input').val())).replace(" ", '').replace("-", '');
+        var monto = ($.trim($('#' + list + ' .filter-tiempo-aire input').val())).replace(" ", '').replace("-", '');
+
+        var PIN = '';
+        var prefix = '';
+        var HREF = '';
+
+
+
         numero = (numero == '') ? 0 : parseInt(numero);
-        minute = (minute == '') ? 0 : parseInt(minute);
+        monto = (monto == '') ? 0 : parseInt(monto);
+        console.clear();
 
-        //console.log(numero.length + " " + minute)
-        if ((numero !== 0 && $.trim(numero).length == 8) && (minute >= 10)) {
-
-            $("a#txt_call").each(function(i) {
-                prefix = $(this).data('prefix');
-                codigo = 'tel:' + encodeURIComponent(prefix + minute + '*' + numero + "*1234*#");
-                $(this).attr({
-                    "href": codigo
-                });
-            }).addClass('isclick');
-
-
-
+        if ($.trim(numero).length == 8) {
+            $('.list').removeClass('disable');
         } else {
-            $("a#txt_call").attr({
-                "href": "#"
-            }).removeClass('isclick');
+            $('.list').addClass('disable');
+        }
+        if ((numero !== 0 && $.trim(numero).length === 8)) {
+
+            if ((monto >= 10)) {
+                if (list === 'list-tigo') {
+                    prefix = '*108*';
+                    PIN = '1234';
+                    HREF = 'tel:' + encodeURIComponent(prefix + monto + '*' + numero + "*" + PIN + "*#");
+                } else if (list === 'list-claro') {
+                    prefix = '*603*1*';
+                    PIN = '2023';
+                    HREF = 'tel:' + encodeURIComponent(prefix + numero + '*' + monto + "*" + PIN + "#");
+                }
+                $('#' + list + " .filter-tiempo-aire a").attr({
+                    "href": HREF
+                }).addClass('isclick');
+
+            } else {
+                $('#' + list + " .filter-tiempo-aire a").attr({
+                    "href": "#"
+                }).removeClass('isclick');
+            }
+
+            /*  $('#' + list + " .filter-tiempo-aire .consulta-recarga").attr({
+                  "href": HREF
+              }).removeClass('isclick');*/
+
+
+            $('#' + list + " li").each(function(i) {
+                if ($(this).hasClass('filter-tiempo-aire') && $(this).hasClass('filter-consultas')) {
+                    return;
+                }
+                var link = $(this).find('a');
+                if (link.length) {
+                    var prefix = link.data('prefix');
+                    if (list === 'list-tigo') {
+                        HREF = 'tel:' + encodeURIComponent(prefix + numero + '*' + PIN + "#");
+                    } else if (list === 'list-claro') {
+                        HREF = 'tel:' + encodeURIComponent(prefix.replace('PIN', PIN) + numero + "#");
+                    }
+                    link.attr({
+                        "href": HREF
+                    }).addClass('isclick');;
+                }
+            });
+
+
 
         }
     }
@@ -69,13 +98,26 @@
 
 
 
-    $('body').on('keyup touchend', '#txt_minutos', function() {
-        SetRecargaNormal();
+    $('body').on('keyup touchend', '.filter-tiempo-aire input', function() {
+        if ($('body').hasClass('bk-claro')) {
+            SetRecargaNormal('list-claro');
+        } else {
+            SetRecargaNormal('list-tigo');
+        }
     });
-    $('body').on('keyup touchend', '#txt_number', function() {
-        var number = (($.trim($(this).val())).replace(" ", '')).replace("_", '').replace("-", '');
+    $('body').on('keyup touchend', '.filter-numberphone input', function() {
+        if ($('body').hasClass('bk-claro')) {
+            SetRecargaNormal('list-claro');
+        } else {
+            SetRecargaNormal('list-tigo');
+        }
+        /*var number = (($.trim($(this).val())).replace(" ", '')).replace("_", '').replace("-", '');
         var prefix = '';
-        SetRecargaNormal();
+        if ($('body').hasClass('bk-claro')) {
+            SetRecargaNormal('list-claro');
+        } else {
+            SetRecargaNormal('list-tigo');
+        }
         if (number !== "" && number.length == 8) {
 
             $("#list-tigo a").each(function(i) {
@@ -93,64 +135,38 @@
                 "href": "#"
             });
             $('.list').addClass('disable');
-        }
+        }*/
 
 
     });
 
 
-    $('body').on('click', '.close', function() {
-        $('#recargas,.content-minute,.content-calltoaction,.content-calltoaction-direct,h3,.content-filter').removeClass('show');
-    });
-
-    $('body').on('click', '.click-recarga-tigo-minutos', function() {
-
-        $('#recargas,.content-minute,.content-calltoaction,.content-calltoaction-direct,h3').addClass('show');
-        $('.list').removeClass('show');
-
-        resizeBoxPopup();
 
 
-
-        return false;
-    });
-    $(window).resize(function() {
-        resizeBoxPopup();
-    });
-    $('body').on('click', '.click-recarga-tigo-internet', function() {
-
-        $('#recargas').addClass('show');
-        $('.list,.content-filter').addClass('show');
-        $('.content-minute,.content-calltoaction,.content-calltoaction-direct,h3').removeClass('show');
-        resizeBoxPopup();
-        $('.list').css({
-            "height": $('.card.recargas').outerHeight(true) - $(".content-number").outerHeight(true) - $(".content-filter").outerHeight(true) - 70
-        });
-        return false;
-    });
-
-    $('body').on('change', '#txt_filter', function() {
+    $('body').on('change', '.content-filter select', function() {
         var filter = $.trim(($(this).val()));
-        console.log(filter);
-        $(".filter-numberphone").show();
-        if (filter === 'custom' || filter === 'solo-minutos' || filter === 'solo-sms') {
-            $("#list-tigo li").hide();
-            $("#list-tigo li.filter-" + filter).show();
-            $(".filter-numberphone").show();
+        var PDV;
+        $('.list').addClass('disable');
+        if ($(this).parent().hasClass('select-tigo')) {
+            PDV = '#list-tigo';
 
-        } else if (filter === 'o') {
-            $("#list-tigo li").show();
-            $("#list-tigo li.filter-consultas, #list-tigo li.filter-custom").hide();
-
-        } else if (filter === 'consultas') {
-            $("#list-tigo li").hide();
-            $("#list-tigo li.filter-consultas").show();
         } else {
-            $("#list-tigo li").hide();
-            $("#list-tigo li.filter-" + filter).show();
-            $(".filter-numberphone").show();
+            PDV = '#list-claro';
 
         }
+        $(PDV + " li").hide();
+        $(PDV + " li.filter-numberphone").show();
+
+        if (filter === "todo") {
+            $(PDV + " li").show();
+            $(PDV + " li.filter-tiempo-aire," + PDV + " li.filter-consultas").hide();
+        } else if (filter === "consultas") {
+            $(PDV + " li").hide();
+
+            $('.list').removeClass('disable');
+        }
+        $(PDV + " li.filter-" + filter).show();
+
         return false;
     });
 

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*============================================================
   Sass CSS3 Mixins! The Cross-Browser CSS3 Sass Library
   By: Matthieu Aussaguel, http://www.mynameismatthieu.com, @matthieu_tweets
@@ -1462,7 +1463,12 @@ html {
 /*Breackpoint Bootstrap*/
 body {
   margin: 0;
-  padding: 125px 0 0 0;
+  padding: 117px 0 0 0;
+  -webkit-text-size-adjust: none;
+}
+
+body a {
+  -webkit-tap-highlight-color: transparent;
 }
 
 body * {
@@ -1491,8 +1497,24 @@ body.bk-tigo header {
   background-color: #00377b;
 }
 
+body.bk-tigo header .select-tigo {
+  display: block;
+}
+
+body.bk-tigo header .select-claro {
+  display: none;
+}
+
 body.bk-tigo .list .background-blue {
   background-color: #00377b;
+}
+
+body.bk-tigo .list #list-tigo {
+  display: block;
+}
+
+body.bk-tigo .list #list-claro {
+  display: none;
 }
 
 body.bk-claro {
@@ -1503,8 +1525,24 @@ body.bk-claro header {
   background-color: #8a0000;
 }
 
+body.bk-claro header .select-claro {
+  display: block;
+}
+
+body.bk-claro header .select-tigo {
+  display: none;
+}
+
 body.bk-claro .list .background-blue {
   background-color: #8a0000;
+}
+
+body.bk-claro .list #list-tigo {
+  display: none;
+}
+
+body.bk-claro .list #list-claro {
+  display: block;
 }
 
 body header {
@@ -1555,6 +1593,7 @@ body .list .list-code {
   list-style: none;
   padding: 0px;
   margin: 0;
+  display: none;
 }
 
 body .list .list-code li {
@@ -1563,7 +1602,11 @@ body .list .list-code li {
 }
 
 body .list .list-code li.filter-numberphone {
-  padding-bottom: 9px !important;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 118px;
+  z-index: 99999;
+  padding-bottom: 1px !important;
 }
 
 body .list .list-code li .box-blue {
@@ -1667,6 +1710,26 @@ body .list .list-code li a:not(.call) > span div.icon-youtube {
   background: #FF0000;
 }
 
+body .list .list-code li a:not(.call) > span div.icon-tigo {
+  background: #00377b;
+  -webkit-border-radius: 100px;
+  -khtml-border-radius: 100px;
+  -moz-border-radius: 100px;
+  -ms-border-radius: 100px;
+  -o-border-radius: 100px;
+  border-radius: 100px;
+}
+
+body .list .list-code li a:not(.call) > span div.icon-claro {
+  background: #FF0000;
+  -webkit-border-radius: 100px;
+  -khtml-border-radius: 100px;
+  -moz-border-radius: 100px;
+  -ms-border-radius: 100px;
+  -o-border-radius: 100px;
+  border-radius: 100px;
+}
+
 body .list .list-code li a:not(.call) i {
   display: block;
   text-transform: uppercase;
@@ -1709,7 +1772,11 @@ body .list .list-code li a:not(.call) i .day {
   font-size: 14px;
 }
 
-body .filter-custom {
+body .filter-tiempo-aire {
+  display: none;
+}
+
+body .filter-consultas {
   display: none;
 }
 
@@ -1748,50 +1815,31 @@ body .content-minute,
 body .content-filter {
   background-color: #ececec;
   max-width: 277px;
-  margin: 0 auto;
-}
-
-body .content-number {
-  padding: 0 0 0 90px;
+  margin: 0 auto 7px auto;
+  padding: 0 0 0 75px;
   position: relative;
 }
 
-body .content-number::before {
-  content: 'Celular:';
-  font-size: 20px;
+body .content-number::before,
+body .content-minute::before,
+body .content-filter::before {
+  font-size: 16px;
   position: absolute;
-  top: 13px;
+  top: 12px;
   left: 5px;
   color: #606060;
 }
 
-body .content-filter {
-  margin: 7px auto;
-  padding: 0 0 0 90px;
-  position: relative;
+body .content-number::before {
+  content: 'Número:';
+}
+
+body .content-minute::before {
+  content: 'Monto:';
 }
 
 body .content-filter::before {
   content: 'Tipo:';
-  font-size: 20px;
-  position: absolute;
-  top: 13px;
-  left: 5px;
-  color: #606060;
-}
-
-body .content-minute {
-  padding: 0 0 0 90px;
-  position: relative;
-}
-
-body .content-minute::before {
-  content: 'Minutos:';
-  font-size: 20px;
-  position: absolute;
-  top: 13px;
-  left: 5px;
-  color: #606060;
 }
 
 body .content-calltoaction {
@@ -1825,7 +1873,7 @@ body .content-calltoaction .call {
   text-shadow: 1px 1px rgba(255, 255, 255, 0.856);
 }
 
-body .content-calltoaction .call#txt_call:not(.isclick) {
+body .content-calltoaction .call.txt_call:not(.isclick) {
   pointer-events: none;
   filter: grayscale(1);
 }
@@ -1837,10 +1885,10 @@ body select {
   display: block;
   background-color: transparent;
   width: 100%;
-  padding: 11px 15px;
-  font-size: 22px;
+  padding: 9px 7px;
+  font-size: 20px;
   color: #000 !important;
-  text-align: right;
+  text-align: left;
 }
 
 body [type="text"], body [type="text"]:focus, body [type="text"]:hover,
@@ -1860,6 +1908,7 @@ body select:hover {
 }
 
 body .check-iphone {
+  -webkit-tap-highlight-color: transparent;
   width: 100%;
   display: block;
   text-align: center;
@@ -1881,6 +1930,7 @@ body .check-iphone span {
 }
 
 body .check-iphone .switch {
+  -webkit-tap-highlight-color: transparent;
   display: inline-block;
   margin: 15px 0 0 0;
   width: 100px;

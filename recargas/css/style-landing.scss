@@ -5,7 +5,11 @@
 body {
     & {
         margin: 0;
-        padding: 125px 0 0 0;
+        padding: 117px 0 0 0;
+        -webkit-text-size-adjust: none;
+    }
+    a {
+        -webkit-tap-highlight-color: transparent;
     }
     * {
         &,
@@ -29,10 +33,22 @@ body {
             background-image: linear-gradient( 330deg, rgb(0, 6, 77) 0%, rgb(2, 25, 116) 14%, rgb(5, 49, 153) 29%, rgb(9, 79, 185) 43%, rgb(9, 93, 195) 57%, rgb(5, 79, 168) 71%, rgb(2, 67, 146) 86%, rgb(0, 55, 122) 100%);
             header {
                 background-color: #00377b;
+                .select-tigo {
+                    display: block;
+                }
+                .select-claro {
+                    display: none;
+                }
             }
             .list {
                 .background-blue {
                     background-color: #00377b;
+                }
+                #list-tigo {
+                    display: block;
+                }
+                #list-claro {
+                    display: none;
                 }
             }
         }
@@ -40,10 +56,22 @@ body {
             background-image: linear-gradient( 350deg, rgb(87, 0, 0) 0%, rgb(138, 0, 0) 36%, rgb(184, 0, 0) 56%, rgb(230, 0, 0) 70%, rgb(230, 0, 0) 81%, rgb(184, 0, 0) 90%, rgb(138, 0, 0) 97%, rgb(87, 0, 0) 100%);
             header {
                 background-color: #8a0000;
+                .select-claro {
+                    display: block;
+                }
+                .select-tigo {
+                    display: none;
+                }
             }
             .list {
                 .background-blue {
                     background-color: #8a0000;
+                }
+                #list-tigo {
+                    display: none;
+                }
+                #list-claro {
+                    display: block;
                 }
             }
         }
@@ -100,11 +128,16 @@ body {
             list-style: none;
             padding: 0px;
             margin: 0;
+            display: none;
             li {
                 padding: 0;
                 margin: 0;
                 &.filter-numberphone {
-                    padding-bottom: 9px!important;
+                    position: -webkit-sticky;
+                    position: sticky;
+                    top: 118px;
+                    z-index: 99999;
+                    padding-bottom: 1px!important;
                 }
                 .box-blue {
                     padding: 7px 15px;
@@ -185,6 +218,14 @@ body {
                             &.icon-youtube {
                                 background: #FF0000;
                             }
+                            &.icon-tigo {
+                                background: #00377b;
+                                @include css3-prefix(border-radius, 100px);
+                            }
+                            &.icon-claro {
+                                background: #FF0000;
+                                @include css3-prefix(border-radius, 100px);
+                            }
                         }
                     }
                     i {
@@ -224,10 +265,11 @@ body {
             }
         }
     }
-    .filter-custom {
+    .filter-tiempo-aire {
         display: none;
     }
     .filter-consultas {
+        display: none;
         a {
             display: block;
             color: #053e06;
@@ -265,47 +307,31 @@ body {
         background-color: #ececec;
         // border: #ddd solid 1px;
         max-width: 277px;
-        margin: 0 auto;
-    }
-    .content-number {
-        //margin: 0 0 0 0;
-        padding: 0 0 0 90px;
+        margin: 0 auto 7px auto;
+        padding: 0 0 0 75px;
         position: relative;
         &::before {
-            content: 'Celular:';
-            font-size: 20px;
+            font-size: 16px;
             position: absolute;
-            top: 13px;
+            top: 12px;
             left: 5px;
             color: #606060;
+        }
+    }
+    .content-number {
+        &::before {
+            content: 'Número:';
+        }
+    }
+    .content-minute {
+        &::before {
+            content: 'Monto:';
         }
     }
     .content-filter {
         // display: none;
-        margin: 7px auto;
-        padding: 0 0 0 90px;
-        position: relative;
         &::before {
             content: 'Tipo:';
-            font-size: 20px;
-            position: absolute;
-            top: 13px;
-            left: 5px;
-            color: #606060;
-        }
-    }
-    .content-minute {
-        //display: none;
-        //margin: 15px 0 0 0;
-        padding: 0 0 0 90px;
-        position: relative;
-        &::before {
-            content: 'Minutos:';
-            font-size: 20px;
-            position: absolute;
-            top: 13px;
-            left: 5px;
-            color: #606060;
         }
     }
     .content-calltoaction {
@@ -336,7 +362,7 @@ body {
             font-size: 24px;
             font-weight: bold;
             text-shadow: 1px 1px rgba(255, 255, 255, 0.856);
-            &#txt_call:not(.isclick) {
+            &.txt_call:not(.isclick) {
                 pointer-events: none;
                 filter: grayscale(1);
             }
@@ -349,10 +375,10 @@ body {
         display: block;
         background-color: transparent;
         width: 100%;
-        padding: 11px 15px;
-        font-size: 22px;
+        padding: 9px 7px;
+        font-size: 20px;
         color: #000 !important;
-        text-align: right;
+        text-align: left;
         &,
         &:focus,
         &:hover {
@@ -363,6 +389,7 @@ body {
         }
     }
     .check-iphone {
+        -webkit-tap-highlight-color: transparent;
         width: 100%;
         display: block;
         text-align: center;
@@ -380,6 +407,7 @@ body {
             padding: 9px 0px;
         }
         .switch {
+            -webkit-tap-highlight-color: transparent;
             display: inline-block;
             margin: 15px 0 0 0;
             width: 100px;
