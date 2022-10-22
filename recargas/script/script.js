@@ -79,7 +79,8 @@
                 if (link.length) {
                     var prefix = link.data('prefix');
                     if (list === 'list-tigo') {
-                        HREF = 'tel:' + encodeURIComponent(prefix + numero + '*' + PIN + "#");
+                        alert("aquí");
+                        HREF = 'tel:' + encodeURIComponent(prefix + numero + '*1234#");
                     } else if (list === 'list-claro') {
                         HREF = 'tel:' + encodeURIComponent(prefix.replace('PIN', PIN) + numero + "#");
                     }
