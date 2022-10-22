@@ -1630,8 +1630,8 @@ body .list .list-code li a:not(.call) {
   display: block;
   width: 100%;
   height: 145px;
-  padding: 17px 95px 7px 7px;
-  font-size: 20px;
+  padding: 12px 95px 7px 7px;
+  font-size: 18px;
   position: relative;
   font-weight: bold;
   background-color: rgba(0, 0, 0, 0.271);
@@ -1642,10 +1642,15 @@ body .list .list-code li a:not(.call), body .list .list-code li a:not(.call):hov
 }
 
 body .list .list-code li a:not(.call) sup {
+  -webkit-animation: blinker 2.5s linear infinite;
+  -khtml-animation: blinker 2.5s linear infinite;
+  -moz-animation: blinker 2.5s linear infinite;
+  -ms-animation: blinker 2.5s linear infinite;
+  -o-animation: blinker 2.5s linear infinite;
   animation: blinker 2.5s linear infinite;
-  color: #fff;
-  background: #e58305;
-  padding: 1px 9px;
+  color: #000;
+  background: #05e538;
+  padding: 3px 14px;
   font-size: 10px;
   -webkit-border-radius: 10px;
   -khtml-border-radius: 10px;
@@ -1656,16 +1661,19 @@ body .list .list-code li a:not(.call) sup {
   position: absolute;
   top: 4px;
   z-index: 99;
-  left: 7px;
+  right: 10px;
+  min-width: 74px;
+  text-align: center;
 }
 
 body .list .list-code li a:not(.call) > span {
   font-size: 0.7em;
   display: block;
   width: 100%;
-  padding: 7px 0px 0px 21px;
+  padding: 0px 0px 0px 30px;
   font-weight: normal;
   line-height: 1.3em;
+  word-wrap: break-word;
 }
 
 body .list .list-code li a:not(.call) i {
@@ -1699,11 +1707,20 @@ body .list .list-code li a:not(.call) i span {
 }
 
 body .list .list-code li a:not(.call) i .price {
-  font-size: 21px;
   margin-bottom: 15px;
   padding: 7px 0;
   line-height: 1em;
   background-color: rgba(0, 0, 0, 0.55);
+}
+
+body .list .list-code li a:not(.call) i .price .tachado {
+  font-size: 21px;
+}
+
+body .list .list-code li a:not(.call) i .price .cobro {
+  font-size: 16px;
+  padding: 7px 0 0 0;
+  color: #20f11e;
 }
 
 body .list .list-code li a:not(.call) i .day {

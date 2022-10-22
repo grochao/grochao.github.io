@@ -41,7 +41,10 @@
     }
 
     function LoadPrice(data) {
-        return '<span class="price">C$' + data[0] + '</span><span class="day">' + data[1] + ' día' + (data[1] > 1 ? 's' : '') + '</span>';
+        //var price = Math.floor((data[0] - (data[0] / 10 - Math.floor(data[0] / 10)) * 10) * 1.1);
+        var price = Math.floor(data[0] * 1.1);
+
+        return '<span class="price"><div class="tachado">C$' + data[0] + '</div><div class="cobro">C$' + price + '</div></span><span class="day">' + data[1] + ' día' + (data[1] > 1 ? 's' : '') + '</span>';
     }
 
     function LoadIcons(type) {

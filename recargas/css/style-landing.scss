@@ -157,9 +157,9 @@ body {
                     display: block;
                     width: 100%;
                     height: 145px;
-                    padding: 17px 95px 7px 7px;
+                    padding: 12px 95px 7px 7px;
                     //border-bottom: rgba(255, 255, 255, 0.501) solid 1px;
-                    font-size: 20px;
+                    font-size: 18px;
                     position: relative;
                     font-weight: bold;
                     background-color: rgba(0, 0, 0, 0.271);
@@ -171,24 +171,27 @@ body {
                         text-decoration: none;
                     }
                     sup {
-                        animation: blinker 2.5s linear infinite;
-                        color: #fff;
-                        background: #e58305;
-                        padding: 1px 9px;
+                        @include css3-prefix(animation, blinker 2.5s linear infinite);
+                        color: #000;
+                        background: #05e538;
+                        padding: 3px 14px;
                         font-size: 10px;
                         @include css3-prefix(border-radius, 10px);
                         position: absolute;
                         top: 4px;
                         z-index: 99;
-                        left: 7px;
+                        right: 10px;
+                        min-width: 74px;
+                        text-align: center;
                     }
                     &>span {
                         font-size: 0.7em;
                         display: block;
                         width: 100%;
-                        padding: 7px 0px 0px 21px;
+                        padding: 0px 0px 0px 30px;
                         font-weight: normal;
                         line-height: 1.3em;
+                        word-wrap: break-word;
                     }
                     i {
                         display: block;
@@ -213,11 +216,18 @@ body {
                             line-height: 1em;
                         }
                         .price {
-                            font-size: 21px;
                             margin-bottom: 15px;
                             padding: 7px 0;
                             line-height: 1em;
                             background-color: rgba(0, 0, 0, 0.55);
+                            .tachado {
+                                font-size: 21px;
+                            }
+                            .cobro {
+                                font-size: 16px;
+                                padding: 7px 0 0 0;
+                                color: #20f11e;
+                            }
                         }
                         .day {
                             font-size: 14px;
