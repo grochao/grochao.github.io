@@ -50,7 +50,7 @@
                 if (list === 'list-tigo') {
                     prefix = '*108*';
                     PIN = '1234';
-                    HREF = 'tel:' + encodeURIComponent(prefix + monto + '*' + numero + "*" + PIN + "*#");
+                    HREF = 'tel:' + encodeURIComponent(prefix + monto + '*' + numero + "*1234*#");
                 } else if (list === 'list-claro') {
                     prefix = '*603*1*';
                     PIN = '2023';
@@ -80,7 +80,7 @@
                     var prefix = link.data('prefix');
                     if (list === 'list-tigo') {
                         alert("aquí");
-                        HREF = 'tel:' + encodeURIComponent(prefix + numero + '*1234#");
+                        HREF = 'tel:' + encodeURIComponent(prefix + numero + "*1234#");
                     } else if (list === 'list-claro') {
                         HREF = 'tel:' + encodeURIComponent(prefix.replace('PIN', PIN) + numero + "#");
                     }
