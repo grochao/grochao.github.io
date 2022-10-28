@@ -80,7 +80,7 @@
                                     </optgroup>
                                     <option  value="solo-internet">SOLO INTERNET</option>
                                     <option  value="consultas">CONSULTAS</option>
-                                    <option  value="todoincluido">TODO INCLUIDO</option>
+                                    <option  value="todo-incluido">TODO INCLUIDO</option>
                                 </select>
                                 <input type="tel" id="number-phone" inputmode="numeric" placeholder="Teléfono Aquí">
                                 <span class="field-minute">
@@ -143,6 +143,50 @@
         https://www.youtube.com/watch?v=s9XZui6zRPw
     
     -->
+    <div class="steps">
+        <div class="step-1" style="display: none;">
+            <span class="title">SELECCIONES LA OPERADORA</span>
+            <div class="content-operadora">
+                <i class="icon-tigo"></i>
+                <i class="icon-claro"></i>
+            </div>
+        </div>
+        <div class="step-2" style="display: none;">
+            <span class="title">INGRESE EL NÚMERO</span>
+            <div class="content-mobile-number">
+                <input type="text" id="mobile-number">
+            </div>
+        </div>
+        <div class="step-3">
+            <span class="title">TIPO DE RECARGA</span>
+            <ul id="mobile-select-tigo" style="display: none;">
+                <li date-value="full">VER TODO</li>
+                <li date-value="tiempo-aire">TIEMPO AIRE</li>
+                <li date-value="habla">SOLO MINUTOS</li>
+                <li date-value="chat">SOLO SMS</li>
+                <li date-value="consultas">CONSULTAS</li>
+                <li date-value="todo-incluido">TODO INCLUIDO</li>
+            </ul>
+            <ul id="mobile-select-claro">
+                <li date-value="full">VER TODO</li>
+                <li date-value="tiempo-aire">TIEMPO AIRE</li>
+                <li date-value="chat">SOLO SMS</li>
+                <li date-value="solo-minutos-nic">MINUTOS CLARO NICA</li>
+                <li date-value="solo-minutos-us">MINUTOS USA/CAN</li>
+                <li date-value="solo-minutos-cr">MINUTOS COSTA RICA</li>
+                <li date-value="solo-minutos-esp">MINUTOS ESPAÑA</li>
+                <li date-value="solo-minutos-multidestinos">MINUTOS MULTI DESTINO</li>
+                <li date-value="solo-internet">SOLO INTERNET</li>
+                <li date-value="consultas">CONSULTAS</li>
+                <li date-value="todo-incluido">TODO INCLUIDO</li>
+            </ul>
+        </div>
+        <div class="nav-bar">
+            <button type="button">ATRÁS</button>
+            <button type="button">&nbsp;</button>
+            <button type="button">OK</button>
+        </div>
+    </div>
 
 
     <script src="script/jquery-2.2.4.min.js"></script>

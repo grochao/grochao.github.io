@@ -1,6 +1,9 @@
 var ListNumber = [];
 var jsonList = {
-    "tigo": [{
+    "tigo": [
+
+
+        {
             "Name": "HABLA20",
             "Price": 20,
             "Day": 1,
@@ -245,26 +248,237 @@ var jsonList = {
         }
     ],
     "claro": [{
-            "Name": "HABLA20",
-            "Price": 20,
+            "Name": "SMS 1D",
+            "Price": 10,
             "Day": 1,
-            "Description": "20Mim a números Tigo",
+            "Description": "SMS Ilimitado",
             "Social_media": null,
-            "Type": "hablar",
+            "Type": "chat",
             "New": false,
-            "Code": "*110*1*CELULAR*PIN#"
+            "Code": "*321*PIN*1*1*NUMERO#"
         },
         {
-            "Name": "HABLA20",
+            "Name": "SMS 2D",
+            "Price": 20,
+            "Day": 2,
+            "Description": "SMS Ilimitados",
+            "Social_media": null,
+            "Type": "chat",
+            "New": false,
+            "Code": "*321*PIN*1*2*NUMERO#"
+        },
+        {
+            "Name": "SMS 4D",
+            "Price": 30,
+            "Day": 4,
+            "Description": "SMS Ilimitados",
+            "Social_media": null,
+            "Type": "chat",
+            "New": false,
+            "Code": "*321*PIN*1*3*NUMERO#"
+        },
+        {
+            "Name": "SMS 10D",
+            "Price": 50,
+            "Day": 10,
+            "Description": "SMS Ilimitados",
+            "Social_media": null,
+            "Type": "chat",
+            "New": false,
+            "Code": "*321*PIN*1*4*NUMERO#"
+        },
+        {
+            "Name": "SMS 15D",
+            "Price": 60,
+            "Day": 15,
+            "Description": "SMS Ilimitados",
+            "Social_media": null,
+            "Type": "chat",
+            "New": false,
+            "Code": "*321*PIN*1*5*NUMERO#"
+        },
+        {
+            "Name": "Internet 1D",
             "Price": 20,
             "Day": 1,
-            "Description": "20Mim a números Tigo",
+            "Description": "250MB",
             "Social_media": null,
-            "Type": "hablar",
+            "Type": "solo-internet",
             "New": false,
-            "Code": "*110*1*CELULAR*PIN#"
+            "Code": "*321*PIN*2*1*NUMERO#"
+        },
+        {
+            "Name": "Internet 2D",
+            "Price": 30,
+            "Day": 2,
+            "Description": "300MB",
+            "Social_media": null,
+            "Type": "solo-internet",
+            "New": false,
+            "Code": "*321*PIN*2*2*NUMERO#"
+        },
+        {
+            "Name": "Internet 5D",
+            "Price": 80,
+            "Day": 5,
+            "Description": "1GB",
+            "Social_media": null,
+            "Type": "solo-internet",
+            "New": false,
+            "Code": "*321*PIN*2*4*NUMERO#"
+        },
+        {
+            "Name": "Internet 7D",
+            "Price": 110,
+            "Day": 7,
+            "Description": "1.5GB",
+            "Social_media": null,
+            "Type": "solo-internet",
+            "New": false,
+            "Code": "*321*PIN*2*5*NUMERO#"
+        },
+        {
+            "Name": "Internet 7D",
+            "Price": 130,
+            "Day": 7,
+            "Description": "2GB",
+            "Social_media": null,
+            "Type": "solo-internet",
+            "New": false,
+            "Code": "*321*PIN*2*6*NUMERO#"
+        },
+        {
+            "Name": "Internet 15D",
+            "Price": 230,
+            "Day": 15,
+            "Description": "2.5GB",
+            "Social_media": null,
+            "Type": "solo-internet",
+            "New": false,
+            "Code": "*321*PIN*2*7*NUMERO#"
+        },
+        {
+            "Name": "Internet 20D",
+            "Price": 400,
+            "Day": 20,
+            "Description": "3GB",
+            "Social_media": null,
+            "Type": "solo-internet",
+            "New": false,
+            "Code": "*321*PIN*2*8*NUMERO#"
+        },
+        {
+            "Name": "Internet 30D",
+            "Price": 600,
+            "Day": 30,
+            "Description": "5GB",
+            "Social_media": null,
+            "Type": "solo-internet",
+            "New": false,
+            "Code": "*321*PIN*2*8*NUMERO#"
+        },
+        {
+            "Name": "MIN Claro",
+            "Price": 25,
+            "Day": 0,
+            "Description": "25min",
+            "Social_media": null,
+            "Type": "solo-minutos-nic",
+            "New": false,
+            "Code": "*321*PIN*4*1*NUMERO#"
+        },
+        {
+            "Name": "TODO1",
+            "Price": 50,
+            "Day": 0,
+            "Description": "",
+            "Social_media": null,
+            "Type": "todo-incluido",
+            "New": false,
+            "Code": "*321*PIN*6*1*NUMERO#"
+        },
+        {
+            "Name": "TODO2",
+            "Price": 70,
+            "Day": 0,
+            "Description": "",
+            "Social_media": null,
+            "Type": "todo-incluido",
+            "New": false,
+            "Code": "*321*PIN*6*2*NUMERO#"
+        },
+        {
+            "Name": "TODO4",
+            "Price": 200,
+            "Day": 0,
+            "Description": "",
+            "Social_media": null,
+            "Type": "todo-incluido",
+            "New": false,
+            "Code": "*321*PIN*6*4*NUMERO#"
+        },
+        {
+            "Name": "TODO5",
+            "Price": 300,
+            "Day": 0,
+            "Description": "",
+            "Social_media": null,
+            "Type": "todo-incluido",
+            "New": false,
+            "Code": "*321*PIN*6*5*NUMERO#"
+        },
+        {
+            "Name": "TODO6",
+            "Price": 50,
+            "Day": 0,
+            "Description": "",
+            "Social_media": null,
+            "Type": "todo-incluido",
+            "New": false,
+            "Code": "*321*PIN*6*5*NUMERO#"
+        },
+        {
+            "Name": "TODO7",
+            "Price": 20,
+            "Day": 0,
+            "Description": "",
+            "Social_media": null,
+            "Type": "todo-incluido",
+            "New": false,
+            "Code": "*321*PIN*6*7*NUMERO#"
+        },
+        {
+            "Name": "TODO7",
+            "Price": 30,
+            "Day": 0,
+            "Description": "",
+            "Social_media": null,
+            "Type": "todo-incluido",
+            "New": false,
+            "Code": "*321*PIN*6*8*NUMERO#"
+        },
+        {
+            "Name": "PAQUETODO1",
+            "Price": 25,
+            "Day": 0,
+            "Description": "",
+            "Social_media": null,
+            "Type": "todo-incluido",
+            "New": false,
+            "Code": "*321*PIN*6*10*NUMERO#"
+        },
+        {
+            "Name": "PAQUETODO2",
+            "Price": 35,
+            "Day": 0,
+            "Description": "",
+            "Social_media": null,
+            "Type": "todo-incluido",
+            "New": false,
+            "Code": "*321*PIN*6*11*NUMERO#"
         }
     ]
+
 };
 (function($) {
 
@@ -282,13 +496,31 @@ var jsonList = {
             key = k;
             obj = $("#list-" + key + " .box-pack");
             obj.html('');
+
+
             $.each(jsonList[key], function(i, pack) {
                 if (Type == 'full') {
-                    obj.append(loadHTMLpack(pack));
+                    obj.append(loadHTMLpack(pack, false));
                 } else if (Type == pack.Type) {
-                    obj.append(loadHTMLpack(pack));
+                    obj.append(loadHTMLpack(pack, false));
                 }
             });
+            if (Type === 'full' || Type === 'tiempo-aire' || Type === 'habla') {
+                for (i = 1; i <= 15; i++) {
+                    var Price = (10 * i);
+                    obj.append(loadHTMLpack({
+                        "Name": "Tiempo Aire",
+                        "Price": Price,
+                        "Day": null,
+                        "Description": null,
+                        "Social_media": null,
+                        "Type": "tiempo-aire",
+                        "New": false,
+                        "Code": "*108*" + Price + "*CELULAR*PIN#"
+                    }, (Type === 'tiempo-aire') ? true : false));
+                }
+            }
+
         }
     }
 
@@ -340,24 +572,31 @@ var jsonList = {
         }
     });
 
-    function loadHTMLpack(_pack) {
+    function loadHTMLpack(_pack, MarginBottom) {
         var isnew = '';
+        var days = '';
+        var description = '';
+
         if (_pack.New === true) {
             isnew = '<div class="new blink_me"></div>';
         }
+        if (_pack.Day !== null) {
+            days = '<h3>' + _pack.Day + ' Día' + ((_pack.Day <= 1) ? '' : 's') + '</h3>';
+        }
+        if (_pack.Description !== null) {
+            description = '<div class="more-info"><div class="info"><p>' + _pack.Description + '</p></div><div class="redes">' + create_html_icons(_pack.Social_media) + '</div></div>';
+        }
+        var NotMargin = '';
+        if (MarginBottom) {
+            NotMargin = 'no-margin-bottom';
+        }
         return '' +
-            '<div class="pack filter-' + _pack.Type + '">' +
+            '<div class="pack filter-' + _pack.Type + ' ' + NotMargin + '">' +
             '    <a class="box" href="#" data-prefix="' + _pack.Code + '" data-monto="' + _pack.Price + '">' +
             '        ' + isnew +
             '        <h2>' + _pack.Name + '</h2>' +
             '        <div class="principal">' + $.trim(_pack.Price) + ' <span>C$ ' + $.trim(Math.round(_pack.Price * 1.1)) + '</span></div>' +
-            '        <h3>' + _pack.Day + ' Día' + ((_pack.Day <= 1) ? '' : 's') + '</h3>' +
-            '        <div class="more-info">' +
-            '           <div class="info">' +
-            '               <p>' + _pack.Description + '</p>' +
-            '           </div>' +
-            '           <div class="redes">' + create_html_icons(_pack.Social_media) + '</div>' +
-            '        </div>' +
+            '        ' + days +
             '    </a>' +
             '</div>'
     }
@@ -471,13 +710,7 @@ var jsonList = {
         $(".box-pack").html("");
         $('.field-minute').hide();
         //$(PDV + " .filter-tiempo-aire, " + PDV + " .filter-consultas").attr("style", "");
-        if (filter == "tiempo-aire") {
-            $('.field-minute').css('display', 'inline-block');
-
-            //$(PDV + " .filter-tiempo-aire").show();
-            // $(PDV + " .filter-numberphone").show();
-            // $(" .list").removeClass('disable');
-        } else if (filter == "consultas") {
+        if (filter == "consultas") {
             $('.filter-consultas.others-link-' + Company).show();
             //  $(PDV + " .filter-consultas").show();
             // $(PDV + " .filter-numberphone").hide();

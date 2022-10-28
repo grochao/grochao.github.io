@@ -1469,8 +1469,11 @@ body {
         overflow: scroll;*/
 }
 
-body a {
+body * {
   -webkit-tap-highlight-color: transparent;
+}
+
+body a {
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
@@ -1489,6 +1492,10 @@ body .no-padding,
 body .no-padding [class*="col-"] {
   padding-left: 0;
   padding-right: 0;
+}
+
+body .no-margin-bottom a {
+  margin-bottom: 0 !important;
 }
 
 body * {
@@ -1516,6 +1523,10 @@ body.bk-tigo {
 
 body.bk-tigo header {
   background-color: #00377b;
+}
+
+body.bk-tigo header::before {
+  content: "\e907";
 }
 
 body.bk-tigo header #select-tigo {
@@ -1550,6 +1561,10 @@ body.bk-claro header {
   background-color: #8a0000;
 }
 
+body.bk-claro header::before {
+  content: "\e905";
+}
+
 body.bk-claro header #select-claro {
   display: inline-block !important;
 }
@@ -1574,6 +1589,11 @@ body.bk-claro .box .more-info {
   background-color: #5b0000;
 }
 
+body.bk-claro .box h2 {
+  width: 92% !important;
+  left: 4% !important;
+}
+
 body header {
   position: fixed;
   top: 0;
@@ -1582,6 +1602,32 @@ body header {
   left: 0;
   height: auto;
   min-height: 80px;
+  overflow: hidden;
+  z-index: 999999;
+}
+
+body header::before {
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: rgba(255, 255, 255, 0.22);
+  position: absolute;
+  font-size: 105px;
+  -webkit-transform: rotate(313deg);
+  -khtml-transform: rotate(313deg);
+  -moz-transform: rotate(313deg);
+  -ms-transform: rotate(313deg);
+  -o-transform: rotate(313deg);
+  transform: rotate(313deg);
+  top: -12px;
+  left: -24px;
 }
 
 body header .check-iphone {
@@ -2251,32 +2297,7 @@ body .box-pack .pack .box .more-info .redes span::before {
   font-size: 10px;
 }
 
-@media all and (min-width: 768px) {
-  body {
-    /* [type="text"],
-        [type="number"],
-        [type="tel"],
-        select {
-            display: block;
-            background-color: transparent;
-            width: 100%;
-            padding: 9px 7px;
-            font-size: 20px;
-            color: #000 !important;
-            text-align: left;
-            &,
-            &:focus,
-            &:hover {
-                outline: none;
-                appearance: none;
-                border: none;
-                border-left: #00377b solid 1px!important;
-            }
-        }*/
-  }
-  body {
-    padding: 117px 0 0 0;
-  }
+@media all and (min-width: 241px) {
   body .message {
     position: fixed;
     bottom: 0;
@@ -2288,110 +2309,8 @@ body .box-pack .pack .box .more-info .redes span::before {
     height: 50px;
     z-index: 9999;
   }
-  body header {
-    position: fixed;
-    padding: 0;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 999;
-    background-color: rgba(0, 0, 0, 0.291);
-  }
-  body .iconos {
-    position: absolute;
-    bottom: 15px;
-    display: block;
-    width: 100%;
-    padding: 0 15px;
-    left: 0;
-  }
-  body .iconos span {
-    display: inline-block;
-    width: 25px;
-    height: 25px;
-    text-align: center;
-    -webkit-border-radius: 5px;
-    -khtml-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -ms-border-radius: 5px;
-    -o-border-radius: 5px;
-    border-radius: 5px;
-    margin-right: 5px;
-    margin-top: 8px;
-  }
-  body .iconos span::before {
-    font-size: 15px;
-    position: relative;
-    top: 5px;
-  }
-  body .iconos span.icon-whatsapp {
-    background: #25D366;
-  }
-  body .iconos span.icon-facebook {
-    background: #4267B2;
-  }
-  body .iconos span.icon-messenger {
-    background: #00b2ff;
-    background: linear-gradient(180deg, #00b2ff 0%, #006aff 82%);
-  }
-  body .iconos span.icon-instagram {
-    background: #C13584;
-  }
-  body .iconos span.icon-twitter {
-    background: #1DA1F2;
-  }
-  body .iconos span.icon-youtube {
-    background: #FF0000;
-  }
-  body .iconos span.icon-tigo {
-    background: #00377b;
-    -webkit-border-radius: 100px;
-    -khtml-border-radius: 100px;
-    -moz-border-radius: 100px;
-    -ms-border-radius: 100px;
-    -o-border-radius: 100px;
-    border-radius: 100px;
-  }
-  body .iconos span.icon-claro {
-    background: #FF0000;
-    -webkit-border-radius: 100px;
-    -khtml-border-radius: 100px;
-    -moz-border-radius: 100px;
-    -ms-border-radius: 100px;
-    -o-border-radius: 100px;
-    border-radius: 100px;
-  }
   body .filter-tiempo-aire {
     display: none;
-  }
-  body .content-calltoaction {
-    max-width: 277px;
-    margin: 15px auto 10px auto;
-  }
-  body .content-calltoaction .call {
-    line-height: 1em;
-    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#9dd53a+0,a1d54f+50,80c217+51,7cbc0a+100;Green+Gloss+%231 */
-    background: #9dd53a;
-    /* Old browsers */
-    background: -moz-linear-gradient(top, #9dd53a 0%, #a1d54f 50%, #80c217 51%, #7cbc0a 100%);
-    /* FF3.6-15 */
-    background: -webkit-linear-gradient(top, #9dd53a 0%, #a1d54f 50%, #80c217 51%, #7cbc0a 100%);
-    /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom, #9dd53a 0%, #a1d54f 50%, #80c217 51%, #7cbc0a 100%);
-    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    border: 0;
-    display: block;
-    margin: 0;
-    text-align: center;
-    font-style: normal;
-    text-decoration: none;
-    color: #fff;
-    color: #053e06;
-    padding: 14px 15px;
-    border-radius: 12px;
-    font-size: 24px;
-    font-weight: bold;
-    text-shadow: 1px 1px rgba(255, 255, 255, 0.856);
   }
   body .popup {
     position: fixed;
@@ -2432,12 +2351,6 @@ body .box-pack .pack .box .more-info .redes span::before {
   }
 }
 
-@media all and (max-width: 241px) {
-  body header {
-    background-color: #03e735;
-  }
-}
-
 .blink_me {
   animation: blinker 1.3s linear infinite;
 }
@@ -2445,5 +2358,171 @@ body .box-pack .pack .box .more-info .redes span::before {
 @keyframes blinker {
   50% {
     opacity: 0;
+  }
+}
+
+.steps {
+  display: none;
+  position: relative;
+}
+
+.steps::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 0px;
+  width: 100%;
+  outline: 1px solid red;
+}
+
+[class*="step-"] {
+  display: block;
+  width: 100%;
+  flex: 0 0 100%;
+  z-index: 9999;
+  position: relative;
+}
+
+[class*="step-"] .title {
+  color: #fff;
+  text-align: center;
+  font-size: 13px;
+  display: block;
+  width: 100%;
+  font-weight: bold;
+  position: fixed;
+  top: 0;
+  padding: 6px 15px;
+  background-color: rgba(0, 0, 0, 0.552);
+}
+
+@media all and (max-width: 241px) and (max-height: 321px) {
+  header {
+    display: none;
+  }
+  body {
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+  }
+  body.bk-tigo .steps {
+    background-image: linear-gradient(330deg, #00064d 0%, #021974 14%, #053199 29%, #094fb9 43%, #095dc3 57%, #054fa8 71%, #024392 86%, #00377a 100%);
+  }
+  body.bk-claro .steps {
+    background-image: linear-gradient(350deg, #570000 0%, #8a0000 36%, #b80000 56%, #e60000 70%, #e60000 81%, #b80000 90%, #8a0000 97%, #570000 100%);
+  }
+  .steps {
+    display: block;
+  }
+  .steps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 99999;
+  }
+  .steps .nav-bar {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.552);
+  }
+  .steps .nav-bar button {
+    display: inline-block;
+    width: 33.333333333%;
+    flex: 0 0 33.333333333%;
+    appearance: none;
+    color: #fff;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 7px 7px;
+    font-weight: bold;
+  }
+  .steps .step-1 .content-operadora {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+  .steps .step-1 .content-operadora i {
+    color: #fff;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    font-size: 25px;
+    width: 62px;
+    height: 62px;
+    display: inline-block;
+    margin: 0 7px;
+    -webkit-border-radius: 600px;
+    -khtml-border-radius: 600px;
+    -moz-border-radius: 600px;
+    -ms-border-radius: 600px;
+    -o-border-radius: 600px;
+    border-radius: 600px;
+  }
+  .steps .step-1 .content-operadora i::before {
+    font-size: 30px;
+    position: relative;
+    top: 15px;
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+  .steps .step-1 .content-operadora i.icon-tigo {
+    background-color: #00377b;
+  }
+  .steps .step-1 .content-operadora i.icon-claro {
+    background-color: #8a0000;
+  }
+  .steps .step-1 .content-operadora i.current-operadora {
+    border-color: #fff;
+  }
+  .steps .step-2 .content-mobile-number {
+    display: block;
+    width: 100%;
+    padding: 0 15px;
+  }
+  .steps .step-2 .content-mobile-number input {
+    display: block;
+    width: 100%;
+    padding: 6px 15px;
+    font-size: 38px;
+    appearance: none;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+  }
+  .steps .step-2 .content-mobile-number input, .steps .step-2 .content-mobile-number input:focus, .steps .step-2 .content-mobile-number input:hover {
+    border: none;
+    outline: none;
+  }
+  .steps .step-3 ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .steps .step-3 ul li {
+    display: block;
+    width: 100%;
+    padding: 4px 15px;
+    color: #fff;
+  }
+  .steps .step-3 ul li:hover,
+  .steps .step-3 ul li .hover {
+    background-color: #e58305;
+    font-weight: bold;
+    padding-left: 20px;
   }
 }
