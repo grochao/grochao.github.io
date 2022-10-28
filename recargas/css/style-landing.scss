@@ -13,6 +13,8 @@ body {
     }
     a {
         -webkit-tap-highlight-color: transparent;
+        @include css3-prefix(user-select, none);
+        -webkit-touch-callout: none;
         &:not(.isclick) {
             pointer-events: none;
             filter: grayscale(1);
@@ -66,6 +68,11 @@ body {
                     display: none;
                 }
             }
+            .box {
+                .more-info {
+                    background-color: #010a54;
+                }
+            }
         }
         &.bk-claro {
             background-image: linear-gradient( 350deg, rgb(87, 0, 0) 0%, rgb(138, 0, 0) 36%, rgb(184, 0, 0) 56%, rgb(230, 0, 0) 70%, rgb(230, 0, 0) 81%, rgb(184, 0, 0) 90%, rgb(138, 0, 0) 97%, rgb(87, 0, 0) 100%);
@@ -87,6 +94,11 @@ body {
                 }
                 #list-claro {
                     display: block;
+                }
+            }
+            .box {
+                .more-info {
+                    background-color: #5b0000;
                 }
             }
         }
@@ -367,7 +379,8 @@ body {
                     color: #fff;
                     display: block;
                     width: 100%;
-                    height: 180px;
+                    //height: 180px;
+                    height: 79px;
                     padding: 12px 0px 7px 0px;
                     font-size: 18px;
                     position: relative;
@@ -467,9 +480,13 @@ body {
                 overflow-wrap: break-word;
                 hyphens: auto;
                 word-break: normal;
-                @media all and (max-width: 419px) {
+                @media all and (max-width: 241px) {
                     width: 50%;
                     flex: 0 0 50%;
+                }
+                @media all and (min-width: 242px) and (max-width: 419px) {
+                    width: 33.333333333%;
+                    flex: 0 0 33.333333333%;
                 }
                 @media all and (min-width:380px) and (max-width:767px) {
                     width: 33.3333333333333%;
@@ -511,7 +528,7 @@ body {
                     width: 100%;
                     max-width: 106px;
                     height: 210px;
-                    margin: 15px auto;
+                    margin: 30px auto;
                     background-color: rgba(0, 0, 0, 0.35);
                     border: 1px solid #fff;
                     padding: 15px 0px;
@@ -524,6 +541,21 @@ body {
                 &:focus,
                 &.focus {
                     background-color: #e58305;
+                }
+                &:hover {
+                    .more-info {
+                        display: block !important;
+                    }
+                }
+                .more-info {
+                    pointer-events: none;
+                    display: none;
+                    position: absolute;
+                    bottom: 0px;
+                    z-index: 99;
+                    height: 77px;
+                    @include css3-prefix(border-radius,
+                    5px);
                 }
                 .new {
                     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#bfd255+0,8eb92a+50,72aa00+51,9ecb2d+100;Green+Gloss */
@@ -555,10 +587,13 @@ body {
                     left: 10%;
                     font-size: 13px;
                     font-weight: bold;
+                    z-index: 999;
                 }
                 .principal {
                     position: relative;
                     overflow: hidden;
+                    @include css3-prefix(border-radius,
+                    0px 0px 5px 5px);
                     &::before {
                         content: "C$";
                         color: rgba(255, 255, 255, 0.6);
@@ -592,68 +627,72 @@ body {
                         font-size: 10px;
                     }
                 }
-                .info {
-                    border-collapse: collapse;
-                    border-spacing: 0;
-                    table-layout: fixed;
-                    vertical-align: middle;
-                    height: auto;
-                    width: 100%;
-                    display: table;
-                    p {
-                        color: #ffffff;
-                        padding: 0 7px;
-                        text-align: center;
-                        font-size: 10px;
-                        text-shadow: 0px 0px 3px #000000;
-                        margin: 0;
-                        display: table-cell;
-                        vertical-align: middle;
-                        height: 56px;
-                        word-break: break-all;
-                        word-wrap: break-word;
-                        overflow-wrap: break-word;
-                        hyphens: auto;
-                        word-break: break-word;
-                        width: 100%;
-                    }
-                }
                 h3 {
                     background: rgba(0, 0, 0, 0.55);
                     text-align: center;
                     position: relative;
-                    top: 0;
+                    top: 0px;
                     color: #fff;
                     padding: 2px 0;
                     border-radius: 0px 0px 6px 6px;
                     width: 60%;
                     font-size: 16px;
                     left: 20%;
-                    margin: 0
+                    margin: 0;
+                    z-index: -1;
                 }
-                .redes {
-                    text-align: center;
-                    position: absolute;
-                    bottom: 1px;
-                    display: block;
-                    width: 100%;
-                    padding: 0px 7px;
-                    height: 21px;
-                    left: 0;
-                    background: rgba(0, 0, 0, 0.41);
-                    @include css3-prefix(border-radius,
-                    0px 5px 5px 0);
-                    span {
-                        display: inline-block;
-                        width: 14px;
-                        height: 14px;
+                .more-info {
+                    display: none;
+                    .info {
+                        border-collapse: collapse;
+                        border-spacing: 0;
+                        table-layout: fixed;
+                        vertical-align: middle;
+                        height: auto;
+                        width: 100%;
+                        display: table;
+                        p {
+                            color: #ffffff;
+                            padding: 0 7px;
+                            text-align: center;
+                            font-size: 9px;
+                            text-shadow: 0px 0px 3px #000000;
+                            margin: 0;
+                            display: table-cell;
+                            vertical-align: middle;
+                            height: 56px;
+                            word-break: break-all;
+                            word-wrap: break-word;
+                            overflow-wrap: break-word;
+                            hyphens: auto;
+                            word-break: break-word;
+                            width: 100%;
+                        }
+                    }
+                    .redes {
                         text-align: center;
-                        //@include css3-prefix(border-radius, 200px);
-                        margin: 2px;
-                        color: #fff;
-                        padding: 0;
-                        &::before {
-                            font-size: 10px;
+                        position: absolute;
+                        bottom: 1px;
+                        display: block;
+                        width: 100%;
+                        padding: 0px 7px;
+                        height: 21px;
+                        left: 0;
+                        background: rgba(0, 0, 0, 0.41);
+                        @include css3-prefix(border-radius,
+                        0px 5px 5px 0);
+                        span {
+                            display: inline-block;
+                            width: 14px;
+                            height: 14px;
+                            text-align: center;
+                            //@include css3-prefix(border-radius, 200px);
+                            margin: 2px;
+                            color: #fff;
+                            padding: 0;
+                            &::before {
+                                font-size: 10px;
+                            }
                         }
                     }
                 }

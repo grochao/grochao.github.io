@@ -8,7 +8,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "hablar",
             "New": false,
-            "Code": "110*1*CELULAR*PIN#"
+            "Code": "*110*1*CELULAR*PIN#"
         },
         {
             "Name": "HABLA+2",
@@ -20,7 +20,7 @@ var jsonList = {
             ],
             "Type": "hablar",
             "New": false,
-            "Code": "110*2*CELULAR*PIN#"
+            "Code": "*110*2*CELULAR*PIN#"
         },
         {
             "Name": "HABLA+4",
@@ -32,7 +32,7 @@ var jsonList = {
             ],
             "Type": "hablar",
             "New": false,
-            "Code": "110*3*CELULAR*PIN#"
+            "Code": "*110*3*CELULAR*PIN#"
         },
         {
             "Name": "CHAT2",
@@ -44,7 +44,7 @@ var jsonList = {
             ],
             "Type": "chat",
             "New": false,
-            "Code": "110*4*CELULAR*PIN#"
+            "Code": "*110*4*CELULAR*PIN#"
         },
         {
             "Name": "CR",
@@ -54,7 +54,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "habla",
             "New": false,
-            "Code": "110*5*CELULAR*PIN#"
+            "Code": "*110*5*CELULAR*PIN#"
         },
         {
             "Name": "USA20",
@@ -64,7 +64,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "habla",
             "New": false,
-            "Code": "110*6*CELULAR*PIN#"
+            "Code": "*110*6*CELULAR*PIN#"
         },
         {
             "Name": "MEGA1",
@@ -80,7 +80,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": false,
-            "Code": "110*7*CELULAR*PIN#"
+            "Code": "*110*7*CELULAR*PIN#"
         },
         {
             "Name": "MEGA2",
@@ -96,7 +96,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": false,
-            "Code": "110*8*CELULAR*PIN#"
+            "Code": "*110*8*CELULAR*PIN#"
         },
 
         {
@@ -113,7 +113,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": false,
-            "Code": "110*9*CELULAR*PIN#"
+            "Code": "*110*9*CELULAR*PIN#"
         },
         {
             "Name": "MEGA5",
@@ -129,7 +129,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": false,
-            "Code": "110*10*CELULAR*PIN#"
+            "Code": "*110*10*CELULAR*PIN#"
         },
         {
             "Name": "MEGA7",
@@ -145,7 +145,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": false,
-            "Code": "110*11*CELULAR*PIN#"
+            "Code": "*110*11*CELULAR*PIN#"
         },
         {
             "Name": "MEGA15",
@@ -161,7 +161,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": false,
-            "Code": "110*12*CELULAR*PIN#"
+            "Code": "*110*12*CELULAR*PIN#"
         },
         {
             "Name": "GAMER2",
@@ -177,7 +177,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": false,
-            "Code": "110*13*CELULAR*PIN#"
+            "Code": "*110*13*CELULAR*PIN#"
         },
         {
             "Name": "MEGA1+",
@@ -193,7 +193,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": true,
-            "Code": "110*14*CELULAR*PIN#"
+            "Code": "*110*14*CELULAR*PIN#"
         },
         {
             "Name": "MEGA4+",
@@ -209,7 +209,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": true,
-            "Code": "110*15*CELULAR*PIN#"
+            "Code": "*110*15*CELULAR*PIN#"
         },
         {
             "Name": "7 PLUS",
@@ -225,7 +225,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": false,
-            "Code": "110*16*CELULAR*PIN#"
+            "Code": "*110*16*CELULAR*PIN#"
         },
         {
             "Name": "15 PLUS",
@@ -241,7 +241,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": false,
-            "Code": "110*17*CELULAR*PIN#"
+            "Code": "*110*17*CELULAR*PIN#"
         }
     ],
     "claro": [{
@@ -252,7 +252,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "hablar",
             "New": false,
-            "Code": "110*1*CELULAR*PIN#"
+            "Code": "*110*1*CELULAR*PIN#"
         },
         {
             "Name": "HABLA20",
@@ -262,7 +262,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "hablar",
             "New": false,
-            "Code": "110*1*CELULAR*PIN#"
+            "Code": "*110*1*CELULAR*PIN#"
         }
     ]
 };
@@ -352,11 +352,12 @@ var jsonList = {
             '        <h2>' + _pack.Name + '</h2>' +
             '        <div class="principal">' + $.trim(_pack.Price) + ' <span>C$ ' + $.trim(Math.round(_pack.Price * 1.1)) + '</span></div>' +
             '        <h3>' + _pack.Day + ' Día' + ((_pack.Day <= 1) ? '' : 's') + '</h3>' +
-
-            '        <div class="info">' +
-            '            <p>' + _pack.Description + '</p>' +
+            '        <div class="more-info">' +
+            '           <div class="info">' +
+            '               <p>' + _pack.Description + '</p>' +
+            '           </div>' +
+            '           <div class="redes">' + create_html_icons(_pack.Social_media) + '</div>' +
             '        </div>' +
-            '        <div class="redes">' + create_html_icons(_pack.Social_media) + '</div>' +
             '    </a>' +
             '</div>'
     }

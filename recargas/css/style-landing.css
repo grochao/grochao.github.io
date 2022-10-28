@@ -1471,6 +1471,13 @@ body {
 
 body a {
   -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 body a:not(.isclick) {
@@ -1531,6 +1538,10 @@ body.bk-tigo .list #list-claro {
   display: none;
 }
 
+body.bk-tigo .box .more-info {
+  background-color: #010a54;
+}
+
 body.bk-claro {
   background-image: linear-gradient(350deg, #570000 0%, #8a0000 36%, #b80000 56%, #e60000 70%, #e60000 81%, #b80000 90%, #8a0000 97%, #570000 100%);
 }
@@ -1557,6 +1568,10 @@ body.bk-claro .list #list-tigo {
 
 body.bk-claro .list #list-claro {
   display: block;
+}
+
+body.bk-claro .box .more-info {
+  background-color: #5b0000;
 }
 
 body header {
@@ -1849,7 +1864,7 @@ body .list .list-code li a:not(.call) {
   color: #fff;
   display: block;
   width: 100%;
-  height: 180px;
+  height: 79px;
   padding: 12px 0px 7px 0px;
   font-size: 18px;
   position: relative;
@@ -1984,10 +1999,17 @@ body .box-pack .pack {
                 }*/
 }
 
-@media all and (max-width: 419px) {
+@media all and (max-width: 241px) {
   body .box-pack .pack {
     width: 50%;
     flex: 0 0 50%;
+  }
+}
+
+@media all and (min-width: 242px) and (max-width: 419px) {
+  body .box-pack .pack {
+    width: 33.333333333%;
+    flex: 0 0 33.333333333%;
   }
 }
 
@@ -2019,7 +2041,7 @@ body .box-pack .pack .box {
   width: 100%;
   max-width: 106px;
   height: 210px;
-  margin: 15px auto;
+  margin: 30px auto;
   background-color: rgba(0, 0, 0, 0.35);
   border: 1px solid #fff;
   padding: 15px 0px;
@@ -2039,6 +2061,25 @@ body .box-pack .pack .box {
 
 body .box-pack .pack .box:hover, body .box-pack .pack .box:focus, body .box-pack .pack .box.focus {
   background-color: #e58305;
+}
+
+body .box-pack .pack .box:hover .more-info {
+  display: block !important;
+}
+
+body .box-pack .pack .box .more-info {
+  pointer-events: none;
+  display: none;
+  position: absolute;
+  bottom: 0px;
+  z-index: 99;
+  height: 77px;
+  -webkit-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
 }
 
 body .box-pack .pack .box .new {
@@ -2080,11 +2121,18 @@ body .box-pack .pack .box h2 {
   left: 10%;
   font-size: 13px;
   font-weight: bold;
+  z-index: 999;
 }
 
 body .box-pack .pack .box .principal {
   position: relative;
   overflow: hidden;
+  -webkit-border-radius: 0px 0px 5px 5px;
+  -khtml-border-radius: 0px 0px 5px 5px;
+  -moz-border-radius: 0px 0px 5px 5px;
+  -ms-border-radius: 0px 0px 5px 5px;
+  -o-border-radius: 0px 0px 5px 5px;
+  border-radius: 0px 0px 5px 5px;
 }
 
 body .box-pack .pack .box .principal::before {
@@ -2123,7 +2171,26 @@ body .box-pack .pack .box .principal span {
   font-size: 10px;
 }
 
-body .box-pack .pack .box .info {
+body .box-pack .pack .box h3 {
+  background: rgba(0, 0, 0, 0.55);
+  text-align: center;
+  position: relative;
+  top: 0px;
+  color: #fff;
+  padding: 2px 0;
+  border-radius: 0px 0px 6px 6px;
+  width: 60%;
+  font-size: 16px;
+  left: 20%;
+  margin: 0;
+  z-index: -1;
+}
+
+body .box-pack .pack .box .more-info {
+  display: none;
+}
+
+body .box-pack .pack .box .more-info .info {
   border-collapse: collapse;
   border-spacing: 0;
   table-layout: fixed;
@@ -2133,11 +2200,11 @@ body .box-pack .pack .box .info {
   display: table;
 }
 
-body .box-pack .pack .box .info p {
+body .box-pack .pack .box .more-info .info p {
   color: #ffffff;
   padding: 0 7px;
   text-align: center;
-  font-size: 10px;
+  font-size: 9px;
   text-shadow: 0px 0px 3px #000000;
   margin: 0;
   display: table-cell;
@@ -2151,21 +2218,7 @@ body .box-pack .pack .box .info p {
   width: 100%;
 }
 
-body .box-pack .pack .box h3 {
-  background: rgba(0, 0, 0, 0.55);
-  text-align: center;
-  position: relative;
-  top: 0;
-  color: #fff;
-  padding: 2px 0;
-  border-radius: 0px 0px 6px 6px;
-  width: 60%;
-  font-size: 16px;
-  left: 20%;
-  margin: 0;
-}
-
-body .box-pack .pack .box .redes {
+body .box-pack .pack .box .more-info .redes {
   text-align: center;
   position: absolute;
   bottom: 1px;
@@ -2183,7 +2236,7 @@ body .box-pack .pack .box .redes {
   border-radius: 0px 5px 5px 0;
 }
 
-body .box-pack .pack .box .redes span {
+body .box-pack .pack .box .more-info .redes span {
   display: inline-block;
   width: 14px;
   height: 14px;
@@ -2193,7 +2246,7 @@ body .box-pack .pack .box .redes span {
   padding: 0;
 }
 
-body .box-pack .pack .box .redes span::before {
+body .box-pack .pack .box .more-info .redes span::before {
   font-size: 10px;
 }
 
