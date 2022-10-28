@@ -571,8 +571,9 @@ body {
                     width: 15px;
                     height: 15px;
                     position: absolute;
-                    top: 22px;
-                    left: 8px;
+                    top: 16px;
+                    left: 7px;
+                    z-index: 9;
                 }
                 h2 {
                     background: #e58305;
@@ -631,8 +632,8 @@ body {
                     background: rgba(0, 0, 0, 0.55);
                     text-align: center;
                     position: relative;
-                    top: 0px;
-                    color: #fff;
+                    top: 1px;
+                    color: rgba(255, 255, 255, 0.85);
                     padding: 2px 0;
                     border-radius: 0px 0px 6px 6px;
                     width: 60%;
