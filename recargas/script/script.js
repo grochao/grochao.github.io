@@ -621,19 +621,23 @@ var jsonList = {
         var is_claro = false;
         var is_tigo = false;
         var PrefixClaro = [
-            { "BEGIN": 5740, "ENd": 5749 },
-            { "BEGIN": 5780, "ENd": 5789 },
-            { "BEGIN": 5800, "ENd": 5849 },
-            { "BEGIN": 8330, "ENd": 8339 },
-            { "BEGIN": 8350, "ENd": 8369 },
-            { "BEGIN": 8400, "ENd": 8449 },
-            { "BEGIN": 8490, "ENd": 8499 },
-            { "BEGIN": 8500, "ENd": 8549 },
-            { "BEGIN": 8600, "ENd": 8669 },
-            { "BEGIN": 8690, "ENd": 8699 },
-            { "BEGIN": 8700, "ENd": 8749 },
-            { "BEGIN": 8820, "ENd": 8859 },
-            { "BEGIN": 8900, "ENd": 8949 }
+            { "BEGIN": 5740, "END": 5749 },
+            /* BEGIN: NEW NUMBERS */
+            { "BEGIN": 5753, "END": 5753 },
+            { "BEGIN": 5764, "END": 5764 },
+            /* END: NEW NUMBERS */
+            { "BEGIN": 5780, "END": 5789 },
+            { "BEGIN": 5800, "END": 5849 },
+            { "BEGIN": 8330, "END": 8339 },
+            { "BEGIN": 8350, "END": 8369 },
+            { "BEGIN": 8400, "END": 8449 },
+            { "BEGIN": 8490, "END": 8499 },
+            { "BEGIN": 8500, "END": 8549 },
+            { "BEGIN": 8600, "END": 8669 },
+            { "BEGIN": 8690, "END": 8699 },
+            { "BEGIN": 8700, "END": 8749 },
+            { "BEGIN": 8820, "END": 8859 },
+            { "BEGIN": 8900, "END": 8949 }
         ];
 
         PrefixTigo = [
@@ -664,7 +668,15 @@ var jsonList = {
                 is_tigo = true;
             };
         });
-        return is_claro ? 'isClaro' : (is_tigo ? "isTigo" : ((is_claro == true && is_tigo == true) ? "isAmbiguo" : "isError"))
+        $_return_ = 'isError';
+        if (is_tigo) {
+            $_return_ = 'isTigo';
+        } else if (is_claro) {
+            $_return_ = 'isClaro'
+        } else {
+            $_return_ = 'isError'
+        }
+        return $_return_;
     }
 
 
@@ -673,12 +685,8 @@ var jsonList = {
         var monto = ($.trim($('#amount').val())).replaceAll(" ", '').replaceAll("-", '');
         $('.content-filter').attr("class", "content-filter");
 
+        var Validate = numero[0];
 
-        if (parseInt(numero[0]) <= 999) {
-
-        } else {
-            $('.content-filter').addClass(inRangue(numero[0]));
-        }
 
 
         var PIN = '';
@@ -740,6 +748,14 @@ var jsonList = {
                 "href": "#"
             }).removeClass('isclick');
         }
+
+        $('.content-filter').removeClass('isError').removeClass('isClaro').removeClass('isTigo');
+        $('.content-filter').addClass(inRangue(Validate));
+        //console.log(parseInt(Validate));
+        if (parseInt(Validate) <= 999 || parseInt(Validate) === 'NaN' || $.trim($('#number-phone').val()) === '') {
+            $('.content-filter').removeClass('isError').removeClass('isClaro').removeClass('isTigo');
+        }
+
     }
 
     $('body').on("click", ".box", function() {

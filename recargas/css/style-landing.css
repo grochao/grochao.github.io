@@ -1462,7 +1462,7 @@ html {
 /*Breackpoint Bootstrap*/
 body {
   margin: 0;
-  padding: 80px 0 0 0;
+  padding: 110px 0 0 0;
   -webkit-text-size-adjust: none;
   /*width: 100%;
         height: 100vh;
@@ -1485,6 +1485,11 @@ body.show-popup-call .call-number {
 
 body.show-popup-call header,
 body.show-popup-call .list {
+  -webkit-filter: blur(5px);
+  -khtml-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -ms-filter: blur(5px);
+  -o-filter: blur(5px);
   filter: blur(5px);
 }
 
@@ -1553,10 +1558,6 @@ body a {
   -o-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
-  /*&:not(.isclick) {
-            pointer-events: none;
-            filter: grayscale(1);
-        }*/
 }
 
 body .no-padding,
@@ -1760,6 +1761,11 @@ body header .switch {
   background: transparent;
   z-index: 0;
   padding: 0;
+  -webkit-appearance: none;
+  -khtml-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
   appearance: none;
   border: none;
   cursor: pointer;
@@ -1801,6 +1807,11 @@ body header .switch:after {
   content: ' ';
   height: 30px;
   width: 30px;
+  -webkit-border-radius: 28px;
+  -khtml-border-radius: 28px;
+  -moz-border-radius: 28px;
+  -ms-border-radius: 28px;
+  -o-border-radius: 28px;
   border-radius: 28px;
   background: #FFFFFF;
   background: #e2e2e2;
@@ -1854,6 +1865,16 @@ body header a, body header a:focus, body header a:hover, body header a:visited {
 }
 
 body header .content-filter {
+  /*&.isAmbiguo {
+                background: #f2f6f8;
+                background: -moz-linear-gradient(top, #f2f6f8 0%, #d8e1e7 50%, #b5c6d0 51%, #e0eff9 100%);
+                background: -webkit-linear-gradient(top, #f2f6f8 0%, #d8e1e7 50%, #b5c6d0 51%, #e0eff9 100%);
+                background: linear-gradient(to bottom, #f2f6f8 0%, #d8e1e7 50%, #b5c6d0 51%, #e0eff9 100%);
+                //  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', endColorstr='#e0eff9', GradientType=0);
+            }*/
+}
+
+body header .content-filter {
   display: block;
   height: auto;
   padding: 0 7px;
@@ -1865,10 +1886,12 @@ body header .content-filter {
 body header .content-filter::before {
   content: '';
   position: absolute;
-  width: 15px;
-  height: 15px;
-  right: 9px;
-  top: 10px;
+  width: 25px;
+  height: 25px;
+  right: 12px;
+  top: 6px;
+  padding: 5px 0;
+  text-align: center;
   -webkit-border-radius: 200px;
   -khtml-border-radius: 200px;
   -moz-border-radius: 200px;
@@ -1877,46 +1900,46 @@ body header .content-filter::before {
   border-radius: 200px;
 }
 
-body header .content-filter.isAmbiguo {
-  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#f2f6f8+0,d8e1e7+50,b5c6d0+51,e0eff9+100;Grey+Gloss+%232 */
-  background: #f2f6f8;
-  /* Old browsers */
-  background: -moz-linear-gradient(top, #f2f6f8 0%, #d8e1e7 50%, #b5c6d0 51%, #e0eff9 100%);
-  /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, #f2f6f8 0%, #d8e1e7 50%, #b5c6d0 51%, #e0eff9 100%);
-  /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, #f2f6f8 0%, #d8e1e7 50%, #b5c6d0 51%, #e0eff9 100%);
-  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  /* IE6-9 */
-}
-
-body header .content-filter.isError::before {
-  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#9dd53a+0,a1d54f+50,80c217+51,7cbc0a+100;Green+Gloss+%231 */
-  background: #9dd53a;
-  /* Old browsers */
-  background: -moz-linear-gradient(top, #9dd53a 0%, #a1d54f 50%, #80c217 51%, #7cbc0a 100%);
-  /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, #9dd53a 0%, #a1d54f 50%, #80c217 51%, #7cbc0a 100%);
-  /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, #9dd53a 0%, #a1d54f 50%, #80c217 51%, #7cbc0a 100%);
-  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  /* IE6-9 */
-}
-
-body header .content-filter.isTigo::before {
-  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#6db3f2+0,54a3ee+50,3690f0+51,1e69de+100;Blue+Gloss+%233 */
-  background: #6db3f2;
-  /* Old browsers */
-  background: -moz-linear-gradient(top, #6db3f2 0%, #54a3ee 50%, #3690f0 51%, #1e69de 100%);
-  /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, #6db3f2 0%, #54a3ee 50%, #3690f0 51%, #1e69de 100%);
-  /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, #6db3f2 0%, #54a3ee 50%, #3690f0 51%, #1e69de 100%);
-  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  /* IE6-9 */
+body header .content-filter.isClaro {
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body header .content-filter.isClaro::before {
+  background: #8a0000;
+  content: "\e905";
+  color: #fff;
+}
+
+body header .content-filter.isTigo {
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body header .content-filter.isTigo::before {
+  background: #00377b;
+  content: "\e907";
+  color: #fff;
+}
+
+body header .content-filter.isError::before {
+  animation: blinker 1s linear infinite;
   /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#f85032+0,f16f5c+50,f6290c+51,f02f17+71,e73827+100;Red+Gloss+%231 */
   background: #f85032;
   /* Old browsers */
@@ -1934,6 +1957,11 @@ body header .content-filter #select-claro {
   display: none;
   height: 37px;
   width: 118px;
+  -webkit-appearance: none;
+  -khtml-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
   appearance: none;
   font-size: 12px;
   padding: 8px 7px;
@@ -1957,6 +1985,11 @@ body header .content-filter input {
   height: auto;
   height: 37px;
   padding: 7px 7px;
+  -webkit-appearance: none;
+  -khtml-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
   appearance: none;
   margin: 0;
   font-size: 19px;
@@ -2026,6 +2059,11 @@ body .list {
 body .list.disable .list-code a,
 body .list.disable .list-code .box {
   pointer-events: none;
+  -webkit-filter: grayscale(1) blur(5px);
+  -khtml-filter: grayscale(1) blur(5px);
+  -moz-filter: grayscale(1) blur(5px);
+  -ms-filter: grayscale(1) blur(5px);
+  -o-filter: grayscale(1) blur(5px);
   filter: grayscale(1) blur(5px);
   opacity: 0.5;
 }
@@ -2331,6 +2369,11 @@ body .box-pack .pack .box h2 {
   top: -8px;
   color: #fff;
   padding: 4px 0;
+  -webkit-border-radius: 6px 6px 0 0;
+  -khtml-border-radius: 6px 6px 0 0;
+  -moz-border-radius: 6px 6px 0 0;
+  -ms-border-radius: 6px 6px 0 0;
+  -o-border-radius: 6px 6px 0 0;
   border-radius: 6px 6px 0 0;
   width: 80%;
   left: 10%;
@@ -2346,7 +2389,12 @@ body .box-pack .pack .box h3 {
   top: 1px;
   color: rgba(255, 255, 255, 0.85);
   padding: 2px 0;
-  border-radius: 0px 0px 6px 6px;
+  -webkit-border-radius: 0 0 6px 6px;
+  -khtml-border-radius: 0 0 6px 6px;
+  -moz-border-radius: 0 0 6px 6px;
+  -ms-border-radius: 0 0 6px 6px;
+  -o-border-radius: 0 0 6px 6px;
+  border-radius: 0 0 6px 6px;
   width: 60%;
   font-size: 16px;
   left: 20%;
@@ -2466,6 +2514,11 @@ body .box-pack .pack .box .more-info .redes span::before {
     padding: 7px;
     width: 100%;
     outline: none;
+    -webkit-appearance: none;
+    -khtml-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
     appearance: none;
     border: none;
     border: #00377b solid 1px !important;
@@ -2626,6 +2679,11 @@ body .box-pack .pack .box .more-info .redes span::before {
     background-color: #23810c;
     color: #fff;
     padding: 12px 15px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
     border-radius: 5px;
     font-size: 18px;
     font-weight: bold;
@@ -2731,6 +2789,11 @@ body .box-pack .pack .box .more-info .redes span::before {
     display: inline-block;
     width: 33.333333333%;
     flex: 0 0 33.333333333%;
+    -webkit-appearance: none;
+    -khtml-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
     appearance: none;
     color: #fff;
     background-color: transparent;
@@ -2786,6 +2849,11 @@ body .box-pack .pack .box .more-info .redes span::before {
     width: 100%;
     padding: 6px 15px;
     font-size: 38px;
+    -webkit-appearance: none;
+    -khtml-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
     appearance: none;
     -webkit-border-radius: 5px;
     -khtml-border-radius: 5px;
