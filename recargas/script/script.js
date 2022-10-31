@@ -1,9 +1,6 @@
 var ListNumber = [];
 var jsonList = {
-    "tigo": [
-
-
-        {
+    "tigo": [{
             "Name": "HABLA20",
             "Price": 20,
             "Day": 1,
@@ -390,9 +387,17 @@ var jsonList = {
         {
             "Name": "TODO1",
             "Price": 50,
-            "Day": 0,
-            "Description": "",
-            "Social_media": null,
+            "Day": 4,
+            "Description": "100min Claro, 10min Multiuso, 100sms + 2.5GB",
+            "Social_media": [
+                "whatsapp",
+                "facebook",
+                "messenger",
+                "instagram",
+                "twitter",
+                "tiktok",
+                "youtube"
+            ],
             "Type": "todo-incluido",
             "New": false,
             "Code": "*321*PIN*6*1*NUMERO#"
@@ -584,7 +589,7 @@ var jsonList = {
             days = '<h3>' + _pack.Day + ' Día' + ((_pack.Day <= 1) ? '' : 's') + '</h3>';
         }
         if (_pack.Description !== null) {
-            description = '<div class="more-info"><div class="info"><p>' + _pack.Description + '</p></div><div class="redes">' + create_html_icons(_pack.Social_media) + '</div></div>';
+            description = '<div class="data-hidden"><div class="info"><p>' + _pack.Description + '</p></div><div class="redes">' + create_html_icons(_pack.Social_media) + '</div></div>';
         }
         var NotMargin = '';
         if (MarginBottom) {
@@ -592,12 +597,13 @@ var jsonList = {
         }
         return '' +
             '<div class="pack filter-' + _pack.Type + ' ' + NotMargin + '">' +
-            '    <a class="box" href="#" data-prefix="' + _pack.Code + '" data-monto="' + _pack.Price + '">' +
+            '    <div class="box" href="#" data-prefix="' + _pack.Code + '" data-monto="' + _pack.Price + '">' +
             '        ' + isnew +
             '        <h2>' + _pack.Name + '</h2>' +
             '        <div class="principal">' + $.trim(_pack.Price) + ' <span>C$ ' + $.trim(Math.round(_pack.Price * 1.1)) + '</span></div>' +
             '        ' + days +
-            '    </a>' +
+            '        ' + description +
+            '    </div>' +
             '</div>'
     }
 
@@ -610,15 +616,75 @@ var jsonList = {
         return _return_;
     }
 
+    function inRangue(PrefixNumber) {
+        var PrefixNumber = parseInt(PrefixNumber);
+        var is_claro = false;
+        var is_tigo = false;
+        var PrefixClaro = [
+            { "BEGIN": 5740, "ENd": 5749 },
+            { "BEGIN": 5780, "ENd": 5789 },
+            { "BEGIN": 5800, "ENd": 5849 },
+            { "BEGIN": 8330, "ENd": 8339 },
+            { "BEGIN": 8350, "ENd": 8369 },
+            { "BEGIN": 8400, "ENd": 8449 },
+            { "BEGIN": 8490, "ENd": 8499 },
+            { "BEGIN": 8500, "ENd": 8549 },
+            { "BEGIN": 8600, "ENd": 8669 },
+            { "BEGIN": 8690, "ENd": 8699 },
+            { "BEGIN": 8700, "ENd": 8749 },
+            { "BEGIN": 8820, "ENd": 8859 },
+            { "BEGIN": 8900, "ENd": 8949 }
+        ];
+
+        PrefixTigo = [
+            { "BEGIN": 7710, "END": 7719 },
+            { "BEGIN": 7750, "END": 7759 },
+            { "BEGIN": 7870, "END": 7879 },
+            { "BEGIN": 8150, "END": 8159 },
+            { "BEGIN": 8260, "END": 8269 },
+            { "BEGIN": 8320, "END": 8329 },
+            { "BEGIN": 8370, "END": 8399 },
+            { "BEGIN": 8450, "END": 8489 },
+            { "BEGIN": 8550, "END": 8559 },
+            { "BEGIN": 8590, "END": 8599 },
+            { "BEGIN": 8670, "END": 8689 },
+            { "BEGIN": 8750, "END": 8779 },
+            { "BEGIN": 8800, "END": 8819 },
+            { "BEGIN": 8860, "END": 8899 },
+            { "BEGIN": 8950, "END": 8979 },
+            { "BEGIN": 8990, "END": 8999 }
+        ];
+        $.each(PrefixClaro, function(i, RANGE) {
+            if (PrefixNumber >= RANGE.BEGIN && PrefixNumber <= RANGE.END) {
+                is_claro = true;
+            };
+        });
+        $.each(PrefixTigo, function(i, RANGE) {
+            if (PrefixNumber >= RANGE.BEGIN && PrefixNumber <= RANGE.END) {
+                is_tigo = true;
+            };
+        });
+        return is_claro ? 'isClaro' : (is_tigo ? "isTigo" : ((is_claro == true && is_tigo == true) ? "isAmbiguo" : "isError"))
+    }
 
 
     function SetRecargaNormal(list) {
-        var numero = ($.trim($('#number-phone').val())).replace(" ", '').replace("-", '');
+        var numero = ($.trim($('#number-phone').val())).replace(" ", '').split("-");
         var monto = ($.trim($('#amount').val())).replaceAll(" ", '').replaceAll("-", '');
+        $('.content-filter').attr("class", "content-filter");
+
+
+        if (parseInt(numero[0]) <= 999) {
+
+        } else {
+            $('.content-filter').addClass(inRangue(numero[0]));
+        }
+
 
         var PIN = '';
         var prefix = '';
         var HREF = '';
+        numero = numero.join("");
         numero = (numero == '') ? 0 : parseInt(numero);
         monto = (monto == '') ? 0 : parseInt(monto);
         console.clear();
@@ -652,20 +718,20 @@ var jsonList = {
             }
             if ($(".list-code .box-pack .pack").length) {
                 $(".list-code .box-pack .pack").each(function(i) {
-                    var link = $(this).find('a.box');
+                    var link = $(this).find('.box');
                     if (link.length) {
                         prefix = link.data('prefix');
                         prefix = prefix.replace("MONTO", monto).replace('CELULAR', numero).replace("PIN", PIN);
 
                         link.attr({
-                            "href": 'tel:' + encodeURIComponent(prefix),
+                            "data-number": 'tel:' + encodeURIComponent(prefix),
                         }).addClass('isclick');
                     }
                 });
                 $('.list').removeClass('disable');
             }
         } else {
-            $('#' + list + " li .pack a").attr({
+            $('#' + list + " li .pack .box").attr({
                 "href": '#',
             }).removeClass('isclick');
             $('.list').addClass('disable');
@@ -676,14 +742,30 @@ var jsonList = {
         }
     }
 
-    $('body').on('keyup touchend', '#amount', function() {
+    $('body').on("click", ".box", function() {
+        var number = $(this).data("number");
+        $("#call-number .calltoacction").html('')
+
+        $("#call-number .calltoacction").html('<i class="cerrar icon-close-solid"></i>' + ($(this).html()).replace("data-hidden", "more-info") + '<a href="#" class="">MARCAR</a>');
+        $("#call-number .calltoacction a").attr("href", number);
+        $("body").addClass('show-popup-call');
+    });
+    $('body').on("click", ".calltoacction .cerrar", function() {
+        $("#call-number .calltoacction").html('')
+        $("body").removeClass('show-popup-call');
+    });
+
+
+
+
+    $('body').on('keyup', '#amount', function() {
         if ($('body').hasClass('bk-claro')) {
             SetRecargaNormal('list-claro');
         } else {
             SetRecargaNormal('list-tigo');
         }
     });
-    $('body').on('keyup touchend', '#number-phone', function() {
+    $('body').on('keyup', '#number-phone', function() {
         if ($('body').hasClass('bk-claro')) {
             SetRecargaNormal('list-claro');
         } else {

@@ -10,6 +10,61 @@ body {
         /*width: 100%;
         height: 100vh;
         overflow: scroll;*/
+        * {
+            @include css3-prefix(user-select, none);
+            -webkit-touch-callout: none;
+        }
+    }
+    &.show-popup-call {
+        .call-number {
+            display: none;
+        }
+        header,
+        .list {
+            filter: blur(5px);
+        }
+    }
+    &:not(.show-popup-call) #call-number {
+        display: none!important;
+    }
+    .principal {
+        position: relative;
+        overflow: hidden;
+        @include css3-prefix(border-radius, 0px 0px 5px 5px);
+        max-width: 112px;
+        margin: 0 auto;
+        &::before {
+            content: "C$";
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 16px;
+            display: block;
+            position: absolute;
+            top: 24px;
+            left: 4px;
+            z-index: 1;
+        }
+        & {
+            background-color: rgba(0, 0, 0, 0.55);
+            color: #fff;
+            font-size: 35px;
+            display: block;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            padding: 7px;
+        }
+        .symbol {
+            font-size: 16px;
+            display: inline-block;
+        }
+        span {
+            display: block;
+            color: #03e735;
+            font-style: normal;
+            width: 100%;
+            text-align: center;
+            font-size: 10px;
+        }
     }
     * {
         -webkit-tap-highlight-color: transparent;
@@ -17,10 +72,10 @@ body {
     a {
         @include css3-prefix(user-select, none);
         -webkit-touch-callout: none;
-        &:not(.isclick) {
+        /*&:not(.isclick) {
             pointer-events: none;
             filter: grayscale(1);
-        }
+        }*/
     }
     .no-padding {
         &,
@@ -28,6 +83,11 @@ body {
             padding-left: 0;
             padding-right: 0;
         }
+    }
+    .data-hidden {
+        display: none;
+        visibility: hidden;
+        opacity: 0;
     }
     .no-margin-bottom {
         a {
@@ -70,6 +130,11 @@ body {
                     display: none!important;
                 }
             }
+            #call-number {
+                .calltoacction {
+                    background-color: #00377b;
+                }
+            }
             .list {
                 .background-blue {
                     background-color: #00377b;
@@ -101,6 +166,11 @@ body {
                 }
                 #select-tigo {
                     display: none!important;
+                }
+            }
+            #call-number {
+                .calltoacction {
+                    background-color: #5b0000;
                 }
             }
             .list {
@@ -291,6 +361,74 @@ body {
                 padding: 0 7px;
                 max-width: 270px;
                 margin: 0 auto;
+                position: relative;
+            }
+            &::before {
+                content: '';
+                position: absolute;
+                width: 15px;
+                height: 15px;
+                right: 9px;
+                top: 10px;
+                @include css3-prefix(border-radius, 200px);
+            }
+            &.isAmbiguo {
+                /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#f2f6f8+0,d8e1e7+50,b5c6d0+51,e0eff9+100;Grey+Gloss+%232 */
+                background: #f2f6f8;
+                /* Old browsers */
+                background: -moz-linear-gradient(top, #f2f6f8 0%, #d8e1e7 50%, #b5c6d0 51%, #e0eff9 100%);
+                /* FF3.6-15 */
+                background: -webkit-linear-gradient(top, #f2f6f8 0%, #d8e1e7 50%, #b5c6d0 51%, #e0eff9 100%);
+                /* Chrome10-25,Safari5.1-6 */
+                background: linear-gradient(to bottom, #f2f6f8 0%, #d8e1e7 50%, #b5c6d0 51%, #e0eff9 100%);
+                /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                //  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#f2f6f8', endColorstr='#e0eff9', GradientType=0);
+                /* IE6-9 */
+            }
+            &.isError {
+                &::before {
+                    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#9dd53a+0,a1d54f+50,80c217+51,7cbc0a+100;Green+Gloss+%231 */
+                    background: #9dd53a;
+                    /* Old browsers */
+                    background: -moz-linear-gradient(top, #9dd53a 0%, #a1d54f 50%, #80c217 51%, #7cbc0a 100%);
+                    /* FF3.6-15 */
+                    background: -webkit-linear-gradient(top, #9dd53a 0%, #a1d54f 50%, #80c217 51%, #7cbc0a 100%);
+                    /* Chrome10-25,Safari5.1-6 */
+                    background: linear-gradient(to bottom, #9dd53a 0%, #a1d54f 50%, #80c217 51%, #7cbc0a 100%);
+                    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                    //filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#9dd53a', endColorstr='#7cbc0a', GradientType=0);
+                    /* IE6-9 */
+                }
+            }
+            &.isTigo {
+                &::before {
+                    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#6db3f2+0,54a3ee+50,3690f0+51,1e69de+100;Blue+Gloss+%233 */
+                    background: #6db3f2;
+                    /* Old browsers */
+                    background: -moz-linear-gradient(top, #6db3f2 0%, #54a3ee 50%, #3690f0 51%, #1e69de 100%);
+                    /* FF3.6-15 */
+                    background: -webkit-linear-gradient(top, #6db3f2 0%, #54a3ee 50%, #3690f0 51%, #1e69de 100%);
+                    /* Chrome10-25,Safari5.1-6 */
+                    background: linear-gradient(to bottom, #6db3f2 0%, #54a3ee 50%, #3690f0 51%, #1e69de 100%);
+                    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                    //filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#6db3f2', endColorstr='#1e69de', GradientType=0);
+                    /* IE6-9 */
+                }
+            }
+            &.isClaro {
+                &::before {
+                    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#f85032+0,f16f5c+50,f6290c+51,f02f17+71,e73827+100;Red+Gloss+%231 */
+                    background: #f85032;
+                    /* Old browsers */
+                    background: -moz-linear-gradient(top, #f85032 0%, #f16f5c 50%, #f6290c 51%, #f02f17 71%, #e73827 100%);
+                    /* FF3.6-15 */
+                    background: -webkit-linear-gradient(top, #f85032 0%, #f16f5c 50%, #f6290c 51%, #f02f17 71%, #e73827 100%);
+                    /* Chrome10-25,Safari5.1-6 */
+                    background: linear-gradient(to bottom, #f85032 0%, #f16f5c 50%, #f6290c 51%, #f02f17 71%, #e73827 100%);
+                    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                    //filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#f85032', endColorstr='#e73827', GradientType=0);
+                    /* IE6-9 */
+                }
             }
             #select-tigo,
             #select-claro {
@@ -388,8 +526,11 @@ body {
             //  filter: grayscale(100%);
             // opacity: 0.5;
             .list-code {
-                a {
+                a,
+                .box {
                     pointer-events: none;
+                    filter: grayscale(1) blur(5px);
+                    opacity: 0.5;
                 }
             }
         }
@@ -529,18 +670,46 @@ body {
                 @media all and (min-width: 242px) and (max-width: 419px) {
                     width: 33.333333333%;
                     flex: 0 0 33.333333333%;
+                    &.filter-tiempo-aire {
+                        &:nth-child(n+1) {
+                            .box {
+                                margin: 0px auto 30px auto!important;
+                            }
+                        }
+                    }
                 }
                 @media all and (min-width:380px) and (max-width:767px) {
                     width: 33.3333333333333%;
                     flex: 0 0 33.3333333333333%;
+                    &.filter-tiempo-aire {
+                        &:nth-child(n+1) {
+                            .box {
+                                margin: 0px auto 30px auto!important;
+                            }
+                        }
+                    }
                 }
                 @media all and (min-width: 768px) and (max-width:899px) {
                     width: 16.666666667%;
                     flex: 0 0 16.666666667%;
+                    &.filter-tiempo-aire {
+                        &:nth-child(n+1) {
+                            .box {
+                                margin: 0px auto 30px auto!important;
+                            }
+                        }
+                    }
                 }
                 @media all and (min-width: 900px) {
                     width: 14.285714286%;
                     flex: 0 0 14.285714286%;
+                    &.filter-tiempo-aire {
+                        &:nth-child(n+4) {
+                            .box {
+                                margin: 0px auto 30px auto!important;
+                            }
+                        }
+                    }
                 }
                 /*&:nth-child(even) {
                     .box {
@@ -569,8 +738,8 @@ body {
                     position: relative;
                     width: 100%;
                     max-width: 106px;
-                    height: 210px;
-                    margin: 30px auto;
+                    height: 82px;
+                    margin: 0px auto 60px auto;
                     background-color: rgba(0, 0, 0, 0.35);
                     border: 1px solid #fff;
                     padding: 15px 0px;
@@ -622,7 +791,7 @@ body {
                     margin: 0;
                     text-align: center;
                     position: absolute;
-                    top: -11px;
+                    top: -8px;
                     color: #fff;
                     padding: 4px 0;
                     border-radius: 6px 6px 0 0;
@@ -631,44 +800,6 @@ body {
                     font-size: 13px;
                     font-weight: bold;
                     z-index: 999;
-                }
-                .principal {
-                    position: relative;
-                    overflow: hidden;
-                    @include css3-prefix(border-radius,
-                    0px 0px 5px 5px);
-                    &::before {
-                        content: "C$";
-                        color: rgba(255, 255, 255, 0.6);
-                        font-size: 16px;
-                        display: block;
-                        position: absolute;
-                        top: 24px;
-                        left: 4px;
-                        z-index: 1;
-                    }
-                    & {
-                        background-color: rgba(0, 0, 0, 0.55);
-                        color: #fff;
-                        font-size: 35px;
-                        display: block;
-                        width: 100%;
-                        text-align: center;
-                        font-weight: bold;
-                        padding: 7px;
-                    }
-                    .symbol {
-                        font-size: 16px;
-                        display: inline-block;
-                    }
-                    span {
-                        display: block;
-                        color: #03e735;
-                        font-style: normal;
-                        width: 100%;
-                        text-align: center;
-                        font-size: 10px;
-                    }
                 }
                 h3 {
                     background: rgba(0, 0, 0, 0.55);
@@ -718,7 +849,7 @@ body {
                         bottom: 1px;
                         display: block;
                         width: 100%;
-                        padding: 0px 7px;
+                        padding: 0px;
                         height: 21px;
                         left: 0;
                         background: rgba(0, 0, 0, 0.41);
@@ -726,15 +857,15 @@ body {
                         0px 5px 5px 0);
                         span {
                             display: inline-block;
-                            width: 14px;
-                            height: 14px;
+                            width: 12px;
+                            height: 8px;
                             text-align: center;
                             //@include css3-prefix(border-radius, 200px);
-                            margin: 2px;
+                            margin: 0px;
                             color: #fff;
                             padding: 0;
                             &::before {
-                                font-size: 10px;
+                                font-size: 8px;
                             }
                         }
                     }
@@ -766,7 +897,7 @@ body {
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0, 0, 0, 0.539);
+            background-color: rgba(0, 0, 0, 0.70);
             z-index: 999999999;
             .center {
                 position: absolute;
@@ -793,6 +924,165 @@ body {
                         appearance: none;
                         border: none;
                         border: #00377b solid 1px !important;
+                    }
+                }
+                .calltoacction {
+                    //  background-color: #fff;
+                    @include css3-prefix(border-radius,
+                    5px);
+                    // overflow: hidden;
+                    display: block;
+                    width: 300px;
+                    height: 377px;
+                    position: relative;
+                    left: -150px;
+                    top: -188px;
+                    padding: 0;
+                    .cerrar {
+                        position: absolute;
+                        right: 10px;
+                        top: 10px;
+                        cursor: pointer;
+                        &::before {
+                            font-size: 35px;
+                            color: #fff;
+                        }
+                    }
+                    .principal {
+                        font-size: 76px;
+                        max-width: 200px!important;
+                        &::before {
+                            font-size: 23px!important;
+                        }
+                        span {
+                            color: rgba(3, 231, 53, 0.631)!important;
+                            position: relative;
+                            top: -13px;
+                            font-size: 19px!important;
+                        }
+                    }
+                    h2 {
+                        text-align: center;
+                        margin: 0;
+                        padding: 15px;
+                        font-size: 20px;
+                        color: #fff;
+                        background-color: #e58305;
+                        @include css3-prefix(border-radius,
+                        5px 5px 0 0);
+                    }
+                    h3 {
+                        text-align: center;
+                        margin: 0 auto;
+                        width: 100%;
+                        max-width: 79px;
+                        padding: 7px 0;
+                        font-size: 15px;
+                        color: #fff;
+                        background-color: #e58305;
+                        @include css3-prefix(border-radius,
+                        0 0 8px 8px);
+                    }
+                    .more-info {
+                        padding: 0 15px;
+                        display: block;
+                        width: 100%;
+                        color: #fff;
+                        .info {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            align-content: center;
+                            text-align: center;
+                            font-size: 15px;
+                            padding: 0;
+                            margin: 0;
+                            width: 100%;
+                            height: 65px;
+                            p {
+                                margin: 0;
+                                padding: 0;
+                                display: block;
+                                width: 100%;
+                                flex: 0 0 100%;
+                            }
+                        }
+                        .redes {
+                            padding: 0;
+                            text-align: center;
+                            height: 30px;
+                            span {
+                                display: inline-block;
+                                position: relative;
+                                @include css3-prefix(border-radius,
+                                100px);
+                                width: 27px;
+                                height: 27px;
+                                margin: 0 3px;
+                                &::before {
+                                    color: #fff;
+                                    font-size: 17px;
+                                    text-align: center;
+                                    display: block;
+                                    width: 100%;
+                                    line-height: 1em;
+                                    position: absolute;
+                                    top: 5px;
+                                }
+                                &.icon-youtube {
+                                    background-color: #ff0000;
+                                    &::before {
+                                        font-size: 13px!important;
+                                        top: 7px;
+                                    }
+                                }
+                                &.icon-tiktok {
+                                    background-color: #000!important;
+                                    &::before {
+                                        color: #fff;
+                                        font-size: 15px!important;
+                                        top: 6px;
+                                    }
+                                }
+                                &.icon-whatsapp {
+                                    background-color: #25D366;
+                                }
+                                &.icon-facebook {
+                                    background-color: #4267B2;
+                                }
+                                &.icon-messenger {
+                                    background-color: #00B2FF;
+                                }
+                                &.icon-instagram {
+                                    background-color: #F56040;
+                                }
+                                &.icon-twitter {
+                                    background-color: #1DA1F2;
+                                }
+                            }
+                        }
+                    }
+                    a {
+                        width: 130px;
+                        background-color: rgb(35, 129, 12);
+                        color: #fff;
+                        padding: 12px 15px;
+                        border-radius: 5px;
+                        font-size: 18px;
+                        font-weight: bold;
+                        margin: 15px auto;
+                        display: block;
+                        text-align: center;
+                        cursor: pointer;
+                        &,
+                        &:visited,
+                        &:active,
+                        &:focus,
+                        &:hover {
+                            text-decoration: none;
+                            border: none;
+                            outline: none;
+                        }
                     }
                 }
             }
