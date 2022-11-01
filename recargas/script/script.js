@@ -405,19 +405,47 @@ var jsonList = {
         {
             "Name": "TODO2",
             "Price": 70,
-            "Day": 0,
-            "Description": "",
-            "Social_media": null,
+            "Day": 6,
+            "Description": "Min Ilimitados CLaro. 20min Multiuso, 1000sms, 3.5GB",
+            "Social_media": [
+                "whatsapp",
+                "facebook",
+                "messenger",
+                "instagram",
+                "twitter"
+            ],
             "Type": "todo-incluido",
             "New": false,
             "Code": "*321*PIN*6*2*NUMERO#"
         },
         {
+            "Name": "TODO3",
+            "Price": 100,
+            "Day": 7,
+            "Description": "Min Ilimitados CLaro. 40min Multiuso, 3000sms, 4.5GB",
+            "Social_media": [
+                "whatsapp",
+                "facebook",
+                "messenger",
+                "instagram",
+                "twitter"
+            ],
+            "Type": "todo-incluido",
+            "New": false,
+            "Code": "*321*PIN*6*3*NUMERO#"
+        },
+        {
             "Name": "TODO4",
             "Price": 200,
-            "Day": 0,
-            "Description": "",
-            "Social_media": null,
+            "Day": 15,
+            "Description": "Min Ilimitados Claro, 50min Multisuos, SMS Ilimitados, 7GB",
+            "Social_media": [
+                "whatsapp",
+                "facebook",
+                "messenger",
+                "instagram",
+                "twitter"
+            ],
             "Type": "todo-incluido",
             "New": false,
             "Code": "*321*PIN*6*4*NUMERO#"
@@ -425,9 +453,15 @@ var jsonList = {
         {
             "Name": "TODO5",
             "Price": 300,
-            "Day": 0,
-            "Description": "",
-            "Social_media": null,
+            "Day": 15,
+            "Description": "Min Ilimitados Claro, 60min Multisuos, SMS Ilimitados, 10GB",
+            "Social_media": [
+                "whatsapp",
+                "facebook",
+                "messenger",
+                "instagram",
+                "twitter"
+            ],
             "Type": "todo-incluido",
             "New": false,
             "Code": "*321*PIN*6*5*NUMERO#"
@@ -435,29 +469,43 @@ var jsonList = {
         {
             "Name": "TODO6",
             "Price": 50,
-            "Day": 0,
-            "Description": "",
-            "Social_media": null,
-            "Type": "todo-incluido",
+            "Day": 4,
+            "Description": "Min y SMS Ilimitados",
+            "Social_media": [
+                "whatsapp"
+            ],
+            "Type": "chat",
             "New": false,
-            "Code": "*321*PIN*6*5*NUMERO#"
+            "Code": "*321*PIN*6*6*NUMERO#"
         },
         {
             "Name": "TODO7",
             "Price": 20,
-            "Day": 0,
-            "Description": "",
-            "Social_media": null,
+            "Day": 1,
+            "Description": "25min CLaro,CA,USA,Canadá,México, 25SMS, 800MB",
+            "Social_media": [
+                "whatsapp",
+                "facebook",
+                "messenger",
+                "instagram",
+                "twitter"
+            ],
             "Type": "todo-incluido",
             "New": false,
             "Code": "*321*PIN*6*7*NUMERO#"
         },
         {
-            "Name": "TODO7",
+            "Name": "TODO8",
             "Price": 30,
-            "Day": 0,
-            "Description": "",
-            "Social_media": null,
+            "Day": 2,
+            "Description": "35min Claro/CA/USA/Canadá/México, 25SMS, 1GB",
+            "Social_media": [
+                "whatsapp",
+                "facebook",
+                "messenger",
+                "instagram",
+                "twitter"
+            ],
             "Type": "todo-incluido",
             "New": false,
             "Code": "*321*PIN*6*8*NUMERO#"
@@ -465,9 +513,15 @@ var jsonList = {
         {
             "Name": "PAQUETODO1",
             "Price": 25,
-            "Day": 0,
-            "Description": "",
-            "Social_media": null,
+            "Day": 2,
+            "Description": "25min Claro/Multiuso, 1GB",
+            "Social_media": [
+                "whatsapp",
+                "facebook",
+                "messenger",
+                "instagram",
+                "twitter"
+            ],
             "Type": "todo-incluido",
             "New": false,
             "Code": "*321*PIN*6*10*NUMERO#"
@@ -475,9 +529,15 @@ var jsonList = {
         {
             "Name": "PAQUETODO2",
             "Price": 35,
-            "Day": 0,
-            "Description": "",
-            "Social_media": null,
+            "Day": 3,
+            "Description": "25min Claro/Multiuso, 1.5GB",
+            "Social_media": [
+                "whatsapp",
+                "facebook",
+                "messenger",
+                "instagram",
+                "twitter"
+            ],
             "Type": "todo-incluido",
             "New": false,
             "Code": "*321*PIN*6*11*NUMERO#"
@@ -597,7 +657,7 @@ var jsonList = {
         }
         return '' +
             '<div class="pack filter-' + _pack.Type + ' ' + NotMargin + '">' +
-            '    <div class="box" href="#" data-prefix="' + _pack.Code + '" data-monto="' + _pack.Price + '">' +
+            '    <div class="box"  data-prefix="' + _pack.Code + '" data-monto="' + _pack.Price + '">' +
             '        ' + isnew +
             '        <h2>' + _pack.Name + '</h2>' +
             '        <div class="principal">' + $.trim(_pack.Price) + ' <span>C$ ' + $.trim(Math.round(_pack.Price * 1.1)) + '</span></div>' +
@@ -642,6 +702,10 @@ var jsonList = {
 
         PrefixTigo = [
             { "BEGIN": 7710, "END": 7719 },
+            /* BEGIN: NEW NUMBERS */
+            { "BEGIN": 7703, "END": 7703 },
+            { "BEGIN": 7728, "END": 7728 },
+            /* END: NEW NUMBERS */
             { "BEGIN": 7750, "END": 7759 },
             { "BEGIN": 7870, "END": 7879 },
             { "BEGIN": 8150, "END": 8159 },
@@ -762,8 +826,14 @@ var jsonList = {
         var number = $(this).data("number");
         $("#call-number .calltoacction").html('')
 
-        $("#call-number .calltoacction").html('<i class="cerrar icon-close-solid"></i>' + ($(this).html()).replace("data-hidden", "more-info") + '<a href="#" class="">MARCAR</a>');
+        $("#call-number .calltoacction").html('<i class="cerrar icon-close-solid"></i>' + ($(this).html()).replace("data-hidden", "more-info") + '<a href="#" class=""><i class="icon-phone"></i>MARCAR</a>');
         $("#call-number .calltoacction a").attr("href", number);
+        if ($(this).hasClass('isclick')) {
+            $("#call-number .calltoacction a").show();
+        } else {
+            $("#call-number .calltoacction a").hide();
+
+        }
         $("body").addClass('show-popup-call');
     });
     $('body').on("click", ".calltoacction .cerrar", function() {
