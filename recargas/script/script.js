@@ -815,7 +815,6 @@ var jsonList = {
 
         $('.content-filter').removeClass('isError').removeClass('isClaro').removeClass('isTigo');
         $('.content-filter').addClass(inRangue(Validate));
-        //console.log(parseInt(Validate));
         if (parseInt(Validate) <= 999 || parseInt(Validate) === 'NaN' || $.trim($('#number-phone').val()) === '') {
             $('.content-filter').removeClass('isError').removeClass('isClaro').removeClass('isTigo');
         }

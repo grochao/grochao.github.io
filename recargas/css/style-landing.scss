@@ -927,10 +927,8 @@ body {
                     }
                 }
                 .calltoacction {
-                    //  background-color: #fff;
                     @include css3-prefix(border-radius,
                     5px);
-                    // overflow: hidden;
                     display: block;
                     width: 300px;
                     height: 377px;
