@@ -1,0 +1,73 @@
+/*=================================================
+ COLOR PALETT
+ =================================================*/
+
+$UseContainerBootstrap:1;
+$WidthContainerXL: 1140px;
+$WidthContainerLG: 960px;
+$WidthContainerMD: 720px;
+$WidthContainerSM: 540px;
+$VERDE: #118345;
+$ROJO:#ed0000;
+$AMARILLO: #ffbf00;
+
+/*Breackpoint Bootstrap*/
+
+$xs: '(max-width: 575px)';
+$sm: '(min-width: 576px) and (max-width: 767px)';
+$md: '(min-width: 768px) and (max-width: 991px)';
+$lg: '(min-width: 992px) and (max-width: 1199px)';
+$xl: '(min-width: 1200px)';
+$BackGroundColorScroll:#2285bb;
+@mixin media-breakpoint($breakpoint) {
+    @media #{$breakpoint} {
+        @content;
+    }
+}
+
+@mixin media-breakpoint-min($breakpoint) {
+    $media: '';
+    @if $breakpoint==$xl {
+        $media: '(min-width: 1200px)';
+    }
+    @else if $breakpoint==$lg {
+        $media: '(min-width: 992px)';
+    }
+    @else if $breakpoint==$md {
+        $media: '(min-width: 768px)';
+    }
+    @else if $breakpoint==$sm {
+        $media: '(min-width: 576px)';
+    }
+    @else if $breakpoint==$xs {
+        $media: '(min-width: 0px)';
+    }
+    @else {
+        $media: $breakpoint;
+    }
+    @media #{$media} {
+        @content;
+    }
+}
+
+@mixin media-breakpoint-max($breakpoint) {
+    $media: '';
+    @if $breakpoint==$xl {
+        $media: '(max-width: 999999px)';
+    }
+    @else if $breakpoint==$lg {
+        $media: '(max-width: 1199px)';
+    }
+    @else if $breakpoint==$md {
+        $media: '(max-width: 991px)';
+    }
+    @else if $breakpoint==$sm {
+        $media: '(max-width: 767px)';
+    }
+    @else if $breakpoint==$xs {
+        $media: '(max-width: 575px)';
+    }
+    @media #{$media} {
+        @content;
+    }
+}

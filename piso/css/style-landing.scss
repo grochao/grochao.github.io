@@ -1,0 +1,167 @@
+@import "resources/css3_mixins";
+@import "bootstrap/03.bootstrap.grid";
+@import "fonts";
+@import "variables";
+body {
+    & {
+        background-color: #1e1e1e;
+        background-attachment: fixed;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        padding: 0;
+        margin: 0;
+        font-size: 18px;
+        * {
+            -webkit-text-size-adjust: none;
+            @include css3-prefix(user-select, none);
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+    }
+    .content-display {
+        display: flex;
+        width: 100%;
+        height: 100vh;
+        padding: 0;
+        margin: 0;
+        .sidebar,
+        .content-area {
+            display: block;
+        }
+        .sidebar {
+            & {
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.561);
+                height: 100vh;
+                @include media-breakpoint-min($lg) {
+                    max-width: 180px;
+                    flex: 0 0 180px;
+                    padding: 15px;
+                }
+                @include media-breakpoint-max($md) {
+                    max-width: 150px;
+                    flex: 0 0 150px;
+                    padding: 7px;
+                }
+            }
+            label,
+            input {
+                width: 100%;
+                display: block;
+                font-size: 0.7em;
+            }
+            label {
+                color: #fff;
+            }
+            h2 {
+                font-size: 0.8em;
+                color: #fff;
+                margin: 0 0 5px 0;
+            }
+            input[type="text"] {
+                & {
+                    font-size: 0.8em;
+                    @include css3-prefix(appearance, none);
+                    padding: 7px 15px;
+                    margin-bottom: 7px;
+                    position: relative;
+                    display: inline-block;
+                    width: 46%;
+                }
+                &,
+                &:focus,
+                &:hover {
+                    border: none;
+                    outline: none;
+                }
+                &::before {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    color: #1e1e1e;
+                    content: 'cm';
+                    contain: '';
+                }
+                &#txt-alto,
+                &#txt-loza-alto {
+                    float: right
+                }
+            }
+            [type="button"] {
+                @include css3-prefix(appearance, none);
+                padding: 15px;
+                position: relative;
+                background-color: #06680b;
+                color: #fff;
+                padding: 7px 15px;
+                display: block;
+                font-size: 15px;
+                width: 100%;
+                text-align: center;
+                font-weight: bold;
+                margin-top: 15px;
+                &,
+                &:focus,
+                &:hover {
+                    border: none;
+                    outline: none;
+                }
+            }
+        }
+        #content-lienzo {
+            width: 100%;
+            max-width: calc(100% - 150px);
+            flex: 0 0 calc(100% - 150px);
+            position: relative;
+            #center-lienzo {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 0;
+                height: 0;
+                outline: red 1px solid;
+                #lienzo {
+                    position: relative;
+                    outline: 1px #fff solid;
+                    display: block;
+                    line-height: 0;
+                    overflow: hidden;
+                    .row {
+                        display: block;
+                        width: 100%;
+                        position: relative;
+                        left: 15px;
+                        &:nth-child(even) {
+                            span {
+                                &:nth-child(even) {
+                                    background: #fff;
+                                }
+                                &:nth-child(odd) {
+                                    background: rgb(216, 204, 148)
+                                }
+                            }
+                        }
+                        &:nth-child(odd) {
+                            span {
+                                &:nth-child(even) {
+                                    background: rgb(216, 204, 148)
+                                }
+                                &:nth-child(odd) {
+                                    background: #fff;
+                                }
+                            }
+                        }
+                        span {
+                            background: #c7c7c7;
+                            display: inline-block;
+                            outline: rgba(0, 0, 0, 0.37) 1px solid;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
