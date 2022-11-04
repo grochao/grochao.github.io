@@ -668,7 +668,7 @@ var jsonList = {
     }
 
     function create_html_icons(list) {
-        var _return_ = '';
+        var _return_ = '';ú
         $.each(list, function(i, red) {
             _return_ += '<span class="icon-' + (red).toLowerCase() + '"></span>';
         });
@@ -705,6 +705,7 @@ var jsonList = {
             /* BEGIN: NEW NUMBERS */
             { "BEGIN": 7703, "END": 7703 },
             { "BEGIN": 7728, "END": 7728 },
+            { "BEGIN": 7860, "END": 7860 }, 
             /* END: NEW NUMBERS */
             { "BEGIN": 7750, "END": 7759 },
             { "BEGIN": 7870, "END": 7879 },
