@@ -685,7 +685,7 @@ var jsonList = {
             /* BEGIN: NEW NUMBERS */
             { "BEGIN": 5753, "END": 5753 },
             { "BEGIN": 5764, "END": 5764 },
-            /* END: NEW NUMBERS */
+ /* END: NEW NUMBERS */
             { "BEGIN": 5780, "END": 5789 },
             { "BEGIN": 5800, "END": 5849 },
             { "BEGIN": 8330, "END": 8339 },
@@ -703,6 +703,7 @@ var jsonList = {
         PrefixTigo = [
             { "BEGIN": 7710, "END": 7719 },
             /* BEGIN: NEW NUMBERS */
+            { "BEGIN": 7848, "END": 7848 },
             { "BEGIN": 7703, "END": 7703 },
             { "BEGIN": 7728, "END": 7728 },
             { "BEGIN": 7860, "END": 7860 }, 
