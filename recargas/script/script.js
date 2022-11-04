@@ -272,7 +272,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "chat",
             "New": false,
-            "Code": "*321*PIN*1*3*NUMERO#"
+            "Code": "*321*PIN*1*3*CELULAR#"
         },
         {
             "Name": "SMS 10D",
@@ -282,7 +282,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "chat",
             "New": false,
-            "Code": "*321*PIN*1*4*NUMERO#"
+            "Code": "*321*PIN*1*4*CELULAR#"
         },
         {
             "Name": "SMS 15D",
@@ -292,7 +292,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "chat",
             "New": false,
-            "Code": "*321*PIN*1*5*NUMERO#"
+            "Code": "*321*PIN*1*5*CELULAR#"
         },
         {
             "Name": "Internet 1D",
@@ -302,7 +302,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "solo-internet",
             "New": false,
-            "Code": "*321*PIN*2*1*NUMERO#"
+            "Code": "*321*PIN*2*1*CELULAR#"
         },
         {
             "Name": "Internet 2D",
@@ -312,7 +312,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "solo-internet",
             "New": false,
-            "Code": "*321*PIN*2*2*NUMERO#"
+            "Code": "*321*PIN*2*2*CELULAR#"
         },
         {
             "Name": "Internet 5D",
@@ -322,7 +322,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "solo-internet",
             "New": false,
-            "Code": "*321*PIN*2*4*NUMERO#"
+            "Code": "*321*PIN*2*4*CELULAR#"
         },
         {
             "Name": "Internet 7D",
@@ -332,7 +332,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "solo-internet",
             "New": false,
-            "Code": "*321*PIN*2*5*NUMERO#"
+            "Code": "*321*PIN*2*5*CELULAR#"
         },
         {
             "Name": "Internet 7D",
@@ -342,7 +342,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "solo-internet",
             "New": false,
-            "Code": "*321*PIN*2*6*NUMERO#"
+            "Code": "*321*PIN*2*6*CELULAR#"
         },
         {
             "Name": "Internet 15D",
@@ -352,7 +352,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "solo-internet",
             "New": false,
-            "Code": "*321*PIN*2*7*NUMERO#"
+            "Code": "*321*PIN*2*7*CELULAR#"
         },
         {
             "Name": "Internet 20D",
@@ -362,7 +362,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "solo-internet",
             "New": false,
-            "Code": "*321*PIN*2*8*NUMERO#"
+            "Code": "*321*PIN*2*8*CELULAR#"
         },
         {
             "Name": "Internet 30D",
@@ -372,7 +372,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "solo-internet",
             "New": false,
-            "Code": "*321*PIN*2*8*NUMERO#"
+            "Code": "*321*PIN*2*8*CELULAR#"
         },
         {
             "Name": "MIN Claro",
@@ -382,7 +382,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "solo-minutos-nic",
             "New": false,
-            "Code": "*321*PIN*4*1*NUMERO#"
+            "Code": "*321*PIN*4*1*CELULAR#"
         },
         {
             "Name": "TODO1",
@@ -400,7 +400,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": false,
-            "Code": "*321*PIN*6*1*NUMERO#"
+            "Code": "*321*PIN*6*1*CELULAR#"
         },
         {
             "Name": "TODO2",
@@ -416,7 +416,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": false,
-            "Code": "*321*PIN*6*2*NUMERO#"
+            "Code": "*321*PIN*6*2*CELULAR#"
         },
         {
             "Name": "TODO3",
@@ -432,7 +432,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": false,
-            "Code": "*321*PIN*6*3*NUMERO#"
+            "Code": "*321*PIN*6*3*CELULAR#"
         },
         {
             "Name": "TODO4",
@@ -448,7 +448,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": false,
-            "Code": "*321*PIN*6*4*NUMERO#"
+            "Code": "*321*PIN*6*4*CELULAR#"
         },
         {
             "Name": "TODO5",
@@ -464,7 +464,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": false,
-            "Code": "*321*PIN*6*5*NUMERO#"
+            "Code": "*321*PIN*6*5*CELULAR#"
         },
         {
             "Name": "TODO6",
@@ -476,7 +476,7 @@ var jsonList = {
             ],
             "Type": "chat",
             "New": false,
-            "Code": "*321*PIN*6*6*NUMERO#"
+            "Code": "*321*PIN*6*6*CELULAR#"
         },
         {
             "Name": "TODO7",
@@ -492,7 +492,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": false,
-            "Code": "*321*PIN*6*7*NUMERO#"
+            "Code": "*321*PIN*6*7*CELULAR#"
         },
         {
             "Name": "TODO8",
@@ -508,7 +508,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": false,
-            "Code": "*321*PIN*6*8*NUMERO#"
+            "Code": "*321*PIN*6*8*CELULAR#"
         },
         {
             "Name": "PAQUETODO1",
@@ -524,7 +524,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": false,
-            "Code": "*321*PIN*6*10*NUMERO#"
+            "Code": "*321*PIN*6*10*CELULAR#"
         },
         {
             "Name": "PAQUETODO2",
@@ -540,7 +540,7 @@ var jsonList = {
             ],
             "Type": "todo-incluido",
             "New": false,
-            "Code": "*321*PIN*6*11*NUMERO#"
+            "Code": "*321*PIN*6*11*CELULAR#"
         }
     ]
 
@@ -685,7 +685,7 @@ var jsonList = {
             /* BEGIN: NEW NUMBERS */
             { "BEGIN": 5753, "END": 5753 },
             { "BEGIN": 5764, "END": 5764 },
- /* END: NEW NUMBERS */
+            /* END: NEW NUMBERS */
             { "BEGIN": 5780, "END": 5789 },
             { "BEGIN": 5800, "END": 5849 },
             { "BEGIN": 8330, "END": 8339 },
@@ -706,7 +706,7 @@ var jsonList = {
             { "BEGIN": 7848, "END": 7848 },
             { "BEGIN": 7703, "END": 7703 },
             { "BEGIN": 7728, "END": 7728 },
-            { "BEGIN": 7860, "END": 7860 }, 
+            { "BEGIN": 7860, "END": 7860 },
             /* END: NEW NUMBERS */
             { "BEGIN": 7750, "END": 7759 },
             { "BEGIN": 7870, "END": 7879 },
