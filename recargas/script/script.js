@@ -252,7 +252,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "chat",
             "New": false,
-            "Code": "*321*PIN*1*1*NUMERO#"
+            "Code": "*321*PIN*1*1*CELULAR#"
         },
         {
             "Name": "SMS 2D",
@@ -262,7 +262,7 @@ var jsonList = {
             "Social_media": null,
             "Type": "chat",
             "New": false,
-            "Code": "*321*PIN*1*2*NUMERO#"
+            "Code": "*321*PIN*1*2*CELULAR#"
         },
         {
             "Name": "SMS 4D",
@@ -668,7 +668,7 @@ var jsonList = {
     }
 
     function create_html_icons(list) {
-        var _return_ = '';ú
+        var _return_ = '';
         $.each(list, function(i, red) {
             _return_ += '<span class="icon-' + (red).toLowerCase() + '"></span>';
         });
