@@ -1,5 +1,5 @@
 @import "resources/css3_mixins";
-@import "bootstrap/03.bootstrap.grid";
+@import "bootstrap/01.bootstrap";
 @import "fonts";
 @import "variables";
 body {
@@ -51,7 +51,7 @@ body {
             width: 100%;
             text-align: center;
             font-weight: bold;
-            padding: 7px;
+            padding: 0px;
         }
         .symbol {
             font-size: 16px;
@@ -106,6 +106,9 @@ body {
     }
     .show {
         display: block !important;
+    }
+    #table-historial {
+        display: none
     }
     & {
         background-attachment: fixed;
@@ -739,7 +742,7 @@ body {
                     margin: 0px auto 60px auto;
                     background-color: rgba(0, 0, 0, 0.35);
                     border: 1px solid #fff;
-                    padding: 15px 0px;
+                    padding: 11px 0px;
                     @include css3-prefix(box-shadow,
                     0px 4px 5px 0px rgba(0, 0, 0, 0.38));
                     @include css3-prefix(border-radius,
@@ -803,7 +806,7 @@ body {
                     background: rgba(0, 0, 0, 0.55);
                     text-align: center;
                     position: relative;
-                    top: 1px;
+                    top: 0px;
                     color: rgba(255, 255, 255, 0.85);
                     padding: 2px 0;
                     @include css3-prefix(border-radius,
@@ -1069,6 +1072,102 @@ body {
                         }
                     }
                     a {
+                        width: 160px;
+                        background-color: rgb(35, 129, 12);
+                        color: #fff;
+                        padding: 12px 15px;
+                        @include css3-prefix(border-radius,
+                        5px);
+                        font-size: 18px;
+                        font-weight: bold;
+                        margin: 15px auto;
+                        display: block;
+                        text-align: center;
+                        cursor: pointer;
+                        &,
+                        &:visited,
+                        &:active,
+                        &:focus,
+                        &:hover {
+                            text-decoration: none;
+                            border: none;
+                            outline: none;
+                        }
+                        i {
+                            &::before {
+                                font-size: 14px;
+                            }
+                        }
+                    }
+                }
+                .data-table {
+                    @include css3-prefix(border-radius,
+                    5px);
+                    display: block;
+                    width: 300px;
+                    height: 377px;
+                    position: relative;
+                    left: -150px;
+                    top: -188px;
+                    padding: 0;
+                    background-color: rgba(0, 0, 0, 0.33);
+                    border: #fff 1px solid;
+                    overflow: hidden;
+                    & {
+                        box-shadow: 0px 0px 35px 16px rgba(0, 0, 0, 0.71) inset;
+                        -webkit-box-shadow: 0px 0px 35px 16px rgba(0, 0, 0, 0.71) inset;
+                        -moz-box-shadow: 0px 0px 35px 16px rgba(0, 0, 0, 0.71) inset;
+                    }
+                    .cerrar {
+                        position: absolute;
+                        right: 10px;
+                        top: 10px;
+                        cursor: pointer;
+                        &::before {
+                            font-size: 35px;
+                            color: #fff;
+                        }
+                    }
+                    h2 {
+                        text-align: center;
+                        margin: 0;
+                        padding: 15px;
+                        font-size: 20px;
+                        color: #fff;
+                        background-color: #e58305;
+                        /* @include css3-prefix(border-radius,
+                        5px 5px 0 0);*/
+                    }
+                    .table-responsive {
+                        height: 225px;
+                        width: 100%;
+                        max-width: 90%;
+                        margin: 0 auto;
+                        margin-top: 15px;
+                        background: #212529;
+                        border-radius: 5px
+                    }
+                    table {
+                        th,
+                        td {
+                            font-size: 18px;
+                        }
+                    }
+                    /*.table {
+                        .col-fecha {
+                            width: 100px;
+                        }
+                        .col-numero {
+                            width: 100px;
+                        }
+                        .col-pdv {
+                            width: 100px;
+                        }
+                        .col-monto {
+                            width: 100px;
+                        }
+                    }*/
+                    button {
                         width: 160px;
                         background-color: rgb(35, 129, 12);
                         color: #fff;

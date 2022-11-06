@@ -598,20 +598,20 @@ var jsonList = {
         }
 
         //https://oxygenacademy.es/guardar-datos-de-forma-persistente-en-el-navegador-con-javascript/
-        /*if (typeof(Storage) !== "undefined") {
-            //ListNumber = localStorage.getItem("RegistrarVentas");
-            if (localStorage.getItem("RegistrarVentas") !== null) {
+        /* if (typeof(Storage) !== "undefined") {
+             //ListNumber = localStorage.getItem("RegistrarVentas");
+             if (localStorage.getItem("RegistrarVentas") !== null) {
 
-                ListNumber.push($("#list-" + (PDV).toLowerCase() + " .filter-numberphone input").val() + "|" + $(this).data('monto') + "|" + PDV);
-                localStorage.setItem("RegistrarVentas", ListNumber);
-            } else {
-                ListNumber.push($("#list-" + (PDV).toLowerCase() + " .filter-numberphone input").val() + "|" + $(this).data('monto') + "|" + PDV);
-                localStorage.setItem("RegistrarVentas", ListNumber);
-                //console.log("no hay numeros");
-            }
+                 ListNumber.push($("#list-" + (PDV).toLowerCase() + " .filter-numberphone input").val() + "|" + $(this).data('monto') + "|" + PDV);
+                 localStorage.setItem("RegistrarVentas", ListNumber);
+             } else {
+                 ListNumber.push($("#list-" + (PDV).toLowerCase() + " .filter-numberphone input").val() + "|" + $(this).data('monto') + "|" + PDV);
+                 localStorage.setItem("RegistrarVentas", ListNumber);
 
-            console.log(localStorage.getItem("RegistrarVentas"))
-        }*/
+             }
+
+             console.log(localStorage.getItem("RegistrarVentas"))
+         }*/
 
     });
     $('.switch').click(function() {
@@ -703,6 +703,7 @@ var jsonList = {
         PrefixTigo = [
             { "BEGIN": 7710, "END": 7719 },
             /* BEGIN: NEW NUMBERS */
+            { "BEGIN": 7621, "END": 7621 },
             { "BEGIN": 7848, "END": 7848 },
             { "BEGIN": 7703, "END": 7703 },
             { "BEGIN": 7728, "END": 7728 },
@@ -842,8 +843,10 @@ var jsonList = {
         $("body").removeClass('show-popup-call');
     });
 
+    /*$('body').on("click", "#call-number .calltoacction a", function() {
 
-
+    });
+*/
 
     $('body').on('keyup', '#amount', function() {
         if ($('body').hasClass('bk-claro')) {
