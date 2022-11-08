@@ -370,6 +370,12 @@ body {
                         &.icon-lafise {
                             background-color: #00583c;
                         }
+                        &.icon-ine {
+                            background-color: #0053a1;
+                            &::before {
+                                color: #fff200;
+                            }
+                        }
                         &.icon-garena {
                             background-color: #000;
                             &::before {
