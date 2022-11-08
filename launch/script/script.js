@@ -1,41 +1,11 @@
 (function($) {
 
     $(window).load(function() {
-        $(".card.credit-card").attr("style", "background-image: url(images/0" + getRandomInt(1, 13) + ".png)");
-        $(".all-content").removeClass('hide');
-        $("#txt_number").inputmask({ mask: "9999 9999", greedy: false, jitMasking: true });
-        $("#txt_minutos").inputmask({ mask: "999", greedy: false, jitMasking: true });
+
+        $(".all-content").attr('style', '');
+
 
     });
-
-    function SetRecargaNormal() {
-        var numero = (($.trim($('#txt_number').val())).replace(" ", ''));
-        var minute = (($.trim($('#txt_minutos').val())).replace(" ", ''));
-        var prefix = '*108*';
-
-        numero = (numero == '') ? 0 : parseInt(numero);
-        minute = (minute == '') ? 0 : parseInt(minute);
-
-        console.log(numero.length + " " + minute)
-        if ((numero !== 0 && $.trim(numero).length == 8) && (minute !== 0)) {
-
-            $("a#txt_call").each(function(i) {
-                prefix = $(this).data('prefix');
-                codigo = 'tel:' + encodeURIComponent(prefix + minute + '*' + numero + "*1234*#");
-                $(this).attr({
-                    "href": codigo
-                });
-            });
-
-
-
-        } else {
-            $("a#txt_call").attr({
-                "href": "#"
-            });
-
-        }
-    }
 
     function validateEmail(email) {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -58,9 +28,7 @@
     function replaceAll(str, find, replace) {
         return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
     }
-    /*  const input = document.querySelector("input");
-    const h1 = document.querySelector("h1");
-*/
+
 
 
     $('body').on('keyup touchend', '#input-text', function() {
@@ -104,35 +72,37 @@
     });
 
 
-    $('body').on('keyup touchend', '#txt_minutos', function() {
-        SetRecargaNormal();
+    function copy(selector) {
+        var $temp = $("<div>");
+        $("body").append($temp);
+        $temp.attr("contenteditable", true)
+            .html(($(selector).html()).replace(/\s+/g, '')).select()
+            .on("focus", function() { document.execCommand('selectAll', false, null); })
+            .focus();
+        document.execCommand("copy");
+        $temp.remove();
+    }
 
 
+    $('body').on('click', '.copy', function() {
+        var elementID = "#copy-" + $.trim(($("#credit-card ul li.show-card").attr("class")).replace('show-card', ''));
+        console.log(elementID);
+        copy(elementID);
+        return false;
     });
-    $('body').on('keyup touchend', '#txt_number', function() {
-        var number = (($.trim($(this).val())).replace(" ", '')).replace("_", '');
-        var prefix = '';
-        SetRecargaNormal();
-        if (number !== "" && number.length == 8) {
-
-            $("#list-tigo a").each(function(i) {
-                prefix = $(this).data('prefix');
-                codigo = 'tel:' + encodeURIComponent(prefix + number + "*1234*#");
-                $(this).attr({
-                    "href": codigo
-                });
-            });
-
-            $('.list').removeClass('disable');
-
-        } else {
-            $("#list-tigo a").attr({
-                "href": "#"
-            });
-            $('.list').addClass('disable');
-        }
+    $('body').on('click', '.close', function() {
+        $("#credit-card").removeClass('show');
+        return false;
+    });
 
 
+
+    $('body').on('click', '#select-card span', function() {
+        var itemCard = $.trim(($(this).attr("class")).replace("current", ""));
+        $("#select-card span").removeClass('current');
+        $("#cuentas li").removeClass('show-card');
+        $("#cuentas li." + itemCard).addClass('show-card');
+        $(this).addClass('current');
     });
 
 
