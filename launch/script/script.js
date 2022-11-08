@@ -158,12 +158,12 @@
 
 
 
-    $('body').on('dblclick', ".container-card", function() {
+    /*$('body').on('dblclick', ".container-card", function() {
         if ($(this).hasClass("show")) {
             $('.container-card').removeClass('show');
         }
         return false;
-    });
+    });*/
 
 
 

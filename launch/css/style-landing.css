@@ -1516,9 +1516,9 @@ body .show {
 
 body {
   background: #011f1d;
-  background: -moz-linear-gradient(323deg, #011f1d 0%, #028d70 32%, #02cb4f 62%, #02d14c 72%, #02c951 79%, #028d70 91%);
-  background: -webkit-linear-gradient(323deg, #011f1d 0%, #028d70 32%, #02cb4f 62%, #02d14c 72%, #02c951 79%, #028d70 91%);
-  background: linear-gradient(323deg, #011f1d 0%, #028d70 32%, #02cb4f 62%, #02d14c 72%, #02c951 79%, #028d70 91%);
+  background: -moz-linear-gradient(323deg, #011f1d 13%, #028d70 52%, #02cb4f 67%, #02d14c 76%, #02c951 80%, #028d70 91%, #011f1d 100%);
+  background: -webkit-linear-gradient(323deg, #011f1d 13%, #028d70 52%, #02cb4f 67%, #02d14c 76%, #02c951 80%, #028d70 91%, #011f1d 100%);
+  background: linear-gradient(323deg, #011f1d 13%, #028d70 52%, #02cb4f 67%, #02d14c 76%, #02c951 80%, #028d70 91%, #011f1d 100%);
 }
 
 body .all-content {
@@ -1924,7 +1924,7 @@ body .container-box .content-col .box-link .link [class*="icon-"]::before {
   }
   body .container-box .content-col .box-link .link i::before,
   body .container-box .content-col .box-link .link [class*="icon-"]::before {
-    font-size: 1.8em !important;
+    font-size: 1.95em !important;
   }
 }
 
