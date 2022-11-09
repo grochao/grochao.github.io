@@ -105,10 +105,34 @@
         $(this).addClass('current');
     });
 
+    function resizeCard() {
+        var ScreenW = $(window).outerWidth(true);
+        var ScreenH = $(window).outerHeight(true);
+        ScreenW = ScreenW - (ScreenW * 0.10);
+        ScreenH = ScreenH - (ScreenH * 0.15);
+
+        $('.card.credit-card').css({
+            'height': ScreenW,
+            'width': ScreenH,
+            'left': -(ScreenH) / 2,
+            'top': -(ScreenW) / 2,
+        });
+
+        $('#cuentas li').css({
+            'height': $('.card.credit-card').outerHeight() - 20
+        });
+    }
+    $(window).resize(function() {
+        resizeCard();
+    });
 
     $('body').on('click', '.click-cuentas', function() {
 
         $('#credit-card').addClass('show');
+
+        resizeCard();
+
+
         return false;
     });
 
@@ -133,7 +157,7 @@
         return false;
     });
 
-    $('body').on('click', '.click-recarga-tigo-internet', function() {
+    /*$('body').on('click', '.click-recarga-tigo-internet', function() {
 
         $('#recargas').addClass('show');
         $('.list').addClass('show');
@@ -154,7 +178,7 @@
 
 
         return false;
-    });
+    });*/
 
 
 

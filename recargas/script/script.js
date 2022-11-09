@@ -685,6 +685,7 @@ var jsonList = {
             /* BEGIN: NEW NUMBERS */
             { "BEGIN": 5753, "END": 5753 },
             { "BEGIN": 5764, "END": 5764 },
+            { "BEGIN": 5867, "END": 5867 },
             /* END: NEW NUMBERS */
             { "BEGIN": 5780, "END": 5789 },
             { "BEGIN": 5800, "END": 5849 },
@@ -708,6 +709,7 @@ var jsonList = {
             { "BEGIN": 7703, "END": 7703 },
             { "BEGIN": 7728, "END": 7728 },
             { "BEGIN": 7860, "END": 7860 },
+            { "BEGIN": 8286, "END": 8286 },
             /* END: NEW NUMBERS */
             { "BEGIN": 7750, "END": 7759 },
             { "BEGIN": 7870, "END": 7879 },
