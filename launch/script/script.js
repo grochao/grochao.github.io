@@ -111,16 +111,25 @@
         ScreenW = ScreenW - (ScreenW * 0.10);
         ScreenH = ScreenH - (ScreenH * 0.15);
 
-        $('.card.credit-card').css({
-            'height': ScreenW,
-            'width': ScreenH,
-            'left': -(ScreenH) / 2,
-            'top': -(ScreenW) / 2,
-        });
 
-        $('#cuentas li').css({
-            'height': $('.card.credit-card').outerHeight() - 20
-        });
+        if ($(window).outerWidth(true) < 768) {
+            $('.card.credit-card').css({
+                'height': ScreenW,
+                'width': ScreenH,
+                'left': -(ScreenH) / 2,
+                'top': -(ScreenW) / 2,
+            });
+            $('#cuentas li').css({
+                'height': $('.card.credit-card').outerHeight() - 20
+            })
+        } else {
+            $('.card.credit-card').attr("style", "");
+            $('.#cuentas li').attr("style", "");
+
+        }
+
+
+        ;
     }
     $(window).resize(function() {
         resizeCard();

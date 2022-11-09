@@ -1964,22 +1964,21 @@ body .container-card .center .card * {
 
 body .container-card .center .card.credit-card {
   display: block;
-  width: 630px;
-  height: 10.5vh;
   position: relative !important;
-  left: -315px;
-  top: -160px;
   -webkit-border-radius: 5px;
   -khtml-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
-  background-image: linear-gradient(to left top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+  background: #121836;
+  background: -moz-linear-gradient(320deg, #121836 1%, #00377b 35%, #00bf72 71%, #00f2ef 100%);
+  background: -webkit-linear-gradient(320deg, #121836 1%, #00377b 35%, #00bf72 71%, #00f2ef 100%);
+  background: linear-gradient(320deg, #121836 1%, #00377b 35%, #00bf72 71%, #00f2ef 100%);
   padding: 10px;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 767px) {
   body .container-card .center .card.credit-card {
     -webkit-transform: rotate(90deg);
     -khtml-transform: rotate(90deg);
@@ -1987,7 +1986,41 @@ body .container-card .center .card.credit-card {
     -ms-transform: rotate(90deg);
     -o-transform: rotate(90deg);
     transform: rotate(90deg);
+    width: 630px;
+    height: 10.5vh;
+    left: -315px;
+    top: -160px;
   }
+}
+
+@media (min-width: 768px) {
+  body .container-card .center .card.credit-card {
+    height: 400px;
+    width: 700px;
+    left: -350px;
+    top: -200px;
+  }
+  body .container-card .center .card.credit-card li {
+    height: 380px !important;
+  }
+}
+
+body .container-card .center .card.credit-card::before {
+  content: '';
+  display: block;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: #00377b;
+  background: -moz-linear-gradient(34deg, rgba(0, 55, 123, 0) 53%, rgba(0, 191, 114, 0.888393) 87%, #a8eb12 100%);
+  background: -webkit-linear-gradient(34deg, rgba(0, 55, 123, 0) 53%, rgba(0, 191, 114, 0.888393) 87%, #a8eb12 100%);
+  background: linear-gradient(34deg, rgba(0, 55, 123, 0) 53%, rgba(0, 191, 114, 0.888393) 87%, #a8eb12 100%);
 }
 
 body .container-card .center .card.credit-card #target {
@@ -1997,6 +2030,7 @@ body .container-card .center .card.credit-card #target {
 }
 
 body .container-card .center .card.credit-card .copy {
+  cursor: pointer;
   position: absolute;
   left: 15px;
   top: 15px;
@@ -2012,6 +2046,7 @@ body .container-card .center .card.credit-card .copy {
   -ms-border-radius: 100px;
   -o-border-radius: 100px;
   border-radius: 100px;
+  z-index: 2;
 }
 
 body .container-card .center .card.credit-card .copy::before {
@@ -2019,6 +2054,7 @@ body .container-card .center .card.credit-card .copy::before {
 }
 
 body .container-card .center .card.credit-card .close {
+  cursor: pointer;
   position: absolute;
   right: 15px;
   top: 15px;
@@ -2034,6 +2070,7 @@ body .container-card .center .card.credit-card .close {
   -ms-border-radius: 100px;
   -o-border-radius: 100px;
   border-radius: 100px;
+  z-index: 1;
 }
 
 body .container-card .center .card.credit-card .close::before {
@@ -2049,6 +2086,7 @@ body .container-card .center .card.credit-card #select-card {
   left: 0;
   padding: 5px;
   line-height: 0em;
+  z-index: 3;
 }
 
 body .container-card .center .card.credit-card #select-card span {
@@ -2109,6 +2147,8 @@ body .container-card .center .card.credit-card ul#cuentas li .content-data {
 body .container-card .center .card.credit-card ul#cuentas li .content-data span {
   display: block;
   width: 100%;
+  position: relative;
+  z-index: 2;
 }
 
 body .container-card .center .card.credit-card ul#cuentas li .content-data span.number {
@@ -2118,10 +2158,22 @@ body .container-card .center .card.credit-card ul#cuentas li .content-data span.
   text-align: center !important;
 }
 
+@media (min-width: 768px) {
+  body .container-card .center .card.credit-card ul#cuentas li .content-data span.number {
+    font-size: 98px;
+  }
+}
+
 body .container-card .center .card.credit-card ul#cuentas li .content-data span.description {
   text-shadow: 0px 0px 10px #424242;
   font-size: 3.5vh;
   text-align: center !important;
+}
+
+@media (min-width: 768px) {
+  body .container-card .center .card.credit-card ul#cuentas li .content-data span.description {
+    font-size: 40px;
+  }
 }
 
 body .container-card .recargas {
