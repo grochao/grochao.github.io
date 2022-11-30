@@ -380,10 +380,152 @@ var jsonList = {
             "Day": 0,
             "Description": "25min",
             "Social_media": null,
-            "Type": "solo-minutos-nic",
+            "Type": "solo-minutos",
             "New": false,
             "Code": "*321*PIN*4*1*CELULAR#"
         },
+        {
+            "Name": "MIN Claro",
+            "Price": 20,
+            "Day": 0,
+            "Description": "20min",
+            "Social_media": null,
+            "Type": "solo-minutos",
+            "New": false,
+            "Code": "*321*PIN*4*2*CELULAR#"
+        },
+        {
+            "Name": "MIN Claro",
+            "Price": 50,
+            "Day": 0,
+            "Description": "50min",
+            "Social_media": null,
+            "Type": "solo-minutos",
+            "New": false,
+            "Code": "*321*PIN*4*4*CELULAR#"
+        },
+        {
+            "Name": "MIN Claro",
+            "Price": 60,
+            "Day": 0,
+            "Description": "60min",
+            "Social_media": null,
+            "Type": "solo-minutos",
+            "New": false,
+            "Code": "*321*PIN*4*5*CELULAR#"
+        },
+        {
+            "Name": "MIN Claro",
+            "Price": 70,
+            "Day": 0,
+            "Description": "70min",
+            "Social_media": null,
+            "Type": "solo-minutos",
+            "New": false,
+            "Code": "*321*PIN*4*6*CELULAR#"
+        },
+        {
+            "Name": "MIN Claro",
+            "Price": 100,
+            "Day": 0,
+            "Description": "110min",
+            "Social_media": null,
+            "Type": "solo-minutos",
+            "New": false,
+            "Code": "*321*PIN*4*7*CELULAR#"
+        },
+        {
+            "Name": "MIN USA",
+            "Price": 30,
+            "Day": 0,
+            "Description": "30min",
+            "Social_media": null,
+            "Type": "solo-minutos",
+            "New": false,
+            "Code": "*321*PIN*4*8*CELULAR#"
+        },
+        {
+            "Name": "MIN USA",
+            "Price": 50,
+            "Day": 0,
+            "Description": "60min",
+            "Social_media": null,
+            "Type": "solo-minutos",
+            "New": false,
+            "Code": "*321*PIN*4*9*CELULAR#"
+        },
+        {
+            "Name": "MIN C.R",
+            "Price": 60,
+            "Day": 0,
+            "Description": "30min",
+            "Social_media": null,
+            "Type": "solo-minutos",
+            "New": false,
+            "Code": "*321*PIN*4*11*CELULAR#"
+        },
+        {
+            "Name": "MIN C.R",
+            "Price": 100,
+            "Day": 0,
+            "Description": "60min",
+            "Social_media": null,
+            "Type": "solo-minutos",
+            "New": false,
+            "Code": "*321*PIN*4*12*CELULAR#"
+        },
+        {
+            "Name": "MIN España",
+            "Price": 50,
+            "Day": 0,
+            "Description": "15min",
+            "Social_media": null,
+            "Type": "solo-minutos",
+            "New": false,
+            "Code": "*321*PIN*4*14*CELULAR#"
+        },
+        {
+            "Name": "MIN España",
+            "Price": 90,
+            "Day": 0,
+            "Description": "30min",
+            "Social_media": null,
+            "Type": "solo-minutos",
+            "New": false,
+            "Code": "*321*PIN*4*15*CELULAR#"
+        },
+        {
+            "Name": "MIN MULTIUSO",
+            "Price": 30,
+            "Day": 0,
+            "Description": "10min",
+            "Social_media": null,
+            "Type": "solo-minutos",
+            "New": false,
+            "Code": "*321*PIN*4*17*CELULAR#"
+        },
+        {
+            "Name": "MIN MULTIUSO",
+            "Price": 40,
+            "Day": 0,
+            "Description": "15min",
+            "Social_media": null,
+            "Type": "solo-minutos",
+            "New": false,
+            "Code": "*321*PIN*4*18*CELULAR#"
+        },
+        {
+            "Name": "MIN MULTIUSO",
+            "Price": 80,
+            "Day": 0,
+            "Description": "30min",
+            "Social_media": null,
+            "Type": "solo-minutos",
+            "New": false,
+            "Code": "*321*PIN*4*20*CELULAR#"
+        }
+
+        ,
         {
             "Name": "TODO1",
             "Price": 50,
@@ -566,6 +708,7 @@ var jsonList = {
             $.each(jsonList[key], function(i, pack) {
                 if (Type == 'full') {
                     obj.append(loadHTMLpack(pack, false));
+
                 } else if (Type == pack.Type) {
                     obj.append(loadHTMLpack(pack, false));
                 }
@@ -581,7 +724,7 @@ var jsonList = {
                         "Social_media": null,
                         "Type": "tiempo-aire",
                         "New": false,
-                        "Code": "*108*" + Price + "*CELULAR*PIN#"
+                        "Code": (key === 'tigo' ? ("*108*" + Price + "*CELULAR*PIN#") : ("*603*1*CELULAR*" + Price + "*PIN#"))
                     }, (Type === 'tiempo-aire') ? true : false));
                 }
             }

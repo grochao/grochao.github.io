@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*============================================================
   Sass CSS3 Mixins! The Cross-Browser CSS3 Sass Library
   By: Matthieu Aussaguel, http://www.mynameismatthieu.com, @matthieu_tweets
@@ -9295,10 +9296,10 @@ body .box-pack .pack .box .more-info .redes span::before {
     border-radius: 5px;
     display: block;
     width: 300px;
-    height: 377px;
+    height: 407px;
     position: relative;
     left: -150px;
-    top: -188px;
+    top: -203.5px;
     padding: 0;
     background-color: rgba(0, 0, 0, 0.33);
     border: #fff 1px solid;
@@ -9749,4 +9750,180 @@ body .box-pack .pack .box .more-info .redes span::before {
     font-weight: bold;
     padding-left: 20px;
   }
+}
+
+#popup-proyecciones {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 999999999;
+}
+
+#popup-proyecciones .box {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1px;
+  height: 1px;
+}
+
+#popup-proyecciones .box .calendar {
+  position: relative;
+  background-color: #019577;
+  display: block;
+  padding: 36px 7px 7px;
+}
+
+@media (min-width: 768px) {
+  #popup-proyecciones .box .calendar {
+    width: 768px;
+    height: 500px;
+    top: calc((500px / 2) * -1);
+    left: calc((768px / 2) * -1);
+  }
+}
+
+@media (max-width: 767px) {
+  #popup-proyecciones .box .calendar {
+    width: 300px;
+    height: 480px;
+    top: calc((480px / 2) * -1);
+    left: calc((300px / 2) * -1);
+  }
+}
+
+#popup-proyecciones .box .calendar h1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 7px;
+}
+
+#popup-proyecciones .box .calendar .overflow-table {
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+}
+
+#popup-proyecciones .box .calendar .overflow-table .inner {
+  display: block;
+  width: 620px;
+  height: 100%;
+  background-color: #fff;
+  overflow: auto;
+}
+
+#popup-proyecciones .box .calendar .overflow-table .inner .week {
+  display: table-row;
+  vertical-align: middle;
+  word-break: break-all;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  align-items: center;
+  text-align: center;
+  height: 30px;
+  width: auto;
+  color: #000;
+  table-layout: fixed;
+}
+
+#popup-proyecciones .box .calendar .overflow-table .inner .week:first-child {
+  background-color: #f3f3f3;
+}
+
+#popup-proyecciones .box .calendar .overflow-table .inner .week:first-child span.current-date {
+  background-color: #b70909;
+  color: #fff;
+}
+
+#popup-proyecciones .box .calendar .overflow-table .inner .week:first-child span.current-date::after {
+  display: none;
+}
+
+#popup-proyecciones .box .calendar .overflow-table .inner .week span {
+  text-transform: uppercase;
+  display: table-cell;
+  table-layout: fixed;
+  white-space: nowrap;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 20px;
+  height: 30px;
+  text-align: center;
+  border-left: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+#popup-proyecciones .box .calendar .overflow-table .inner .week span hr {
+  margin: 0;
+}
+
+#popup-proyecciones .box .calendar .overflow-table .inner .week span sub {
+  position: relative;
+  top: 0px;
+  font-size: 0.8em;
+}
+
+#popup-proyecciones .box .calendar .overflow-table .inner .week span:nth-child(1) {
+  width: 100px;
+}
+
+#popup-proyecciones .box .calendar .overflow-table .inner .week span:nth-child(2), #popup-proyecciones .box .calendar .overflow-table .inner .week span:nth-child(8), #popup-proyecciones .box .calendar .overflow-table .inner .week span:nth-child(9), #popup-proyecciones .box .calendar .overflow-table .inner .week span:nth-child(15), #popup-proyecciones .box .calendar .overflow-table .inner .week span:nth-child(16), #popup-proyecciones .box .calendar .overflow-table .inner .week span:nth-child(22) {
+  background-color: #f3f3f3;
+}
+
+#popup-proyecciones .box .calendar .overflow-table .inner .week span:last-child {
+  border-right: 1px solid #ddd;
+}
+
+#popup-proyecciones .box .calendar .overflow-table .inner .week span.current-date {
+  position: relative;
+}
+
+#popup-proyecciones .box .calendar .overflow-table .inner .week span.current-date::after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 0px;
+  left: 50%;
+  height: 30px;
+  outline: #b70909 1px solid;
+  top: 0;
+}
+
+#popup-proyecciones .box .calendar .overflow-table .inner .week span.active {
+  position: relative;
+}
+
+#popup-proyecciones .box .calendar .overflow-table .inner .week span.active::before {
+  position: absolute;
+  top: 7px;
+  left: 0;
+  content: '';
+  background-color: #019577;
+  height: 15px;
+  width: 100%;
+  color: #fff;
+  font-size: 15px;
+  line-height: 0.85em;
+}
+
+#popup-proyecciones .box .calendar .overflow-table .inner .week span.end::before {
+  content: '«';
+  border-right: #1bc9a6 4px solid;
+}
+
+#popup-proyecciones .box .calendar .overflow-table .inner .week span.begin::before {
+  content: '»';
+  border-left: #1bc9a6 4px solid;
 }

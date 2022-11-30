@@ -934,10 +934,10 @@ body {
                     5px);
                     display: block;
                     width: 300px;
-                    height: 377px;
+                    height: 407px;
                     position: relative;
                     left: -150px;
-                    top: -188px;
+                    top: -203.5px;
                     padding: 0;
                     background-color: rgba(0, 0, 0, 0.33);
                     border: #fff 1px solid;
@@ -1377,6 +1377,165 @@ body {
                         background-color: #e58305;
                         font-weight: bold;
                         padding-left: 20px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+#popup-proyecciones {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 999999999;
+    .box {
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 1px;
+        height: 1px;
+        .calendar {
+            position: relative;
+            background-color: #019577;
+            display: block;
+            padding: 36px 7px 7px;
+            @include media-breakpoint-min($md) {
+                width: 768px;
+                height: 500px;
+                top: calc((500px / 2) * -1);
+                left: calc((768px / 2) * -1);
+            }
+            @include media-breakpoint-max($sm) {
+                width: 300px;
+                height: 480px;
+                top: calc((480px / 2) * -1);
+                left: calc((300px / 2) * -1);
+            }
+            h1 {
+                position: absolute;
+                top: 0;
+                left: 0;
+                color: #fff;
+                font-size: 20px;
+                font-weight: bold;
+                padding: 7px;
+            }
+            .overflow-table {
+                overflow: auto;
+                height: 100%;
+                width: 100%;
+                .inner {
+                    display: block;
+                    width: 620px;
+                    height: 100%;
+                    background-color: #fff;
+                    overflow: auto;
+                    .week {
+                        display: table-row;
+                        vertical-align: middle;
+                        word-break: break-all;
+                        word-wrap: break-word;
+                        overflow-wrap: break-word;
+                        align-items: center;
+                        text-align: center;
+                        height: 30px;
+                        width: auto;
+                        color: #000;
+                        table-layout: fixed;
+                        //  outline: 1px solid #ddd;
+                        &:first-child {
+                            background-color: #f3f3f3;
+                            span.current-date {
+                                background-color: #b70909;
+                                color: #fff;
+                                &::after {
+                                    display: none;
+                                }
+                            }
+                        }
+                        span {
+                            text-transform: uppercase;
+                            display: table-cell;
+                            table-layout: fixed;
+                            white-space: nowrap;
+                            vertical-align: middle;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            width: 20px;
+                            height: 30px;
+                            text-align: center;
+                            border-left: 1px solid #ddd;
+                            border-bottom: 1px solid #ddd;
+                            hr {
+                                margin: 0;
+                            }
+                            sub {
+                                position: relative;
+                                top: 0px;
+                                font-size: 0.8em;
+                            }
+                            &:nth-child(1) {
+                                width: 100px;
+                            }
+                            &:nth-child(2),
+                            &:nth-child(8),
+                            &:nth-child(9),
+                            &:nth-child(15),
+                            &:nth-child(16),
+                            &:nth-child(22) {
+                                background-color: #f3f3f3;
+                            }
+                            &:last-child {
+                                border-right: 1px solid #ddd;
+                            }
+                            &.current-date {
+                                position: relative;
+                                &::after {
+                                    content: '';
+                                    display: block;
+                                    position: absolute;
+                                    width: 0px;
+                                    left: 50%;
+                                    height: 30px;
+                                    outline: #b70909 1px solid;
+                                    top: 0;
+                                }
+                            }
+                            &.active {
+                                position: relative;
+                                &::before {
+                                    position: absolute;
+                                    top: 7px;
+                                    left: 0;
+                                    content: '';
+                                    background-color: #019577;
+                                    height: 15px;
+                                    width: 100%;
+                                    color: #fff;
+                                    font-size: 15px;
+                                    line-height: 0.85em;
+                                }
+                            }
+                            &.end {
+                                &::before {
+                                    content: '«';
+                                    border-right: #1bc9a6 4px solid;
+                                }
+                            }
+                            &.begin {
+                                &::before {
+                                    content: '»';
+                                    border-left: #1bc9a6 4px solid;
+                                }
+                            }
+                        }
                     }
                 }
             }
