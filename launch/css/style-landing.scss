@@ -529,11 +529,12 @@ body {
                         line-height: 0em;
                         z-index: 3;
                         span {
+                            cursor: pointer;
                             display: inline-block;
-                            width: 20px;
-                            height: 20px;
-                            margin: 0 10px;
-                            background-color: rgba(0, 0, 0, 0.3);
+                            width: 30px;
+                            height: 30px;
+                            margin: 0 20px;
+                            background-color: rgba(255, 255, 255, 0.3);
                             @include css3-prefix( border-radius, 100px);
                             &.current {
                                 background-color: #fff
