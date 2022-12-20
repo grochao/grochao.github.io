@@ -562,7 +562,7 @@ var jsonList = {
         },
         {
             "Name": "TODO3",
-            "Price": 100,
+            "Price": 110,
             "Day": 7,
             "Description": "Min Ilimitados CLaro. 40min Multiuso, 3000sms, 4.5GB",
             "Social_media": [

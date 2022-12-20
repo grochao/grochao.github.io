@@ -9753,6 +9753,7 @@ body .box-pack .pack .box .more-info .redes span::before {
 }
 
 #popup-proyecciones {
+  display: none !important;
   position: fixed;
   top: 0;
   left: 0;
