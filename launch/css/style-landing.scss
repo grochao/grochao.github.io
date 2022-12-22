@@ -533,11 +533,14 @@ body {
                             display: inline-block;
                             width: 30px;
                             height: 30px;
-                            margin: 0 20px;
+                            margin: 0 10px;
                             background-color: rgba(255, 255, 255, 0.3);
                             @include css3-prefix( border-radius, 100px);
                             &.current {
                                 background-color: #fff
+                            }
+                            @include media-breakpoint-min($md) {
+                                margin: 0 20px;
                             }
                         }
                     }
@@ -575,8 +578,16 @@ body {
                                         font-weight: bold;
                                         text-shadow: 0px 0px 10px rgb(66, 66, 66);
                                         text-align: center!important;
+                                        &#copy-banprocordobas,
+                                        &#copy-banprodolares {
+                                            font-size: 8.5vh;
+                                        }
                                         @include media-breakpoint-min($md) {
                                             font-size: 98px;
+                                            &#copy-banprocordobas,
+                                            &#copy-banprodolares {
+                                                font-size: 75px;
+                                            }
                                         }
                                     }
                                     &.description {

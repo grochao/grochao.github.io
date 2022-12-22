@@ -86,7 +86,7 @@
 
     $('body').on('click', '.copy', function() {
         var elementID = "#copy-" + $.trim(($("#credit-card ul li.show-card").attr("class")).replace('show-card', ''));
-        console.log(elementID);
+        //console.log(elementID);
         copy(elementID);
         return false;
     });

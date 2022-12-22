@@ -1324,144 +1324,148 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-copy:before {
+.icon-banpro:before {
   content: "\e900";
 }
 
-.icon-ine:before {
+.icon-copy:before {
   content: "\e901";
 }
 
-.icon-close:before {
+.icon-ine:before {
   content: "\e902";
 }
 
-.icon-phone:before {
+.icon-close:before {
   content: "\e903";
 }
 
-.icon-twitter:before {
+.icon-phone:before {
   content: "\e904";
 }
 
-.icon-google-mail:before {
+.icon-twitter:before {
   content: "\e905";
 }
 
-.icon-unicomer:before {
+.icon-google-mail:before {
   content: "\e906";
 }
 
-.icon-fast:before {
+.icon-unicomer:before {
   content: "\e907";
 }
 
-.icon-claro:before {
+.icon-fast:before {
   content: "\e908";
 }
 
-.icon-messenger:before {
+.icon-claro:before {
   content: "\e909";
 }
 
-.icon-tigo:before {
+.icon-messenger:before {
   content: "\e90a";
 }
 
-.icon-pae:before {
+.icon-tigo:before {
   content: "\e90b";
 }
 
-.icon-chip:before {
+.icon-pae:before {
   content: "\e90c";
 }
 
-.icon-youtube:before {
+.icon-chip:before {
   content: "\e90d";
 }
 
-.icon-world-2:before {
+.icon-youtube:before {
   content: "\e90e";
 }
 
-.icon-world-1:before {
+.icon-world-2:before {
   content: "\e90f";
 }
 
-.icon-windy:before {
+.icon-world-1:before {
   content: "\e910";
 }
 
-.icon-whatsapp:before {
+.icon-windy:before {
   content: "\e911";
 }
 
-.icon-video-camera:before {
+.icon-whatsapp:before {
   content: "\e912";
 }
 
-.icon-ventusky:before {
+.icon-video-camera:before {
   content: "\e913";
 }
 
-.icon-tiktok:before {
+.icon-ventusky:before {
   content: "\e914";
 }
 
-.icon-telegram:before {
+.icon-tiktok:before {
   content: "\e915";
 }
 
-.icon-pinterest:before {
+.icon-telegram:before {
   content: "\e916";
 }
 
-.icon-outlook:before {
+.icon-pinterest:before {
   content: "\e917";
 }
 
-.icon-office365:before {
+.icon-outlook:before {
   content: "\e918";
 }
 
-.icon-link:before {
+.icon-office365:before {
   content: "\e919";
 }
 
-.icon-lafise:before {
+.icon-link:before {
   content: "\e91a";
 }
 
-.icon-justwatch:before {
+.icon-lafise:before {
   content: "\e91b";
 }
 
-.icon-instagram:before {
+.icon-justwatch:before {
   content: "\e91c";
 }
 
-.icon-google-translate:before {
+.icon-instagram:before {
   content: "\e91d";
 }
 
-.icon-google-fiber:before {
+.icon-google-translate:before {
   content: "\e91e";
 }
 
-.icon-google:before {
+.icon-google-fiber:before {
   content: "\e91f";
 }
 
-.icon-garena:before {
+.icon-google:before {
   content: "\e920";
 }
 
-.icon-facebook:before {
+.icon-garena:before {
   content: "\e921";
 }
 
-.icon-cyclocane:before {
+.icon-facebook:before {
   content: "\e922";
+}
+
+.icon-cyclocane:before {
+  content: "\e923";
 }
 
 @font-face {
@@ -2094,7 +2098,7 @@ body .container-card .center .card.credit-card #select-card span {
   display: inline-block;
   width: 30px;
   height: 30px;
-  margin: 0 20px;
+  margin: 0 10px;
   background-color: rgba(255, 255, 255, 0.3);
   -webkit-border-radius: 100px;
   -khtml-border-radius: 100px;
@@ -2106,6 +2110,12 @@ body .container-card .center .card.credit-card #select-card span {
 
 body .container-card .center .card.credit-card #select-card span.current {
   background-color: #fff;
+}
+
+@media (min-width: 768px) {
+  body .container-card .center .card.credit-card #select-card span {
+    margin: 0 20px;
+  }
 }
 
 body .container-card .center .card.credit-card ul#cuentas {
@@ -2159,9 +2169,16 @@ body .container-card .center .card.credit-card ul#cuentas li .content-data span.
   text-align: center !important;
 }
 
+body .container-card .center .card.credit-card ul#cuentas li .content-data span.number#copy-banprocordobas, body .container-card .center .card.credit-card ul#cuentas li .content-data span.number#copy-banprodolares {
+  font-size: 8.5vh;
+}
+
 @media (min-width: 768px) {
   body .container-card .center .card.credit-card ul#cuentas li .content-data span.number {
     font-size: 98px;
+  }
+  body .container-card .center .card.credit-card ul#cuentas li .content-data span.number#copy-banprocordobas, body .container-card .center .card.credit-card ul#cuentas li .content-data span.number#copy-banprodolares {
+    font-size: 75px;
   }
 }
 
