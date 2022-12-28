@@ -1967,6 +1967,7 @@ body .container-card .center .card * {
 }
 
 body .container-card .center .card.credit-card {
+  overflow: hidden;
   display: block;
   position: relative !important;
   -webkit-border-radius: 5px;
