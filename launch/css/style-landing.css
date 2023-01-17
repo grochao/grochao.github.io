@@ -2187,6 +2187,12 @@ body .container-card .center .card.credit-card ul#cuentas li .content-data span.
   text-shadow: 0px 0px 10px #424242;
   font-size: 3.5vh;
   text-align: center !important;
+  line-height: 0.4em;
+  margin-bottom: 15px;
+}
+
+body .container-card .center .card.credit-card ul#cuentas li .content-data span.description sub {
+  font-weight: bold;
 }
 
 @media (min-width: 768px) {

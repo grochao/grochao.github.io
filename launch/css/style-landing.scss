@@ -595,6 +595,11 @@ body {
                                         text-shadow: 0px 0px 10px rgb(66, 66, 66);
                                         font-size: 3.5vh;
                                         text-align: center!important;
+                                        line-height: 0.4em;
+                                        margin-bottom: 15px;
+                                        sub {
+                                            font-weight: bold;
+                                        }
                                         @include media-breakpoint-min($md) {
                                             font-size: 40px;
                                         }
