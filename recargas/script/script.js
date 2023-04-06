@@ -101,7 +101,7 @@ var jsonList = {
 
         {
             "Name": "MEGA4",
-            "Price": 50,
+            "Price": 55,
             "Day": 4,
             "Description": "2.2GB, 80min Tigo CA y USA",
             "Social_media": [
@@ -528,7 +528,7 @@ var jsonList = {
         ,
         {
             "Name": "TODO1",
-            "Price": 50,
+            "Price": 55,
             "Day": 4,
             "Description": "100min Claro, 10min Multiuso, 100sms + 2.5GB",
             "Social_media": [
