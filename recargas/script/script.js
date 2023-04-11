@@ -1,4 +1,4 @@
-var ListNumber = [null];
+var ListNumber = [null, null];
 var jsonList = {
     "tigo": [{
             "Name": "HABLA20",
