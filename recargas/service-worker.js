@@ -1,7 +1,7 @@
 //self.importScripts('data/games.js');
 
 // Files to cache
-const cacheName = 'update-recargas-app-v4_2';
+const cacheName = 'update-recargas-app-v5';
 const appShellFiles = [
     '/',
     'index.html',

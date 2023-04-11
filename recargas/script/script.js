@@ -1,4 +1,4 @@
-var ListNumber = [];
+var ListNumber = [null];
 var jsonList = {
     "tigo": [{
             "Name": "HABLA20",
@@ -24,7 +24,7 @@ var jsonList = {
         },
         {
             "Name": "HABLA+4",
-            "Price": 50,
+            "Price": 55,
             "Day": 4,
             "Description": "Llamadas Ilimitadas a Tigo",
             "Social_media": [
@@ -803,7 +803,7 @@ var jsonList = {
             '    <div class="box"  data-prefix="' + _pack.Code + '" data-monto="' + _pack.Price + '">' +
             '        ' + isnew +
             '        <h2>' + _pack.Name + '</h2>' +
-            '        <div class="principal">' + $.trim(_pack.Price) + ' <span>C$ ' + $.trim(Math.round(_pack.Price * 1.1)) + '</span></div>' +
+            '        <div class="principal">' + $.trim(_pack.Price) + ' <span>C$ ' + $.trim(Math.floor(_pack.Price * 1.1)) + '</span></div>' +
             '        ' + days +
             '        ' + description +
             '    </div>' +
