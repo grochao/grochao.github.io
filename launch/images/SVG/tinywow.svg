@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="500"
+   height="340"
+   viewBox="0 0 500 340"
+   fill="none"
+   version="1.1"
+   id="svg17"
+   sodipodi:docname="favicon-tinywow.svg"
+   inkscape:version="1.2.2 (1:1.2.2+202305151914+b0a8486541)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview19"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     showgrid="false"
+     inkscape:zoom="0.89458055"
+     inkscape:cx="441.54772"
+     inkscape:cy="88.868465"
+     inkscape:window-width="1920"
+     inkscape:window-height="1043"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g458" />
+  <g
+     id="g458"
+     transform="matrix(7.0833333,0,0,7.0833333,80.000001,8.0000001e-7)">
+    <path
+       id="rect2"
+       style="fill:#000000;fill-opacity:1;stroke-width:0.985295"
+       d="m 23.999999,0.35294094 c -13.100455,0 -23.6470581,10.54660306 -23.6470581,23.64705806 0,13.100459 10.5466031,23.64706 23.6470581,23.64706 13.100459,0 23.64706,-10.546601 23.64706,-23.64706 0,-13.100455 -10.546601,-23.64705806 -23.64706,-23.64705806 z M 14.992166,12.739935 c 1.247659,0 2.251959,1.004574 2.251959,2.252231 v 6.756147 c 0,1.247659 -1.0043,2.25223 -2.251959,2.25223 -1.247657,0 -2.252231,-1.004571 -2.252231,-2.25223 v -6.756147 c 0,-1.247657 1.004574,-2.252231 2.252231,-2.252231 z m 6.753974,0 c 2.487664,0 4.504188,2.016622 4.504188,4.50419 v 18.016756 c -2.487665,0 -4.504188,-2.016622 -4.504188,-4.50419 z m 11.262781,0 c 1.247662,0 2.252231,1.004569 2.252231,2.252231 v 6.756147 c 0,1.247665 -1.004569,2.25223 -2.252231,2.25223 -1.24766,0 -2.251959,-1.004565 -2.251959,-2.25223 v -6.756147 c 0,-1.247662 1.004299,-2.252231 2.251959,-2.252231 z" />
+  </g>
+  <defs
+     id="defs15">
+    <linearGradient
+       id="paint0_linear_4025_121882"
+       x1="24"
+       y1="0"
+       x2="24"
+       y2="48"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         stop-color="#1A8FE3"
+         id="stop10"
+         offset="0"
+         style="stop-color:#0000e3;stop-opacity:1;" />
+      <stop
+         offset="1"
+         stop-color="#5165EB"
+         id="stop12" />
+    </linearGradient>
+  </defs>
+</svg>
