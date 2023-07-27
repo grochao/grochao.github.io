@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Static Image</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css">
+    <script src="https://openlayers.org/en/v4.6.5/build/ol.js"></script>
+    <!-- Resources POPUP -->
+    <link rel="stylesheet" href="https://unpkg.com/ol-popup@4.0.0/src/ol-popup.css" />
+    <script src="https://unpkg.com/ol-popup@4.0.0"></script>
+    <!--link rel="stylesheet" href="https://openlayers.org/en/v3.20.1/css/ol.css" type="text/css"-->
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <!--script src="https://openlayers.org/en/v3.20.1/build/ol.js"></script-->
+    <script src="assets/script/script-theislands.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        body,
+        body *,
+        body *::before,
+        body *::after {
+            -webkit-box-sizing: border-box!important;
+            -khtml-box-sizing: border-box!important;
+            -moz-box-sizing: border-box!important;
+            -ms-box-sizing: border-box!important;
+            -o-box-sizing: border-box!important;
+            box-sizing: border-box!important;
+            -ms-overflow-style: scrollbar;
+        }
+        
+        #map .ol-popup {
+            display: block;
+            background: rgba(13, 26, 41, 0.78);
+            color: white;
+            font-family: arial;
+            width: 263px;
+            line-height: 1.2em;
+            height: auto;
+            border: none!important;
+            padding: 15px!important;
+            pointer-events: none;
+        }
+        
+        #map .ol-popup .ol-popup-closer {
+            pointer-events: all!important;
+        }
+        
+        #map .ol-popup-closer {
+            top: 6px;
+            right: 5px;
+            color: #fff;
+            display: block;
+            width: 30px;
+            padding-top: 5px;
+            height: 30px;
+            border-radius: 50%;
+            background: #0d1a29;
+            font-size: 18px;
+            text-align: center;
+        }
+        
+        #map .ol-popup .ol-popup-content {
+            height: auto;
+            max-height: initial;
+            overflow-x: auto;
+            line-height: 1.4em;
+            font-weight: 300;
+            background-color: #0d1a29;
+            padding: 15px;
+            border-radius: 13px;
+            font-size: 15px;
+        }
+        
+        #map .ol-popup .ol-popup-content img {
+            width: 100%;
+            max-width: 233px;
+            height: auto;
+        }
+        
+        .ol-attribution ul li:first-child {
+            display: none;
+        }
+        
+        #map .ol-popup::before,
+        #map .ol-popup::after {
+            border-top-color: rgba(22, 44, 83, 0.9)!important;
+        }
+        
+        .ol-attribution ul li:nth-child(2) a,
+        .ol-attribution ul li:nth-child(2) a:active,
+        .ol-attribution ul li:nth-child(2) a:visited,
+        .ol-attribution ul li:nth-child(2) a:focus {
+            font-size: 17px;
+            text-decoration: none;
+        }
+        
+        .contant-map {
+            display: block;
+            margin: 0 auto;
+            outline: red 1px solid;
+            background-color: #549bbc;
+            overflow: hidden;
+        }
+        
+        @media all and (min-width: 1600px) {
+            /*xxl*/
+            .contant-map {
+                width: 1500px;
+            }
+        }
+        
+        @media all and (min-width: 1200px) and (max-width:1599px) {
+            /*xl*/
+            .contant-map {
+                width: 1180px;
+            }
+        }
+        
+        @media all and (min-width:992px) and (max-width:1199px) {
+            /*lg*/
+            .contant-map {
+                width: 975px;
+            }
+        }
+        
+        @media all and (min-width:768px) and (max-width:991px) {
+            /*md*/
+            .contant-map {
+                width: 750px;
+            }
+        }
+        
+        @media all and (max-width:767px) {
+            /*mobil*/
+            .span12 {
+                width: 100%;
+            }
+        }
+        
+        @media all and (min-width:768px) {
+            #map .ol-zoom.ol-control {
+                display: none!important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="contant-map">
+        <div id="map" class="map"></div>
+    </div>
+    <script>
+    </script>
+</body>
+
+</html>

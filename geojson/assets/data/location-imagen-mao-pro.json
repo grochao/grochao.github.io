@@ -1,0 +1,3535 @@
+{
+    "id": 3764,
+    "editor": {
+        "selected_shape": "rect-6435",
+        "tool": "select",
+        "zoom": 4
+    },
+    "general": {
+        "name": "The Islands Site Plan",
+        "shortcode": "site-plan",
+        "width": 1685,
+        "height": 1080,
+        "naturalWidth": 1685,
+        "naturalHeight": 1080,
+        "center_image_map": 1
+    },
+    "image": {
+        "url": "https://web.archive.org/web/20190102005210/https://liveattheislands.com/wp-content/uploads/2018/10/Islands-site-plan-2018-Sold.jpg"
+    },
+    "spots": [{
+            "id": "rect-9189",
+            "title": "115",
+            "type": "poly",
+            "x": 36.836,
+            "y": 57.917,
+            "width": 2.132,
+            "height": 4.553,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "plain_text": "Homesite:  #115Acerage:  .47View:  Central HarborDock: Premium Dock IncludedPrice: $335,000",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-930501",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b> 115 <br><b>Acreage:</b> .47 <br><b>View:</b> Central Harbor <br><b>Dock:</b> Approved for a Boating Dock <br><b>Price:</b> $375,000"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_color": "#ffffff",
+                                        "border_radius": 4
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 12.596144533811
+                },
+                {
+                    "x": 53.309423690898,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 84.082457422042
+                },
+                {
+                    "x": 29.920797830606,
+                    "y": 100
+                }
+            ]
+        },
+        {
+            "id": "rect-9300",
+            "title": "116",
+            "type": "poly",
+            "x": 35.457,
+            "y": 58.718,
+            "width": 1.915,
+            "height": 4.485,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-954421",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  116 <br><b>Acreage:</b>  .45 <br><b>View:</b>  Central Harbor <br><b>Dock</b>:   Approved for a Boating Dock<br><b>Price:</b>  $370,000"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_color": "#ffffff",
+                                        "border_radius": 4
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 10.356640603612
+                },
+                {
+                    "x": 65.373483005251,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 87.080692492857
+                },
+                {
+                    "x": 62.342476071634,
+                    "y": 94.093674659012
+                },
+                {
+                    "x": 29.33707731337,
+                    "y": 100
+                }
+            ]
+        },
+        {
+            "id": "rect-2723",
+            "title": "149",
+            "type": "poly",
+            "x": 30.322,
+            "y": 55.277,
+            "width": 1.856,
+            "height": 4.312,
+            "default_style": {
+                "fill": "#ff8040"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-161981",
+                        "settings": {
+                            "elements": [{
+                                    "settings": {
+                                        "name": "Image",
+                                        "iconClass": "fa fa-camera"
+                                    },
+                                    "options": {
+                                        "image": {
+                                            "url": "https://web.archive.org/web/20190102005210/http://liveattheislands.com/wp-content/uploads/2016/01/Model-for-specs-panel.jpg",
+                                            "image_is_a_link": 1,
+                                            "link_to": "https://web.archive.org/web/20190102005210/http://liveattheislands.com/arthur-rutenberg-homes/"
+                                        }
+                                    }
+                                },
+                                {
+                                    "settings": {
+                                        "name": "Paragraph",
+                                        "iconClass": "fa fa-paragraph"
+                                    },
+                                    "options": {
+                                        "text": {
+                                            "text": "<b>Model:</b>  The Novara <br><b>Builder:</b>  Arthur Rutenberg Homes <br><b>Furnished:</b> Yes <br><b>Leaseback Available:</b> Yes <br>MLS #: T2896314 <br><b>Homesite #:</b> 149 <br><b>Acreage:</b>  .43 <br><b>View:</b>  North Harbor <br><b>Dock:</b>  Premium Dock Included <br><b>Living Area: </b> 3,285 sq. ft. <br><b>Price:</b> $1,548,900"
+                                        },
+                                        "style": {
+                                            "background_color": "#5e88a1",
+                                            "border_width": 1,
+                                            "border_style": "solid",
+                                            "border_color": "#ffffff",
+                                            "border_radius": 4
+                                        }
+                                    }
+                                },
+                                {
+                                    "settings": {
+                                        "name": "Paragraph",
+                                        "iconClass": "fa fa-paragraph"
+                                    },
+                                    "options": {
+                                        "text": {
+                                            "text": ""
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 9.5946500805985
+                },
+                {
+                    "x": 72.470508166969,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 91.935962164299
+                },
+                {
+                    "x": 20.727937840291,
+                    "y": 100
+                }
+            ]
+        },
+        {
+            "id": "rect-8612",
+            "title": "122",
+            "type": "poly",
+            "x": 27.491,
+            "y": 60.761,
+            "width": 1.507,
+            "height": 4.362,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-998071",
+                        "settings": {
+                            "elements": [{
+                                    "settings": {
+                                        "name": "Paragraph",
+                                        "iconClass": "fa fa-paragraph"
+                                    },
+                                    "options": {
+                                        "text": {
+                                            "text": "<b>Homesite #:</b>  122 <br><b>Acreage:</b>  .44 <br><b>View:</b>  Central Harbor <br><b>Dock:</b>   Approved for a Boating Dock <br><b>Price:</b>  $382,000"
+                                        },
+                                        "style": {
+                                            "border_width": 1,
+                                            "border_color": "#ffffff",
+                                            "border_radius": 4
+                                        }
+                                    }
+                                },
+                                {
+                                    "settings": {
+                                        "name": "Paragraph",
+                                        "iconClass": "fa fa-paragraph"
+                                    },
+                                    "options": {
+                                        "text": {
+                                            "text": ""
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 6.2876774717597
+                },
+                {
+                    "x": 77.882894335055,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 95.07009766307
+                },
+                {
+                    "x": 9.3591168102412,
+                    "y": 100
+                },
+                {
+                    "x": 6.1917763603544,
+                    "y": 79.881113527701
+                }
+            ]
+        },
+        {
+            "id": "rect-6068",
+            "title": "123",
+            "type": "poly",
+            "x": 26.086,
+            "y": 61.117,
+            "width": 1.493,
+            "height": 4.119,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-305021",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  123 <br><b>Acreage:</b>  .44 <br><b>View:</b>  Central Harbor <br><b>Dock:</b>  Approved for a Boating Dock <br><b>Price:</b>  $386,000"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_color": "#ffffff",
+                                        "border_radius": 4
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 2.7331290654745
+                },
+                {
+                    "x": 86.350510030415,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 99.184812182401
+                },
+                {
+                    "x": 7.6521032578261,
+                    "y": 100
+                }
+            ]
+        },
+        {
+            "id": "rect-9777",
+            "title": "139",
+            "type": "poly",
+            "x": 16.572,
+            "y": 56.02,
+            "width": 2.758,
+            "height": 3.584,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-980641",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  139 <br><b>Acreage:</b>  .41 <br><b>View:</b>  North Harbor <br><b>Dock:</b>   Approved for a Boating Dock <br><b>Price:</b>  $385,000"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_style": "solid",
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 48.948400658807
+                },
+                {
+                    "x": 84.713917188745,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 34.600110523579
+                },
+                {
+                    "x": 90.292621167631,
+                    "y": 50.945410020805
+                },
+                {
+                    "x": 22.261914668505,
+                    "y": 100
+                }
+            ]
+        },
+        {
+            "id": "rect-1987",
+            "title": "140",
+            "type": "poly",
+            "x": 17.276,
+            "y": 57.447,
+            "width": 2.349,
+            "height": 5.097,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-663731",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  140 <br><b>Acreage:</b>  .50 <br><b>View:</b>  North Harbor <br><b>Dock:</b> No <br><b>Price:</b>  $325,000"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_style": "solid",
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 39.660350005178,
+                    "y": 100
+                },
+                {
+                    "x": 0,
+                    "y": 43.725067032895
+                },
+                {
+                    "x": 72.849861355608,
+                    "y": 12.036492054149
+                },
+                {
+                    "x": 84.787085936511,
+                    "y": 0
+                },
+                {
+                    "x": 87.49554151853,
+                    "y": 0.42236173784142
+                },
+                {
+                    "x": 77.199038118578,
+                    "y": 29.126610424433
+                },
+                {
+                    "x": 100,
+                    "y": 80.628583262486
+                }
+            ]
+        },
+        {
+            "id": "rect-6058",
+            "title": "141",
+            "type": "poly",
+            "x": 19.229,
+            "y": 57.113,
+            "width": 1.826,
+            "height": 4.344,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-74521",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  141 <br><b>Acreage:</b>  .44 <br><b>View: </b> North Harbor <br><b>Dock:</b>  Approved for a Boating Dock <br><b>Price: </b> $390,000"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_style": "solid",
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 100,
+                    "y": 89.192166029183
+                },
+                {
+                    "x": 30.039019715225,
+                    "y": 100
+                },
+                {
+                    "x": 0,
+                    "y": 45.595339283184
+                },
+                {
+                    "x": 13.248220153341,
+                    "y": 8.5950559569343
+                },
+                {
+                    "x": 60.840635268346,
+                    "y": 0
+                }
+            ]
+        },
+        {
+            "id": "rect-7740",
+            "title": "158",
+            "type": "poly",
+            "x": 41.656,
+            "y": 43.103,
+            "width": 2.617,
+            "height": 3.354,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-787571",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  158 <br><b>Acreage:</b>  .44 <br><b>View:</b>  Preserve/Lake <br><b>Dock:</b>  Marina Park Boat Slip Included <br><b>Price:</b>  $350,000"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_style": "solid",
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 16.078444897696,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 42.114385316532
+                },
+                {
+                    "x": 89.725416562568,
+                    "y": 100
+                },
+                {
+                    "x": 40.89174509468,
+                    "y": 74.174693534749
+                },
+                {
+                    "x": 0,
+                    "y": 49.173009934275
+                }
+            ]
+        },
+        {
+            "id": "rect-6435",
+            "title": "150",
+            "type": "poly",
+            "x": 31.638,
+            "y": 54.885,
+            "width": 1.827,
+            "height": 4.434,
+            "default_style": {
+                "fill": "#ff8040"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                            "id": "sq-container-721051",
+                            "settings": {
+                                "elements": [{
+                                        "settings": {
+                                            "name": "Image",
+                                            "iconClass": "fa fa-camera"
+                                        },
+                                        "options": {
+                                            "image": {
+                                                "url": "https://web.archive.org/web/20190102005210/http://liveattheislands.com/wp-content/uploads/2017/06/Corindi-for-webiste_0.jpg",
+                                                "link_to": "https://web.archive.org/web/20190102005210/http://liveattheislands.com/john-cannon-homes/"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "settings": {
+                                            "name": "Paragraph",
+                                            "iconClass": "fa fa-paragraph"
+                                        },
+                                        "options": {
+                                            "text": {
+                                                "text": ""
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "sq-container-485921",
+                            "settings": {
+                                "elements": [{
+                                    "settings": {
+                                        "name": "Paragraph",
+                                        "iconClass": "fa fa-paragraph"
+                                    },
+                                    "options": {
+                                        "text": {
+                                            "text": "<b>Model:</b>  The Corindi <br><b>Builder:</b>  John Cannon Homes <br><b>Furnished:</b> Yes <br><b>Leaseback Available:</b> Yes <br><b>MLS #:</b> A4161684 <br><b>Homesite #:</b> 150 <br><b>Acreage:</b>  .43 <br><b>View:</b>  North Harbor <br><b>Dock:</b>  Premium Dock Included <br><b>Living Area:</b> 3,577 sq. ft. <br><b>Price:</b> $1,599,900"
+                                        },
+                                        "style": {
+                                            "border_width": 1,
+                                            "border_style": "solid",
+                                            "border_color": "#ffffff"
+                                        }
+                                    }
+                                }]
+                            }
+                        }
+                    ]
+                }
+            },
+            "points": [{
+                    "x": 25.108624762254,
+                    "y": 100
+                },
+                {
+                    "x": 100,
+                    "y": 88.965044019724
+                },
+                {
+                    "x": 72.176812092191,
+                    "y": 0
+                },
+                {
+                    "x": 0,
+                    "y": 9.2639200645163
+                }
+            ]
+        },
+        {
+            "id": "rect-8358",
+            "title": "160",
+            "type": "poly",
+            "x": 46.527,
+            "y": 37.051,
+            "width": 2.287,
+            "height": 4.657,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-833081",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  160 <br><b>Acreage:</b>  .57 <br><b>View:</b>  Preserve/Corner <br><b>Dock:</b> No <br><b>Price:</b>  $275,000"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 13.626734269388
+                },
+                {
+                    "x": 55.277834789359,
+                    "y": 0
+                },
+                {
+                    "x": 74.243059707486,
+                    "y": 6.2348767222509
+                },
+                {
+                    "x": 83.44756737681,
+                    "y": 45.762447470173
+                },
+                {
+                    "x": 100,
+                    "y": 87.748822988343
+                },
+                {
+                    "x": 34.640336239437,
+                    "y": 100
+                }
+            ]
+        },
+        {
+            "id": "rect-6992",
+            "title": "161",
+            "type": "poly",
+            "x": 48.314,
+            "y": 37.21,
+            "width": 1.814,
+            "height": 3.825,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-614961",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  161 <br><b>Acreage:</b>  .44 <br><b>View:</b>  Preserve <br><b>Dock:</b>   No <br><b>Price:</b>  $257,000"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 5.6137194939141
+                },
+                {
+                    "x": 51.415153587428,
+                    "y": 0
+                },
+                {
+                    "x": 99.279862671485,
+                    "y": 7.2607783174434
+                },
+                {
+                    "x": 100,
+                    "y": 93.131378545302
+                },
+                {
+                    "x": 32.401295130699,
+                    "y": 100
+                },
+                {
+                    "x": 12.53626009519,
+                    "y": 52.362010484609
+                }
+            ]
+        },
+        {
+            "id": "rect-9059",
+            "title": "167",
+            "type": "poly",
+            "x": 56.294,
+            "y": 41.735,
+            "width": 2.528,
+            "height": 4.442,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-412671",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  167 <br><b>Acreage:</b>  .46 <br><b>View:</b>  Preserve <br><b>Dock:</b>  No <br><b>Price:</b>  $258,000"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 70.777008750162
+                },
+                {
+                    "x": 66.163793103448,
+                    "y": 0
+                },
+                {
+                    "x": 86.466486066765,
+                    "y": 20.090798618868
+                },
+                {
+                    "x": 100,
+                    "y": 45.318471671047
+                },
+                {
+                    "x": 71.902764647543,
+                    "y": 69.882567589717
+                },
+                {
+                    "x": 37.399061545177,
+                    "y": 100
+                }
+            ]
+        },
+        {
+            "id": "rect-4730",
+            "title": "168",
+            "type": "poly",
+            "x": 57.302,
+            "y": 43.706,
+            "width": 2.452,
+            "height": 4.027,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-726381",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  168 <br><b>Acreage:</b>  .39 <br><b>View:</b>  Preserve <br><b>Dock:</b>  No <br><b>Price:</b>  $256,000"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 33.843622431222,
+                    "y": 100
+                },
+                {
+                    "x": 100,
+                    "y": 41.337943624247
+                },
+                {
+                    "x": 91.091335607698,
+                    "y": 19.898209255952
+                },
+                {
+                    "x": 65.623236201883,
+                    "y": 0
+                },
+                {
+                    "x": 0,
+                    "y": 63.53306158495
+                }
+            ]
+        },
+        {
+            "id": "rect-1496",
+            "title": "169",
+            "type": "poly",
+            "x": 58.186,
+            "y": 45.415,
+            "width": 2.578,
+            "height": 4.069,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-681531",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  169 <br><b>Acreage:</b>  .40 <br><b>View:</b>  Preserve <br><b>Dock:</b>  No <br><b>Price:</b>  $256,000"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 47.542165790592,
+                    "y": 100
+                },
+                {
+                    "x": 100,
+                    "y": 24.042354452621
+                },
+                {
+                    "x": 70.835728045987,
+                    "y": 16.640338806454
+                },
+                {
+                    "x": 62.405837775152,
+                    "y": 0
+                },
+                {
+                    "x": 0,
+                    "y": 61.970988428969
+                }
+            ]
+        },
+        {
+            "id": "rect-5678",
+            "title": "175",
+            "type": "poly",
+            "x": 66.152,
+            "y": 50.724,
+            "width": 2.106,
+            "height": 4.006,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-963711",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  175 <br><b>Acreage:</b>  .44 <br><b>View:</b>  Preserve <br><b>Dock:</b>  No <br><b>Price:</b>  $257,000"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 82.666156365266
+                },
+                {
+                    "x": 56.972005373921,
+                    "y": 100
+                },
+                {
+                    "x": 100,
+                    "y": 0.18263900469342
+                },
+                {
+                    "x": 37.564640761043,
+                    "y": 0
+                }
+            ]
+        },
+        {
+            "id": "rect-2758",
+            "title": "92",
+            "type": "poly",
+            "x": 63.088,
+            "y": 63.816,
+            "width": 2.502,
+            "height": 5.32,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-878431",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  92 <br><b>Acreage:</b>  .54 <br><b>View:</b>  East Harbor <br><b>Dock:</b> Approved for a Boating Dock <br><b>Price:</b>  $355,000"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 55.098090673488
+                },
+                {
+                    "x": 39.315832240544,
+                    "y": 86.364684874735
+                },
+                {
+                    "x": 63.28472564531,
+                    "y": 100
+                },
+                {
+                    "x": 100,
+                    "y": 23.425321966159
+                },
+                {
+                    "x": 79.091257403896,
+                    "y": 0
+                }
+            ]
+        },
+        {
+            "id": "rect-7736",
+            "title": "8",
+            "type": "poly",
+            "x": 58.094,
+            "y": 63.559,
+            "width": 2.208,
+            "height": 3.959,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-877921",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  8 <br><b>Acreage:</b>  .44 <br><b>View:</b> Riverfront <br><b>Dock:</b>  Marina Park Slip Included, also permitted for Observation Dock behind home. <br><b>Price:</b>  $390,000"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 30.632434043897,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 21.398540542988
+                },
+                {
+                    "x": 69.932239628121,
+                    "y": 100
+                },
+                {
+                    "x": 35.283824591375,
+                    "y": 83.920397143417
+                },
+                {
+                    "x": 0,
+                    "y": 76.527521384989
+                }
+            ]
+        },
+        {
+            "id": "rect-9216",
+            "title": "9",
+            "type": "poly",
+            "x": 56.422,
+            "y": 62.802,
+            "width": 2.26,
+            "height": 3.808,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-468431",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  9 <br><b>Acreage:</b>  .54 <br><b>View:</b> Riverfront <br><b>Dock:</b>  Marina Park Slip Included, also permitted for Observation Dock behind home. <br><b>Price:</b>  $395,000"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 3.3897175555542,
+                    "y": 0
+                },
+                {
+                    "x": 50.977666383053,
+                    "y": 8.8775320986852
+                },
+                {
+                    "x": 100,
+                    "y": 23.375496031746
+                },
+                {
+                    "x": 71.170512911579,
+                    "y": 100
+                },
+                {
+                    "x": 0,
+                    "y": 91.916874028945
+                }
+            ]
+        },
+        {
+            "id": "rect-2202",
+            "title": "10",
+            "type": "poly",
+            "x": 53.602,
+            "y": 62.362,
+            "width": 2.835,
+            "height": 3.917,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-982401",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  10 <br><b>Acreage:</b>  .63 <br><b>View:</b> Riverfront <br><b>Dock:</b>  Marina Park Slip Included, also permitted for Observation Dock behind home. <br><b>Price:</b>  $409,500"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 49.561796228463,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 12.27748508831
+                },
+                {
+                    "x": 96.407543074209,
+                    "y": 100
+                },
+                {
+                    "x": 0,
+                    "y": 97.127207742474
+                }
+            ]
+        },
+        {
+            "id": "rect-3842",
+            "title": "12",
+            "type": "poly",
+            "x": 51.315,
+            "y": 58.194,
+            "width": 2.58,
+            "height": 4.269,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-568251",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  12 <br><b>Acreage:</b>  .61 <br><b>View:</b> Riverfront <br><b>Dock:</b>  Marina Park Slip Included, also permitted for Observation Dock behind home. <br><b>Price:</b>  $405,500"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 18.345150422692
+                },
+                {
+                    "x": 79.716223698782,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 50.34651400625
+                },
+                {
+                    "x": 14.345238095238,
+                    "y": 100
+                },
+                {
+                    "x": 5.9565337763012,
+                    "y": 76.077107222231
+                }
+            ]
+        },
+        {
+            "id": "rect-1455",
+            "title": "13",
+            "type": "poly",
+            "x": 50.675,
+            "y": 54.733,
+            "width": 2.655,
+            "height": 4.153,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-187171",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  13 <br><b>Acreage:</b>  .53 <br><b>View:</b> Riverfront <br><b>Dock:</b>  Marina Park Slip Included, also permitted for Observation Dock behind home. <br><b>Price:</b>  $394,500"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 39.894258246617,
+                    "y": 0
+                },
+                {
+                    "x": 0,
+                    "y": 69.455106868175
+                },
+                {
+                    "x": 21.635880721079,
+                    "y": 80.599424937324
+                },
+                {
+                    "x": 26.43944162384,
+                    "y": 100
+                },
+                {
+                    "x": 100,
+                    "y": 80.140630635071
+                },
+                {
+                    "x": 80.280826650905,
+                    "y": 25.21190327238
+                }
+            ]
+        },
+        {
+            "id": "rect-7953",
+            "title": "14",
+            "type": "poly",
+            "x": 48.29,
+            "y": 53.012,
+            "width": 3.434,
+            "height": 5.078,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-313761",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  14 <br><b>Acreage:</b>  .81 <br><b>View:</b> Riverfront <br><b>Dock:</b>  Marina Park Slip Included, also permitted for Observation Dock behind home. <br><b>Price:</b>  $420,000"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 9.4289359957269
+                },
+                {
+                    "x": 4.0827810920996,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 31.848370893513
+                },
+                {
+                    "x": 68.372514914449,
+                    "y": 90.331513323658
+                },
+                {
+                    "x": 21.551574871319,
+                    "y": 100
+                }
+            ]
+        },
+        {
+            "id": "rect-7185",
+            "title": "2",
+            "type": "poly",
+            "x": 67.785,
+            "y": 66.164,
+            "width": 2.91,
+            "height": 4.404,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-995571",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  2 <br><b>Acreage:</b>  .51 <br><b>View:</b> Direct Riverfront <br><b>Dock:</b> Approved for a Boating Dock <br><b>Price:</b>  $720,000<br>For a Limited Time this homesite includes a <b>$30K Dock Credit.</b> Dock construction costs <b>Not Included.</b>"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 30.716140709845,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 45.207198001816
+                },
+                {
+                    "x": 77.540723557502,
+                    "y": 71.324480718422
+                },
+                {
+                    "x": 61.416279740826,
+                    "y": 100
+                },
+                {
+                    "x": 0,
+                    "y": 51.147820163488
+                }
+            ]
+        },
+        {
+            "id": "rect-3808",
+            "title": "6",
+            "type": "poly",
+            "x": 60.495,
+            "y": 67.375,
+            "width": 3.268,
+            "height": 5.338,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-96731",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  6 <br><b>Acreage:</b>  .88 <br><b>View:</b> Direct Riverfront <br><b>Dock:</b> Approved for a Boating Dock <br><b>Price:</b>  $750,000<br>For a Limited Time this homesite includes a <b>$30K Dock Credit.</b> Dock construction costs <b>Not Included.</b>"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 45.328437372501,
+                    "y": 100
+                },
+                {
+                    "x": 100,
+                    "y": 37.170784387191
+                },
+                {
+                    "x": 66.813545491636,
+                    "y": 0
+                },
+                {
+                    "x": 0,
+                    "y": 50.408833447204
+                },
+                {
+                    "x": 3.1293349653202,
+                    "y": 62.669428955546
+                },
+                {
+                    "x": 5.4834761321908,
+                    "y": 74.469398100192
+                },
+                {
+                    "x": 13.669930640555,
+                    "y": 93.437727282745
+                }
+            ]
+        },
+        {
+            "id": "rect-8723",
+            "title": "River Lodge",
+            "type": "poly",
+            "x": 71.899,
+            "y": 58.414,
+            "width": 2.655,
+            "height": 3.92,
+            "default_style": {
+                "fill": "#ff8040",
+                "fill_opacity": 0.29470159774436,
+                "stroke_opacity": 0,
+                "stroke_width": 1,
+                "stroke_dasharray": ""
+            },
+            "mouseover_style": {
+                "fill": "#ffffb0",
+                "fill_opacity": 0.5202655075188,
+                "stroke_dasharray": ""
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                            "id": "sq-container-369361",
+                            "settings": {
+                                "elements": [{
+                                        "settings": {
+                                            "name": "Image",
+                                            "iconClass": "fa fa-camera"
+                                        },
+                                        "options": {
+                                            "image": {
+                                                "url": "https://web.archive.org/web/20190102005210/http://liveattheislands.com/wp-content/uploads/2017/06/RHo_ClubHouse_VerE_Final.jpg"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "settings": {
+                                            "name": "Paragraph",
+                                            "iconClass": "fa fa-paragraph"
+                                        },
+                                        "options": {
+                                            "text": {
+                                                "text": ""
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "sq-container-930461",
+                            "settings": {
+                                "elements": [{
+                                    "settings": {
+                                        "name": "Paragraph",
+                                        "iconClass": "fa fa-paragraph"
+                                    },
+                                    "options": {
+                                        "text": {
+                                            "text": "The River Lodge is reserved for the exclusive use of Islands’ residents and features a great room/bar with grand fireplace, fitness center, multi-purpose exercise room, outdoor kitchen and barbeque, bocce ball courts, day dock and fire pit seating area.  The adjacent Riverfront Park includes a community dock with boat launch, picnic and barbeque areas and a floating kayak launch."
+                                        },
+                                        "style": {
+                                            "border_width": 1,
+                                            "border_style": "solid",
+                                            "border_color": "#ffffff"
+                                        }
+                                    }
+                                }]
+                            }
+                        }
+                    ]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 53.424838350567
+                },
+                {
+                    "x": 67.33215332596,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 35.683560047849
+                },
+                {
+                    "x": 36.558637827175,
+                    "y": 100
+                }
+            ]
+        },
+        {
+            "id": "spot-5548",
+            "title": "Entrance",
+            "x": 84.474,
+            "y": 47.873,
+            "width": 20,
+            "height": 20,
+            "default_style": {
+                "fill": "#5bff70",
+                "icon_svg_path": "M342.112,48.753c91.986,0,166.796,74.82,166.796,166.796s-74.81,166.777-166.796,166.777     c-91.957,0-166.767-74.8-166.767-166.777S250.146,48.753,342.112,48.753 M342.112,0c-119.02,0-215.549,96.5-215.549,215.549     c0,119.04,215.549,468.685,215.549,468.685s215.559-349.645,215.559-468.685C557.671,96.5,461.132,0,342.112,0z M212.853,238.607     l43.927,78.337h170.704l43.878-78.337C471.362,238.607,212.853,238.607,212.853,238.607z M350.485,73.657v148.155h96.93     L350.485,73.657z M329.636,106.876l-75.201,114.936h75.201V106.876z",
+                "icon_svg_viewbox": "0 0 684.234 684.234",
+                "icon_fill": "#ff0000"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d",
+                "icon_fill": "#ff0000"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1",
+                "width": 400
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-224171",
+                        "settings": {
+                            "elements": [{
+                                    "settings": {
+                                        "name": "Image",
+                                        "iconClass": "fa fa-camera"
+                                    },
+                                    "options": {
+                                        "image": {
+                                            "url": "https://web.archive.org/web/20190102005210/http://liveattheislands.com/wp-content/uploads/2016/01/header_11.jpg"
+                                        }
+                                    }
+                                },
+                                {
+                                    "settings": {
+                                        "name": "Image",
+                                        "iconClass": "fa fa-camera"
+                                    },
+                                    "options": {
+                                        "image": {
+                                            "url": "https://web.archive.org/web/20190102005210/http://liveattheislands.com/wp-content/uploads/2015/12/header1.jpg"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }]
+                }
+            }
+        },
+        {
+            "id": "rect-3902",
+            "title": "118",
+            "type": "poly",
+            "x": 32.807,
+            "y": 59.507,
+            "width": 1.775,
+            "height": 4.231,
+            "default_style": {
+                "fill": "#ff8040"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                            "id": "sq-container-876651",
+                            "settings": {
+                                "elements": [{
+                                        "settings": {
+                                            "name": "Image",
+                                            "iconClass": "fa fa-camera"
+                                        },
+                                        "options": {
+                                            "image": {
+                                                "url": "https://web.archive.org/web/20190102005210/http://liveattheislands.com/wp-content/uploads/2018/03/Windward-cropped2.jpg",
+                                                "link_to": "https://web.archive.org/web/20190102005210/http://liveattheislands.com/john-cannon-homes/"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "settings": {
+                                            "name": "Paragraph",
+                                            "iconClass": "fa fa-paragraph"
+                                        },
+                                        "options": {
+                                            "text": {
+                                                "text": ""
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": "sq-container-505201",
+                            "settings": {
+                                "elements": [{
+                                    "settings": {
+                                        "name": "Paragraph",
+                                        "iconClass": "fa fa-paragraph"
+                                    },
+                                    "options": {
+                                        "text": {
+                                            "text": "<b>Model:</b>  The Windward <br><b>Builder:</b>  Lee Wetherington Homes <br><b>Furnished:</b> Yes <br><b>Leaseback Available:</b> Yes <br><b>MLS #: </b><b>Homesite #:</b> 118 <br><b>Acreage:</b>  .43 <br><b>View:</b>  Harbor <br><b>Dock:</b>  Premium Dock Included <br><b>Living Area:</b> 3,341 sq. ft. <br><b>Price:</b> $1,699,995"
+                                        },
+                                        "style": {
+                                            "border_width": 1,
+                                            "border_style": "solid",
+                                            "border_color": "#ffffff"
+                                        }
+                                    }
+                                }]
+                            }
+                        }
+                    ]
+                }
+            },
+            "points": [{
+                    "x": 31.703356304585,
+                    "y": 100
+                },
+                {
+                    "x": 100,
+                    "y": 91.319074730195
+                },
+                {
+                    "x": 65.50255531968,
+                    "y": 0
+                },
+                {
+                    "x": 0,
+                    "y": 8.762992570566
+                }
+            ]
+        },
+        {
+            "id": "rect-1938",
+            "title": "28",
+            "type": "poly",
+            "x": 32.066,
+            "y": 72.423,
+            "width": 2.659,
+            "height": 4.513,
+            "default_style": {
+                "fill": "#ff8040"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-13911",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "Future Model Home for Builders"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_style": "solid",
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 45.608671470718,
+                    "y": 98.245022899239
+                },
+                {
+                    "x": 100,
+                    "y": 68.082649843303
+                },
+                {
+                    "x": 56.926301501479,
+                    "y": 0
+                },
+                {
+                    "x": 0,
+                    "y": 29.330863597368
+                },
+                {
+                    "x": 45.050086748488,
+                    "y": 100
+                }
+            ]
+        },
+        {
+            "id": "rect-3145",
+            "title": "27",
+            "type": "poly",
+            "x": 33.651,
+            "y": 71.126,
+            "width": 2.659,
+            "height": 4.391,
+            "default_style": {
+                "fill": "#ff8040"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-339511",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "Future Model Home for Builders"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_style": "solid",
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 45.608671470718,
+                    "y": 98.196264717636
+                },
+                {
+                    "x": 100,
+                    "y": 67.19589641812
+                },
+                {
+                    "x": 67.193319177297,
+                    "y": 0
+                },
+                {
+                    "x": 0,
+                    "y": 27.367476961193
+                },
+                {
+                    "x": 45.050086748488,
+                    "y": 100
+                }
+            ]
+        },
+        {
+            "id": "rect-4951",
+            "title": "26",
+            "type": "poly",
+            "x": 35.509,
+            "y": 70.295,
+            "width": 2.412,
+            "height": 3.947,
+            "default_style": {
+                "fill": "#ff8040"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-464891",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "Future Model Home for Builders"
+                                    },
+                                    "style": {
+                                        "border_width": 1,
+                                        "border_style": "solid",
+                                        "border_color": "#ffffff"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 50.279211210879,
+                    "y": 100
+                },
+                {
+                    "x": 100,
+                    "y": 91.707880715342
+                },
+                {
+                    "x": 92.399268529201,
+                    "y": 0
+                },
+                {
+                    "x": 0,
+                    "y": 21.199954792517
+                },
+                {
+                    "x": 32.955298782848,
+                    "y": 98.409063263731
+                }
+            ]
+        },
+        {
+            "id": "rect-5765",
+            "title": "15",
+            "type": "poly",
+            "x": 46.076,
+            "y": 53.486,
+            "width": 2.885,
+            "height": 6.974,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-421941",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  15 <br><b>Acreage:</b>  .70 <br><b>View:</b> Riverfront <br><b>Dock:</b>  Marina Park Slip Included, also permitted for Observation Dock behind home. <br><b>Price:</b>  $525,000 <br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 75.675675675676,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 67.441860465116
+                },
+                {
+                    "x": 88.289849641669,
+                    "y": 82.555471818916
+                },
+                {
+                    "x": 76.576576576576,
+                    "y": 100
+                },
+                {
+                    "x": 0,
+                    "y": 50
+                },
+                {
+                    "x": 42.342342342342,
+                    "y": 28.488372093023
+                }
+            ]
+        },
+        {
+            "id": "rect-8482",
+            "title": "16",
+            "type": "poly",
+            "x": 44.699,
+            "y": 57.094,
+            "width": 3.56,
+            "height": 4.663,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-140291",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  16 <br><b>Acreage:</b>  .68 <br><b>View:</b> Riverfront <br><b>Dock:</b>  Marina Park Slip Included, also permitted for Observation Dock behind home. <br><b>Price:</b>  $515,000<br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 65.217391304348
+                },
+                {
+                    "x": 63.503649635036,
+                    "y": 100
+                },
+                {
+                    "x": 75.182832116788,
+                    "y": 87.82025090956
+                },
+                {
+                    "x": 91.240875912409,
+                    "y": 81.739130434783
+                },
+                {
+                    "x": 100,
+                    "y": 71.304347826087
+                },
+                {
+                    "x": 40.14598540146,
+                    "y": 0
+                },
+                {
+                    "x": 16.788321167883,
+                    "y": 27.826086956522
+                }
+            ]
+        },
+        {
+            "id": "rect-9782",
+            "title": "17",
+            "type": "poly",
+            "x": 44.049,
+            "y": 60.176,
+            "width": 2.807,
+            "height": 4.095,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-893851",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  17 <br><b>Acreage:</b>  .57 <br><b>View:</b> Riverfront <br><b>Dock:</b>  Marina Park Slip Included, also permitted for Observation Dock behind home. <br><b>Price:</b>  $500,000<br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 18.518518518518,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 39.601318089801
+                },
+                {
+                    "x": 88.888888888889,
+                    "y": 66.332207800417
+                },
+                {
+                    "x": 85.184740740741,
+                    "y": 100
+                },
+                {
+                    "x": 0,
+                    "y": 89.102965702053
+                },
+                {
+                    "x": 8.3333333333333,
+                    "y": 41.581383994291
+                }
+            ]
+        },
+        {
+            "id": "rect-676",
+            "title": "18",
+            "type": "poly",
+            "x": 42.931,
+            "y": 63.987,
+            "width": 4.002,
+            "height": 5.19,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-907841",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  18 <br><b>Acreage:</b>  .86 <br><b>View:</b> Riverfront <br><b>Dock:</b>  Marina Park Slip Included, also permitted for Observation Dock behind home. <br><b>Price:</b>  $550,000<br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 29.220779220779,
+                    "y": 0
+                },
+                {
+                    "x": 87.662337662338,
+                    "y": 4.6875000000001
+                },
+                {
+                    "x": 100,
+                    "y": 30.46875
+                },
+                {
+                    "x": 72.727272727273,
+                    "y": 35.9375
+                },
+                {
+                    "x": 61.038961038961,
+                    "y": 100
+                },
+                {
+                    "x": 28.296917369436,
+                    "y": 96.069744147627
+                },
+                {
+                    "x": 0,
+                    "y": 78.125
+                },
+                {
+                    "x": 22.077922077922,
+                    "y": 34.375
+                }
+            ]
+        },
+        {
+            "id": "rect-785",
+            "title": "19",
+            "type": "poly",
+            "x": 45.426,
+            "y": 65.609,
+            "width": 3.742,
+            "height": 4.541,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-409861",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  19 <br><b>Acreage:</b>  .70 <br><b>View:</b> Riverfront <br><b>Dock:</b>  Marina Park Slip Included, also permitted for Observation Dock behind home. <br><b>Price:</b>  $525,000<br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 82.150871555744
+                },
+                {
+                    "x": 11.111111111111,
+                    "y": 8.0357142857144
+                },
+                {
+                    "x": 41.666666666667,
+                    "y": 0
+                },
+                {
+                    "x": 60.416666666667,
+                    "y": 24.107142857143
+                },
+                {
+                    "x": 82.638888888889,
+                    "y": 37.5
+                },
+                {
+                    "x": 95.138888888889,
+                    "y": 64.285714285714
+                },
+                {
+                    "x": 100,
+                    "y": 80.357142857143
+                },
+                {
+                    "x": 97.916666666667,
+                    "y": 100
+                },
+                {
+                    "x": 85.416666666667,
+                    "y": 100
+                },
+                {
+                    "x": 84.722222222222,
+                    "y": 80.357142857143
+                },
+                {
+                    "x": 72.222222222222,
+                    "y": 66.964285714286
+                },
+                {
+                    "x": 57.638888888889,
+                    "y": 69.642857142857
+                },
+                {
+                    "x": 48.612111111111,
+                    "y": 85.716283170835
+                }
+            ]
+        },
+        {
+            "id": "rect-9997",
+            "title": "21",
+            "type": "poly",
+            "x": 44.984,
+            "y": 69.947,
+            "width": 2.313,
+            "height": 4.177,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-531201",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  21 <br><b>Acreage:</b>  .51 <br><b>View:</b> Direct Riverfront <br><b>Dock:</b> Approved for a Boating Dock<br><b>Price:</b>  $750,000<br><br>For a Limited Time this homesite includes a <b>$30K Dock Credit.</b> Dock construction costs <b>Not Included.</b><br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 81.544520556658
+                },
+                {
+                    "x": 73.034435026471,
+                    "y": 100
+                },
+                {
+                    "x": 100,
+                    "y": 6.7844912051475
+                },
+                {
+                    "x": 19.100608522916,
+                    "y": 0
+                }
+            ]
+        },
+        {
+            "id": "rect-188",
+            "title": "22",
+            "type": "poly",
+            "x": 43.139,
+            "y": 69.379,
+            "width": 2.313,
+            "height": 4.055,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-259991",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  22 <br><b>Acreage:</b>  .52 <br><b>View:</b> Direct Riverfront <br><b>Dock:</b> Approved for a Boating Dock<br><b>Price:</b>  $760,000<br><br>For a Limited Time this homesite includes a <b>$30K Dock Credit.</b> Dock construction costs <b>Not Included.</b><br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 24.719507130748,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 13.998430314886
+                },
+                {
+                    "x": 78.652339852549,
+                    "y": 100
+                },
+                {
+                    "x": 0,
+                    "y": 99.99552619899
+                }
+            ]
+        },
+        {
+            "id": "rect-7452",
+            "title": "24",
+            "type": "poly",
+            "x": 39.709,
+            "y": 69.825,
+            "width": 1.845,
+            "height": 3.852,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-241521",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  24 <br><b>Acreage:</b>  .47 <br><b>View:</b> Direct Riverfront <br><b>Dock:</b>  Approved for a Boating Dock<br><b>Price:</b>  $740,000<br><br>For a Limited Time this homesite includes a <b>$30K Dock Credit.</b> Dock construction costs <b>Not Included.</b><br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 11.593132008039
+                },
+                {
+                    "x": 48.39150530452,
+                    "y": 10.076045539391
+                },
+                {
+                    "x": 94.366197183098,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 89.478415110163
+                },
+                {
+                    "x": 38.030873239437,
+                    "y": 90.53104457743
+                },
+                {
+                    "x": 0,
+                    "y": 100
+                }
+            ]
+        },
+        {
+            "id": "rect-4147",
+            "title": "25",
+            "type": "poly",
+            "x": 37.734,
+            "y": 70.271,
+            "width": 1.975,
+            "height": 3.852,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-405811",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  25 <br><b>Acreage:</b>  .54 <br><b>View:</b> Direct Riverfront <br><b>Dock:</b> Approved for a Boating Dock<br><b>Price:</b>  $765,000<br><br>For a Limited Time this homesite includes a <b>$30K Dock Credit.</b> Dock construction costs <b>Not Included.</b><br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 0
+                },
+                {
+                    "x": 94.736210526316,
+                    "y": 88.412426045414
+                },
+                {
+                    "x": 7.8934736842106,
+                    "y": 100
+                }
+            ]
+        },
+        {
+            "id": "rect-5767",
+            "title": "65",
+            "type": "poly",
+            "x": 30.457,
+            "y": 68.69,
+            "width": 2.339,
+            "height": 4.379,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-829981",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  65 <br><b>Acreage:</b>  .42 <br><b>View:</b> Central Harbor <br><b>Dock:</b>  Premium Dock Included. <br><b>Price:</b>  $365,000<br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 0,
+                    "y": 25.925925925926
+                },
+                {
+                    "x": 45.554583724436,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 80.551412682713
+                },
+                {
+                    "x": 48.887845948175,
+                    "y": 100
+                }
+            ]
+        },
+        {
+            "id": "rect-625",
+            "title": "66",
+            "type": "poly",
+            "x": 31.575,
+            "y": 67.758,
+            "width": 2.365,
+            "height": 4.298,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-418631",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  66 <br><b>Acreage:</b>  .43 <br><b>View:</b> Central Harbor <br><b>Dock:</b>  Premium Dock Included. <br><b>Price:</b>  $365,000<br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 100,
+                    "y": 78.301886792453
+                },
+                {
+                    "x": 50.549450549451,
+                    "y": 0
+                },
+                {
+                    "x": 0,
+                    "y": 22.641509433962
+                },
+                {
+                    "x": 50.549450549451,
+                    "y": 100
+                }
+            ]
+        },
+        {
+            "id": "rect-2997",
+            "title": "67",
+            "type": "poly",
+            "x": 32.848,
+            "y": 66.703,
+            "width": 2.339,
+            "height": 4.46,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-471971",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  67 <br><b>Acreage:</b>  .48 <br><b>View:</b> Central Harbor <br><b>Dock:</b>  Premium Dock Included. <br><b>Price:</b>  $380,000<br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 100,
+                    "y": 81.821509947277
+                },
+                {
+                    "x": 62.222222222222,
+                    "y": 0
+                },
+                {
+                    "x": 0,
+                    "y": 21.819069319274
+                },
+                {
+                    "x": 51.111644444445,
+                    "y": 100
+                }
+            ]
+        },
+        {
+            "id": "rect-4170",
+            "title": "68",
+            "type": "poly",
+            "x": 34.278,
+            "y": 65.852,
+            "width": 2.209,
+            "height": 4.419,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-515431",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  68 <br><b>Acreage:</b>  .48 <br><b>View:</b> Central Harbor <br><b>Dock:</b>  Premium Dock Included. <br><b>Price:</b>  $375,000<br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 100,
+                    "y": 87.155963302752
+                },
+                {
+                    "x": 76.470588235294,
+                    "y": 0
+                },
+                {
+                    "x": 0,
+                    "y": 14.678899082569
+                },
+                {
+                    "x": 41.176470588235,
+                    "y": 100
+                }
+            ]
+        },
+        {
+            "id": "rect-3183",
+            "title": "69",
+            "type": "poly",
+            "x": 35.993,
+            "y": 65.568,
+            "width": 1.871,
+            "height": 4.298,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-481091",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  69 <br><b>Acreage:</b>  .48 <br><b>View:</b> Central Harbor <br><b>Dock:</b>  Premium Dock Included. <br><b>Price:</b>  $375,000<br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 100,
+                    "y": 94.339622641509
+                },
+                {
+                    "x": 88.888888888889,
+                    "y": 0
+                },
+                {
+                    "x": 44.661297320278,
+                    "y": 5.1633626949203
+                },
+                {
+                    "x": 0,
+                    "y": 10.377358490566
+                },
+                {
+                    "x": 33.333333333333,
+                    "y": 100
+                }
+            ]
+        },
+        {
+            "id": "rect-1984",
+            "title": "70",
+            "type": "poly",
+            "x": 37.63,
+            "y": 65.365,
+            "width": 1.611,
+            "height": 4.055,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-124711",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  70 <br><b>Acreage:</b>  .48 <br><b>View:</b> Central Harbor <br><b>Dock:</b>  Premium Dock Included. <br><b>Price:</b>  $380,000<br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 100,
+                    "y": 0
+                },
+                {
+                    "x": 93.548387096774,
+                    "y": 100
+                },
+                {
+                    "x": 11.290322580645,
+                    "y": 98
+                },
+                {
+                    "x": 0,
+                    "y": 1
+                }
+            ]
+        },
+        {
+            "id": "rect-6688",
+            "title": "71",
+            "type": "poly",
+            "x": 39.137,
+            "y": 65.203,
+            "width": 2.105,
+            "height": 4.298,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-96341",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  71 <br><b>Acreage:</b>  .48 <br><b>View:</b> Central Harbor <br><b>Dock:</b>  Premium Dock Included. <br><b>Price:</b>  $380,000<br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 100,
+                    "y": 90.553949173038
+                },
+                {
+                    "x": 53.085476011291,
+                    "y": 0
+                },
+                {
+                    "x": 6.1727297687547,
+                    "y": 1.8866725068941
+                },
+                {
+                    "x": 0,
+                    "y": 100
+                },
+                {
+                    "x": 45.678200288785,
+                    "y": 99.993642865386
+                }
+            ]
+        },
+        {
+            "id": "rect-8176",
+            "title": "72",
+            "type": "poly",
+            "x": 40.307,
+            "y": 64.514,
+            "width": 2.755,
+            "height": 4.46,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-524711",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  72 <br><b>Acreage:</b>  .51 <br><b>View:</b> Central Harbor <br><b>Dock:</b>  Premium Dock Included.  <br><b>Price:</b>  $385,000<br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 100,
+                    "y": 40.915113965313
+                },
+                {
+                    "x": 22.641201855371,
+                    "y": 0
+                },
+                {
+                    "x": 0,
+                    "y": 16.361968440375
+                },
+                {
+                    "x": 32.074583137738,
+                    "y": 100
+                },
+                {
+                    "x": 74.528647912707,
+                    "y": 73.618665117312
+                }
+            ]
+        },
+        {
+            "id": "rect-9806",
+            "title": "73",
+            "type": "poly",
+            "x": 40.93,
+            "y": 63.041,
+            "width": 2.625,
+            "height": 3.257,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-800901",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  73 <br><b>Acreage:</b>  .48 <br><b>View:</b> Central Harbor <br><b>Dock:</b>  Premium Dock Included.  <br><b>Price:</b>  $380,000<br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 10.891089108911,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 9.7596127797143
+                },
+                {
+                    "x": 97.029702970297,
+                    "y": 58.923585399772
+                },
+                {
+                    "x": 81.188118811881,
+                    "y": 100
+                },
+                {
+                    "x": 0,
+                    "y": 42.741967526955
+                }
+            ]
+        },
+        {
+            "id": "rect-1160",
+            "title": "75",
+            "type": "poly",
+            "x": 41.363,
+            "y": 57.419,
+            "width": 2.92,
+            "height": 3.663,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-990021",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  75 <br><b>Acreage:</b>  .50 <br><b>View:</b> Central Harbor <br><b>Dock:</b>  Premium Dock Included.  <br><b>Price:</b>  $390,000<br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 27.011830635118,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 50.917032735215
+                },
+                {
+                    "x": 85.758405977584,
+                    "y": 100
+                },
+                {
+                    "x": 0,
+                    "y": 73.43459161641
+                }
+            ]
+        },
+        {
+            "id": "rect-2007",
+            "title": "76",
+            "type": "poly",
+            "x": 42.1,
+            "y": 55.067,
+            "width": 3.041,
+            "height": 4.177,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-875821",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  76 <br><b>Acreage:</b>  .50 <br><b>View:</b> Central Harbor <br><b>Dock:</b>  Premium Dock Included.  <br><b>Price:</b>  $390,000<br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 36.753090471502,
+                    "y": 0
+                },
+                {
+                    "x": 100,
+                    "y": 57.27656191672
+                },
+                {
+                    "x": 75.213871567662,
+                    "y": 100
+                },
+                {
+                    "x": 0,
+                    "y": 53.393405176603
+                }
+            ]
+        },
+        {
+            "id": "rect-3097",
+            "title": "77",
+            "type": "poly",
+            "x": 43.165,
+            "y": 53.161,
+            "width": 2.859,
+            "height": 4.379,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-427471",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  77 <br><b>Acreage:</b>  .50 <br><b>View:</b> Central Harbor <br><b>Dock:</b>  Premium Dock Included.  <br><b>Price:</b>  $390,000<br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 43.640838269005,
+                    "y": 0
+                },
+                {
+                    "x": 0,
+                    "y": 39.80734350314
+                },
+                {
+                    "x": 68.181937188005,
+                    "y": 100
+                },
+                {
+                    "x": 100,
+                    "y": 66.678439043655
+                }
+            ]
+        },
+        {
+            "id": "rect-6472",
+            "title": "78",
+            "type": "poly",
+            "x": 44.465,
+            "y": 51.742,
+            "width": 2.885,
+            "height": 4.339,
+            "default_style": {
+                "fill": "#ffff00"
+            },
+            "mouseover_style": {
+                "fill": "#0e742d"
+            },
+            "tooltip_style": {
+                "padding": 15,
+                "background_color": "#5e88a1"
+            },
+            "tooltip_content": {
+                "content_type": "content-builder",
+                "squares_settings": {
+                    "containers": [{
+                        "id": "sq-container-945101",
+                        "settings": {
+                            "elements": [{
+                                "settings": {
+                                    "name": "Paragraph",
+                                    "iconClass": "fa fa-paragraph"
+                                },
+                                "options": {
+                                    "text": {
+                                        "text": "<b>Homesite #:</b>  78 <br><b>Acreage:</b>  .50 <br><b>View:</b> Central Harbor <br><b>Dock:</b>  Premium Dock Included.  <br><b>Price:</b>  $390,000<br><br><i>Reservations Now Being Taken!</i>"
+                                    }
+                                }
+                            }]
+                        }
+                    }]
+                }
+            },
+            "points": [{
+                    "x": 100,
+                    "y": 60.736296046311
+                },
+                {
+                    "x": 31.530577092441,
+                    "y": 0
+                },
+                {
+                    "x": 0,
+                    "y": 28.035031341734
+                },
+                {
+                    "x": 54.052417872756,
+                    "y": 100
+                }
+            ]
+        }
+    ]
+}
