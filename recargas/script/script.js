@@ -917,7 +917,7 @@ var jsonList = {
         if (list === 'list-tigo') {
             PIN = '1234';
         } else if (list === 'list-claro') {
-            PIN = '2023';
+            PIN = '2024';
         }
         if ((numero !== 0 && $.trim(numero).length === 8)) {
             if ((monto >= 10)) {
