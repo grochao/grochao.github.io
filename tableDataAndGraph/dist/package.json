@@ -1,0 +1,17 @@
+{
+		"version": "1.0.0.0",
+		"author": {"name":"Guillermo Rocha","email":"guillermo.rocha@ans.edu.ni"},
+		"resources": [
+			{
+				"resourceId": "rId0",
+				"sourceType": 5,
+				"file": "resources/tableDataAndGraph.pbiviz.json"
+			}
+		],
+		"visual": {"name":"tableDataAndGraph","displayName":"table data and graph","guid":"tableDataAndGraph","visualClassName":"Visual","version":"1.0.0.0","description":"Muestra una tabla de datos y sus graficas por cada fila","supportUrl":"https://ans.edu.ni","gitHubUrl":""},
+		"metadata": {
+			"pbivizjson": {
+				"resourceId": "rId0"
+			}
+		}
+	}

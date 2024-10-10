@@ -1,0 +1,253 @@
+{
+    "dataRoles": [
+        {
+            "displayName": "1) Account",
+            "name": "account",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "2) Categories",
+            "name": "categories",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "3) Grouping Name",
+            "name": "group_account_name",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "4) Accounts Names",
+            "name": "account_name",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "5) YTD (Previus Year)",
+            "name": "PreviousYear",
+            "kind": "Measure"
+        },
+        {
+            "displayName": "6) YTD (Budget)",
+            "name": "Budget",
+            "kind": "Measure"
+        },
+        {
+            "displayName": "7) YTD (Current Year)",
+            "name": "CurrentYear",
+            "kind": "Measure"
+        },
+        {
+            "displayName": "8) DIF (US$)",
+            "name": "difDollar",
+            "kind": "Measure"
+        },
+        {
+            "displayName": "8) DIF (%)",
+            "name": "difPercentage",
+            "kind": "Measure"
+        },
+        {
+            "displayName": "10) Date",
+            "name": "current_date",
+            "kind": "Measure"
+        }
+    ],
+    "objects": {
+        "format_table": {
+            "properties": {
+                "LabelIncome": {
+                    "type": {
+                        "text": true
+                    }
+                },
+                "LabelTotalIncome": {
+                    "type": {
+                        "text": true
+                    }
+                },
+                "LabelExpenses": {
+                    "type": {
+                        "text": true
+                    }
+                },
+                "LabelTotalExpenses": {
+                    "type": {
+                        "text": true
+                    }
+                },
+                "LabelTotalProfit": {
+                    "type": {
+                        "text": true
+                    }
+                },
+                "LabelRevenues": {
+                    "type": {
+                        "text": true
+                    }
+                },
+                "LabelTotalRevenues": {
+                    "type": {
+                        "text": true
+                    }
+                },
+                "LabelTotalNetResultOperation": {
+                    "type": {
+                        "text": true
+                    }
+                },
+                "BackGroundColor": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "BackGroundColorHeaders": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "BackGroundColorHeadersColor": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "BackGroundColorAccount": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "ValueDecimalPlaces": {
+                    "displayName": "Value Decimal Places",
+                    "type": {
+                        "integer": true
+                    }
+                }
+            }
+        }
+    },
+    "dataViewMappings": [
+        {
+            "conditions": [
+                {
+                    "account": {
+                        "max": 1
+                    },
+                    "categories": {
+                        "max": 1
+                    },
+                    "group_account_name": {
+                        "max": 1
+                    },
+                    "account_name": {
+                        "max": 1
+                    },
+                    "values": {
+                        "max": 5
+                    },
+                    "current_date": {
+                        "max": 1
+                    },
+                    "PreviousYear": {
+                        "max": 1
+                    },
+                    "Budget": {
+                        "max": 1
+                    },
+                    "CurrentYear": {
+                        "max": 1
+                    },
+                    "difDollar": {
+                        "max": 1
+                    },
+                    "difPercentage": {
+                        "max": 1
+                    }
+                }
+            ],
+            "table": {
+                "rows": {
+                    "select": [
+                        {
+                            "for": {
+                                "in": "account"
+                            }
+                        },
+                        {
+                            "for": {
+                                "in": "categories"
+                            }
+                        },
+                        {
+                            "for": {
+                                "in": "group_account_name"
+                            }
+                        },
+                        {
+                            "for": {
+                                "in": "account_name"
+                            }
+                        },
+                        {
+                            "for": {
+                                "in": "PreviousYear"
+                            }
+                        },
+                        {
+                            "for": {
+                                "in": "Budget"
+                            }
+                        },
+                        {
+                            "for": {
+                                "in": "CurrentYear"
+                            }
+                        },
+                        {
+                            "for": {
+                                "in": "difDollar"
+                            }
+                        },
+                        {
+                            "for": {
+                                "in": "difPercentage"
+                            }
+                        },
+                        {
+                            "for": {
+                                "in": "current_date"
+                            }
+                        }
+                    ],
+                    "dataReductionAlgorithm": {
+                        "window": {
+                            "count": 20000
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "sorting": {
+        "default": {}
+    },
+    "privileges": [
+        {
+            "name": "ExportContent",
+            "essential": true
+        }
+    ]
+}

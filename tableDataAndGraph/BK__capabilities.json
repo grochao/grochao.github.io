@@ -1,0 +1,69 @@
+{
+    "dataRoles": [
+        {
+            "displayName": "Account",
+            "name": "account",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Date",
+            "name": "date",
+            "kind": "Measure"
+        },
+        {
+            "displayName": "Values",
+            "name": "values",
+            "kind": "Measure"
+        }
+    ],
+    "dataViewMappings": [
+        {
+            "conditions": [
+                {
+                    "account": {
+                        "min": 3,
+                        "max": 4
+                    },
+                    "values": {
+                        "max": 5
+                    },
+                    "date": {
+                        "max": 1
+                    }
+                }
+            ],
+            "categorical": {
+                "categories": {
+                    "for": {
+                        "in": "account"
+                    },
+                    "dataReductionAlgorithm": {
+                        "window": {
+                            "count": 20000
+                        }
+                    }
+                },
+                "values": {
+                    "select": [
+                        {
+                            "bind": {
+                                "to": "date"
+                            }
+                        },
+                        {
+                            "bind": {
+                                "to": "values"
+                            }
+                        }
+                    ],
+                    "dataReductionAlgorithm": {
+                        "window": {
+                            "count": 20000
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "privileges": []
+}

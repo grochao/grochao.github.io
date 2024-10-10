@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semi-arco con D3.js</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+
+    <svg width="500" height="300"></svg>
+
+    <script>
+        // Seleccionar el elemento SVG
+        const svg = d3.select("svg")
+            .attr("width", 500)
+            .attr("height", 300);
+
+        // Definir el arco
+        const arc = d3.arc()
+            .innerRadius(50) // Radio interno (puede ser 0 para un semi-círculo completo)
+            .outerRadius(100) // Radio externo
+            .startAngle(0) // Ángulo de inicio (0 radianes)
+            .endAngle(Math.PI) // Ángulo de fin (π radianes para un semi-arco)
+
+        // Añadir el arco al SVG
+        svg.append("path")
+            .attr("d", arc)
+            .attr("fill", "steelblue")
+            .attr("transform", "translate(250,150)rotate(-90)"); // Centrar el semi-arco en el SVG
+    </script>
+
+</body>
+
+</html>
+</body>
+
+</html>

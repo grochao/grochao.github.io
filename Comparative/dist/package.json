@@ -1,0 +1,17 @@
+{
+		"version": "1.0.0.0",
+		"author": {"name":"Guillermo Rocha","email":"g.rocha.o@live.com"},
+		"resources": [
+			{
+				"resourceId": "rId0",
+				"sourceType": 5,
+				"file": "resources/Compare_Values.pbiviz.json"
+			}
+		],
+		"visual": {"name":"Compare Values","displayName":"Compare Values","guid":"Compare_Values","visualClassName":"Visual","version":"1.0.0.0","description":"Compare measures and generate an arc chart for the scope","supportUrl":"https://github.com/grochao/grochao.github.io","gitHubUrl":"https://github.com/grochao/grochao.github.io"},
+		"metadata": {
+			"pbivizjson": {
+				"resourceId": "rId0"
+			}
+		}
+	}

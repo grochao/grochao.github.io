@@ -1,0 +1,182 @@
+{
+    "dataRoles": [
+        {
+            "displayName": "Left Value",
+            "name": "left_value",
+            "kind": "Measure",
+            "requiredTypes": [
+                {
+                    "numeric": true
+                }
+            ],
+            "preferredTypes": [
+                {
+                    "numeric": true
+                }
+            ]
+        },
+        {
+            "displayName": "Center Value",
+            "name": "center_value",
+            "kind": "Measure",
+            "requiredTypes": [
+                {
+                    "numeric": true
+                }
+            ],
+            "preferredTypes": [
+                {
+                    "numeric": true
+                }
+            ]
+        },
+        {
+            "displayName": "Right Value",
+            "name": "right_value",
+            "kind": "Measure",
+            "requiredTypes": [
+                {
+                    "numeric": true
+                }
+            ],
+            "preferredTypes": [
+                {
+                    "numeric": true
+                }
+            ]
+        },
+        {
+            "displayName": "Scope Value",
+            "name": "scope_value",
+            "kind": "Measure",
+            "requiredTypes": [
+                {
+                    "numeric": true
+                }
+            ],
+            "preferredTypes": [
+                {
+                    "numeric": true
+                }
+            ]
+        }
+    ],
+    "objects": {
+        "colorSettings": {
+            "properties": {
+                "fontColor": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "fontFamily": {
+                    "type": {
+                        "formatting": {
+                            "fontFamily": true
+                        }
+                    }
+                },
+                "gradiantColorFirst": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "gradiantColorSecond": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "arrowColor": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "animationSettings": {
+            "properties": {
+                "duration": {
+                    "type": {
+                        "numeric": true
+                    }
+                }
+            }
+        }
+    },
+    "dataViewMappings": [
+        {
+            "table": {
+                "rows": {
+                    "select": [
+                        {
+                            "for": {
+                                "in": "left_value"
+                            }
+                        },
+                        {
+                            "for": {
+                                "in": "center_value"
+                            }
+                        },
+                        {
+                            "for": {
+                                "in": "right_value"
+                            }
+                        },
+                        {
+                            "for": {
+                                "in": "scope_value"
+                            }
+                        }
+                    ],
+                    "dataReductionAlgorithm": {
+                        "window": {
+                            "count": 20000
+                        }
+                    }
+                }
+            },
+            "conditions": [
+                {
+                    "left_value": {
+                        "max": 1
+                    },
+                    "center_value": {
+                        "max": 1
+                    },
+                    "right_value": {
+                        "max": 1
+                    },
+                    "scope_value": {
+                        "max": 1
+                    }
+                }
+            ]
+        }
+    ],
+    "sorting": {
+        "default": {}
+    },
+    "privileges": [
+        {
+            "name": "ExportContent",
+            "essential": true
+        }
+    ]
+}

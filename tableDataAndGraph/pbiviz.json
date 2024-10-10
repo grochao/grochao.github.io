@@ -1,0 +1,26 @@
+{
+    "visual": {
+        "name": "tableDataAndGraph",
+        "displayName": "table data and graph",
+        "guid": "tableDataAndGraph",
+        "visualClassName": "Visual",
+        "version": "1.0.0.0",
+        "description": "Muestra una tabla de datos y sus graficas por cada fila",
+        "supportUrl": "https://ans.edu.ni",
+        "gitHubUrl": ""
+    },
+    "apiVersion": "5.4.0",
+    "author": {
+        "name": "Guillermo Rocha",
+        "email": "guillermo.rocha@ans.edu.ni"
+    },
+    "assets": {
+        "icon": "assets/icon-data-graph.svg"
+    },
+    "externalJS": [],
+    "style": "style/visual.less",
+    "capabilities": "capabilities.json",
+    "dependencies": null,
+    "stringResources": [],
+    "version": "1.0.0.0"
+}
