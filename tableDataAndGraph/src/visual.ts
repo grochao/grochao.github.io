@@ -34,50 +34,13 @@ import DataView = powerbi.DataView;
 import IVisualHost = powerbi.extensibility.IVisualHost;
 import * as d3 from "d3";
 
+import { ANS_JsonDB } from "./data"
+
 type Selection<T extends d3.BaseType> = d3.Selection<T, any, any, any>;
 import { FormattingSettingsService } from "powerbi-visuals-utils-formattingmodel";
 
 
-/*
-declare let AllValues: {
-    RowValues: {
-        PreviousYear: 0,
-        Budget: 0,
-        CurrentYear: 0,
-        difDollar: 0,
-        difPercentage: 0
-    }
-    GranTotal: {
-        PreviousYear: 0,
-        Budget: 0,
-        CurrentYear: 0,
-        difDollar: 0,
-        difPercentage: 0
-    }
-    SubTotal: {
-        PreviousYear: 0,
-        Budget: 0,
-        CurrentYear: 0,
-        difDollar: 0,
-        difPercentage: 0
-    }
-}*/
-/* IMPORT REFERENCE DATAVIEW */
-/*import DataViewMetadataColumn = powerbi.DataViewMetadataColumn;
-import DataViewTable = powerbi.DataViewTable;
-import DataViewTableRow = powerbi.DataViewTableRow;
-import PrimitiveValue = powerbi.PrimitiveValue;*/
-/*
-import "./../style/visual.less";
-import powerbi from "powerbi-visuals-api";
 
-import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
-import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
-import IVisual = powerbi.extensibility.visual.IVisual;
-import DataView = powerbi.DataView;
-
-
-*/
 import { VisualFormattingSettingsModel } from "./settings";
 
 import { VisualCustomSettingsModel, VisualCustomSettingsType } from "./settings";
@@ -95,70 +58,14 @@ export class Visual implements IVisual {
 
     static _id_event_click_global_ = "";
     static GrandTotal = {
-        TotalIncome: {
-            categories: "",
-            PreviousYear: 0,
-            Budget: 0,
-            CurrentYear: 0,
-            difDollar: 0,
-            difPercentage: 0
-        },
-        TotalExpenses: {
-            categories: "",
-            PreviousYear: 0,
-            Budget: 0,
-            CurrentYear: 0,
-            difDollar: 0,
-            difPercentage: 0
-        },
-        TotalProfit: {
-            categories: "",
-            PreviousYear: 0,
-            Budget: 0,
-            CurrentYear: 0,
-            difDollar: 0,
-            difPercentage: 0
-        },
-        TotalRevenues: {
-            categories: "",
-            PreviousYear: 0,
-            Budget: 0,
-            CurrentYear: 0,
-            difDollar: 0,
-            difPercentage: 0
-        },
-        TotalNetResultOperation: {
-            categories: "",
-            PreviousYear: 0,
-            Budget: 0,
-            CurrentYear: 0,
-            difDollar: 0,
-            difPercentage: 0
-        },
-        ITDA_VALUE: {
-            categories: "",
-            PreviousYear: 0,
-            Budget: 0,
-            CurrentYear: 0,
-            difDollar: 0,
-            difPercentage: 0
-        },
-        EBITDA_VALUE: {
-            categories: "",
-            PreviousYear: 0,
-            Budget: 0,
-            CurrentYear: 0,
-            difDollar: 0,
-            difPercentage: 0
-        },
-        EBITDA_PERCENTAGE: {
-            categories: "",
-            PreviousYear: 0,
-            Budget: 0,
-            CurrentYear: 0,
-            difDollar: 0,
-            difPercentage: 0
-        }
+        TotalIncome: ANS_JsonDB.return_JSON_structure(),
+        TotalExpenses: ANS_JsonDB.return_JSON_structure(),
+        TotalProfit: ANS_JsonDB.return_JSON_structure(),
+        TotalRevenues: ANS_JsonDB.return_JSON_structure(),
+        TotalNetResultOperation: ANS_JsonDB.return_JSON_structure(),
+        ITDA_VALUE: ANS_JsonDB.return_JSON_structure(),
+        EBITDA_VALUE: ANS_JsonDB.return_JSON_structure(),
+        EBITDA_PERCENTAGE: ANS_JsonDB.return_JSON_structure()
     };
 
 
@@ -278,18 +185,7 @@ export class Visual implements IVisual {
         // let tmpArray = JsonDB.categorical.categories;
         const _DB_ = {
             TITLE_COLUMNS: {
-                VALUES: [{
-                    account: null,
-                    categories: null,
-                    group_account_name: null,
-                    account_name: null,
-                    PreviousYear: null,
-                    Budget: null,
-                    CurrentYear: null,
-                    difDollar: null,
-                    difPercentage: null,
-                    current_date: null
-                }]
+                VALUES: [ANS_JsonDB.return_JSON_structure()]
             },
             VALUES: [],
             "INCOME": {
@@ -380,12 +276,13 @@ export class Visual implements IVisual {
                     (((TMPVALUES.account_name).toUpperCase()).includes(("Amortizations").toUpperCase()) ||
                         ((TMPVALUES.account_name).toUpperCase()).includes(("Depreciation").toUpperCase()) ||
                         ((TMPVALUES.account_name).toUpperCase()).includes(("Interest Payment").toUpperCase()))) {
-                    Visual.GrandTotal.ITDA_VALUE.categories = "EBITDA (US$)";
-                    Visual.GrandTotal.ITDA_VALUE.PreviousYear += TMPVALUES.PreviousYear;
-                    Visual.GrandTotal.ITDA_VALUE.Budget += TMPVALUES.Budget;
-                    Visual.GrandTotal.ITDA_VALUE.CurrentYear += TMPVALUES.CurrentYear;
-                    Visual.GrandTotal.ITDA_VALUE.difDollar += TMPVALUES.difDollar;
-                    Visual.GrandTotal.ITDA_VALUE.difPercentage += TMPVALUES.difPercentage;
+
+                    Visual.GrandTotal.ITDA_VALUE.categories.value = "EBITDA (US$)";
+                    Visual.GrandTotal.ITDA_VALUE.PreviousYear.value += TMPVALUES.PreviousYear;
+                    Visual.GrandTotal.ITDA_VALUE.Budget.value += TMPVALUES.Budget;
+                    Visual.GrandTotal.ITDA_VALUE.CurrentYear.value += TMPVALUES.CurrentYear;
+                    Visual.GrandTotal.ITDA_VALUE.difDollar.value += TMPVALUES.difDollar;
+                    Visual.GrandTotal.ITDA_VALUE.difPercentage.value += TMPVALUES.difPercentage;
 
 
                 }
@@ -536,14 +433,58 @@ export class Visual implements IVisual {
     }
     private static returnJsonEBITDA_VALUE() {
         return {
-            PreviousYear: (((Visual.GrandTotal.EBITDA_VALUE.PreviousYear) / (Visual.GrandTotal.TotalIncome.PreviousYear)) * 100),
-            Budget: (((Visual.GrandTotal.EBITDA_VALUE.Budget) / (Visual.GrandTotal.TotalIncome.Budget)) * 100),
-            CurrentYear: (((Visual.GrandTotal.EBITDA_VALUE.CurrentYear) / (Visual.GrandTotal.TotalIncome.CurrentYear)) * 100),
+            PreviousYear: (((Visual.GrandTotal.EBITDA_VALUE.PreviousYear.value) / (Visual.GrandTotal.TotalIncome.PreviousYear.value)) * 100),
+            Budget: (((Visual.GrandTotal.EBITDA_VALUE.Budget.value) / (Visual.GrandTotal.TotalIncome.Budget.value)) * 100),
+            CurrentYear: (((Visual.GrandTotal.EBITDA_VALUE.CurrentYear.value) / (Visual.GrandTotal.TotalIncome.CurrentYear.value)) * 100),
             difDollar: 0,
             difPercentage: 0,
         }
     }
+    private static SetDataValue(__GROUP__: any = null, __DATA_VAUES__: any = null) {
+        Visual.GrandTotal[__GROUP__].categories.value = __DATA_VAUES__;
+        Visual.GrandTotal[__GROUP__].PreviousYear.value = __DATA_VAUES__;
+        Visual.GrandTotal[__GROUP__].Budget.value = __DATA_VAUES__;
+        Visual.GrandTotal[__GROUP__].CurrentYear.value = __DATA_VAUES__;
+        Visual.GrandTotal[__GROUP__].difDollar.value = __DATA_VAUES__;
+        Visual.GrandTotal[__GROUP__].difPercentage.value = __DATA_VAUES__;
+    }
+    private static UpdateDataValues(__TYPE__: any = null, __DATA_VAUES__: any = null) {
+        if (__TYPE__ === null && __DATA_VAUES__ === null && !(["INCOME", "EXPENSES", "REVENUES"].includes(__TYPE__))) {
+            Visual.SetDataValue(__TYPE__,
+                {
+                    categories: "",
+                    PreviousYear: 0,
+                    Budget: 0,
+                    CurrentYear: 0,
+                    difDollar: 0,
+                    difPercentage: 0
+                }
+            );
+        } else
+            if (__TYPE__ === "INCOME") {
+                __DATA_VAUES__.categories.value = "OPERATING INCOME";
+                Visual.SetDataValue("TotalIncome", __DATA_VAUES__);
+            } else if (__TYPE__ === "EXPENSES") {
+                __DATA_VAUES__.categories.value = "OPERATING EXPENSES";
+                Visual.SetDataValue("TotalExpenses", __DATA_VAUES__);
+                Visual.GrandTotal.TotalProfit.categories.value = "PROFIT OPERATING";
+                Visual.GrandTotal.TotalProfit.PreviousYear.value = Visual.GrandTotal.TotalIncome.PreviousYear.value - Visual.GrandTotal.TotalExpenses.PreviousYear.value;
+                Visual.GrandTotal.TotalProfit.Budget.value = Visual.GrandTotal.TotalIncome.Budget.value - Visual.GrandTotal.TotalExpenses.Budget.value;
+                Visual.GrandTotal.TotalProfit.CurrentYear.value = Visual.GrandTotal.TotalIncome.CurrentYear.value - Visual.GrandTotal.TotalExpenses.CurrentYear.value;
+                Visual.GrandTotal.TotalProfit.difDollar.value = Visual.GrandTotal.TotalIncome.difDollar.value - Visual.GrandTotal.TotalExpenses.difDollar.value;
+                Visual.GrandTotal.TotalProfit.difPercentage.value = Visual.GrandTotal.TotalIncome.difPercentage.value - Visual.GrandTotal.TotalExpenses.difPercentage.value;
 
+            } else if (__TYPE__ === "REVENUES") {
+                __DATA_VAUES__.categories.value = "NON-OPERATING REVENUES";
+                Visual.SetDataValue("TotalRevenues", __DATA_VAUES__);
+                Visual.GrandTotal.TotalNetResultOperation.categories.value = "NET RESULT OPERATION";
+                Visual.GrandTotal.TotalNetResultOperation.PreviousYear.value = Visual.GrandTotal.TotalProfit.PreviousYear.value + Visual.GrandTotal.TotalRevenues.PreviousYear.value;
+                Visual.GrandTotal.TotalNetResultOperation.Budget.value = Visual.GrandTotal.TotalProfit.Budget.value + Visual.GrandTotal.TotalRevenues.Budget.value;
+                Visual.GrandTotal.TotalNetResultOperation.CurrentYear.value = Visual.GrandTotal.TotalProfit.CurrentYear.value + Visual.GrandTotal.TotalRevenues.CurrentYear.value;
+                Visual.GrandTotal.TotalNetResultOperation.difDollar.value = Visual.GrandTotal.TotalProfit.difDollar.value + Visual.GrandTotal.TotalRevenues.difDollar.value;
+                Visual.GrandTotal.TotalNetResultOperation.difPercentage.value = Visual.GrandTotal.TotalProfit.difPercentage.value + Visual.GrandTotal.TotalRevenues.difPercentage.value;
+            }
+    }
     private static GenerateAccountTypeTable(type: string = null, DATA: any = null, HEADERS: any = null/*, FOOTERS: any = null, _id_event_: any = null*/) {
         let _TABLE_ = document.createElement("table");
         let _T_HEADERS_ = document.createElement("thead");
@@ -737,8 +678,9 @@ export class Visual implements IVisual {
                     tmp_row_footer.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput(difPercentage, "%", false), "is_numeric"));
 
                     _T_FOOT_.appendChild(tmp_row_footer);
+                    Visual.UpdateDataValues(type, TotalAccount);
 
-                    if (type === "INCOME") {
+                    /*if (type === "INCOME") {
                         Visual.GrandTotal.TotalIncome = {
                             categories: "OPERATING INCOME",
                             PreviousYear: TotalAccount.PreviousYear,
@@ -787,7 +729,7 @@ export class Visual implements IVisual {
 
 
 
-                    }
+                    }*/
                 }
                 // }
                 //_TABLE_.append(_T_HEADERS_);
@@ -856,82 +798,95 @@ export class Visual implements IVisual {
         TblContainerER.appendChild(Visual.GenerateAccountTypeTable("REVENUES", _ALL_DB_.REVENUES.VALUES))
         TblContainerER.appendChild(Visual.GenerateAccountTypeTable("NETRESULTOPERATION"))
 
-        Visual.GrandTotal.EBITDA_VALUE.categories = "EBITDA (US$)";
-        Visual.GrandTotal.EBITDA_VALUE.PreviousYear = Number(Visual.GrandTotal.TotalNetResultOperation.PreviousYear) + Number(Visual.GrandTotal.ITDA_VALUE.PreviousYear);
-        Visual.GrandTotal.EBITDA_VALUE.Budget = Number(Visual.GrandTotal.TotalNetResultOperation.Budget) + Number(Visual.GrandTotal.ITDA_VALUE.Budget);
-        Visual.GrandTotal.EBITDA_VALUE.CurrentYear = Number(Visual.GrandTotal.TotalNetResultOperation.CurrentYear) + Number(Visual.GrandTotal.ITDA_VALUE.CurrentYear);
-        Visual.GrandTotal.EBITDA_VALUE.difDollar = Number(Visual.GrandTotal.TotalNetResultOperation.difDollar) + Number(Visual.GrandTotal.ITDA_VALUE.difDollar);
-        Visual.GrandTotal.EBITDA_VALUE.difPercentage = Number(Visual.GrandTotal.TotalNetResultOperation.difPercentage) + Number(Visual.GrandTotal.ITDA_VALUE.difPercentage);
+        Visual.GrandTotal.EBITDA_VALUE.categories.value = "EBITDA (US$)";
+        Visual.GrandTotal.EBITDA_VALUE.PreviousYear.value = Number(Visual.GrandTotal.TotalNetResultOperation.PreviousYear.value) + Number(Visual.GrandTotal.ITDA_VALUE.PreviousYear.value);
+        Visual.GrandTotal.EBITDA_VALUE.Budget.value = Number(Visual.GrandTotal.TotalNetResultOperation.Budget.value) + Number(Visual.GrandTotal.ITDA_VALUE.Budget.value);
+        Visual.GrandTotal.EBITDA_VALUE.CurrentYear.value = Number(Visual.GrandTotal.TotalNetResultOperation.CurrentYear.value) + Number(Visual.GrandTotal.ITDA_VALUE.CurrentYear.value);
+        Visual.GrandTotal.EBITDA_VALUE.difDollar.value = Number(Visual.GrandTotal.TotalNetResultOperation.difDollar.value) + Number(Visual.GrandTotal.ITDA_VALUE.difDollar.value);
+        Visual.GrandTotal.EBITDA_VALUE.difPercentage.value = Number(Visual.GrandTotal.TotalNetResultOperation.difPercentage.value) + Number(Visual.GrandTotal.ITDA_VALUE.difPercentage.value);
 
         TblContainerER.appendChild(Visual.GenerateAccountTypeTable("EBITDA_VALUE"))
 
 
 
-        Visual.GrandTotal.EBITDA_PERCENTAGE.categories = "EBITDA (%)";
-        Visual.GrandTotal.EBITDA_PERCENTAGE.PreviousYear = (parseFloat(Visual.GrandTotal.EBITDA_VALUE.PreviousYear + "") / parseFloat(Visual.GrandTotal.TotalIncome.PreviousYear + ""))
-        Visual.GrandTotal.EBITDA_PERCENTAGE.CurrentYear = Visual.GrandTotal.EBITDA_VALUE.CurrentYear / Visual.GrandTotal.TotalIncome.CurrentYear;
-        Visual.GrandTotal.EBITDA_PERCENTAGE.difDollar = Visual.GrandTotal.EBITDA_VALUE.difDollar / Visual.GrandTotal.TotalIncome.difDollar;
-        Visual.GrandTotal.EBITDA_PERCENTAGE.difPercentage = Visual.GrandTotal.EBITDA_VALUE.difPercentage / Visual.GrandTotal.TotalIncome.difPercentage;
+        Visual.GrandTotal.EBITDA_PERCENTAGE.categories.value = "EBITDA (%)";
+        Visual.GrandTotal.EBITDA_PERCENTAGE.PreviousYear.value = (parseFloat(Visual.GrandTotal.EBITDA_VALUE.PreviousYear.value + "") / parseFloat(Visual.GrandTotal.TotalIncome.PreviousYear.value + ""))
+        Visual.GrandTotal.EBITDA_PERCENTAGE.CurrentYear.value = Visual.GrandTotal.EBITDA_VALUE.CurrentYear.value / Visual.GrandTotal.TotalIncome.CurrentYear.value;
+        Visual.GrandTotal.EBITDA_PERCENTAGE.difDollar.value = Visual.GrandTotal.EBITDA_VALUE.difDollar.value / Visual.GrandTotal.TotalIncome.difDollar.value;
+        Visual.GrandTotal.EBITDA_PERCENTAGE.difPercentage.value = Visual.GrandTotal.EBITDA_VALUE.difPercentage.value / Visual.GrandTotal.TotalIncome.difPercentage.value;
 
 
         TblContainerER.appendChild(Visual.GenerateAccountTypeTable("EBITDA_PERCENTAGE"))
-
-        Visual.GrandTotal.TotalIncome.categories = "";
+        Visual.UpdateDataValues("TotalIncome");
+        /*Visual.GrandTotal.TotalIncome.categories = "";
         Visual.GrandTotal.TotalIncome.PreviousYear = 0;
         Visual.GrandTotal.TotalIncome.Budget = 0;
         Visual.GrandTotal.TotalIncome.CurrentYear = 0;
         Visual.GrandTotal.TotalIncome.difDollar = 0;
         Visual.GrandTotal.TotalIncome.difPercentage = 0;
-
-        Visual.GrandTotal.TotalExpenses.categories = "";
-        Visual.GrandTotal.TotalExpenses.PreviousYear = 0;
-        Visual.GrandTotal.TotalExpenses.Budget = 0;
-        Visual.GrandTotal.TotalExpenses.CurrentYear = 0;
-        Visual.GrandTotal.TotalExpenses.difDollar = 0;
-        Visual.GrandTotal.TotalExpenses.difPercentage = 0;
-
+*/
+        Visual.UpdateDataValues("TotalExpenses");
+        /* Visual.GrandTotal.TotalExpenses.categories = "";
+         Visual.GrandTotal.TotalExpenses.PreviousYear = 0;
+         Visual.GrandTotal.TotalExpenses.Budget = 0;
+         Visual.GrandTotal.TotalExpenses.CurrentYear = 0;
+         Visual.GrandTotal.TotalExpenses.difDollar = 0;
+         Visual.GrandTotal.TotalExpenses.difPercentage = 0;
+ */
+        Visual.UpdateDataValues("TotalProfit");
+        /*
         Visual.GrandTotal.TotalProfit.categories = "";
         Visual.GrandTotal.TotalProfit.PreviousYear = 0;
         Visual.GrandTotal.TotalProfit.Budget = 0;
         Visual.GrandTotal.TotalProfit.CurrentYear = 0;
         Visual.GrandTotal.TotalProfit.difDollar = 0;
         Visual.GrandTotal.TotalProfit.difPercentage = 0;
-
+ */
+        Visual.UpdateDataValues("TotalRevenues");
+        /*
         Visual.GrandTotal.TotalRevenues.categories = "";
         Visual.GrandTotal.TotalRevenues.PreviousYear = 0;
         Visual.GrandTotal.TotalRevenues.Budget = 0;
         Visual.GrandTotal.TotalRevenues.CurrentYear = 0;
         Visual.GrandTotal.TotalRevenues.difDollar = 0;
         Visual.GrandTotal.TotalRevenues.difPercentage = 0;
-
+ */
+        Visual.UpdateDataValues("TotalNetResultOperation");
+        /*
         Visual.GrandTotal.TotalNetResultOperation.categories = "";
         Visual.GrandTotal.TotalNetResultOperation.PreviousYear = 0;
         Visual.GrandTotal.TotalNetResultOperation.Budget = 0;
         Visual.GrandTotal.TotalNetResultOperation.CurrentYear = 0;
         Visual.GrandTotal.TotalNetResultOperation.difDollar = 0;
         Visual.GrandTotal.TotalNetResultOperation.difPercentage = 0;
-
+ */
+        Visual.UpdateDataValues("ITDA_VALUE");
+        /*
         Visual.GrandTotal.ITDA_VALUE.categories = "";
         Visual.GrandTotal.ITDA_VALUE.PreviousYear = 0;
         Visual.GrandTotal.ITDA_VALUE.Budget = 0;
         Visual.GrandTotal.ITDA_VALUE.CurrentYear = 0;
         Visual.GrandTotal.ITDA_VALUE.difDollar = 0;
         Visual.GrandTotal.ITDA_VALUE.difPercentage = 0;
-
+ */
+        Visual.UpdateDataValues("EBITDA_VALUE");
+        /*
         Visual.GrandTotal.EBITDA_VALUE.categories = "";
         Visual.GrandTotal.EBITDA_VALUE.PreviousYear = 0;
         Visual.GrandTotal.EBITDA_VALUE.Budget = 0;
         Visual.GrandTotal.EBITDA_VALUE.CurrentYear = 0;
         Visual.GrandTotal.EBITDA_VALUE.difDollar = 0;
         Visual.GrandTotal.EBITDA_VALUE.difPercentage = 0;
-
+ */
+        Visual.UpdateDataValues("EBITDA_PERCENTAGE");
+        /*
         Visual.GrandTotal.EBITDA_PERCENTAGE.categories = "";
         Visual.GrandTotal.EBITDA_PERCENTAGE.PreviousYear = 0;
         Visual.GrandTotal.EBITDA_PERCENTAGE.Budget = 0;
         Visual.GrandTotal.EBITDA_PERCENTAGE.CurrentYear = 0;
         Visual.GrandTotal.EBITDA_PERCENTAGE.difDollar = 0;
         Visual.GrandTotal.EBITDA_PERCENTAGE.difPercentage = 0;
-
+*/
 
 
 

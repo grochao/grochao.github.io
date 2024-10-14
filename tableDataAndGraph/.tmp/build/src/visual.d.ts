@@ -16,70 +16,14 @@ export declare class Visual implements IVisual {
     private dataView;
     static _id_event_click_global_: string;
     static GrandTotal: {
-        TotalIncome: {
-            categories: string;
-            PreviousYear: number;
-            Budget: number;
-            CurrentYear: number;
-            difDollar: number;
-            difPercentage: number;
-        };
-        TotalExpenses: {
-            categories: string;
-            PreviousYear: number;
-            Budget: number;
-            CurrentYear: number;
-            difDollar: number;
-            difPercentage: number;
-        };
-        TotalProfit: {
-            categories: string;
-            PreviousYear: number;
-            Budget: number;
-            CurrentYear: number;
-            difDollar: number;
-            difPercentage: number;
-        };
-        TotalRevenues: {
-            categories: string;
-            PreviousYear: number;
-            Budget: number;
-            CurrentYear: number;
-            difDollar: number;
-            difPercentage: number;
-        };
-        TotalNetResultOperation: {
-            categories: string;
-            PreviousYear: number;
-            Budget: number;
-            CurrentYear: number;
-            difDollar: number;
-            difPercentage: number;
-        };
-        ITDA_VALUE: {
-            categories: string;
-            PreviousYear: number;
-            Budget: number;
-            CurrentYear: number;
-            difDollar: number;
-            difPercentage: number;
-        };
-        EBITDA_VALUE: {
-            categories: string;
-            PreviousYear: number;
-            Budget: number;
-            CurrentYear: number;
-            difDollar: number;
-            difPercentage: number;
-        };
-        EBITDA_PERCENTAGE: {
-            categories: string;
-            PreviousYear: number;
-            Budget: number;
-            CurrentYear: number;
-            difDollar: number;
-            difPercentage: number;
-        };
+        TotalIncome: import("./data").ANS_DataTypeJsonStructure;
+        TotalExpenses: import("./data").ANS_DataTypeJsonStructure;
+        TotalProfit: import("./data").ANS_DataTypeJsonStructure;
+        TotalRevenues: import("./data").ANS_DataTypeJsonStructure;
+        TotalNetResultOperation: import("./data").ANS_DataTypeJsonStructure;
+        ITDA_VALUE: import("./data").ANS_DataTypeJsonStructure;
+        EBITDA_VALUE: import("./data").ANS_DataTypeJsonStructure;
+        EBITDA_PERCENTAGE: import("./data").ANS_DataTypeJsonStructure;
     };
     static settings_obj: VisualCustomSettingsType;
     constructor(options: VisualConstructorOptions);
@@ -101,6 +45,8 @@ export declare class Visual implements IVisual {
     private static ReturnRow;
     private static InitzialiceJSON;
     private static returnJsonEBITDA_VALUE;
+    private static SetDataValue;
+    private static UpdateDataValues;
     private static GenerateAccountTypeTable;
     private static GetDataValues;
     InitDataTable(): void;

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expandable Rows by Categories</title>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+    <style>
+        .category-header {
+            cursor: pointer;
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Expandable/Collapsible Rows by Category</h1>
+
+    <!-- Table -->
+    <table id="example" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Item</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Category 1 header -->
+            <tr class="category-header">
+                <td>Category 1</td>
+                <td>99999.99</td>
+                <td>88888.88</td>
+            </tr>
+            <!-- Category 1 rows -->
+            <tr class="category1">
+                <td>Category 1</td>
+                <td>Item 1</td>
+                <td>Description 1</td>
+            </tr>
+            <tr class="category1">
+                <td>Category 1</td>
+                <td>Item 2</td>
+                <td>Description 2</td>
+            </tr>
+
+            <!-- Category 2 header -->
+            <tr class="category-header">
+                <td>Category 2</td>
+                <td>99999.99</td>
+                <td>88888.88</td>
+            </tr>
+            <!-- Category 2 rows -->
+            <tr class="category2">
+                <td>Category 2</td>
+                <td>Item 3</td>
+                <td>Description 3</td>
+            </tr>
+            <tr class="category2">
+                <td>Category 2</td>
+                <td>Item 4</td>
+                <td>Description 4</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        $(document).ready(function() {
+            // Inicializar DataTables excluyendo las filas con class="category-header"
+            var table = $('#example').DataTable({
+                paging: false, // Desactiva la paginación
+                searching: false, // Desactiva la búsqueda
+                ordering: false, // Desactiva la ordenación
+                createdRow: function(row, data, dataIndex) {
+                    // No inicializar filas con la clase "category-header"
+                    if ($(row).hasClass('category-header')) {
+                        $(row).removeAttr('role'); // Esto evita que DataTables procese estas filas
+                    }
+                }
+            });
+
+            // Ocultar inicialmente las filas de cada categoría
+            $('.category1, .category2').hide();
+
+            // Delegación de eventos para el clic en los encabezados de categoría
+            $('#example tbody').on('click', '.category-header', function() {
+                const category = $(this).next().attr('class'); // Obtener la clase de la siguiente fila
+                $(`.${category}`).toggle(); // Alternar visibilidad de filas con esa clase
+            });
+        });
+    </script>
+</body>
+
+</html>
