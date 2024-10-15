@@ -1,3 +1,5 @@
+import { ANS_DataTypeJsonStructure, ANS_DataTypeJsonSimpleStructure } from "./types";
+/*
 export type ANS_DataTypeJsonStructure = {
     account: ANS_DataTypeValues,
     categories: ANS_DataTypeValues,
@@ -23,7 +25,7 @@ export type ANS_DataTypeJsonSimpleStructure = {
 export type ANS_DataTypeValues = {
     value: any,
     position: number
-}
+}*/
 export class ANS_JsonDB {
 
     //private static _JSON_Struct_: ANS_DataTypeJsonStructure | ANS_DataTypeJsonSimpleStructure;

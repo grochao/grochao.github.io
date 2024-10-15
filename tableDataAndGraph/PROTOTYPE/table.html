@@ -99,6 +99,44 @@
                 $(`.${category}`).toggle(); // Alternar visibilidad de filas con esa clase
             });
         });
+
+
+        process = {
+            env: {
+                ENABLE_CONSOLE: false
+            }
+        };
+
+
+        console.log2 = console.log;
+        console.enable = true; //process.env.ENABLE_CONSOLE;
+        console.log = function() {
+            if (console.enable) {
+                console.log2(...arguments);
+            } else {
+                alert("no console");
+            }
+        }
+
+        // TEST
+        console.log("HOLA 1");
+        console.enable = true;
+        console.log("HOLA 2");
+        console.enable = false;
+        console.log("HOLA 3");
+
+
+        /*console.group('Información de la URL');
+        console.log('Protocol', window.location.protocol);
+        console.log('Host', window.origin);
+        console.log('Path', window.location.pathname);
+        console.groupCollapsed('Datos adicionales');
+        console.log('Timestamp', new Date().getTime());
+        console.log('OS', navigator['platform']);
+        console.log('Navegador', navigator['appCodeName']);
+        console.log('Idioma', navigator['language']);
+        console.groupEnd();
+        console.groupEnd();*/
     </script>
 </body>
 
