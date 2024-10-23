@@ -18,7 +18,7 @@ declare class DataPointCardSettings extends FormattingSettingsCard {
     LabelRevenues: formattingSettings.TextInput;
     LabelTotalRevenues: formattingSettings.TextInput;
     LabelTotalNetResultOperation: formattingSettings.TextInput;
-    DecimalPlace: formattingSettings.NumUpDown;
+    DecimalPlaces: formattingSettings.NumUpDown;
     name: string;
     displayName: string;
     slices: Array<FormattingSettingsSlice>;
@@ -52,7 +52,7 @@ export type VisualCustomSettingsType = {
         Label: string;
         LabelTotal: string;
     };
-    ValueDecimalPlaces: number;
+    DecimalPlaces: number;
     BackGroundColor: string;
     BackGroundColorAccount: string;
     BackGroundColorHeaders: string;
@@ -79,7 +79,7 @@ export declare class VisualCustomSettingsModel implements VisualCustomSettingsTy
         Label: string;
         LabelTotal: string;
     };
-    ValueDecimalPlaces: number;
+    DecimalPlaces: number;
     BackGroundColor: string;
     BackGroundColorAccount: string;
     BackGroundColorHeaders: string;
@@ -99,7 +99,7 @@ export declare class VisualCustomSettingsModel implements VisualCustomSettingsTy
     }, NETRESULTOPERATION?: {
         Label: string;
         LabelTotal: string;
-    }, ValueDecimalPlaces?: number, BackGroundColor?: string, BackGroundColorAccount?: string, BackGroundColorHeaders?: string, BackGroundColorHeadersColor?: string);
+    }, DecimalPlaces?: number, BackGroundColor?: string, BackGroundColorAccount?: string, BackGroundColorHeaders?: string, BackGroundColorHeadersColor?: string);
     getSettings(_SETTINGS_: any): VisualCustomSettingsType;
 }
 export {};

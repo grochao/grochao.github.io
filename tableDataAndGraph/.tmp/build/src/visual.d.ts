@@ -5,6 +5,7 @@ import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
 import { VisualCustomSettingsType } from "./settings";
 export declare class Visual implements IVisual {
+    static consoleBox: any;
     static target: HTMLElement;
     private updateCount;
     private textNode;
@@ -28,8 +29,8 @@ export declare class Visual implements IVisual {
     static settings_obj: VisualCustomSettingsType;
     constructor(options: VisualConstructorOptions);
     static getCurrentLine(): number;
-    static LogBOX(_VALUE_?: string, style?: string): void;
     static ReturnCell(typecel: string, TextContent: any, theClass?: string, colspan?: number): HTMLElement;
+    private ExistPropierty;
     private static checkValue;
     private static returnDate;
     private static ReplaceYTD;
@@ -44,17 +45,16 @@ export declare class Visual implements IVisual {
     private static doDashes;
     private static getRandomArbitrary;
     private static returnTotalLabel;
-    private static ReturnRow;
     private static returnJsonEBITDA_VALUE;
     private static ClearDataValues;
     private static SetDataValue;
     private static UpdateDataValues;
     private static ReturnGroupedRow;
+    private static CreateRowHTML;
     private static GenerateAccountTypeTable;
     private static GetDataValues;
     InitDataTable(): void;
     update(options: VisualUpdateOptions): void;
-    static agregarEventoClick(): void;
     private static PrintFormatNumeric;
     private static formatMoney;
     /**

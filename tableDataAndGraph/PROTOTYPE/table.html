@@ -16,10 +16,77 @@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
     <style>
-        .category-header {
-            cursor: pointer;
-            background-color: #f2f2f2;
-            font-weight: bold;
+        .ans-table-reponsive,
+        .ans-table-reponsive *,
+        .ans-table-reponsive ::after,
+        .ans-table-reponsive ::before {
+            box-sizing: border-box;
+        }
+        
+        .ans-table-reponsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            max-width: 100%;
+            -webkit-overflow-scrolling: touch;
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+        }
+        
+        .ans-table-reponsive .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 1rem;
+            background-color: transparent;
+        }
+        
+        .ans-table-reponsive .table {
+            border-collapse: collapse;
+        }
+        
+        .ans-table-reponsive .table td,
+        .ans-table-reponsive .table th {
+            padding: .75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .ans-table-reponsive .table th {
+            text-align: inherit;
+        }
+        
+        .ans-table-reponsive .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        .ans-table-reponsive .table td,
+        .ans-table-reponsive .table th {
+            padding: .75rem;
+            vertical-align: top;
+            border: 1px solid #dee2e6;
+        }
+        
+        .ans-table-reponsive .table td span.key,
+        .ans-table-reponsive .table th span.key {
+            display: block;
+            width: 100%;
+            /*padding: 0.75rem;*/
+            white-space: nowrap;
+            background-color: #0f5795;
+            color: #fff;
+        }
+        
+        .ans-table-reponsive .table td span.value,
+        .ans-table-reponsive .table th span.value {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            white-space: nowrap;
+            border: 1px solid #dee2e6;
+        }
+        
+        .ans-table-reponsive .table {
+            text-align: center;
         }
     </style>
 </head>
@@ -27,116 +94,3382 @@
 <body>
     <h1>Expandable/Collapsible Rows by Category</h1>
 
-    <!-- Table -->
-    <table id="example" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>Category</th>
-                <th>Item</th>
-                <th>Description</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Category 1 header -->
-            <tr class="category-header">
-                <td>Category 1</td>
-                <td>99999.99</td>
-                <td>88888.88</td>
-            </tr>
-            <!-- Category 1 rows -->
-            <tr class="category1">
-                <td>Category 1</td>
-                <td>Item 1</td>
-                <td>Description 1</td>
-            </tr>
-            <tr class="category1">
-                <td>Category 1</td>
-                <td>Item 2</td>
-                <td>Description 2</td>
-            </tr>
 
-            <!-- Category 2 header -->
-            <tr class="category-header">
-                <td>Category 2</td>
-                <td>99999.99</td>
-                <td>88888.88</td>
-            </tr>
-            <!-- Category 2 rows -->
-            <tr class="category2">
-                <td>Category 2</td>
-                <td>Item 3</td>
-                <td>Description 3</td>
-            </tr>
-            <tr class="category2">
-                <td>Category 2</td>
-                <td>Item 4</td>
-                <td>Description 4</td>
-            </tr>
-        </tbody>
-    </table>
+
+    <div id="jsonTable" class="ans-table-reponsive">
+
+    </div>
 
     <script>
-        $(document).ready(function() {
-            // Inicializar DataTables excluyendo las filas con class="category-header"
-            var table = $('#example').DataTable({
-                paging: false, // Desactiva la paginación
-                searching: false, // Desactiva la búsqueda
-                ordering: false, // Desactiva la ordenación
-                createdRow: function(row, data, dataIndex) {
-                    // No inicializar filas con la clase "category-header"
-                    if ($(row).hasClass('category-header')) {
-                        $(row).removeAttr('role'); // Esto evita que DataTables procese estas filas
-                    }
-                }
-            });
-
-            // Ocultar inicialmente las filas de cada categoría
-            $('.category1, .category2').hide();
-
-            // Delegación de eventos para el clic en los encabezados de categoría
-            $('#example tbody').on('click', '.category-header', function() {
-                const category = $(this).next().attr('class'); // Obtener la clase de la siguiente fila
-                $(`.${category}`).toggle(); // Alternar visibilidad de filas con esa clase
-            });
-        });
-
-
-        process = {
-            env: {
-                ENABLE_CONSOLE: false
-            }
-        };
-
-
-        console.log2 = console.log;
-        console.enable = true; //process.env.ENABLE_CONSOLE;
-        console.log = function() {
-            if (console.enable) {
-                console.log2(...arguments);
-            } else {
-                alert("no console");
-            }
-        }
-
-        // TEST
-        console.log("HOLA 1");
-        console.enable = true;
-        console.log("HOLA 2");
-        console.enable = false;
-        console.log("HOLA 3");
-
-
-        /*console.group('Información de la URL');
+        console.group('Información de la URL');
         console.log('Protocol', window.location.protocol);
+        console.group('Información de la URL');
         console.log('Host', window.origin);
         console.log('Path', window.location.pathname);
         console.groupCollapsed('Datos adicionales');
         console.log('Timestamp', new Date().getTime());
         console.log('OS', navigator['platform']);
+        console.groupEnd();
         console.log('Navegador', navigator['appCodeName']);
         console.log('Idioma', navigator['language']);
         console.groupEnd();
-        console.groupEnd();*/
+        console.groupEnd();
+        /*JSON TO TABLE*/
+
+        // Ejemplo de uso
+
+        const jsonData = {
+            "TITLE_COLUMNS": {
+                "VALUES": [{
+                    "account": {
+                        "value": "\"Accounts\"",
+                        "position": 0
+                    },
+                    "categories": {
+                        "value": "\"Accounts Categories\"",
+                        "position": 1
+                    },
+                    "group_account_name": {
+                        "value": "\"Grouped Titles\"",
+                        "position": 5
+                    },
+                    "account_name": {
+                        "value": "\"Accounts Title to Show\"",
+                        "position": 9
+                    },
+                    "PreviousYear": {
+                        "value": "\"YTD&lt;br&gt;Jul-18\"",
+                        "position": 4
+                    },
+                    "Budget": {
+                        "value": "\"BUDGET&lt;br&gt;Jul-19\"",
+                        "position": 6
+                    },
+                    "CurrentYear": {
+                        "value": "\"YTD&lt;br&gt;Jul-19\"",
+                        "position": 3
+                    },
+                    "difDollar": {
+                        "value": "\"Dif(+/-)&lt;br&gt;(U$)\"",
+                        "position": 7
+                    },
+                    "difPercentage": {
+                        "value": "\"Dif(+/-)&lt;br&gt;(%)\"",
+                        "position": 8
+                    },
+                    "current_date": {
+                        "value": "\"YTD - MaxDate\"",
+                        "position": 2
+                    }
+                }]
+            },
+            "VALUES": [],
+            "INCOME": {
+                "VALUES": [{
+                    "account": "OPERATING INCOME",
+                    "categories": "REGISTRATION",
+                    "group_account_name": "Registration",
+                    "account_name": "Registration Elementary",
+                    "PreviousYear": -12470,
+                    "Budget": 0,
+                    "CurrentYear": 7350,
+                    "difDollar": 7350,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "REGISTRATION",
+                    "group_account_name": "Registration",
+                    "account_name": "Registration Middle School",
+                    "PreviousYear": -2450,
+                    "Budget": 0,
+                    "CurrentYear": 700,
+                    "difDollar": 700,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "REGISTRATION",
+                    "group_account_name": "Registration",
+                    "account_name": "Registration High School",
+                    "PreviousYear": -3150,
+                    "Budget": 0,
+                    "CurrentYear": 1750,
+                    "difDollar": 1750,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "REGISTRATION",
+                    "group_account_name": "(-) Scholarships Registration",
+                    "account_name": "(-) Scholarships Registration Elementary",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "REGISTRATION",
+                    "group_account_name": "(-) Scholarships Registration",
+                    "account_name": "(-) Scholarships Registration Middle School",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "REGISTRATION",
+                    "group_account_name": "(-) Scholarships Registration",
+                    "account_name": "(-) Scholarships Registration High School",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TUITIONS",
+                    "group_account_name": "Tuition",
+                    "account_name": "Tuition Elementary",
+                    "PreviousYear": 261868,
+                    "Budget": 254330,
+                    "CurrentYear": 279511.55,
+                    "difDollar": 25181.54999999999,
+                    "difPercentage": 0.09901132387056183
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TUITIONS",
+                    "group_account_name": "Tuition",
+                    "account_name": "Tuition Middle School",
+                    "PreviousYear": 102200,
+                    "Budget": 155540,
+                    "CurrentYear": 114289.25,
+                    "difDollar": -41250.75,
+                    "difPercentage": -0.2652099138485277
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TUITIONS",
+                    "group_account_name": "Tuition",
+                    "account_name": "Tuition High School",
+                    "PreviousYear": 149590,
+                    "Budget": 153600,
+                    "CurrentYear": 144676.25,
+                    "difDollar": -8923.75,
+                    "difPercentage": -0.05809733072916667
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TUITIONS",
+                    "group_account_name": "(-) Family Discount",
+                    "account_name": "(-) Family Discount Elementary",
+                    "PreviousYear": -8305,
+                    "Budget": -6483,
+                    "CurrentYear": -9025.15,
+                    "difDollar": -2542.1499999999996,
+                    "difPercentage": 0.39212555915471226
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TUITIONS",
+                    "group_account_name": "(-) Family Discount",
+                    "account_name": "(-) Family Discount Middle School",
+                    "PreviousYear": -2059.25,
+                    "Budget": -3579.75,
+                    "CurrentYear": -2031.75,
+                    "difDollar": 1548,
+                    "difPercentage": -0.43243243243243246
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TUITIONS",
+                    "group_account_name": "(-) Family Discount",
+                    "account_name": "(-) Family Discount High School",
+                    "PreviousYear": -945,
+                    "Budget": -1552.5,
+                    "CurrentYear": -708.75,
+                    "difDollar": 843.75,
+                    "difPercentage": -0.5434782608695652
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TUITIONS",
+                    "group_account_name": "(-) Advance Payment Discount",
+                    "account_name": "(-) Advance Payment Discount Elementary",
+                    "PreviousYear": -208.12,
+                    "Budget": -789.6,
+                    "CurrentYear": -617.66,
+                    "difDollar": 171.94000000000005,
+                    "difPercentage": -0.2177558257345492
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TUITIONS",
+                    "group_account_name": "(-) Advance Payment Discount",
+                    "account_name": "(-) Advance Payment Discount Middle School",
+                    "PreviousYear": -56,
+                    "Budget": -554.4,
+                    "CurrentYear": -226.22,
+                    "difDollar": 328.17999999999995,
+                    "difPercentage": -0.5919552669552669
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TUITIONS",
+                    "group_account_name": "(-) Advance Payment Discount",
+                    "account_name": "(-) Advance Payment Discount High School",
+                    "PreviousYear": -316.63,
+                    "Budget": -832,
+                    "CurrentYear": -2527.3,
+                    "difDollar": -1695.3000000000002,
+                    "difPercentage": 2.0376201923076924
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TUITIONS",
+                    "group_account_name": "(-) Scholarships",
+                    "account_name": "(-) Scholarship Elementary",
+                    "PreviousYear": -20836.97,
+                    "Budget": -30845,
+                    "CurrentYear": -24584.75,
+                    "difDollar": 6260.25,
+                    "difPercentage": -0.20295834008753444
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TUITIONS",
+                    "group_account_name": "(-) Scholarships",
+                    "account_name": "(-) Scholarship Middle School",
+                    "PreviousYear": -7837.5,
+                    "Budget": -13090,
+                    "CurrentYear": -7412.04,
+                    "difDollar": 5677.96,
+                    "difPercentage": -0.43376317799847214
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TUITIONS",
+                    "group_account_name": "(-) Scholarships",
+                    "account_name": "(-) Scholarship High School",
+                    "PreviousYear": -9653.33,
+                    "Budget": -13600,
+                    "CurrentYear": -13283.33,
+                    "difDollar": 316.6700000000001,
+                    "difPercentage": -0.02328455882352942
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TUITIONS",
+                    "group_account_name": "(-) Financial Aid",
+                    "account_name": "(-) Financial Aid Elementary",
+                    "PreviousYear": -972.2,
+                    "Budget": -1608.3333,
+                    "CurrentYear": -296,
+                    "difDollar": 1312.3333,
+                    "difPercentage": -0.8159585454084672
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TUITIONS",
+                    "group_account_name": "(-) Financial Aid",
+                    "account_name": "(-) Financial Aid Middle School",
+                    "PreviousYear": -734.51,
+                    "Budget": -841.6667,
+                    "CurrentYear": 0,
+                    "difDollar": 841.6667,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TUITIONS",
+                    "group_account_name": "(-) Financial Aid",
+                    "account_name": "(-) Financial Aid High School",
+                    "PreviousYear": -869.24,
+                    "Budget": -800,
+                    "CurrentYear": 0,
+                    "difDollar": 800,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TECHNOLOGY FEES",
+                    "group_account_name": "Technology Fee",
+                    "account_name": "Techonology Fee Elementary",
+                    "PreviousYear": 43635,
+                    "Budget": 62350,
+                    "CurrentYear": 46435,
+                    "difDollar": -15915,
+                    "difPercentage": -0.255252606255012
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TECHNOLOGY FEES",
+                    "group_account_name": "Technology Fee",
+                    "account_name": "Techonology Fee Middle School",
+                    "PreviousYear": 16750,
+                    "Budget": 35350,
+                    "CurrentYear": 18750,
+                    "difDollar": -16600,
+                    "difPercentage": -0.4695898161244696
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TECHNOLOGY FEES",
+                    "group_account_name": "Technology Fee",
+                    "account_name": "Techonology Fee High School",
+                    "PreviousYear": 23250,
+                    "Budget": 33600,
+                    "CurrentYear": 22500,
+                    "difDollar": -11100,
+                    "difPercentage": -0.33035714285714285
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TECHNOLOGY FEES",
+                    "group_account_name": "(-) Scholarships Technology Fee",
+                    "account_name": "(-) Scholarships Tecnology Fee Elementary",
+                    "PreviousYear": 0,
+                    "Budget": -7270,
+                    "CurrentYear": 0,
+                    "difDollar": 7270,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TECHNOLOGY FEES",
+                    "group_account_name": "(-) Scholarships Technology Fee",
+                    "account_name": "(-) Scholarships Tecnology Fee Middle School",
+                    "PreviousYear": 0,
+                    "Budget": -2975,
+                    "CurrentYear": 0,
+                    "difDollar": 2975,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "TECHNOLOGY FEES",
+                    "group_account_name": "(-) Scholarships Technology Fee",
+                    "account_name": "(-) Scholarships Tecnology Fee High School",
+                    "PreviousYear": 0,
+                    "Budget": -2975,
+                    "CurrentYear": 0,
+                    "difDollar": 2975,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "EXTRACURRICULAR FEES",
+                    "group_account_name": "Activities Fee",
+                    "account_name": "Activities Fee Elementary",
+                    "PreviousYear": 125,
+                    "Budget": 28950,
+                    "CurrentYear": 31800,
+                    "difDollar": 2850,
+                    "difPercentage": 0.09844559585492228
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "EXTRACURRICULAR FEES",
+                    "group_account_name": "Activities Fee",
+                    "account_name": "Activities Fee Middle School",
+                    "PreviousYear": 0,
+                    "Budget": 15150,
+                    "CurrentYear": 11250,
+                    "difDollar": -3900,
+                    "difPercentage": -0.25742574257425743
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "EXTRACURRICULAR FEES",
+                    "group_account_name": "Activities Fee",
+                    "account_name": "Activities Fee High School",
+                    "PreviousYear": 100,
+                    "Budget": 14400,
+                    "CurrentYear": 13500,
+                    "difDollar": -900,
+                    "difPercentage": -0.0625
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "EXTRACURRICULAR FEES",
+                    "group_account_name": "(-) Scholarships Extracurricular Fee",
+                    "account_name": "(-) Scholarships Extracurricular Fee High School",
+                    "PreviousYear": 0,
+                    "Budget": -1275,
+                    "CurrentYear": 0,
+                    "difDollar": 1275,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "EXTRACURRICULAR FEES",
+                    "group_account_name": "(-) Scholarships Extracurricular Fee",
+                    "account_name": "(-) Scholarships Extracurricular Fee Elementary",
+                    "PreviousYear": 0,
+                    "Budget": -3450,
+                    "CurrentYear": 0,
+                    "difDollar": 3450,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "EXTRACURRICULAR FEES",
+                    "group_account_name": "(-) Scholarships Extracurricular Fee",
+                    "account_name": "(-) Scholarships Extracurricular Fee Middle School",
+                    "PreviousYear": 0,
+                    "Budget": -1275,
+                    "CurrentYear": 0,
+                    "difDollar": 1275,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ENTRANCE FEE",
+                    "group_account_name": "Entrance Fee",
+                    "account_name": "Entrance Fee",
+                    "PreviousYear": 59600,
+                    "Budget": 0,
+                    "CurrentYear": 202500,
+                    "difDollar": 202500,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "SUMMER SCHOOL",
+                    "group_account_name": "Summer School",
+                    "account_name": "Summer School",
+                    "PreviousYear": 1400,
+                    "Budget": 0,
+                    "CurrentYear": 1561,
+                    "difDollar": 1561,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "SUMMER SCHOOL",
+                    "group_account_name": "Summer School",
+                    "account_name": "Summer School Elementary",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "SUMMER SCHOOL",
+                    "group_account_name": "Summer School",
+                    "account_name": "Summer School Middle School",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "SUMMER SCHOOL",
+                    "group_account_name": "Summer School",
+                    "account_name": "Summer School High School",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ACTIVITIES INCOME",
+                    "group_account_name": "Tiger Club.",
+                    "account_name": "Tiger Club.",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ACTIVITIES INCOME",
+                    "group_account_name": "Inclusion fee",
+                    "account_name": "Inclusion fee",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ACTIVITIES INCOME",
+                    "group_account_name": "Other Activities.",
+                    "account_name": "Other Activities.",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 121.5,
+                    "difDollar": 121.5,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ACTIVITIES INCOME",
+                    "group_account_name": "Communication partner",
+                    "account_name": "Communication partner",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ACTIVITIES INCOME",
+                    "group_account_name": "Raz-Kids",
+                    "account_name": "Raz-Kids",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ACTIVITIES INCOME",
+                    "group_account_name": "Special Services (ESL-DL)",
+                    "account_name": "Special Services Elementary (ESL-LD)",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ACTIVITIES INCOME",
+                    "group_account_name": "Special Services (ESL-DL)",
+                    "account_name": "Special Services Middle School (ESL-LD)",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ACTIVITIES INCOME",
+                    "group_account_name": "Special Services (ESL-DL)",
+                    "account_name": "Special Services High School (ESL-LD)",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ACTIVITIES INCOME",
+                    "group_account_name": "Dance.",
+                    "account_name": "Dance.",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ACTIVITIES INCOME",
+                    "group_account_name": "Graduation Fee.",
+                    "account_name": "Graduation Fee.",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ACTIVITIES INCOME",
+                    "group_account_name": "Swimming.",
+                    "account_name": "Swimming.",
+                    "PreviousYear": 0,
+                    "Budget": 125,
+                    "CurrentYear": 151.45,
+                    "difDollar": 26.44999999999999,
+                    "difPercentage": 0.2115999999999999
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ACTIVITIES INCOME",
+                    "group_account_name": "Security Fee",
+                    "account_name": "Security Fee",
+                    "PreviousYear": 100,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ACTIVITIES INCOME",
+                    "group_account_name": "Soccer U 50 Sabatino",
+                    "account_name": "Soccer U 50 Sabatino",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ACTIVITIES INCOME",
+                    "group_account_name": "Soccer U10 Sabatino",
+                    "account_name": "Soccer U10 Sabatino",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ACTIVITIES INCOME",
+                    "group_account_name": "Special needs fee",
+                    "account_name": "Special needs fee",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Managua",
+                    "account_name": "Book Managua Dominical",
+                    "PreviousYear": -59.66,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Managua",
+                    "account_name": "Books Sabatinos",
+                    "PreviousYear": 1011.7299999999999,
+                    "Budget": 20872.5,
+                    "CurrentYear": 478.7,
+                    "difDollar": -20393.8,
+                    "difPercentage": -0.9770655168283626
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Managua",
+                    "account_name": "Exams Man Dominical",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Managua",
+                    "account_name": "Exams Sabatinos",
+                    "PreviousYear": 22.1,
+                    "Budget": 0,
+                    "CurrentYear": 393.87,
+                    "difDollar": 393.87,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Managua",
+                    "account_name": "Familiy Discount 10%",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Managua",
+                    "account_name": "Family discount",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Managua",
+                    "account_name": "Other discounts 5%",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Managua",
+                    "account_name": "Other Sabatinos",
+                    "PreviousYear": 0.95,
+                    "Budget": 0,
+                    "CurrentYear": 29.37,
+                    "difDollar": 29.37,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Managua",
+                    "account_name": "Transportation Sabatinos",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Managua",
+                    "account_name": "Tuition Man Dominical",
+                    "PreviousYear": -159.08,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Managua",
+                    "account_name": "Tuition Sabatinos",
+                    "PreviousYear": 32276.75,
+                    "Budget": 81104.5714,
+                    "CurrentYear": 65575.07,
+                    "difDollar": -15529.501399999994,
+                    "difPercentage": -0.1914750442784535
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "Summer School",
+                    "account_name": "Summer School - Managua",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Estelí",
+                    "account_name": "Book Sab Esteli",
+                    "PreviousYear": 4947.59,
+                    "Budget": 2430,
+                    "CurrentYear": 4736.43,
+                    "difDollar": 2306.4300000000003,
+                    "difPercentage": 0.9491481481481483
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Estelí",
+                    "account_name": "Exams Sab Esteli",
+                    "PreviousYear": 9.47,
+                    "Budget": 0,
+                    "CurrentYear": 21.05,
+                    "difDollar": 21.05,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Estelí",
+                    "account_name": "Other Sab Esteli",
+                    "PreviousYear": 13.99,
+                    "Budget": 0,
+                    "CurrentYear": 13.36,
+                    "difDollar": 13.36,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Estelí",
+                    "account_name": "Trasnportation Sab Esteli",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Estelí",
+                    "account_name": "Tuition Sab Esteli",
+                    "PreviousYear": 2696.55,
+                    "Budget": 9442.2857,
+                    "CurrentYear": 17248.52,
+                    "difDollar": 7806.2343,
+                    "difPercentage": 0.826731423727202
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Estelí",
+                    "account_name": "Scholarships - Estelí",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI León",
+                    "account_name": "Books Leon",
+                    "PreviousYear": 1889.19,
+                    "Budget": 3310,
+                    "CurrentYear": 1406.02,
+                    "difDollar": -1903.98,
+                    "difPercentage": -0.5752205438066466
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI León",
+                    "account_name": "Exams Leon",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 5,
+                    "difDollar": 5,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI León",
+                    "account_name": "Other Leon",
+                    "PreviousYear": 24.01,
+                    "Budget": 0,
+                    "CurrentYear": 15.37,
+                    "difDollar": 15.37,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI León",
+                    "account_name": "Out of Leon Discount",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI León",
+                    "account_name": "Tuition Leon",
+                    "PreviousYear": 973.64,
+                    "Budget": 12861.7143,
+                    "CurrentYear": 9966.67,
+                    "difDollar": -2895.0442999999996,
+                    "difPercentage": -0.22509007994369767
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "Summer School",
+                    "account_name": "Summer School - León",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Regular",
+                    "account_name": "Books Regular",
+                    "PreviousYear": 0,
+                    "Budget": 3005,
+                    "CurrentYear": 0,
+                    "difDollar": -3005,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Regular",
+                    "account_name": "Exams Regular",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Regular",
+                    "account_name": "Other Regular",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Regular",
+                    "account_name": "Regular course discount",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Regular",
+                    "account_name": "Tuition Regular",
+                    "PreviousYear": 0,
+                    "Budget": 8757.4286,
+                    "CurrentYear": 0,
+                    "difDollar": -8757.4286,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Regular",
+                    "account_name": "Scholarships - Regular",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Matagalpa",
+                    "account_name": "Exams Sab Matagalpa",
+                    "PreviousYear": 3.16,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING INCOME",
+                    "categories": "ELI INCOME",
+                    "group_account_name": "ELI Matagalpa",
+                    "account_name": "Tuition Sab Matagalpa",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }]
+            },
+            "EXPENSES": {
+                "VALUES": [{
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SALARIES",
+                    "group_account_name": "Recruited Hire",
+                    "account_name": "Recruited Hire",
+                    "PreviousYear": 23371.96,
+                    "Budget": 22413.940000000002,
+                    "CurrentYear": 25383.41,
+                    "difDollar": 2969.4699999999975,
+                    "difPercentage": 0.13248317787948025
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SALARIES",
+                    "group_account_name": "US/Canadian Degree",
+                    "account_name": "US/Canadian Degree",
+                    "PreviousYear": 38026.89,
+                    "Budget": 42610.19,
+                    "CurrentYear": 49723.2,
+                    "difDollar": 7113.009999999995,
+                    "difPercentage": 0.16693213524746062
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SALARIES",
+                    "group_account_name": "Hos Country/3rd Country Degr",
+                    "account_name": "Hos Country/3rd Country Degr",
+                    "PreviousYear": 74960.98,
+                    "Budget": 106524.81,
+                    "CurrentYear": 90080.05,
+                    "difDollar": -16444.759999999995,
+                    "difPercentage": -0.15437492918316395
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SALARIES",
+                    "group_account_name": "Director General &amp; Principals",
+                    "account_name": "Director General &amp; Principals",
+                    "PreviousYear": 16836.2,
+                    "Budget": 17249.3,
+                    "CurrentYear": 11609.169999999998,
+                    "difDollar": -5640.130000000001,
+                    "difPercentage": -0.3269773266161526
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SALARIES",
+                    "group_account_name": "Business Office Middle Management",
+                    "account_name": "Business Office Middle Management",
+                    "PreviousYear": 19839.3,
+                    "Budget": 20313.739999999998,
+                    "CurrentYear": 19209.84,
+                    "difDollar": -1103.8999999999978,
+                    "difPercentage": -0.0543425287514755
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SALARIES",
+                    "group_account_name": "Office Support",
+                    "account_name": "Office Support",
+                    "PreviousYear": 23382.57,
+                    "Budget": 22891.41,
+                    "CurrentYear": 20943.85,
+                    "difDollar": -1947.5600000000013,
+                    "difPercentage": -0.08507820182330408
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SALARIES",
+                    "group_account_name": "School Support",
+                    "account_name": "School Support",
+                    "PreviousYear": 21915.879999999997,
+                    "Budget": 23827.719999999998,
+                    "CurrentYear": 20543.65,
+                    "difDollar": -3284.069999999996,
+                    "difPercentage": -0.13782560815722178
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SALARIES",
+                    "group_account_name": "Maintenance",
+                    "account_name": "Maintenance",
+                    "PreviousYear": 9266.529999999999,
+                    "Budget": 8806.5,
+                    "CurrentYear": 8718.17,
+                    "difDollar": -88.32999999999993,
+                    "difPercentage": -0.01003009140975415
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SALARIES",
+                    "group_account_name": "Cleaning",
+                    "account_name": "Cleaning",
+                    "PreviousYear": 6314.06,
+                    "Budget": 6094.13,
+                    "CurrentYear": 5403.5,
+                    "difDollar": -690.6300000000001,
+                    "difPercentage": -0.1133270868852486
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SALARIES",
+                    "group_account_name": "Security",
+                    "account_name": "Security",
+                    "PreviousYear": 3782.35,
+                    "Budget": 3851.84,
+                    "CurrentYear": 3681.4300000000003,
+                    "difDollar": -170.40999999999985,
+                    "difPercentage": -0.04424119381905787
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SALARIES",
+                    "group_account_name": "Overtime / Extra Duty",
+                    "account_name": "Overtime / Extra Duty",
+                    "PreviousYear": 2842.55,
+                    "Budget": 17055.6667,
+                    "CurrentYear": 9190.369999999999,
+                    "difDollar": -7865.296700000003,
+                    "difPercentage": -0.4611544560729486
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ACTIVITIES COMPENSATION",
+                    "group_account_name": "Extra Curricular",
+                    "account_name": "Extra Curricular",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ACTIVITIES COMPENSATION",
+                    "group_account_name": "Extra for Assigmnments",
+                    "account_name": "Extra for Assigmnments",
+                    "PreviousYear": 0,
+                    "Budget": 8000,
+                    "CurrentYear": 0,
+                    "difDollar": -8000,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "Housing Allowance /Rent",
+                    "PreviousYear": 11525,
+                    "Budget": 12879,
+                    "CurrentYear": 7760,
+                    "difDollar": -5119,
+                    "difPercentage": -0.39746874757356937
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "Contract Travel Obligation",
+                    "PreviousYear": 2787.97,
+                    "Budget": 0,
+                    "CurrentYear": 5142.47,
+                    "difDollar": 5142.47,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "US Social Security",
+                    "PreviousYear": 4113.21,
+                    "Budget": 6059.183999999999,
+                    "CurrentYear": 6923.91,
+                    "difDollar": 864.7260000000006,
+                    "difPercentage": 0.1427132762431378
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "Relocation Bonus",
+                    "PreviousYear": 0,
+                    "Budget": 5000,
+                    "CurrentYear": 0,
+                    "difDollar": -5000,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "End of the Year B",
+                    "PreviousYear": 0,
+                    "Budget": 13000,
+                    "CurrentYear": 0,
+                    "difDollar": -13000,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "Excess Baggage",
+                    "PreviousYear": 0,
+                    "Budget": 3100,
+                    "CurrentYear": 0,
+                    "difDollar": -3100,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "Expense Related B",
+                    "PreviousYear": 600,
+                    "Budget": 900,
+                    "CurrentYear": 932.5,
+                    "difDollar": 32.5,
+                    "difPercentage": 0.03611111111111111
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "Christmas Bonus",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "Life and Medical Insurance (International)",
+                    "PreviousYear": 2116.03,
+                    "Budget": 13083.3333,
+                    "CurrentYear": 7496.88,
+                    "difDollar": -5586.4533,
+                    "difPercentage": -0.4269900622343696
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "Car Allowance",
+                    "PreviousYear": 1350,
+                    "Budget": 0,
+                    "CurrentYear": 3200,
+                    "difDollar": 3200,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "Manteinance ANS Apartment",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "Sick Day",
+                    "PreviousYear": 10513,
+                    "Budget": 0,
+                    "CurrentYear": 150,
+                    "difDollar": 150,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "B reward position",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "Internet/Cable/Recruited",
+                    "PreviousYear": 1123.59,
+                    "Budget": 166.66660000000002,
+                    "CurrentYear": 366.44,
+                    "difDollar": 199.77339999999998,
+                    "difPercentage": 1.1986408794563514
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "Energy (Recruited)",
+                    "PreviousYear": 459.61,
+                    "Budget": 1499.9434,
+                    "CurrentYear": 394.32000000000005,
+                    "difDollar": -1105.6234,
+                    "difPercentage": -0.7371100802870294
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "Water (Recruited)",
+                    "PreviousYear": 76.35,
+                    "Budget": 124.9942,
+                    "CurrentYear": 68.32,
+                    "difDollar": -56.67420000000001,
+                    "difPercentage": -0.45341463843922364
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "Telephone / Celullar / Fax",
+                    "PreviousYear": 20.94,
+                    "Budget": 22.5,
+                    "CurrentYear": 0,
+                    "difDollar": -22.5,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "Gas",
+                    "PreviousYear": 0,
+                    "Budget": 83.3334,
+                    "CurrentYear": 0,
+                    "difDollar": -83.3334,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "Rented homes Maintenance",
+                    "PreviousYear": 218.54999999999998,
+                    "Budget": 500,
+                    "CurrentYear": 79.43,
+                    "difDollar": -420.57,
+                    "difPercentage": -0.84114
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "Utensils and appliances for recruited",
+                    "PreviousYear": 231.34000000000003,
+                    "Budget": 1000,
+                    "CurrentYear": 127.89,
+                    "difDollar": -872.11,
+                    "difPercentage": -0.87211
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Recruited",
+                    "account_name": "Benefits Cooperacionn Mutua",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Local Hires",
+                    "account_name": "Aguinaldo / Christmas Bonus",
+                    "PreviousYear": 17926.64,
+                    "Budget": 13685.1859,
+                    "CurrentYear": 17681.61,
+                    "difDollar": 3996.4241,
+                    "difPercentage": 0.2920255617426432
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Local Hires",
+                    "account_name": "Vacation",
+                    "PreviousYear": 2670.81,
+                    "Budget": 3750,
+                    "CurrentYear": 4653.4,
+                    "difDollar": 903.3999999999996,
+                    "difPercentage": 0.24090666666666657
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Local Hires",
+                    "account_name": "Indemnity",
+                    "PreviousYear": 9037.57,
+                    "Budget": 7328.1477,
+                    "CurrentYear": 20364.24,
+                    "difDollar": 13036.0923,
+                    "difPercentage": 1.7789068716505263
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Local Hires",
+                    "account_name": "Nicaraguan Social Security",
+                    "PreviousYear": 32164.98,
+                    "Budget": 37331.183699999994,
+                    "CurrentYear": 35494.35,
+                    "difDollar": -1836.8336999999956,
+                    "difPercentage": -0.04920373580331973
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Local Hires",
+                    "account_name": "Inatec",
+                    "PreviousYear": 3401.2599999999998,
+                    "Budget": 3333.3370999999997,
+                    "CurrentYear": 3150.89,
+                    "difDollar": -182.44709999999986,
+                    "difPercentage": -0.054734068150502954
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Local Hires",
+                    "account_name": "Local Life and Medical expenses Insurance",
+                    "PreviousYear": 2791.88,
+                    "Budget": 5269.6667,
+                    "CurrentYear": 3500.87,
+                    "difDollar": -1768.7966999999999,
+                    "difPercentage": -0.3356562759462567
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Local Hires",
+                    "account_name": "LH Bonus reward position",
+                    "PreviousYear": 0,
+                    "Budget": 22450,
+                    "CurrentYear": 0,
+                    "difDollar": -22450,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Labor Union Agreement",
+                    "account_name": "Lunch and dinner stipend",
+                    "PreviousYear": 4733.849999999999,
+                    "Budget": 15931.014,
+                    "CurrentYear": 8755.710000000001,
+                    "difDollar": -7175.303999999998,
+                    "difPercentage": -0.45039844921359046
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Labor Union Agreement",
+                    "account_name": "Transportation allowance",
+                    "PreviousYear": 882.31,
+                    "Budget": 1146.7649999999999,
+                    "CurrentYear": 900.35,
+                    "difDollar": -246.41499999999985,
+                    "difPercentage": -0.21487837525561024
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Labor Union Agreement",
+                    "account_name": "Transportation of personel (Contracted)",
+                    "PreviousYear": 0,
+                    "Budget": 7062.3,
+                    "CurrentYear": 95,
+                    "difDollar": -6967.3,
+                    "difPercentage": -0.9865482916330374
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Labor Union Agreement",
+                    "account_name": "School bonus",
+                    "PreviousYear": 0,
+                    "Budget": 1814.208,
+                    "CurrentYear": 1684.38,
+                    "difDollar": -129.82799999999997,
+                    "difPercentage": -0.07156180548206158
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Labor Union Agreement",
+                    "account_name": "Paquete Alimenticio",
+                    "PreviousYear": 5808.61,
+                    "Budget": 8790.146999999999,
+                    "CurrentYear": 2603.46,
+                    "difDollar": -6186.686999999999,
+                    "difPercentage": -0.7038206528286728
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Labor Union Agreement",
+                    "account_name": "Medical expenses and medicine",
+                    "PreviousYear": 315.55,
+                    "Budget": 1941.34,
+                    "CurrentYear": 1184.1,
+                    "difDollar": -757.24,
+                    "difPercentage": -0.3900604736934283
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Labor Union Agreement",
+                    "account_name": "Easter week Bonus",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Labor Union Agreement",
+                    "account_name": "Uniforms and shoes",
+                    "PreviousYear": 661.94,
+                    "Budget": 1421.6449999999998,
+                    "CurrentYear": 63.62,
+                    "difDollar": -1358.0249999999999,
+                    "difPercentage": -0.9552490248972142
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Labor Union Agreement",
+                    "account_name": "Funeral Expenses",
+                    "PreviousYear": 0,
+                    "Budget": 257.7,
+                    "CurrentYear": 0,
+                    "difDollar": -257.7,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Labor Union Agreement",
+                    "account_name": "Maternity Allowance",
+                    "PreviousYear": 0,
+                    "Budget": 171.8,
+                    "CurrentYear": 0,
+                    "difDollar": -171.8,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Labor Union Agreement",
+                    "account_name": "Staff Training (Local)",
+                    "PreviousYear": 63.38,
+                    "Budget": 515.4,
+                    "CurrentYear": 709.6099999999999,
+                    "difDollar": 194.20999999999992,
+                    "difPercentage": 0.37681412495149386
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BENEFITS",
+                    "group_account_name": "Labor Union Agreement",
+                    "account_name": "Christmas walk",
+                    "PreviousYear": 0,
+                    "Budget": 129.0293,
+                    "CurrentYear": 0,
+                    "difDollar": -129.0293,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Outsourced Services",
+                    "account_name": "External security",
+                    "PreviousYear": 111.17999999999999,
+                    "Budget": 1468.75,
+                    "CurrentYear": 1647.98,
+                    "difDollar": 179.23000000000002,
+                    "difPercentage": 0.12202893617021278
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Outsourced Services",
+                    "account_name": "Legal consultor",
+                    "PreviousYear": 1164,
+                    "Budget": 1109.8333,
+                    "CurrentYear": 3605,
+                    "difDollar": 2495.1666999999998,
+                    "difPercentage": 2.2482355683506703
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Outsourced Services",
+                    "account_name": "Fiscal and labor consultor",
+                    "PreviousYear": 126.44,
+                    "Budget": 166.6667,
+                    "CurrentYear": 150.6,
+                    "difDollar": -16.066699999999997,
+                    "difPercentage": -0.09640018071996384
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Outsourced Services",
+                    "account_name": "Organizational consultor",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 1495,
+                    "difDollar": 1495,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Outsourced Services",
+                    "account_name": "External Audit, Accounting Service",
+                    "PreviousYear": 1148.41,
+                    "Budget": 10000,
+                    "CurrentYear": 1386.7,
+                    "difDollar": -8613.3,
+                    "difPercentage": -0.8613299999999999
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Outsourced Services",
+                    "account_name": "Membership &amp; Dues",
+                    "PreviousYear": 401.88,
+                    "Budget": 600,
+                    "CurrentYear": 100,
+                    "difDollar": -500,
+                    "difPercentage": -0.8333333333333334
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Outsourced Services",
+                    "account_name": "Professional services academic",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Outsourced Services",
+                    "account_name": "Other Services rendered.",
+                    "PreviousYear": 222.81,
+                    "Budget": 266.66659999999996,
+                    "CurrentYear": 247.37,
+                    "difDollar": -19.296599999999955,
+                    "difPercentage": -0.07236226809056687
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Insurance",
+                    "account_name": "ISS Foundation",
+                    "PreviousYear": 1228.48,
+                    "Budget": 1398.75,
+                    "CurrentYear": 946.72,
+                    "difDollar": -452.03,
+                    "difPercentage": -0.32316711349419125
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Rent Expenses",
+                    "account_name": "Printer and Copier Rentals",
+                    "PreviousYear": 4829.13,
+                    "Budget": 2352.8333,
+                    "CurrentYear": 3143.0699999999997,
+                    "difDollar": 790.2366999999999,
+                    "difPercentage": 0.33586599611625695
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Rent Expenses",
+                    "account_name": "Rent (Building, Vehicle, etc.)",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Rent Expenses",
+                    "account_name": "Wireless Equipment Rental",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Insurance",
+                    "account_name": "Insurance Building",
+                    "PreviousYear": 3560.97,
+                    "Budget": 2833.3333,
+                    "CurrentYear": 1612.84,
+                    "difDollar": -1220.4932999999999,
+                    "difPercentage": -0.4307623462442629
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Insurance",
+                    "account_name": "Insurance Vehicle",
+                    "PreviousYear": 214.26,
+                    "Budget": 218.3333,
+                    "CurrentYear": 272.19,
+                    "difDollar": 53.85669999999999,
+                    "difPercentage": 0.2466719460567856
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Insurance",
+                    "account_name": "Board of Directors Insurance",
+                    "PreviousYear": 1336.38,
+                    "Budget": 1416.6667,
+                    "CurrentYear": 755.8,
+                    "difDollar": -660.8667,
+                    "difPercentage": -0.46649413020013814
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Insurance",
+                    "account_name": "Civil liability insurance",
+                    "PreviousYear": 254.1,
+                    "Budget": 169,
+                    "CurrentYear": 104.37,
+                    "difDollar": -64.63,
+                    "difPercentage": -0.38242603550295856
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Insurance",
+                    "account_name": "Student's Insurance",
+                    "PreviousYear": 1024.7,
+                    "Budget": 1333.3333,
+                    "CurrentYear": 2092.82,
+                    "difDollar": 759.4867000000002,
+                    "difPercentage": 0.569615039240376
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Especial Activities",
+                    "account_name": "Summer",
+                    "PreviousYear": 0,
+                    "Budget": 36000,
+                    "CurrentYear": 87.22999999999999,
+                    "difDollar": -35912.77,
+                    "difPercentage": -0.9975769444444443
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "PURSHASED SERVICES",
+                    "group_account_name": "Especial Activities",
+                    "account_name": "Graduation Expenses",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "UTILITIES",
+                    "group_account_name": "Electricity",
+                    "account_name": "Electricity",
+                    "PreviousYear": 5280.06,
+                    "Budget": 9166.6667,
+                    "CurrentYear": 6718.7,
+                    "difDollar": -2447.9667,
+                    "difPercentage": -0.2670509117561785
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "UTILITIES",
+                    "group_account_name": "Water",
+                    "account_name": "Water",
+                    "PreviousYear": 125.48,
+                    "Budget": 166.6667,
+                    "CurrentYear": 0,
+                    "difDollar": -166.6667,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "UTILITIES",
+                    "group_account_name": "Telephone ANS",
+                    "account_name": "Telephone ANS",
+                    "PreviousYear": 950.1800000000001,
+                    "Budget": 1141.6666,
+                    "CurrentYear": 905.0600000000001,
+                    "difDollar": -236.60659999999996,
+                    "difPercentage": -0.2072466690363018
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "UTILITIES",
+                    "group_account_name": "Celular",
+                    "account_name": "Celular",
+                    "PreviousYear": 890.8199999999999,
+                    "Budget": 708.3334,
+                    "CurrentYear": 811.2600000000001,
+                    "difDollar": 102.92660000000012,
+                    "difPercentage": 0.1453081275004117
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "UTILITIES",
+                    "group_account_name": "Internet",
+                    "account_name": "Internet",
+                    "PreviousYear": 2930.6299999999997,
+                    "Budget": 4666.6667,
+                    "CurrentYear": 3279.57,
+                    "difDollar": -1387.0966999999996,
+                    "difPercentage": -0.2972350050197499
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "UTILITIES",
+                    "group_account_name": "Cable TV",
+                    "account_name": "Cable TV",
+                    "PreviousYear": 0,
+                    "Budget": 43.3333,
+                    "CurrentYear": 43.26,
+                    "difDollar": -0.07330000000000325,
+                    "difPercentage": -0.0016915397627229694
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "UTILITIES",
+                    "group_account_name": "Couriers",
+                    "account_name": "Couriers",
+                    "PreviousYear": 1351.08,
+                    "Budget": 166.66660000000002,
+                    "CurrentYear": 410.96,
+                    "difDollar": 244.29339999999996,
+                    "difPercentage": 1.465760986304394
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SUPPLIES",
+                    "group_account_name": "Instructional Supplies",
+                    "account_name": "Musical instruments",
+                    "PreviousYear": 0,
+                    "Budget": 208.3333,
+                    "CurrentYear": 0,
+                    "difDollar": -208.3333,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SUPPLIES",
+                    "group_account_name": "Instructional Supplies",
+                    "account_name": "Sporting Accessories",
+                    "PreviousYear": 0,
+                    "Budget": 10000,
+                    "CurrentYear": 0,
+                    "difDollar": -10000,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SUPPLIES",
+                    "group_account_name": "Instructional Supplies",
+                    "account_name": "Accessories Laboratory (Chemistry, Science",
+                    "PreviousYear": 0,
+                    "Budget": 625,
+                    "CurrentYear": 0,
+                    "difDollar": -625,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SUPPLIES",
+                    "group_account_name": "Educational Consumable supplies",
+                    "account_name": "Educational Consumable supplies",
+                    "PreviousYear": 0,
+                    "Budget": 3333.3334,
+                    "CurrentYear": 749.83,
+                    "difDollar": -2583.5034,
+                    "difPercentage": -0.7750510044989799
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SUPPLIES",
+                    "group_account_name": "Cleaning Supplies",
+                    "account_name": "Cleaning Supplies",
+                    "PreviousYear": 689.51,
+                    "Budget": 5375,
+                    "CurrentYear": 3610.93,
+                    "difDollar": -1764.0700000000002,
+                    "difPercentage": -0.3281990697674419
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SUPPLIES",
+                    "group_account_name": "Cafeteria consumibles",
+                    "account_name": "Cafeteria consumibles",
+                    "PreviousYear": 184.48999999999998,
+                    "Budget": 316.6667,
+                    "CurrentYear": 226.8,
+                    "difDollar": -89.86669999999998,
+                    "difPercentage": -0.28378954907478426
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SUPPLIES",
+                    "group_account_name": "Purified water bottles",
+                    "account_name": "Purified water bottles",
+                    "PreviousYear": 206.69,
+                    "Budget": 500,
+                    "CurrentYear": 561.3900000000001,
+                    "difDollar": 61.3900000000001,
+                    "difPercentage": 0.1227800000000002
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SUPPLIES",
+                    "group_account_name": "Nursery Suplies",
+                    "account_name": "Nursery Suplies",
+                    "PreviousYear": 0,
+                    "Budget": 333.3333,
+                    "CurrentYear": 232.26999999999998,
+                    "difDollar": -101.06330000000003,
+                    "difPercentage": -0.3031899303189931
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SUPPLIES",
+                    "group_account_name": "Office Consumable supplies",
+                    "account_name": "Office Consumable supplies",
+                    "PreviousYear": 136.75,
+                    "Budget": 1333.3337999999999,
+                    "CurrentYear": 394.1,
+                    "difDollar": -939.2337999999999,
+                    "difPercentage": -0.7044251034512138
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SUPPLIES",
+                    "group_account_name": "Printer and Copier consumibles",
+                    "account_name": "Printer and Copier consumibles",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SUPPLIES",
+                    "group_account_name": "Copier Paper",
+                    "account_name": "Copier Paper",
+                    "PreviousYear": 0,
+                    "Budget": 83.33330000000001,
+                    "CurrentYear": 498.32,
+                    "difDollar": 414.9867,
+                    "difPercentage": 4.979842391936956
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SUPPLIES",
+                    "group_account_name": "Computer Accessories",
+                    "account_name": "Computer Accessories",
+                    "PreviousYear": 308.82000000000005,
+                    "Budget": 5000,
+                    "CurrentYear": 62.11,
+                    "difDollar": -4937.89,
+                    "difPercentage": -0.9875780000000001
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SUPPLIES",
+                    "group_account_name": "Fuels and lubricants",
+                    "account_name": "Fuels and lubricants",
+                    "PreviousYear": 1903.5800000000002,
+                    "Budget": 2750,
+                    "CurrentYear": 1767.45,
+                    "difDollar": -982.55,
+                    "difPercentage": -0.35729090909090905
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "SUPPLIES",
+                    "group_account_name": "Maitenance Suplies",
+                    "account_name": "Maitenance Suplies",
+                    "PreviousYear": 0,
+                    "Budget": 333.3333,
+                    "CurrentYear": 282.1,
+                    "difDollar": -51.233299999999986,
+                    "difPercentage": -0.1536999153699915
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BOOKS",
+                    "group_account_name": "Texts",
+                    "account_name": "Texts",
+                    "PreviousYear": 0,
+                    "Budget": 4583.3333999999995,
+                    "CurrentYear": 0,
+                    "difDollar": -4583.3333999999995,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BOOKS",
+                    "group_account_name": "Online Text",
+                    "account_name": "Online Text",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BOOKS",
+                    "group_account_name": "Library Books",
+                    "account_name": "Library Books",
+                    "PreviousYear": -298.2,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "BOOKS",
+                    "group_account_name": "Periodicals and Magazine Suscription",
+                    "account_name": "Periodicals and Magazine Suscription",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "MAINTENANCE",
+                    "group_account_name": "Buildings Maintenance and Repair",
+                    "account_name": "Buildings Maintenance and Repair",
+                    "PreviousYear": 380.65999999999997,
+                    "Budget": 11447.3333,
+                    "CurrentYear": 718.47,
+                    "difDollar": -10728.8633,
+                    "difPercentage": -0.9372369108882329
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "MAINTENANCE",
+                    "group_account_name": "Furniture Maintenance and repair",
+                    "account_name": "Furniture Maintenance and repair",
+                    "PreviousYear": 0,
+                    "Budget": 128.9167,
+                    "CurrentYear": 264.8,
+                    "difDollar": 135.88330000000002,
+                    "difPercentage": 1.0540395464668273
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "MAINTENANCE",
+                    "group_account_name": "Equipment Maintenance and repair",
+                    "account_name": "Equipment Maintenance and repair",
+                    "PreviousYear": 525.04,
+                    "Budget": 1338.5,
+                    "CurrentYear": 1579.56,
+                    "difDollar": 241.05999999999995,
+                    "difPercentage": 0.18009712364587221
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "MAINTENANCE",
+                    "group_account_name": "Computer Maintenance and Repair",
+                    "account_name": "Computer Maintenance and Repair",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "MAINTENANCE",
+                    "group_account_name": "Pool Maintenance",
+                    "account_name": "Pool Maintenance",
+                    "PreviousYear": 982.47,
+                    "Budget": 874.3333,
+                    "CurrentYear": 34.36,
+                    "difDollar": -839.9733,
+                    "difPercentage": -0.9607014853488938
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "MAINTENANCE",
+                    "group_account_name": "Landscaping Maintenance",
+                    "account_name": "Landscaping Maintenance",
+                    "PreviousYear": 0,
+                    "Budget": 563.3333,
+                    "CurrentYear": 0,
+                    "difDollar": -563.3333,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "MAINTENANCE",
+                    "group_account_name": "Corrective Maintenance",
+                    "account_name": "Corrective Maintenance",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "MAINTENANCE",
+                    "group_account_name": "Vehicules Repair &amp; Maintenance",
+                    "account_name": "Vehicules Repair &amp; Maintenance",
+                    "PreviousYear": 981.1,
+                    "Budget": 355.9167,
+                    "CurrentYear": 2689.63,
+                    "difDollar": 2333.7133000000003,
+                    "difPercentage": 6.556908681160508
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "COMMUNICATION",
+                    "group_account_name": "Professional Development Conferences",
+                    "account_name": "Professional Development Conferences",
+                    "PreviousYear": 0,
+                    "Budget": 333.3333,
+                    "CurrentYear": 0,
+                    "difDollar": -333.3333,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "COMMUNICATION",
+                    "group_account_name": "Professional Development Courses",
+                    "account_name": "Professional Development Courses",
+                    "PreviousYear": 0,
+                    "Budget": 5187.5,
+                    "CurrentYear": 1510.69,
+                    "difDollar": -3676.81,
+                    "difPercentage": -0.7087826506024096
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "COMMUNICATION",
+                    "group_account_name": "Mutual Cooperation ANS - ANSF",
+                    "account_name": "Mutual Cooperation ANS - ANSF",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "COMMUNICATION",
+                    "group_account_name": "Representation expenses",
+                    "account_name": "Representation expenses",
+                    "PreviousYear": 633.17,
+                    "Budget": 41.6667,
+                    "CurrentYear": 186.60999999999999,
+                    "difDollar": 144.9433,
+                    "difPercentage": 3.478636417090866
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "COMMUNICATION",
+                    "group_account_name": "School events",
+                    "account_name": "School events",
+                    "PreviousYear": 236.34,
+                    "Budget": 2000,
+                    "CurrentYear": 266.95,
+                    "difDollar": -1733.05,
+                    "difPercentage": -0.866525
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "COMMUNICATION",
+                    "group_account_name": "Recruitment expenses",
+                    "account_name": "Recruitment expenses",
+                    "PreviousYear": 7000,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "COMMUNICATION",
+                    "group_account_name": "Advertisement ANS",
+                    "account_name": "Advertisement ANS",
+                    "PreviousYear": 0,
+                    "Budget": 833.3333,
+                    "CurrentYear": 1285.71,
+                    "difDollar": 452.3767,
+                    "difPercentage": 0.5428520617140825
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "FINANCIAL/DEPRECIATION",
+                    "group_account_name": "Interest Payment",
+                    "account_name": "Interest Payment",
+                    "PreviousYear": 14425.03,
+                    "Budget": 2125,
+                    "CurrentYear": 12847.630000000001,
+                    "difDollar": 10722.630000000001,
+                    "difPercentage": 5.045943529411765
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "FINANCIAL/DEPRECIATION",
+                    "group_account_name": "Bank Services",
+                    "account_name": "Bank Services",
+                    "PreviousYear": 728.0500000000002,
+                    "Budget": 1666.6667,
+                    "CurrentYear": 1940.61,
+                    "difDollar": 273.9432999999999,
+                    "difPercentage": 0.1643659767126804
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "FINANCIAL/DEPRECIATION",
+                    "group_account_name": "Gain (Loss) Exchange rate",
+                    "account_name": "Gain (Loss) Exchange rate",
+                    "PreviousYear": -2081.5,
+                    "Budget": -233.3333,
+                    "CurrentYear": -426.83,
+                    "difDollar": -193.49669999999998,
+                    "difPercentage": 0.8292716898959556
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "FINANCIAL/DEPRECIATION",
+                    "group_account_name": "Pensions",
+                    "account_name": "Pensions",
+                    "PreviousYear": 0,
+                    "Budget": 20.8333,
+                    "CurrentYear": 19.84,
+                    "difDollar": -0.9933000000000014,
+                    "difPercentage": -0.04767847628556212
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "FINANCIAL/DEPRECIATION",
+                    "group_account_name": "Uncollectable Account",
+                    "account_name": "Uncollectable Account",
+                    "PreviousYear": 440.86,
+                    "Budget": 4166.6667,
+                    "CurrentYear": 120.74,
+                    "difDollar": -4045.9267,
+                    "difPercentage": -0.9710224002318208
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "FINANCIAL/DEPRECIATION",
+                    "group_account_name": "Miscellaneous",
+                    "account_name": "Miscellaneous",
+                    "PreviousYear": 11998.68,
+                    "Budget": 15627.5833,
+                    "CurrentYear": 10504.44,
+                    "difDollar": -5123.1433,
+                    "difPercentage": -0.3278269711734635
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "FINANCIAL/DEPRECIATION",
+                    "group_account_name": "Depreciation",
+                    "account_name": "Depreciation",
+                    "PreviousYear": 52036.97,
+                    "Budget": 45667.5,
+                    "CurrentYear": 44707.38,
+                    "difDollar": -960.1200000000026,
+                    "difPercentage": -0.02102414189522095
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "FINANCIAL/DEPRECIATION",
+                    "group_account_name": "Amortizations",
+                    "account_name": "Amortizations",
+                    "PreviousYear": 10330.4,
+                    "Budget": 4768.25,
+                    "CurrentYear": 8491.67,
+                    "difDollar": 3723.42,
+                    "difPercentage": 0.7808776804907461
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Business Office Middle Management",
+                    "account_name": "Business Office Middle Management",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Director General &amp; Principals",
+                    "account_name": "Director General &amp; Principals",
+                    "PreviousYear": 0,
+                    "Budget": 48673.7143,
+                    "CurrentYear": 0,
+                    "difDollar": -48673.7143,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Office Support",
+                    "account_name": "Office Support",
+                    "PreviousYear": 2268.7,
+                    "Budget": 0,
+                    "CurrentYear": 2089.2,
+                    "difDollar": 2089.2,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Overtime / Extra Duty",
+                    "account_name": "Overtime / Extra Duty",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 39.98,
+                    "difDollar": 39.98,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Aguinaldo / Christmas Bonus",
+                    "account_name": "Aguinaldo / Christmas Bonus",
+                    "PreviousYear": 303.32,
+                    "Budget": 327.0833,
+                    "CurrentYear": 135.12,
+                    "difDollar": -191.9633,
+                    "difPercentage": -0.586894225415972
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Vacation",
+                    "account_name": "Vacation",
+                    "PreviousYear": 39.79,
+                    "Budget": 327.0833,
+                    "CurrentYear": 0,
+                    "difDollar": -327.0833,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Inatec",
+                    "account_name": "Inatec",
+                    "PreviousYear": 545.09,
+                    "Budget": 797.4167,
+                    "CurrentYear": 806.46,
+                    "difDollar": 9.043300000000045,
+                    "difPercentage": 0.01134074568541146
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Indemnity",
+                    "account_name": "Indemnity",
+                    "PreviousYear": 95.75,
+                    "Budget": 833.3333,
+                    "CurrentYear": 59.16,
+                    "difDollar": -774.1733,
+                    "difPercentage": -0.9290079971603199
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Texts",
+                    "account_name": "Texts",
+                    "PreviousYear": 4869.37,
+                    "Budget": 29037.5,
+                    "CurrentYear": 4399.96,
+                    "difDollar": -24637.54,
+                    "difPercentage": -0.8484731812311667
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Couriers",
+                    "account_name": "Couriers",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Electricity",
+                    "account_name": "Electricity",
+                    "PreviousYear": 2741.92,
+                    "Budget": 4500,
+                    "CurrentYear": 3488.99,
+                    "difDollar": -1011.0100000000002,
+                    "difPercentage": -0.22466888888888895
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Internet",
+                    "account_name": "Internet",
+                    "PreviousYear": 79.95,
+                    "Budget": 0,
+                    "CurrentYear": 93.89000000000001,
+                    "difDollar": 93.89000000000001,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Telephone",
+                    "account_name": "Telephone",
+                    "PreviousYear": 493.40999999999997,
+                    "Budget": 0,
+                    "CurrentYear": 472.14,
+                    "difDollar": 472.14,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Telephone / Celullar / Fax",
+                    "account_name": "Telephone / Celullar / Fax",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Water",
+                    "account_name": "Water",
+                    "PreviousYear": 64.85,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Depreciation",
+                    "account_name": "Depreciation",
+                    "PreviousYear": 5781.88,
+                    "Budget": 6333,
+                    "CurrentYear": 4967.49,
+                    "difDollar": -1365.5100000000002,
+                    "difPercentage": -0.21561819043107536
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Representation expenses",
+                    "account_name": "Representation expenses",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 36.1,
+                    "difDollar": 36.1,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Rent (Building, Vehicle, etc.)",
+                    "account_name": "Rent (Building, Vehicle, etc.)",
+                    "PreviousYear": 595.99,
+                    "Budget": 3250,
+                    "CurrentYear": 3100,
+                    "difDollar": -150,
+                    "difPercentage": -0.046153846153846156
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Transportation",
+                    "account_name": "Transportation",
+                    "PreviousYear": 34.85,
+                    "Budget": 0,
+                    "CurrentYear": 420.35,
+                    "difDollar": 420.35,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Printer and Copier Rentals",
+                    "account_name": "Printer and Copier Rentals",
+                    "PreviousYear": 1796.49,
+                    "Budget": 220.8333,
+                    "CurrentYear": 656.78,
+                    "difDollar": 435.94669999999996,
+                    "difPercentage": 1.9740985621280847
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI School events",
+                    "account_name": "School events",
+                    "PreviousYear": 137.01999999999998,
+                    "Budget": 83.3333,
+                    "CurrentYear": 278.8,
+                    "difDollar": 195.4667,
+                    "difPercentage": 2.3456013382405354
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Cafeteria consumibles",
+                    "account_name": "Cafeteria consumibles",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Cleaning Supplies",
+                    "account_name": "Cleaning Supplies",
+                    "PreviousYear": 56.82,
+                    "Budget": 0,
+                    "CurrentYear": 289.23,
+                    "difDollar": 289.23,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Computer Accessories",
+                    "account_name": "Computer Accessories",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Copier Paper",
+                    "account_name": "Copier Paper",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 152.58,
+                    "difDollar": 152.58,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Maitenance Suplies",
+                    "account_name": "Maitenance Suplies",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Nursery Suplies",
+                    "account_name": "Nursery Suplies",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 14.96,
+                    "difDollar": 14.96,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Purified water bottles",
+                    "account_name": "Purified water bottles",
+                    "PreviousYear": 107.32000000000001,
+                    "Budget": 0,
+                    "CurrentYear": 304.75,
+                    "difDollar": 304.75,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Equipment Maintenance and repair",
+                    "account_name": "Equipment Maintenance and repair",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Miscellaneous",
+                    "account_name": "Miscellaneous",
+                    "PreviousYear": 7.93,
+                    "Budget": 0,
+                    "CurrentYear": 208.53,
+                    "difDollar": 208.53,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Transportation allowance",
+                    "account_name": "Transportation allowance",
+                    "PreviousYear": 100,
+                    "Budget": 0,
+                    "CurrentYear": 196.45,
+                    "difDollar": 196.45,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Membership &amp; Dues",
+                    "account_name": "Membership &amp; Dues",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Professional Development Conferences",
+                    "account_name": "Professional Development Conferences",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Professional Development Courses",
+                    "account_name": "Professional Development Courses",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Profesional Services",
+                    "account_name": "Profesional Services",
+                    "PreviousYear": 18514.220000000005,
+                    "Budget": 0,
+                    "CurrentYear": 41924.32,
+                    "difDollar": 41924.32,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Accessories Laboratory (Chemistry, Science",
+                    "account_name": "Accessories Laboratory (Chemistry, Science",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Amortizations",
+                    "account_name": "Amortizations",
+                    "PreviousYear": 901.96,
+                    "Budget": 0,
+                    "CurrentYear": 782.29,
+                    "difDollar": 782.29,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Bank Services",
+                    "account_name": "Bank Services",
+                    "PreviousYear": 397.30000000000007,
+                    "Budget": 0,
+                    "CurrentYear": 179.78,
+                    "difDollar": 179.78,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Buildings Maintenance and Repair",
+                    "account_name": "Buildings Maintenance and Repair",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 90,
+                    "difDollar": 90,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Car Allowance",
+                    "account_name": "Car Allowance",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Celular",
+                    "account_name": "Celular",
+                    "PreviousYear": 105.33,
+                    "Budget": 0,
+                    "CurrentYear": 104.24,
+                    "difDollar": 104.24,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Christmas walk",
+                    "account_name": "Christmas walk",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Cleaning",
+                    "account_name": "Cleaning",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 12.03,
+                    "difDollar": 12.03,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Computer Maintenance and Repair",
+                    "account_name": "Computer Maintenance and Repair",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Contract Travel Obligation",
+                    "account_name": "Contract Travel Obligation",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Corrective Maintenance",
+                    "account_name": "Corrective Maintenance",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Easter week Bonus",
+                    "account_name": "Easter week Bonus",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Educational Consumable supplies",
+                    "account_name": "Educational Consumable supplies",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI End of the Year B",
+                    "account_name": "End of the Year B",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI External security",
+                    "account_name": "External security",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 42.17,
+                    "difDollar": 42.17,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Extra Curricular",
+                    "account_name": "Extra Curricular",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Extra for Assigmnments",
+                    "account_name": "Extra for Assigmnments",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Fuels and lubricants",
+                    "account_name": "Fuels and lubricants",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 84.33999999999999,
+                    "difDollar": 84.33999999999999,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Furniture Maintenance and repair",
+                    "account_name": "Furniture Maintenance and repair",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Gain (Loss) Exchange rate",
+                    "account_name": "Gain (Loss) Exchange rate",
+                    "PreviousYear": -0.01,
+                    "Budget": 0,
+                    "CurrentYear": -0.14,
+                    "difDollar": -0.14,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Interest Payment",
+                    "account_name": "Interest Payment",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Legal consultor",
+                    "account_name": "Legal consultor",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI LH Bonus reward position",
+                    "account_name": "LH Bonus reward position",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Local Life and Medical expenses Insurance",
+                    "account_name": "Local Life and Medical expenses Insurance",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Lunch and dinner stipend",
+                    "account_name": "Lunch and dinner stipend",
+                    "PreviousYear": 212.35,
+                    "Budget": 125,
+                    "CurrentYear": 3051.12,
+                    "difDollar": 2926.12,
+                    "difPercentage": 23.40896
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Medical expenses and medicine",
+                    "account_name": "Medical expenses and medicine",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Nicaraguan Social Security",
+                    "account_name": "Nicaraguan Social Security",
+                    "PreviousYear": 6842.6900000000005,
+                    "Budget": 8970.8333,
+                    "CurrentYear": 10963.56,
+                    "difDollar": 1992.7266999999993,
+                    "difPercentage": 0.22213395716538387
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Online Text",
+                    "account_name": "Online Text",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Organizational consultor",
+                    "account_name": "Organizational consultor",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Other Services rendered.",
+                    "account_name": "Other Services rendered.",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Paquete Alimenticio",
+                    "account_name": "Paquete Alimenticio",
+                    "PreviousYear": 56.95,
+                    "Budget": 0,
+                    "CurrentYear": 27.12,
+                    "difDollar": 27.12,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI School bonus",
+                    "account_name": "School bonus",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 39.16,
+                    "difDollar": 39.16,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI School Support",
+                    "account_name": "School Support",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Sporting Accessories",
+                    "account_name": "Sporting Accessories",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Staff Training (Local)",
+                    "account_name": "Staff Training (Local)",
+                    "PreviousYear": 0,
+                    "Budget": 2000,
+                    "CurrentYear": 0,
+                    "difDollar": -2000,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Summer",
+                    "account_name": "Summer",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Transportation of personel (Contracted)",
+                    "account_name": "Transportation of personel (Contracted)",
+                    "PreviousYear": 0,
+                    "Budget": 1312.5833,
+                    "CurrentYear": 0,
+                    "difDollar": -1312.5833,
+                    "difPercentage": -1
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Uncollectable Account",
+                    "account_name": "Uncollectable Account",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Uniforms and shoes",
+                    "account_name": "Uniforms and shoes",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Vehicules Repair &amp; Maintenance",
+                    "account_name": "Vehicules Repair &amp; Maintenance",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "ELI Office Consumable supplies",
+                    "account_name": "Office Consumable supplies",
+                    "PreviousYear": 0,
+                    "Budget": 545.5,
+                    "CurrentYear": 108.25999999999999,
+                    "difDollar": -437.24,
+                    "difPercentage": -0.8015398716773602
+                }, {
+                    "account": "OPERATING EXPENSES",
+                    "categories": "ELI EXPENSES",
+                    "group_account_name": "Advertisement",
+                    "account_name": "Advertisement",
+                    "PreviousYear": 452.82,
+                    "Budget": 2536.6667,
+                    "CurrentYear": 1147.1299999999999,
+                    "difDollar": -1389.5367000000003,
+                    "difPercentage": -0.5477805578478245
+                }]
+            },
+            "PROFIT": {
+                "VALUES": []
+            },
+            "REVENUES": {
+                "VALUES": [{
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "FINANCIAL PRODUCTS",
+                    "group_account_name": "Bank Services",
+                    "account_name": "Bank Services",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "FINANCIAL PRODUCTS",
+                    "group_account_name": "Gain from currency exchange",
+                    "account_name": "Gain from currency exchange",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "FINANCIAL PRODUCTS",
+                    "group_account_name": "Interest gain",
+                    "account_name": "Interest gain",
+                    "PreviousYear": 197.62,
+                    "Budget": 0,
+                    "CurrentYear": 220.7,
+                    "difDollar": 220.7,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "FINANCIAL PRODUCTS",
+                    "group_account_name": "Late payment fee",
+                    "account_name": "Late payment fee",
+                    "PreviousYear": -450.30999999999995,
+                    "Budget": 2916.6667,
+                    "CurrentYear": 0,
+                    "difDollar": -2916.6667,
+                    "difPercentage": -1
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "FINANCIAL PRODUCTS",
+                    "group_account_name": "Late Pick Up Fee",
+                    "account_name": "Late Pick Up Fee",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "FINANCIAL PRODUCTS",
+                    "group_account_name": "Other",
+                    "account_name": "Other",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "FINANCIAL PRODUCTS",
+                    "group_account_name": "ELI Bank Services",
+                    "account_name": "Bank Services",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "FINANCIAL PRODUCTS",
+                    "group_account_name": "ELI Interest gain",
+                    "account_name": "Interest gain",
+                    "PreviousYear": 6.08,
+                    "Budget": 0,
+                    "CurrentYear": 5.55,
+                    "difDollar": 5.55,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Food Court Maintenance",
+                    "account_name": "Food Court Maintenance",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Income on lost books",
+                    "account_name": "Income on lost books",
+                    "PreviousYear": 530,
+                    "Budget": 0,
+                    "CurrentYear": 1060,
+                    "difDollar": 1060,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "RC-Restructuracion de Saldos",
+                    "account_name": "RC-Restructuracion de Saldos",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Year book sales",
+                    "account_name": "Year book sales",
+                    "PreviousYear": 200,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Donations from US Government",
+                    "account_name": "Donations from US Government",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Ingresos por compesacion adelantos empleados.",
+                    "account_name": "Ingresos por compesacion adelantos empleados.",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Certification Letter, Transf, School Operat",
+                    "account_name": "Certification Letter, Transf, School Operat",
+                    "PreviousYear": 100,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Income on sale of assets",
+                    "account_name": "Income on sale of assets",
+                    "PreviousYear": 94.8,
+                    "Budget": 0,
+                    "CurrentYear": 0.020000000000000462,
+                    "difDollar": 0.020000000000000462,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Other",
+                    "account_name": "Other",
+                    "PreviousYear": 3224.91,
+                    "Budget": 0,
+                    "CurrentYear": 356.3,
+                    "difDollar": 356.3,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Local Sponsorships",
+                    "account_name": "Local Sponsorships",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Income for Transcripts",
+                    "account_name": "Income for Transcripts",
+                    "PreviousYear": 917.4700000000001,
+                    "Budget": 0,
+                    "CurrentYear": 92.53,
+                    "difDollar": 92.53,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Income on fotocopies",
+                    "account_name": "Income on fotocopies",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 156.2,
+                    "difDollar": 156.2,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Sobrante de Caja",
+                    "account_name": "Sobrante de Caja",
+                    "PreviousYear": 2024.6399999999999,
+                    "Budget": 0,
+                    "CurrentYear": -0.2499999999990905,
+                    "difDollar": -0.2499999999990905,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Bus Transportation",
+                    "account_name": "Bus Transportation",
+                    "PreviousYear": 610.5,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Local Donations",
+                    "account_name": "Local Donations",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Maintenance charge on Fresco Stand",
+                    "account_name": "Maintenance charge on Fresco Stand",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Tiger Store",
+                    "account_name": "Tiger Store",
+                    "PreviousYear": 0,
+                    "Budget": 25000,
+                    "CurrentYear": 3509.55,
+                    "difDollar": -21490.45,
+                    "difPercentage": -0.859618
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "ELI Other",
+                    "account_name": "Other",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "ELI Sobrante de Caja",
+                    "account_name": "Sobrante de Caja",
+                    "PreviousYear": 496.71999999999997,
+                    "Budget": 0,
+                    "CurrentYear": 0.3400000000000001,
+                    "difDollar": 0.3400000000000001,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Income on sale of supplies",
+                    "account_name": "Income on sale of supplies",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Maintance charged for staff housing",
+                    "account_name": "Maintance charged for staff housing",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Maintenance Aparment",
+                    "account_name": "Maintenance Aparment",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Nicabox-Courrier-Fax",
+                    "account_name": "Nicabox-Courrier-Fax",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }, {
+                    "account": "NON-OPERATING REVENUES",
+                    "categories": "OTHER PRODUCTS",
+                    "group_account_name": "Income on lost books",
+                    "account_name": "Income on lost books",
+                    "PreviousYear": 0,
+                    "Budget": 0,
+                    "CurrentYear": 0,
+                    "difDollar": 0,
+                    "difPercentage": 0
+                }]
+            },
+            "NETRESULTOPERATION": {
+                "VALUES": []
+            },
+            "CURRENT_YTD": "Jul-19",
+            "LAST_YTD": "Jul-18"
+        };
+
+        function createTableFromJson(jsonData) {
+
+
+            const _table_ = document.createElement('table');
+            //_table_.style.borderCollapse = 'collapse';
+            //_table_.style.width = '100%';
+            //_table_.style.border = '1px solid black';
+            _table_.className = "table";
+
+            const _table_row_ = document.createElement("tr");
+
+            //console.log(`Clave: ${key}, Valor: ${jsonData[key]}`);
+            Object.keys(jsonData).forEach(key => {
+                const _table_data_ = document.createElement("td");
+                const _span_value_ = document.createElement("span");
+                _span_value_.className = "value";
+
+                const _span_key_ = document.createElement("span");
+                _span_key_.className = "key";
+
+                _span_key_.appendChild(document.createTextNode(key))
+                _table_data_.appendChild(_span_key_);
+                if (typeof jsonData[key] === 'object' && jsonData[key] !== null) {
+                    _table_data_.appendChild(createTableFromJson(jsonData[key]));
+                } else {
+
+
+                    _span_value_.appendChild(document.createTextNode(jsonData[key]));
+                    _table_data_.appendChild(_span_value_);
+
+                    //  console.log(`Clave: ${key}, Valor: ${jsonData[key]}`);
+                }
+                _table_row_.appendChild(_table_data_);
+            });
+            _table_.appendChild(_table_row_);
+            return _table_;
+        }
+        /*const jsonData = {
+            name: 'John',
+            age: 30,
+            address: {
+                city: 'New York',
+                street: 'Broadway',
+                building: {
+                    number: 100,
+                    apartment: 20
+                }
+            },
+            hobbies: ['reading', 'movies'],
+            scores: [10, 20, 30, {
+                math: 90,
+                science: 85
+            }]
+        };*/
+        // createTableFromJson(jsonData);
+
+        const tablaGenerada = createTableFromJson(jsonData);
+
+        // Seleccionar el contenedor donde se añadirá la tabla
+        const div = document.getElementById('jsonTable');
+        if (div) {
+            div.appendChild(tablaGenerada);
+        }
+        /*function createTableFromJson(jsonData) {
+            const table = document.createElement('table');
+            table.style.borderCollapse = 'collapse';
+            table.style.width = '100%';
+            table.style.border = '1px solid black';
+
+            // Función recursiva para procesar objetos o arrays
+            const processObject = (obj, parentElement) => {
+                const headers = [];
+                const rows = [];
+
+                // Primero obtenemos los headers (claves) y los valores
+                for (let key in obj) {
+                    const value = obj[key];
+
+                    const headerCell = document.createElement('th');
+                    headerCell.textContent = key;
+                    headerCell.style.border = '1px solid black';
+                    headerCell.style.padding = '5px';
+                    headers.push(headerCell);
+
+                    const valueCell = document.createElement('td');
+                    valueCell.style.border = '1px solid black';
+                    valueCell.style.padding = '5px';
+
+                    if (typeof value === 'object' && value !== null) {
+                        if (Array.isArray(value)) {
+                            const arrayTable = createTableFromJson(value); // Recursión para arrays
+                            valueCell.appendChild(arrayTable);
+                        } else {
+                            const subTable = createTableFromJson(value); // Recursión para objetos
+                            valueCell.appendChild(subTable);
+                        }
+                    } else {
+                        valueCell.textContent = String(value);
+                    }
+
+                    rows.push([valueCell]);
+                }
+
+                // Agregar los headers en la primera fila
+                const headerRow = document.createElement('tr');
+                headers.forEach(header => headerRow.appendChild(header));
+                parentElement.appendChild(headerRow);
+
+                // Agregar los valores en las siguientes filas
+                rows.forEach(rowCells => {
+                    const row = document.createElement('tr');
+                    rowCells.forEach(cell => row.appendChild(cell));
+                    parentElement.appendChild(row);
+                });
+            };
+
+            processObject(jsonData, table);
+            return table;
+        }
+
+        // Ejemplo de uso
+        const jsonData = {
+            name: 'John',
+            age: 30,
+            address: {
+                city: 'New York',
+                street: 'Broadway',
+                building: {
+                    number: 100,
+                    apartment: 20
+                }
+            },
+            hobbies: ['reading', 'movies'],
+            scores: [10, 20, 30, {
+                math: 90,
+                science: 85
+            }]
+        };
+
+        // Llamar a la función para crear la tabla HTML transpuesta
+        const tablaGenerada = createTableFromJson(jsonData);
+
+        // Seleccionar el contenedor donde se añadirá la tabla
+        const div = document.getElementById('jsonTable');
+        if (div) {
+            div.appendChild(tablaGenerada);
+        }*/
     </script>
 </body>
 

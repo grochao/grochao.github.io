@@ -1,11 +1,30 @@
-export declare class consoleBox {
+export declare class ANSconsoleBox {
     private static _THIS_HTML_;
+    private static count_group;
+    private static __VAR_DATETYPE_UNDEFINED__;
+    private static __VAR_DATETYPE_JSON__;
+    private static __VAR_DATETYPE_JSON_STRING__;
+    private static __VAR_DATETYPE_ARRAY__;
+    private static __VAR_DATETYPE_STRING__;
+    private static __VAR_DATETYPE_NUMBER__;
+    private static __VAR_DATETYPE_BOOLEAN__;
+    private static __VAR_DATETYPE_STRING_BOOLEAN__;
     constructor();
-    static AddEventoClick(): void;
+    private static debug;
+    private static DetectDataType;
     static InitBOX(): void;
-    static GetDOM(): HTMLElement;
+    GetDOM(): HTMLElement;
     private static style;
+    private static returnSetectFormat;
+    private static displayFormattedJson;
+    private static returnSpan;
+    private static displayFormatTable;
     private static returnText;
     static Clear(): void;
-    static Log(_VALUE_: any): boolean;
+    Group(_title_?: string): void;
+    GroupEnd(_title_?: string): void;
+    Log(_VALUE_: any): void;
+    Warn(_VALUE_: any): void;
+    Info(_VALUE_: any): void;
+    Error(_VALUE_: any): void;
 }

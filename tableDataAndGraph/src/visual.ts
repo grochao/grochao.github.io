@@ -36,7 +36,7 @@ import * as d3 from "d3";
 
 import { ANS_JsonDB } from "./data"
 
-import { consoleBox } from "./consoleBox"
+import { ANSconsoleBox } from "./consoleBox"
 
 type Selection<T extends d3.BaseType> = d3.Selection<T, any, any, any>;
 import { FormattingSettingsService } from "powerbi-visuals-utils-formattingmodel";
@@ -47,6 +47,7 @@ import { VisualFormattingSettingsModel } from "./settings";
 
 import { VisualCustomSettingsModel, VisualCustomSettingsType } from "./settings";
 export class Visual implements IVisual {
+    static consoleBox;
     static target: HTMLElement;
     private updateCount: number;
     private textNode: Text;
@@ -73,18 +74,14 @@ export class Visual implements IVisual {
 
 
 
-
     static settings_obj: VisualCustomSettingsType;
     constructor(options: VisualConstructorOptions) {
-        //////console.log('Visual constructor WWW:', options);
+        ////////////console.log('Visual constructor WWW:', options);
         this.formattingSettingsService = new FormattingSettingsService();
         Visual.target = options.element;
         this.executeUpdate = false;
 
-
         if (document) {
-
-
 
 
             //  this.AllColumnNames = "casa, oficina, trabajo";
@@ -96,6 +93,7 @@ export class Visual implements IVisual {
 
 
             Visual.target.appendChild(TblContainerER);
+
 
 
 
@@ -111,44 +109,7 @@ export class Visual implements IVisual {
 
         return lineMatch ? parseInt(lineMatch[1], 10) : -1; // Devuelve el número de línea
     }
-    public static LogBOX(_VALUE_: string = null, style: string = "error"/* error,information,warning */) {
-        let _cell_textarea_: HTMLElement = document.getElementById("logbox");
-        //let t = document.createTextNode(_VALUE_);
 
-        if (!_cell_textarea_) {
-            const _show_hidden_ = document.createElement("div");
-            const _allcontent_ = document.createElement("div");
-            _allcontent_.id = "allcontent";
-            _show_hidden_.id = "show_hidden"
-            _cell_textarea_ = document.createElement("div");
-            _cell_textarea_.className = "log";
-            _cell_textarea_.id = "logbox";
-            _allcontent_.innerHTML = '<div class="container-message ' + style + '"><textarea style="display:block;width_100%; height:150px">' + _VALUE_ + "</textarea></div>";
-            _cell_textarea_.appendChild(_show_hidden_);
-            _cell_textarea_.appendChild(_allcontent_);
-
-
-
-            Visual.target.appendChild(_cell_textarea_)
-
-            Visual.agregarEventoClick();
-        } else {
-            const _allcontent_ = document.getElementById("allcontent");
-            _allcontent_.innerHTML += '<div class="container-message ' + style + '"><textarea style="display:block;width_100%; height:150px">' + _VALUE_ + "</textarea></div>";
-            // _cell_textarea_.innerHTML += '<div class="container-message ' + style + '">' + _VALUE_ + "</div>";
-            // _cell_textarea_.appendChild(t);
-        }
-
-
-
-        if (_VALUE_ == null) {
-            //_cell_textarea_.innerHTML = "";
-            if ($(".container-message").length) {
-                $(".container-message").remove();
-            }
-        }
-
-    }
     public static ReturnCell(typecel: string, TextContent: any, theClass: string = "", colspan: number = null): HTMLElement {
 
         // let _cell_: HTMLElement = document.createElement(typecel);
@@ -167,6 +128,22 @@ export class Visual implements IVisual {
 
         return _cell_;
 
+
+    }
+    private ExistPropierty(value, _prop_: string = null) {
+        if (_prop_ !== null) {
+            if (typeof value === 'object' && value !== null && value.hasOwnProperty(_prop_) && typeof value !== 'undefined') {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if (value === null || typeof value === 'undefined') {
+                return false;
+            } else {
+                return true;
+            }
+        }
 
     }
 
@@ -343,7 +320,12 @@ export class Visual implements IVisual {
             if (symbol == "$" || symbol == "U$" || symbol == "US$" || symbol == "C$") {
                 return "<span><i>" + symbol + "</i>" + ((value + "") == "-0" ? "-" : value) + "</span>";
             } else if (symbol == "%") {
-                return "<span>" + ((value).replace("(", "-")).replace(")", "") + "%</span>";
+                const __PERCENT__ = parseFloat(((value).replace("(", "-")).replace(")", ""));
+                if (Number.isNaN(__PERCENT__)) {
+                    return "<span>-</span>";
+                } else {
+                    return "<span>" + __PERCENT__.toFixed(1) + "%</span>";
+                }
             }
         } else {
             return "<span>" + value + "</span>";
@@ -420,7 +402,7 @@ export class Visual implements IVisual {
         }
         return TotalLabel;
     }
-    private static ReturnRow(head_column, _DATAROW_, symbol) {
+    /*private static ReturnRow(head_column, _DATAROW_, symbol) {
         const tmp_row = document.createElement("tr");
         tmp_row.appendChild(Visual.ReturnCell("th", Visual.returnStyleOutput(head_column, "is_string_full")));
         tmp_row.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput((_DATAROW_.PreviousYear).toFixed(0), symbol), "is_numeric"));
@@ -429,7 +411,7 @@ export class Visual implements IVisual {
         tmp_row.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput((_DATAROW_.difDollar).toFixed(0), symbol), "is_numeric"));
         tmp_row.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput((_DATAROW_.difPercentage).toFixed(1), "%", false), "is_numeric"));
         return tmp_row
-    }
+    }*/
     /*private static InitzialiceJSON() {
         return {
             account:"",
@@ -463,11 +445,38 @@ export class Visual implements IVisual {
         const DOLLAR = CURRENT_YEAR - BUDGET
         const PERCENTAGE = (BUDGET == 0 ? 0 : (DOLLAR / BUDGET))
         return {
-            PreviousYear: ((EBITDA_PREVIOUS / INCOME_PREVIOUS) * 100),
-            Budget: BUDGET,
-            CurrentYear: CURRENT_YEAR,
-            difDollar: DOLLAR,
-            difPercentage: PERCENTAGE,
+            account: {
+                value: "",
+                position: 0
+            },
+            categories: {
+                value: "",
+                position: 0
+            },
+            group_account_name: {
+                value: "",
+                position: 0
+            },
+            PreviousYear: {
+                value: ((EBITDA_PREVIOUS / INCOME_PREVIOUS) * 100),
+                position: 0
+            },
+            Budget: {
+                value: BUDGET,
+                position: 0
+            },
+            CurrentYear: {
+                value: CURRENT_YEAR,
+                position: 0
+            },
+            difDollar: {
+                value: DOLLAR,
+                position: 0
+            },
+            difPercentage: {
+                value: PERCENTAGE,
+                position: 0
+            },
         }
     }
 
@@ -558,50 +567,51 @@ export class Visual implements IVisual {
 
         }
     }
+    private static CreateRowHTML(_CURRENTE_DATA_ROW_: any = null, className: string = "", _symbol_: string = "$") {
+
+        const tmp_row = document.createElement("tr");
+        tmp_row.className = className;
+        if (_CURRENTE_DATA_ROW_ !== null) {
+
+            tmp_row.appendChild(Visual.ReturnCell("th", Visual.returnStyleOutput(_CURRENTE_DATA_ROW_.categories.value), "is_string_full"));
+            tmp_row.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput(_CURRENTE_DATA_ROW_.PreviousYear.value, _symbol_), "is_numeric"));
+            tmp_row.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput(_CURRENTE_DATA_ROW_.Budget.value, _symbol_), "is_numeric"));
+            tmp_row.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput(_CURRENTE_DATA_ROW_.CurrentYear.value, _symbol_), "is_numeric"));
+            tmp_row.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput(_CURRENTE_DATA_ROW_.difDollar.value, _symbol_), "is_numeric"));
+            tmp_row.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput(_CURRENTE_DATA_ROW_.difPercentage.value, "%", false), "is_numeric"));
+        }
+        return tmp_row;
+    }
 
     private static GenerateAccountTypeTable(type: string = null, DATA: any = null, HEADERS: any = null/*, FOOTERS: any = null, _id_event_: any = null*/) {
         let _TABLE_ = document.createElement("table");
         let _T_HEADERS_ = document.createElement("thead");
         let _T_FOOT_ = document.createElement("tfoot");
         let _T_BODY_ = document.createElement("tbody");
-        let tmp_row = document.createElement("tr");
-        _TABLE_.className = "tbl_style separator-bottom " + type;
+        let tmp_row: HTMLElement = document.createElement("tr");
         tmp_row.className = "is_row_title_type_account"
+
+
+        _TABLE_.className = "tbl_style separator-bottom " + type;
         if (type == "PROFIT" || type == "NETRESULTOPERATION" || type == "EBITDA_VALUE" || type == "EBITDA_PERCENTAGE") {
             let TotalLabel = Visual.returnTotalLabel(type);// "";
-            let _difPercentage_ = ((((Visual.GrandTotal[TotalLabel].CurrentYear.value) - (Visual.GrandTotal[TotalLabel].Budget.value)) / (Visual.GrandTotal[TotalLabel].Budget.value)) * 100).toFixed(1);
+            let _difPercentage_ = ((Visual.GrandTotal[TotalLabel].Budget.value) == 0 ? 0 : ((((Visual.GrandTotal[TotalLabel].CurrentYear.value) - (Visual.GrandTotal[TotalLabel].Budget.value)) / (Visual.GrandTotal[TotalLabel].Budget.value)) * 100).toFixed(1));
             if ("EBITDA_PERCENTAGE" === type) {
-                let EBITDA = Visual.returnJsonEBITDA_VALUE()
-                tmp_row.appendChild(Visual.ReturnCell("th", Visual.returnStyleOutput(Visual.GrandTotal[TotalLabel].categories.value), "is_string_full"));
-                tmp_row.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput((EBITDA.PreviousYear).toFixed(0), "%"), "is_numeric"));
-                tmp_row.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput((EBITDA.Budget).toFixed(0), "%"), "is_numeric"));
-                tmp_row.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput((EBITDA.CurrentYear).toFixed(0), "%"), "is_numeric"));
-                tmp_row.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput((EBITDA.difDollar).toFixed(0), "%"), "is_numeric"));
-                tmp_row.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput((EBITDA.difPercentage).toFixed(0), "%"), "is_numeric"))
+                let EBITDA_PERCENTAGE = Visual.returnJsonEBITDA_VALUE();
+                EBITDA_PERCENTAGE.categories.value = Visual.GrandTotal[TotalLabel].categories.value;
+                _T_HEADERS_.appendChild(Visual.CreateRowHTML(EBITDA_PERCENTAGE, "is_row_title_type_account", "%"));
 
             } else {
-
-                tmp_row.appendChild(Visual.ReturnCell("th", Visual.returnStyleOutput(Visual.GrandTotal[TotalLabel].categories.value), "is_string_full"));
-                tmp_row.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput(Visual.GrandTotal[TotalLabel].PreviousYear.value, "$"), "is_numeric"));
-                tmp_row.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput(Visual.GrandTotal[TotalLabel].Budget.value, "$"), "is_numeric"));
-                tmp_row.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput(Visual.GrandTotal[TotalLabel].CurrentYear.value, "$"), "is_numeric"));
-                tmp_row.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput(Visual.GrandTotal[TotalLabel].difDollar.value, "$"), "is_numeric"));
-                tmp_row.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput(_difPercentage_, "%"), "is_numeric"));
-
+                Visual.GrandTotal[TotalLabel].difPercentage.value = _difPercentage_;
+                _T_HEADERS_.appendChild(Visual.CreateRowHTML(Visual.GrandTotal[TotalLabel], "is_row_title_type_account", "$"));
             }
-
-            _T_HEADERS_.appendChild(tmp_row);
             _TABLE_.append(_T_HEADERS_);
         } else {
 
             let TotalAccount = Visual.ReturnGroupedRow(); //InitzialiceJSON();
             let AccountCategory: string = "";
-            let SubTotalCategory = Visual.ReturnGroupedRow();;
-
-
-
-            if (HEADERS != null) {
-
+            let SubTotalCategory = Visual.ReturnGroupedRow();
+            if (HEADERS !== null) {
                 _TABLE_.className = "tbl_style";
                 if (type === "HEADERS") {
                     tmp_row.className = "headers"
@@ -630,6 +640,8 @@ export class Visual implements IVisual {
 
                 }
 
+                //////console.clear();
+
 
                 if (DATA) {
                     let GroupedRow = Visual.ReturnGroupedRow();
@@ -637,7 +649,8 @@ export class Visual implements IVisual {
                     let group_account_name = "";
                     let class_first_element = "";
                     let class_parent = "";
-                    (DATA).forEach((_row_: any) => {
+
+                    (DATA).forEach((_row_: any, index: number) => {
 
                         if (group_account_name == "") {
                             group_account_name = _row_.group_account_name
@@ -676,39 +689,62 @@ export class Visual implements IVisual {
                     _T_BODY_.innerHTML += GROUP_CAT.innerHTML;
                     GROUP_CAT.innerHTML = null;
                 }
-
+                ////console.log("=========LINE[" + "687" + "]========");
+                //////console.log(_T_BODY_.innerHTML);
                 // if ("INCOME" === type) {
                 if (Visual.settings_obj[type].Label != null) {
                     let tmp_row_footer = document.createElement("tr");
                     tmp_row_footer.className = "is_row_title_type_account";
                     //tmp_row_footer.appendChild(Visual.ReturnRowWithData(TotalAccount));
-                    let difPercentage = (((TotalAccount.CurrentYear - TotalAccount.Budget) / TotalAccount.Budget) * 100).toFixed(1);
-
+                    TotalAccount.categories = Visual.settings_obj[type].LabelTotal;
+                    TotalAccount.difPercentage = (TotalAccount.Budget == 0 ? 0 : (((TotalAccount.CurrentYear - TotalAccount.Budget) / TotalAccount.Budget) * 100).toFixed(1));
                     //tmp_row = Visual.ReturnRow(Visual.settings_obj[type].LabelTotal, TotalAccount, "$")
-
+                    //_T_FOOT_.appendChild(Visual.CreateRowHTML(TotalAccount, "is_row_title_type_account", "%"));
+                    ////console.log("=========LINE[" + "698" + "]========");
                     tmp_row_footer.appendChild(Visual.ReturnCell("th", Visual.returnStyleOutput(Visual.settings_obj[type].LabelTotal), "is_string_full"));
+                    ////console.log("=========LINE[" + "700" + "]========");
                     tmp_row_footer.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput(TotalAccount.PreviousYear, "$"), "is_numeric"));
+                    ////console.log("=========LINE[" + "702" + "]========");
                     tmp_row_footer.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput(TotalAccount.Budget, "$"), "is_numeric"));
+                    ////console.log("=========LINE[" + "704" + "]========");
                     tmp_row_footer.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput(TotalAccount.CurrentYear, "$"), "is_numeric"));
+                    ////console.log("=========LINE[" + "706" + "]========");
                     tmp_row_footer.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput(TotalAccount.difDollar, "$"), "is_numeric"));
-                    tmp_row_footer.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput(difPercentage, "%", false), "is_numeric"));
-
-                    _T_FOOT_.appendChild(tmp_row_footer);
+                    ////console.log("=========LINE[" + "708" + "]========DIF_PERCENTAGE" + JSON.stringify(TotalAccount.difPercentage));
+                    tmp_row_footer.appendChild(Visual.ReturnCell("td", Visual.returnStyleOutput(TotalAccount.difPercentage, "%", false), "is_numeric"));
+                    ////console.log("=========LINE[" + "710" + "]========");
                     Visual.UpdateDataValues(type, TotalAccount);
+                    ////console.log("=========LINE[" + "713" + "]========");
+                    _T_FOOT_.appendChild(tmp_row_footer);
+                    ////console.log("=========LINE[" + "714" + "]========");
 
                 }
+                //////console.clear();
+                ////console.log("=========LINE[" + "7115" + "]========");
 
-                if ($.trim(_T_HEADERS_.innerHTML) !== "") {
-                    _TABLE_.append(_T_HEADERS_);
-                }
-                if ($.trim(_T_BODY_.innerHTML) !== "") {
-                    _TABLE_.append(_T_BODY_);
-                }
+                _TABLE_.append(_T_HEADERS_);
 
-                if ($.trim(_T_FOOT_.innerHTML) !== "") {
-                    _TABLE_.append(_T_FOOT_);
-                }
+                ////console.log("=========LINE[" + "715" + "]========");
 
+                _TABLE_.append(_T_BODY_);
+
+                ////console.log("=========LINE[" + "719" + "]========");
+                ////console.log(_TABLE_.innerHTML);
+                _TABLE_.append(_T_FOOT_);
+
+                ////console.log("=========LINE[" + "723" + "]========");
+
+                /* if ($.trim(_T_HEADERS_.innerHTML) !== "") {
+                     _TABLE_.append(_T_HEADERS_);
+                 }
+                 if ($.trim(_T_BODY_.innerHTML) !== "") {
+                     _TABLE_.append(_T_BODY_);
+                 }
+     
+                 if ($.trim(_T_FOOT_.innerHTML) !== "") {
+                     _TABLE_.append(_T_FOOT_);
+                 }
+    */
 
             }
         }
@@ -744,7 +780,11 @@ export class Visual implements IVisual {
         let _ALL_TITLES_ = this.dataView.table;
         let _ALL_DB_ = this.returnDB_Json(_ALL_TITLES_);
 
-
+        /* //////console.clear();
+         ////console.log("ENTRÓ");
+         ////console.warn(JSON.stringify(_ALL_TITLES_));
+         ////console.log("PASÓ");
+ */
         let mifecha: any = new Date("10/02/2019");
         const fechaInicial: any = new Date();
         Visual._id_event_click_global_ = "event_click_" + Math.abs(mifecha - fechaInicial) + Visual.getRandomArbitrary(100, 999);
@@ -754,8 +794,11 @@ export class Visual implements IVisual {
 
         TblContainerER.appendChild(Visual.GenerateAccountTypeTable("HEADERS", null, Visual.GetDataValues(_ALL_DB_.TITLE_COLUMNS.VALUES[0])))
 
-        TblContainerER.appendChild(Visual.GenerateAccountTypeTable("INCOME", _ALL_DB_.INCOME.VALUES))
 
+
+        TblContainerER.appendChild(Visual.GenerateAccountTypeTable("INCOME", _ALL_DB_.INCOME.VALUES))
+        //////console.clear();
+        ////console.log("PASÓ INCOME");
 
         TblContainerER.appendChild(Visual.GenerateAccountTypeTable("EXPENSES", _ALL_DB_.EXPENSES.VALUES))
 
@@ -796,8 +839,15 @@ export class Visual implements IVisual {
         Visual.ClearDataValues("EBITDA_VALUE");
         Visual.ClearDataValues("EBITDA_PERCENTAGE");
 
+
+        //////console.warn("_ALL_DB_ - Begin");
+        //Visual.consoleBox.Info(JSON.stringify(_ALL_DB_));
+        //////console.warn("_ALL_DB_ - End");
+
+
+        // TblContainerER.appendChild(Visual.consoleBox.GetDOM());
         Visual.target.appendChild(TblContainerER);
-        //Visual.target.appendChild(consoleBox.GetDOM())
+
     }
 
     public update(options: VisualUpdateOptions) {
@@ -807,12 +857,15 @@ export class Visual implements IVisual {
 
         if (Visual.target) {
 
+            //Visual.consoleBox = new ANSconsoleBox();
+            //////console.log("new ANSconsoleBox()");
             Visual.settings_obj = new VisualCustomSettingsModel().getSettings(this.formattingSettings);
 
             this.dataView = options.dataViews[0];
 
-
-
+            console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWw");
+            console.warn(JSON.stringify(this.dataView));
+            console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWw");
 
             //return false;
 
@@ -831,7 +884,7 @@ export class Visual implements IVisual {
 
                 let CURRENT_OBJ = $(this);
                 let objCategory = $.trim(CURRENT_OBJ.data("category"));
-                // //console.log(objCategory);
+                // ////////console.log(objCategory);
                 if (CURRENT_OBJ.hasClass("_show_")) {
                     $("tr." + objCategory).addClass("hidden");
                     CURRENT_OBJ.removeClass("_show_")
@@ -842,79 +895,26 @@ export class Visual implements IVisual {
 
 
             });
-            //   Visual.agregarEventoClick();
-            /* let LIST_CATEGORIES = "{";
-             $("body .tbl_style tbody tr.is_row_category").each(function (i) {
-                 let _str_cat_ = (($(this).find("td:first-child").text()).replace(" ", "-")).replace("/", "-")
-                 LIST_CATEGORIES += '"' + _str_cat_ + '": {"open":false},';
-                 //LIST_CATEGORIES += (LIST_CATEGORIES !== "" ? "," : "") + $(this).find("td:first-child").html();
-     
-             });
-             LIST_CATEGORIES += "}";*/
 
-            /* 
- 
- 
-             let SHOW_HIDDEN_DIV: JQuery = $("#show_hidden");
-             if (SHOW_HIDDEN_DIV.length) {
-                 SHOW_HIDDEN_DIV.on("click", (event) => {
-                     if ($("#logbox").hasClass("open")) {
-                         $("#logbox").removeClass("open");
-                     } else {
-                         $("#logbox").addClass("open");
-                     }
- 
-                 });
-             }*/
-
-            //consoleBox.html();
         }
 
     }
-    public static agregarEventoClick() {
-        console.log("EVENT CLICK CREATED");
-        var BOX_CONSOLE = document.getElementById("show_hidden");
 
-        if (BOX_CONSOLE) {
-            BOX_CONSOLE.addEventListener("click", function (event) {
-                console.log("EVENT CLICK");
-
-                let BOXCONTENT = document.getElementById("logbox");
-
-                if (BOXCONTENT.classList.contains("open")) {
-
-                    BOXCONTENT.classList.remove("open")
-                } else {
-
-                    BOXCONTENT.classList.add("open")
-                }
-                /*if (event.target.tagName === 'TD') {
-                    var fila = event.target.parentNode;
-
-                    // Remover la clase "seleccionada" de todas las filas
-                    var filas = document.querySelectorAll("#miTabla tr");
-                    filas.forEach(function (f) {
-                        f.classList.remove("fila-seleccionada");
-                    });
-
-                    // Agregar la clase "fila-seleccionada" a la fila clickeada
-                    fila.classList.add("fila-seleccionada");
-                }*/
-            });
-        }
-    }
     private static PrintFormatNumeric(TheValue: any, dec_point: any = false, thousands_point: any = false, rounded: boolean = true): string {
 
+
         let number = (TheValue);
-        let decimals = Number(Visual.settings_obj.ValueDecimalPlaces);
+        let decimals = Number(Visual.settings_obj.DecimalPlaces);
+        //console.clear();
+        //console.log("**********[[" + decimals + "]]]***********");
         if (number == null || !isFinite(number)) {
             throw new TypeError("number is not valid");
         }
 
-        if (!decimals) {
+        /*if (!decimals) {
             let len = number.toString().split('.').length;
             decimals = len > 1 ? len : 0;
-        }
+        }*/
 
         if (!dec_point) {
             dec_point = '.';
@@ -924,10 +924,10 @@ export class Visual implements IVisual {
             thousands_point = ',';
         }
         if (rounded) {
-            number = parseFloat(number).toFixed(0);
+            number = parseFloat(number).toFixed(decimals);
 
         } else {
-            number = parseFloat(number).toFixed(1);
+            number = parseFloat(number) + "";
 
         }
 
@@ -957,7 +957,7 @@ export class Visual implements IVisual {
                 (decimalCount ? decimal + Math.abs(amount - i).toFixed(decimalCount).slice(2) : "");
         } catch (e) {
             return "error";
-            ////console.log(e)
+            //////////console.log(e)
         }
     }
     /**

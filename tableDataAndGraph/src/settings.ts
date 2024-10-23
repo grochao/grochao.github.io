@@ -123,8 +123,8 @@ class DataPointCardSettings extends FormattingSettingsCard {
 
 
 
-    DecimalPlace = new formattingSettings.NumUpDown({
-        name: "DecimalPlace",
+    DecimalPlaces = new formattingSettings.NumUpDown({
+        name: "DecimalPlaces",
         displayName: "Decimal Place",
         value: 2,
         options: {
@@ -150,7 +150,7 @@ class DataPointCardSettings extends FormattingSettingsCard {
         this.BackGroundColorHeaders,
         this.BackGroundColorHeadersColor,
         this.BackGroundColor,
-        this.DecimalPlace,
+        this.DecimalPlaces,
         this.BackGroundColorAccount,
         this.LabelTotalProfit,
         this.LabelRevenues,
@@ -199,7 +199,7 @@ export type VisualCustomSettingsType = {
         LabelTotal: string
     },
 
-    ValueDecimalPlaces: number,
+    DecimalPlaces: number,
     BackGroundColor: string,
     BackGroundColorAccount: string,
     BackGroundColorHeaders: string,
@@ -213,7 +213,7 @@ export class VisualCustomSettingsModel implements VisualCustomSettingsType {
         public PROFIT: { Label: string; LabelTotal: string; } = null,
         public REVENUES: { Label: string; LabelTotal: string; } = null,
         public NETRESULTOPERATION: { Label: string; LabelTotal: string; } = null,
-        public ValueDecimalPlaces: number = 3,
+        public DecimalPlaces: number = 2,
         public BackGroundColor: string = "#FFFFFF",
         public BackGroundColorAccount: string = "#FFFFFF",
         public BackGroundColorHeaders: string = "#FFFFFF",
@@ -221,6 +221,10 @@ export class VisualCustomSettingsModel implements VisualCustomSettingsType {
 
     }
     public getSettings(_SETTINGS_) {
+
+
+        console.log("*****************[_SETTINGS_]********************");
+        console.info("******[" + JSON.stringify(_SETTINGS_) + "]*******");
         const _AllSettings_: VisualCustomSettingsType = {
             INCOME: {
                 Label: _SETTINGS_.dataPointCard.LabelIncome.value,
@@ -242,7 +246,7 @@ export class VisualCustomSettingsModel implements VisualCustomSettingsType {
                 Label: _SETTINGS_.dataPointCard.LabelTotalNetResultOperation.value,
                 LabelTotal: _SETTINGS_.dataPointCard.LabelTotalNetResultOperation.value
             },
-            ValueDecimalPlaces: _SETTINGS_.dataPointCard.DecimalPlace.value,
+            DecimalPlaces: _SETTINGS_.dataPointCard.DecimalPlaces.value,
             BackGroundColor: _SETTINGS_.dataPointCard.BackGroundColor.value.value,
             BackGroundColorAccount: _SETTINGS_.dataPointCard.BackGroundColorAccount.value.value,
             BackGroundColorHeaders: _SETTINGS_.dataPointCard.BackGroundColorHeaders.value.value,

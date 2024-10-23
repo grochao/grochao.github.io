@@ -130,10 +130,10 @@
                         }
                     }
                 },
-                "ValueDecimalPlaces": {
+                "DecimalPlaces": {
                     "displayName": "Value Decimal Places",
                     "type": {
-                        "integer": true
+                        "numeric": true
                     }
                 }
             }
