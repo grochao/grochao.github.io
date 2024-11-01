@@ -1,0 +1,470 @@
+#ANSlogbox {
+    & {
+        display: block;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 999999;
+        cursor: default;
+        background-color: #131c26;
+        margin: 0;
+        height: 1px;
+        padding: 0px;
+    }
+
+    h1 {
+
+        color: #1b99d2;
+        font-size: 21px;
+        padding: 0 0 0 35px;
+        position: relative;
+
+        &::before {
+            content: "⎆";
+            position: absolute;
+            font-size: 38px;
+
+            top: -10px;
+            left: 0px;
+        }
+
+    }
+
+    textarea {
+        width: 100%;
+        font-size: 20px;
+        height: 100px;
+        display: block;
+        background-color: rgb(219, 232, 251);
+        color: #616161;
+        border: #aeaeae solid 1px;
+        resize: none;
+        padding: 15px;
+    }
+
+    #maximize_icon {
+
+        right: 80px;
+        display: none;
+    }
+
+    #show_hidden {
+        right: 30px;
+        display: block;
+    }
+
+    #maximize_icon,
+    #show_hidden {
+        position: absolute;
+        top: -26px;
+        color: #fff;
+        width: 110px;
+        text-align: center;
+        font-size: 17px;
+        border-radius: 7px 7px 0 0;
+        font-weight: 400;
+        cursor: pointer;
+    }
+
+    #maximize_icon::before {
+        content: "⇱";
+    }
+
+    #show_hidden::before {
+        content: "🞁 Debugger";
+    }
+
+
+
+    &.open {
+        &.maximize {
+            & {
+                position: absolute;
+                top: 15px;
+                left: 15px;
+            }
+
+            #maximize_icon::before {
+                content: "⇲" !important;
+            }
+
+            #maximize_icon {
+                background-color: rgba(33, 129, 238, 0.40);
+
+                font-size: 20px;
+                border-radius: 0 !important;
+                top: 0px !important;
+                right: 65px !important;
+
+            }
+
+            #show_hidden {
+                background-color: rgba(255, 0, 0, 0.40);
+                font-size: 20px;
+                border-radius: 0 !important;
+                top: 0px !important;
+                right: 15px !important;
+            }
+        }
+
+        & {
+            //  padding: 15px;
+            height: 30%;
+        }
+
+        #maximize_icon {
+            background-color: #131c26;
+            font-size: 21px;
+            height: 30px;
+            top: -28px;
+            width: 50px !important;
+            display: block;
+        }
+
+        #show_hidden {
+            background-color: #131c26;
+            font-size: 21px;
+            height: 30px;
+            top: -28px;
+            width: 50px !important;
+        }
+
+        #ANS_console_content {
+            display: block;
+        }
+
+
+
+
+        #show_hidden::before {
+            content: "✕";
+        }
+
+        #maximize_icon:hover {
+            background-color: #217fee;
+            color: #fff;
+        }
+
+
+        #show_hidden:hover {
+            background-color: #FF0000;
+            color: #fff;
+        }
+    }
+
+    &:not(.open) #show_hidden {
+        background-color: #547ddf;
+
+    }
+
+
+
+    #ANS_console_content {
+        font-family: Courier, "Lucida Console", monospace;
+        font-size: 18px;
+        letter-spacing: 0.1em;
+        background-color: transparent;
+        color: #fff;
+        display: none;
+        overflow: auto;
+        display: block;
+        width: 100%;
+        height: 100%;
+
+        padding: 15px;
+        cursor: text;
+        -webkit-user-select: text !important;
+        /* Safari */
+        -ms-user-select: text !important;
+        /* IE 10 and IE 11 */
+        user-select: text !important;
+        /* Standard syntax */
+    }
+}
+
+
+
+/*STYLE SCROLL - BEGIN*/
+/* GENERATOR ONLINE: https://www.cssportal.com/css-scrollbar-generator/*/
+/* Firefox (uncomment to work in Firefox, although other properties will not work!)  */
+/* #ANSlogbox #ANS_console_content {
+  scrollbar-width: thin;
+  scrollbar-color: #54AE32 #575757;
+}*/
+
+
+
+/* Chrome, Edge and Safari */
+#ANSlogbox .content_table_formater::-webkit-scrollbar,
+#ANSlogbox #ANS_console_content::-webkit-scrollbar {
+    height: 11px;
+    width: 11px;
+
+}
+
+#ANSlogbox .content_table_formater::-webkit-scrollbar-track,
+#ANSlogbox #ANS_console_content::-webkit-scrollbar-track {
+    border-radius: 11px;
+    background-color: #575757;
+    cursor: pointer;
+}
+
+#ANSlogbox .content_table_formater::-webkit-scrollbar-track:hover,
+#ANSlogbox #ANS_console_content::-webkit-scrollbar-track:hover {
+    background-color: #666666;
+}
+
+#ANSlogbox .content_table_formater::-webkit-scrollbar-track:active,
+#ANSlogbox #ANS_console_content::-webkit-scrollbar-track:active {
+    background-color: #737373;
+}
+
+#ANSlogbox .content_table_formater::-webkit-scrollbar-thumb,
+#ANSlogbox #ANS_console_content::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #7D7D7D;
+    cursor: pointer;
+}
+
+#ANSlogbox .content_table_formater::-webkit-scrollbar-thumb:hover,
+#ANSlogbox #ANS_console_content::-webkit-scrollbar-thumb:hover {
+    background-color: #5DC137;
+}
+
+#ANSlogbox .content_table_formater::-webkit-scrollbar-thumb:active,
+#ANSlogbox #ANS_console_content::-webkit-scrollbar-thumb:active {
+    background-color: #5DC137;
+}
+
+/*STYLE SCROLL - END*/
+
+#ANSlogbox .container-message {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 3px;
+    margin-bottom: 30px;
+}
+
+#ANSlogbox #ANS_console_content .span {
+    display: flex;
+    width: 90%;
+    margin-bottom: 4px;
+}
+
+#ANSlogbox .container-message .span>span:last-child {
+    border: none;
+    border-left-width: 6px;
+    border-left-style: solid;
+    border-radius: 6px 0 0 6px;
+    padding: 10px 10px;
+    font-size: 15px;
+    border-bottom: #8e969f 1px solid;
+}
+
+#ANSlogbox .container-message .span.log>span:last-child {
+
+    border-left-color: rgb(221, 221, 221) !important;
+    /* background-color: rgb(221, 221, 221, 0.25);*/
+}
+
+#ANSlogbox .container-message .span.error>span:last-child {
+
+    border-left-color: rgb(238 33 33) !important;
+    /* background-color: rgb(238, 33, 33, 0.25);*/
+}
+
+#ANSlogbox .container-message .span.information>span:last-child {
+    border-left-color: rgb(33, 127, 238) !important;
+    /*background-color: rgb(33, 127, 238, 0.25);*/
+}
+
+#ANSlogbox .container-message .span.warning>span:last-child {
+
+    border-left-color: rgb(238, 177, 33) !important;
+    /*background-color: rgb(238, 177, 33, 0.25);*/
+}
+
+#ANSlogbox .span:not(.full-display)>span {
+    width: 100%;
+    flex: 0 0 20px;
+
+}
+
+#ANSlogbox .span.full-display>span {
+    width: 100%;
+    flex: 0 0 100%;
+}
+
+#ANSlogbox .span:not(.full-display)>span:last-child {
+    flex: 0 0 calc(100% - 20px);
+}
+
+
+.content_string_formater {
+    background: #fff;
+    color: #000;
+    margin-top: 15px;
+    padding: 15px;
+    white-space: pre;
+    height: 200px;
+    overflow: auto;
+}
+
+/* STYLE TOGGLE*/
+.div_content_toogle {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+
+    width: 100%;
+    position: relative;
+    font-family: 'Segoe UI Semibold', wf_segoe-ui_semibold, helvetica, arial, sans-serif;
+}
+
+.toggleContainer {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: fit-content;
+    border: 3px solid #079d1d;
+    border-radius: 20px;
+    background: transparent;
+    font-weight: bold;
+    color: #343434;
+    cursor: pointer;
+}
+
+.toggleContainer::before {
+    content: '';
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    left: 0%;
+    border-radius: 20px;
+    background: #079d1d;
+    transition: all 0.3s;
+}
+
+.toggleCheckbox:checked+.toggleContainer::before {
+    left: 50%;
+}
+
+.toggleContainer div {
+    padding: 3px 12px;
+    text-align: center;
+    z-index: 1;
+    height: 23px;
+    font-size: 12px;
+}
+
+.toggleCheckbox {
+    display: none;
+}
+
+.toggleCheckbox:checked+.toggleContainer div:first-child {
+    color: white;
+    transition: color 0.3s;
+}
+
+.toggleCheckbox:checked+.toggleContainer div:last-child {
+    color: #ffffff;
+    transition: color 0.3s;
+}
+
+.toggleCheckbox+.toggleContainer div:first-child {
+    color: #ffffff;
+    transition: color 0.3s;
+}
+
+.toggleCheckbox+.toggleContainer div:last-child {
+    color: white;
+    transition: color 0.3s;
+}
+
+/*STYLE TABLE*/
+.content_table_formater,
+.content_table_formater *,
+.content_table_formater ::after,
+.content_table_formater ::before {
+    box-sizing: border-box;
+}
+
+.content_table_formater {
+    display: none;
+    width: 100%;
+    overflow: auto;
+    max-width: 100%;
+    background-color: #fff;
+    margin: 20px 0 0 0;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.formatjson span.open .content_string_formater {
+    display: none !important;
+}
+
+.formatjson span.open .content_table_formater {
+    display: block !important;
+}
+
+.content_table_formater .table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+}
+
+.content_table_formater .table {
+    border-collapse: collapse;
+}
+
+.content_table_formater .table td,
+.content_table_formater .table th {
+    padding: .75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+.content_table_formater .table th {
+    text-align: inherit;
+}
+
+.content_table_formater .table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.content_table_formater .table td,
+.content_table_formater .table th {
+    padding: .75rem;
+    vertical-align: top;
+    border: 1px solid #dee2e6;
+}
+
+.content_table_formater .table td span.key,
+.content_table_formater .table th span.key {
+    display: block;
+    width: 100%;
+    /*padding: 0.75rem;*/
+    white-space: nowrap;
+    background-color: #0f5795;
+    color: #fff;
+}
+
+.content_table_formater .table td span.value,
+.content_table_formater .table th span.value {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    white-space: nowrap;
+    border: 1px solid #dee2e6;
+    color: #0f5795;
+}
+
+.content_table_formater .table {
+    text-align: center;
+}

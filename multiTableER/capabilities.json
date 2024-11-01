@@ -1,13 +1,23 @@
 {
     "dataRoles": [
         {
-            "displayName": "Category Data",
-            "name": "category",
+            "displayName": "Accounts",
+            "name": "rows",
             "kind": "Grouping"
         },
         {
-            "displayName": "Measure Data",
-            "name": "measure",
+            "displayName": "Value columns",
+            "name": "columns",
+            "kind": "Measure"
+        },
+        {
+            "displayName": "Date Accounts",
+            "name": "date",
+            "kind": "Measure"
+        },
+        {
+            "displayName": "Sort accounts",
+            "name": "sort_accounts",
             "kind": "Measure"
         }
     ],
@@ -42,7 +52,7 @@
                         "fill": {}
                     }
                 },
-                 "fontSize": {
+                "fontSize": {
                     "type": {
                         "formatting": {
                             "fontSize": true
@@ -54,12 +64,28 @@
     },
     "dataViewMappings": [
         {
+            "conditions": [
+                {
+                    "rows": {
+                        "max": 5
+                    },
+                    "columns": {
+                        "max": 6
+                    },
+                    "sort_accounts": {
+                        "max": 1
+                    },
+                    "date": {
+                        "max": 1
+                    }
+                }
+            ],
             "categorical": {
                 "categories": {
                     "for": {
-                        "in": "category"
+                        "in": "rows"
                     },
-                    "dataReductionAlgorithm": {
+                    "sort_accounts": {
                         "top": {}
                     }
                 },
@@ -67,7 +93,17 @@
                     "select": [
                         {
                             "bind": {
-                                "to": "measure"
+                                "to": "columns"
+                            }
+                        },
+                        {
+                            "bind": {
+                                "to": "sort_accounts"
+                            }
+                        },
+                        {
+                            "bind": {
+                                "to": "date"
                             }
                         }
                     ]
@@ -75,5 +111,20 @@
             }
         }
     ],
-    "privileges": []
+    "sorting": {
+        "implicit": {
+            "clauses": [
+                {
+                    "role": "sort_accounts",
+                    "direction": 1
+                }
+            ]
+        }
+    },
+    "privileges": [
+        {
+            "name": "ExportContent",
+            "essential": true
+        }
+    ]
 }

@@ -1,0 +1,17 @@
+{
+		"version": "1.0.0.0",
+		"author": {"name":"Guillermo Rocha","email":"guillermo.rocha@ans.edu.ni"},
+		"resources": [
+			{
+				"resourceId": "rId0",
+				"sourceType": 5,
+				"file": "resources/MultiTableER.pbiviz.json"
+			}
+		],
+		"visual": {"name":"multiTableER","displayName":"MultiTableER","guid":"MultiTableER","visualClassName":"Visual","version":"1.0.0.0","description":"Tabla para mostrar el Estado de resultado y comparativa entre años y el bodget","supportUrl":"https://ans.edu.ni","gitHubUrl":""},
+		"metadata": {
+			"pbivizjson": {
+				"resourceId": "rId0"
+			}
+		}
+	}

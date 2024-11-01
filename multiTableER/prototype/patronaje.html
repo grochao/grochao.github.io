@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuadrado con D3.js</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
+    <!-- Agregar el enlace a D3.js desde un CDN -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.min.css">
+</head>
+
+<body>
+
+
+    <table class="tg">
+        <thead>
+            <tr>
+                <th colspan="2">LARGO</th>
+                <th colspan="5">CONTORNO</th>
+            </tr>
+            <tr>
+                <th class="tg-0pky">
+                    <span class="title">ALTO</span>
+                    <span class="value">
+                        <input type="text" id="txt_alto" class="hidde-print" value="90">
+                        <div class="hidde-desktop" id="str_alto"></div>
+                    </span>
+                </th>
+                <th class="tg-0pky">
+                    <span class="title">TIRO</span>
+                    <span class="value">
+                        <input type="text" id="txt_tiro" class="hidde-print" value="27">
+                        <div class="hidde-desktop" id="str_tiro"></div>
+                    </span>
+                </th>
+                <th class="tg-0pky">
+                    <span class="title">CINTURA</span>
+                    <span class="value">
+                        <input type="text" id="txt_cintura" class="hidde-print" value="93">
+                        <div class="hidde-desktop" id="str_cintura"></div>
+                    </span>
+                </th>
+
+                <th class="tg-0pky">
+                    <span class="title">CADERA</span>
+                    <span class="value">
+                        <input type="text" id="txt_cadera" class="hidde-print" value="120">
+                        <div class="hidde-desktop" id="str_cadera"></div>
+                    </span>
+                </th>
+                <th class="tg-0pky">
+                    <span class="title">COPA</span>
+                    <span class="value">
+                        <input type="text" id="txt_copa" class="hidde-print" value="200">
+                        <div class="hidde-desktop" id="str_copa"></div>
+                    </span>
+                </th>
+
+                <th class="tg-0pky">
+                    <span class="title">RODILLA</span>
+                    <span class="value">
+                        <input type="text" id="txt_rodilla" class="hidde-print" value="58" readonly>
+                        <div class="hidde-desktop" id="str_rodilla"></div>
+                    </span>
+                </th>
+                <th class="tg-0pky">
+                    <span class="title">RUEDO</span>
+                    <span class="value">
+                        <input type="text" id="txt_ruedo" class="hidde-print" value="44">
+                        <div class="hidde-desktop" id="str_ruedo"></div>
+                    </span>
+                </th>
+            </tr>
+
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="5">
+
+                </td>
+                <td>
+                    <button type="button" id="btn_clickBlack" class="click btnGrey hidde-print">Black</button>
+                </td>
+                <td>
+                    <button type="button" id="btn_clickBlue" class="click btnBlue hidde-print">BluePrint</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="tg-0pky"></td>
+                <td class="tg-0pky" colspan="2"></td>
+                <td class="tg-0pky no-padding" colspan="4" rowspan="10">
+                    <div id="content_svg"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="tg-0pky"></td>
+                <td class="tg-0pky" colspan="2"></td>
+            </tr>
+            <tr>
+                <td class="tg-0pky"></td>
+                <td class="tg-0pky" colspan="2"></td>
+            </tr>
+            <tr>
+                <td class="tg-0pky"></td>
+                <td class="tg-0pky" colspan="2"></td>
+            </tr>
+            <tr>
+                <td class="tg-0pky"></td>
+                <td class="tg-0pky" colspan="2"></td>
+            </tr>
+            <tr>
+                <td class="tg-0pky"></td>
+                <td class="tg-0pky" colspan="2"></td>
+            </tr>
+            <tr>
+                <td class="tg-0pky"></td>
+                <td class="tg-0pky" colspan="2"></td>
+            </tr>
+            <tr>
+                <td class="tg-0pky"></td>
+                <td class="tg-0pky" colspan="2"></td>
+            </tr>
+            <tr>
+                <td class="tg-0pky"></td>
+                <td class="tg-0pky" colspan="2"></td>
+            </tr>
+            <tr>
+                <td class="tg-0pky"></td>
+                <td class="tg-0pky" colspan="2"></td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+
+</html>

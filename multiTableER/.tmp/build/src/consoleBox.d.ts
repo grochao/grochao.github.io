@@ -1,0 +1,31 @@
+export declare class CLS_ANSconsoleBox {
+    private static _THIS_HTML_;
+    private static count_group;
+    private static __VAR_DATETYPE_UNDEFINED__;
+    private static __VAR_DATETYPE_JSON__;
+    private static __VAR_DATETYPE_JSON_STRING__;
+    private static __VAR_DATETYPE_ARRAY__;
+    private static __VAR_DATETYPE_STRING__;
+    private static __VAR_DATETYPE_NUMBER__;
+    private static __VAR_DATETYPE_BOOLEAN__;
+    private static __VAR_DATETYPE_STRING_BOOLEAN__;
+    constructor();
+    private static debug;
+    private static DetectDataType;
+    static InitBOX(): void;
+    private static GetDOM;
+    private static PrintDom;
+    private static returnSetectFormat;
+    private static displayFormattedJson;
+    private static returnSpan;
+    private static displayFormatTable;
+    private static returnText;
+    static Clear(): void;
+    Group(_title_?: string): void;
+    GroupEnd(): void;
+    Log(_VALUE_: any): void;
+    Warn(_VALUE_: any): void;
+    Info(_VALUE_: any): void;
+    Error(_VALUE_: any): void;
+}
+export declare const ANSconsoleBox: CLS_ANSconsoleBox;

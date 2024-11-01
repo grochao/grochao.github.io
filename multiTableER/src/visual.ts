@@ -29,42 +29,88 @@ import powerbi from "powerbi-visuals-api";
 import { FormattingSettingsService } from "powerbi-visuals-utils-formattingmodel";
 import "./../style/visual.less";
 
+import { ANSconsoleBox } from "./cls_consoleBox/consoleBox"
+
+import { ANS_JsonDB } from "./process_data";
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
 
 import { VisualFormattingSettingsModel } from "./settings";
 
+//import { json } from "d3";
+
 export class Visual implements IVisual {
     private target: HTMLElement;
-    private updateCount: number;
-    private textNode: Text;
+    //private updateCount: number;
+    //private textNode: Text;
     private formattingSettings: VisualFormattingSettingsModel;
     private formattingSettingsService: FormattingSettingsService;
 
     constructor(options: VisualConstructorOptions) {
-        console.log('Visual constructor', options);
+
         this.formattingSettingsService = new FormattingSettingsService();
         this.target = options.element;
-        this.updateCount = 0;
+        // this.updateCount = 0;
+
+
+
         if (document) {
-            const new_p: HTMLElement = document.createElement("p");
-            new_p.appendChild(document.createTextNode("Update count:"));
-            const new_em: HTMLElement = document.createElement("em");
-            this.textNode = document.createTextNode(this.updateCount.toString());
-            new_em.appendChild(this.textNode);
-            new_p.appendChild(new_em);
-            this.target.appendChild(new_p);
+
+
+
+            /* const new_p: HTMLElement = document.createElement("p");
+             new_p.appendChild(document.createTextNode("Update count:"));
+             const new_em: HTMLElement = document.createElement("em");
+             this.textNode = document.createTextNode(this.updateCount.toString());
+             new_em.appendChild(this.textNode);
+             new_p.appendChild(new_em);
+             this.target.appendChild(new_p);*/
+            ANSconsoleBox.Warn("-Guillermo Rocha-");
+
+
         }
     }
+    /* private static reMapJSON(_DATA_: any = false, _TYPE_: string = ""): any {
+         if (_DATA_) {
+             return _DATA_.map((_rows_) => {
+                 const _role_ = Object.keys(_rows_.source.roles)[0]
+                 return {
+                     index: Object.values(_rows_.source.rolesIndex[_role_][0])
+                 }
+             });
+             //cosnt _json_ = _DATA_.
+         } else {
+ 
+             return _TYPE_
+         }
+     }
+     private static ReturnData(_DATA_: any = false): any {
+         if (_DATA_) {
+             return {
+                 rows: Visual.reMapJSON(_DATA_.categories, "rows"),
+                 columns: Visual.reMapJSON(_DATA_.categories, "columns"),
+ 
+             }
+         } else {
+ 
+             return false
+         }
+     }*/
 
     public update(options: VisualUpdateOptions) {
         this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, options.dataViews[0]);
 
-        console.log('Visual update', options);
-        if (this.textNode) {
-            this.textNode.textContent = (this.updateCount++).toString();
+
+        if (document) {
+
+            ANSconsoleBox.Clear();
+            ANSconsoleBox.Group("type:" + ANSconsoleBox.returnDetectDataType(options.dataViews[0]));
+            ANSconsoleBox.Warn(JSON.stringify(ANS_JsonDB.ReturnJSON(options.dataViews[0].categorical)))// .ReturnJSON());
+            ANSconsoleBox.GroupEnd();
         }
+
+
     }
 
     /**
