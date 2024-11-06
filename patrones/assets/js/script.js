@@ -93,6 +93,8 @@ $(function() {
         if ((_TYPE_).toUpperCase() == "FRONTEND") {
             return [{
                     Title: null,
+                    Title2: "APLOMO",
+                    TypeLine: "none",
                     Label: "G",
                     Marcas: [Coord(0, 0), Coord(0, medidas.alto + Ratio_cm_px(6))],
                     Cortes: null,
@@ -103,6 +105,8 @@ $(function() {
                 },
                 {
                     Title: "Cintura",
+                    TypeLine: "solid",
+                    TypeLine: "none",
                     Label: "A",
                     Marcas: [Coord(0, 0), Coord(Ancho_de_marca, 0)],
                     Cortes: [Coord(0, 0), Coord(0, 0)],
@@ -115,6 +119,7 @@ $(function() {
                 {
                     Title: "Cadera",
                     Label: "B",
+                    TypeLine: "solid",
                     Marcas: [Coord(0, medidas.alto_de_cadera), Coord(Ancho_de_marca, medidas.alto_de_cadera)],
                     Cortes: [Coord(0, 0), Coord(0, medidas.alto_de_cadera)],
                     Point: {
@@ -124,6 +129,7 @@ $(function() {
                 },
                 {
                     Title: "Tiro",
+                    TypeLine: "solid",
                     Label: "C",
                     Marcas: [Coord(0, medidas.tiro), Coord(Ancho_de_marca, medidas.tiro)],
                     Cortes: [Coord(0, 0), Coord(0, medidas.tiro)],
@@ -135,11 +141,11 @@ $(function() {
                 }
 
                 ,
-                /*
-                                    {
-                                        Title: null, 
-                                        Title2:"ANCHO DE CADERA",
-                    ,
+
+                {
+                    Title: null,
+                    Title2: "ANCHO DE CADERA",
+                    TypeLine: "dash",
                     Label: "",
                     Marcas: null,
                     Cortes: [Coord(0, medidas.tiro), Coord(Ancho_de_marca, medidas.tiro)],
@@ -147,10 +153,11 @@ $(function() {
                         a0: null,
                         a1: null
                     }
-                }, */
+                },
                 {
                     Title: null,
                     Title2: "ALTO DEL ZIPPER",
+                    TypeLine: "solid",
                     Label: "",
                     Marcas: null,
                     Cortes: [Coord(Ancho_de_marca, medidas.tiro), Coord(Ancho_de_marca - Ratio_cm_px(6), medidas.tiro - Ratio_cm_px(2)), Coord(Ancho_de_marca - Ratio_cm_px(6), 0)],
@@ -160,6 +167,7 @@ $(function() {
                     }
                 }, {
                     Title: "Rodilla",
+                    TypeLine: "solid",
                     Label: "D",
                     Marcas: [Coord(0, alto_de_rodilla), Coord(Ancho_de_marca, alto_de_rodilla)],
                     Cortes: [
@@ -173,6 +181,7 @@ $(function() {
                     }
                 }, {
                     Title: "Alto",
+                    TypeLine: "solid",
                     Label: "E",
                     Marcas: [Coord(0, medidas.alto), Coord(Ancho_de_marca, medidas.alto)],
                     Cortes: [Coord(medidas.aplome - (medidas.rodilla / 4), alto_de_rodilla), Coord(medidas.aplome - (medidas.ruedo / 4), medidas.alto)],
@@ -182,6 +191,7 @@ $(function() {
                     }
                 }, {
                     Title: "Bota",
+                    TypeLine: "solid",
                     Label: "F",
                     Marcas: [Coord(0, medidas.alto + Ratio_cm_px(6)), Coord(Ancho_de_marca, medidas.alto + Ratio_cm_px(6))],
                     Cortes: [Coord(medidas.aplome - (medidas.ruedo / 4), medidas.alto), Coord((medidas.aplome - (medidas.ruedo / 4)) - Ratio_cm_px(1.5), medidas.alto + Ratio_cm_px(6))],
@@ -194,6 +204,7 @@ $(function() {
                 {
                     Title: "Aplome",
                     Label: "G",
+                    TypeLine: "none",
                     Marcas: [Coord(Aplome, 0), Coord(Aplome, medidas.alto + Ratio_cm_px(6))],
                     Cortes: null,
                     Point: {
@@ -205,7 +216,7 @@ $(function() {
                 {
                     Title: "Bota-Horizontal",
                     Label: "G", //G-G₁ 
-
+                    TypeLine: "solid",
                     Marcas: [Coord(0, 0), Coord(0, 0)],
                     Cortes: [Coord((medidas.aplome - (medidas.ruedo / 4)) - Ratio_cm_px(1.5), medidas.alto + Ratio_cm_px(6)), Coord((medidas.aplome + (medidas.ruedo / 4)) + Ratio_cm_px(1.5), medidas.alto + Ratio_cm_px(6))],
                     Point: {
@@ -214,6 +225,7 @@ $(function() {
                     }
                 }, {
                     Title: "Bota-Vertical",
+                    TypeLine: "solid",
                     Label: "G-F", //G-F ,
                     Marcas: null,
                     Cortes: [Coord((medidas.aplome - (medidas.ruedo / 4)) - Ratio_cm_px(1.5), medidas.alto + Ratio_cm_px(6)), Coord((medidas.aplome + (medidas.ruedo / 4)) + Ratio_cm_px(1.5), medidas.alto + Ratio_cm_px(6))],
@@ -307,10 +319,10 @@ $(function() {
             .y(d => d.y);
         if (_TYPE_ == "FRONTEND") {
             // console.info(_points_);
-            if (type_line == "trazo") {
-                appendLine(CorteFrontal, _points_, "solid", 3);
+            if (type_line == "trazo" || type_line == "solid") {
+                appendLine(CorteFrontal, _points_, type_line, 3);
             } else if (type_line == "dash") {
-                appendLine(CorteFrontal, _points_, "dash", 2);
+                appendLine(CorteFrontal, _points_, type_line, 2);
             } else if (type_line == "pointers") {
                 if (_points_.Coord.a0 !== null) {
 
@@ -458,7 +470,8 @@ $(function() {
                         izq: data.Label + "₁"
                     },
                     Coord: data.Point
-                }
+                },
+                typeLine: data.type_line
 
             }
         });
@@ -476,7 +489,7 @@ $(function() {
 
                 //console.warn(index + "<= " + Step);
                 if (_corte_ !== null && (index < Step)) {
-                    CreateLine(_corte_, "FRONTEND", "trazo");
+                    CreateLine(_corte_, "FRONTEND", _trazo_.typeLine);
                 }
             });
 
@@ -796,7 +809,7 @@ $(function() {
         const _DPI_ = getDPI();
         $(".slider").slider({
             max: 20,
-            min: 0,
+            min: 1,
             value: Step,
             slide: function(e, ui) {
 
