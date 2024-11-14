@@ -1,0 +1,146 @@
+html,
+body {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+html *,
+html *::before,
+html *::after,
+body *,
+body *::before,
+body *::after {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(5, 115, 53, 0.985);
+  border-radius: 200px;
+}
+
+.visual-tableDetailsinrow {
+  overflow: auto;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0px;
+  border: 0px;
+  width: 100%;
+}
+
+table * {
+  text-align: left;
+}
+
+table > thead {
+  background-color: #9A4DB8;
+  color: #fff;
+}
+
+table > tbody > tr {
+  transition: background-color 0.3s ease-in-out;
+}
+
+table > tbody > tr:nth-child(even) {
+  background: #F3F2F1;
+}
+
+table > tbody > tr:nth-child(odd) {
+  background: #fff;
+}
+
+table > tbody > tr:hover {
+  background: #e1e1e1;
+}
+
+.content-details,
+.content-columns-values {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.content-details li,
+.content-columns-values li {
+  padding: 7px 15px;
+}
+
+.table {
+  /* .fixed-width {
+        //display: table-cell;
+        width: 200px;
+    }
+    .flex-width {
+        display: table-cell;
+        //  width: 1fr;
+       
+    }*/
+}
+
+.table {
+  /*display: grid;
+        grid-template-columns: 150px repeat(auto-fit, minmax(0, 1fr));
+       
+        width: 100%;
+        grid-auto-rows: min-content;
+        border-collapse: collapse;
+        border-spacing: 0px;
+        border: 0px;*/
+}
+
+.table * {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.table .row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  height: 100%;
+  -webkit-box-align: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+}
+
+.table.border_bottom .row {
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+.table.border_bottom .row:last-child {
+  border: none !important;
+}
+
+.table .cell.top.resizable {
+  position: relative;
+}
+
+.table .cell.top.resizable::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background-color: #ddd;
+  cursor: ew-resize;
+  z-index: 1;
+}
+
+.table thead th {
+  padding: 7px 7px;
+}

@@ -1,0 +1,96 @@
+{
+    "dataRoles": [
+        {
+            "displayName": "Headers rows",
+            "name": "headers_rows",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Columns",
+            "name": "columns_value",
+            "kind": "Measure"
+        }
+    ],
+    "objects": {
+        "dataPoint": {
+            "properties": {
+                "defaultColor": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "showAllDataPoints": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "fill": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "fillRule": {
+                    "type": {
+                        "fill": {}
+                    }
+                },
+                "fontSize": {
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                }
+            }
+        },
+        "columnWidth": {
+            "displayName": "Column Widths",
+            "properties": {
+                "WidthsJson": {
+                    "type": {
+                        "text": true
+                    }
+                }
+            }
+        }
+    },
+    "dataViewMappings": [
+        {
+            "table": {
+                "rows": {
+                    "select": [
+                        {
+                            "for": {
+                                "in": "headers_rows"
+                            }
+                        },
+                        {
+                            "for": {
+                                "in": "columns_value"
+                            }
+                        }
+                    ],
+                    "dataReductionAlgorithm": {
+                        "window": {
+                            "count": 20000
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "privileges": [
+        {
+            "name": "ExportContent",
+            "essential": true
+        }
+    ]
+}

@@ -1,0 +1,218 @@
+html,
+body {
+    & {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(2, 66, 30, 0.527);
+    border-radius: 200px;
+}
+
+#sandbox-host {
+    overflow: auto !important;
+}
+
+table {
+
+    // background-color: red;
+    & {
+        width: auto;
+        /* La tabla se ajustará al contenido en lugar del contenedor */
+        table-layout: auto;
+        /* Deja que el ancho de cada columna dependa de su contenido */
+        border-collapse: collapse;
+        /* Opcional: Une los bordes para que se vea mejor */
+
+        border-spacing: 0px;
+        border: 0px;
+        width: 100%;
+    }
+
+    * {
+        text-align: left;
+    }
+
+    &>thead {
+        //background-color: #9A4DB8;
+        //color: #fff;
+
+        position: relative;
+
+        &::before {
+            background: rgb(255, 255, 255);
+            background: -moz-linear-gradient(180deg, rgba(255, 255, 255, 0) 52%, rgba(0, 0, 0, 0.18539915966386555) 100%);
+            background: -webkit-linear-gradient(180deg, rgba(255, 255, 255, 0) 52%, rgba(0, 0, 0, 0.18539915966386555) 100%);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0) 52%, rgba(0, 0, 0, 0.18539915966386555) 100%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            content: '';
+            pointer-events: none;
+            z-index: 1;
+        }
+    }
+
+    &>tbody {
+        &>tr {
+            & {
+                transition: background-color 0.3s ease-in-out;
+            }
+
+            &:nth-child(even) {
+                background: #F3F2F1
+            }
+
+            &:nth-child(odd) {
+                background: #fff
+            }
+
+            &:hover {
+                background: #e1e1e1
+            }
+        }
+    }
+}
+
+.content-details,
+.content-columns-values {
+    & {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    li {
+        padding: 7px 15px;
+    }
+}
+
+.table {
+    & {
+
+        /*display: grid;
+        grid-template-columns: 150px repeat(auto-fit, minmax(0, 1fr));
+       
+        width: 100%;
+        grid-auto-rows: min-content;
+        border-collapse: collapse;
+        border-spacing: 0px;
+        border: 0px;*/
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    }
+
+    .row {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        height: 100%;
+        -webkit-box-align: stretch !important;
+        -ms-flex-align: stretch !important;
+        align-items: stretch !important;
+
+
+    }
+
+    .cell {
+        //webkit-box-flex: 1;
+        // -ms-flex-positive: 1;
+        // flex-grow: 1;
+        overflow: hidden;
+        max-width: 100%;
+        padding: 7px;
+        // min-width: 180px;
+    }
+
+    &.border_bottom {
+        .row {
+            border: none;
+            border-bottom: 1px solid #ddd;
+
+            &:last-child {
+                border: none !important;
+            }
+        }
+    }
+
+    /* .fixed-width {
+        //display: table-cell;
+        width: 200px;
+    }
+    .flex-width {
+        display: table-cell;
+        //  width: 1fr;
+       
+    }*/
+    .cell {
+        position: relative;
+
+        &.top {
+            & {
+                display: flex;
+                align-items: center;
+            }
+
+            &.resizable {
+                position: relative;
+            }
+
+            &::before {
+
+                content: '';
+                position: absolute;
+                pointer-events: none;
+                transition: background-color 0.3s ease-in-out;
+                width: 100%;
+                height: 100%;
+                z-index: 2;
+                top: 0;
+                left: 0;
+            }
+
+            &:hover {
+                &::before {
+
+                    background-color: rgba(0, 0, 0, 0.078);
+
+                }
+            }
+        }
+    }
+
+    .cell.top.resizable::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 2px;
+        height: 100%;
+        background-color: transparent;
+        cursor: ew-resize;
+        z-index: 1;
+    }
+}

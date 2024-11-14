@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.min.css">
+</head>
+
+<body>
+    <!--table id="DetailsInRows">
+        <thead>
+            <tr>
+                <th>
+                    <div class="table border_bottom">
+
+                        <div class="row ">
+                            <div data-columnid="column-header" class="cell resizable top fixed-width">Nombre del Alumno</div>
+                            <div data-columnid="column-error" class="cell resizable top  flex-width">ERROR</div>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>
+                    <div class="table">
+                        <div class="header_row row">
+                            <div class="cell resizable fixed-width column-header">
+                                <div class="title">Dtrinidad Maria alejandra</div>
+                            </div>
+                            <div class="cell resizable flex-width column-error">
+                                <div class="count">3</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table border_bottom">
+                        <div class="values_row row">
+                            <div class="cell resizable fixed-width column-header">
+                                <ul class="content-details">
+                                    <li class="detail">
+                                        <span class="name">Fecha</span>
+                                        <span class="value">08/29/2024</span>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <div class="cell resizable flex-width column-error">
+                                <ul class="content-columns-values">
+                                    <li class="detail">
+                                        <span class="name">Beca Repetida</span>
+                                        <span class="value">2024MAG6001</span>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="values_row row">
+
+                            <div class="cell resizable fixed-width column-header">
+                                <ul class="content-details">
+                                    <li class="detail">
+                                        <span class="name">Fecha</span>
+                                        <span class="value">10/26/2024</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="cell resizable flex-width column-error">
+                                <ul class="content-columns-values">
+
+                                    <li class="detail">
+                                        <span class="name">Repitente</span>
+                                        <span class="value">ANTES: ES-12 | AHORA:ES-11</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div class="table">
+                        <div class="header_row row">
+                            <div class="cell resizable fixed-width column-header">
+                                <div class="title">Dtrinidad Maria alejandra</div>
+                            </div>
+                            <div class="cell resizable flex-width column-error">
+                                <div class="count">3</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table border_bottom">
+                        <div class="values_row row">
+                            <div class="cell resizable fixed-width column-header">
+                                <ul class="content-details">
+                                    <li class="detail">
+                                        <span class="name">Fecha</span>
+                                        <span class="value">08/29/2024</span>
+                                    </li>
+
+                                </ul>
+                            </div>
+                            <div class="cell resizable flex-width column-error">
+                                <ul class="content-columns-values">
+                                    <li class="detail">
+                                        <span class="name">Beca Repetida</span>
+                                        <span class="value">2024MAG6001</span>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="values_row row">
+
+                            <div class="cell resizable fixed-width column-header">
+                                <ul class="content-details">
+                                    <li class="detail">
+                                        <span class="name">Fecha</span>
+                                        <span class="value">10/26/2024</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="cell resizable flex-width column-error">
+                                <ul class="content-columns-values">
+
+                                    <li class="detail">
+                                        <span class="name">Repitente</span>
+                                        <span class="value">ANTES: ES-12 | AHORA:ES-11</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </td>
+            </tr>
+
+
+        </tbody>
+    </table-->
+
+
+
+    <table class="table" id="DetailsInRows">
+        <thead>
+            <tr>
+                <th class="cell top resizable">Nonbre</th>
+                <th class="cell top resizable">Error</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <span class="title">Guillermo Rocha</span>
+                    <span class="details">8</span>
+                </td>
+                <td>
+                    <span class="title">8</span>
+                    <span class="details">
+                        <ul>
+                            <li>
+                                <span>Fecha:</span> 11/10/2024
+                    </li>
+                    </ul>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="title">Mauricio Ortiz</span>
+                    <span class="details"></span>
+                </td>
+                <td>
+                    <span class="title">8</span>
+                    <span class="details">
+                        <ul>
+                            <li>
+                                <span>Fecha:</span> 11/10/2024
+                    </li>
+                    </ul>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        document.querySelectorAll('.cell.resizable.top').forEach(function(cell) {
+            cell.addEventListener('mousedown', function(event) {
+                // Verificamos si el clic está en el margen derecho de la celda
+
+
+
+                if (event.offsetX > cell.offsetWidth - 10) { // 10px del borde derecho
+                    const startX = event.clientX;
+                    const startWidth = cell.offsetWidth;
+                    const dataColumnID = cell.getAttribute('data-columnid');
+                    // const div = document.querySelector('.mi-clase')
+
+                    console.log(dataColumnID);
+
+                    const column_reference = document.querySelectorAll("." + dataColumnID);
+                    const doDrag = function(e) {
+                        const newWidth = startWidth + (e.clientX - startX);
+                        cell.style.width = newWidth + 'px';
+
+                        column_reference.forEach(function(div) {
+                            div.style.width = newWidth + 'px';
+                        });
+                    };
+
+                    const stopDrag = function() {
+                        document.removeEventListener('mousemove', doDrag);
+                        document.removeEventListener('mouseup', stopDrag);
+                    };
+
+                    document.addEventListener('mousemove', doDrag);
+                    document.addEventListener('mouseup', stopDrag);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
