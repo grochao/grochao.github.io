@@ -168,10 +168,24 @@ body {
 h1 {
 
     margin: 0 0 5px 0;
-    font-weight: 300;
+    font-weight: 400;
     font-size: clamp(20px, 4.5vw, 35px);
 
 
+}
+
+h2 {
+    display: inline-block;
+    width: 100%;
+    margin: 0 0 5px 0;
+    font-weight: 300;
+    font-size: clamp(18px, 3vw, 22px)
+}
+
+p {
+    font-weight: 100;
+    line-height: 1.4em;
+    font-size: clamp(15px, 3vw, 18px)
 }
 
 .boxs {
@@ -188,7 +202,7 @@ h1 {
 
         & {
             padding: 7px 7px;
-            display: flex;
+
             margin-bottom: 15px;
         }
 
@@ -215,6 +229,11 @@ h1 {
 
             [class*="col-"] {
                 padding: 0 3px;
+            }
+
+            .col-12 {
+                width: 100%;
+                flex: 0 0 auto;
             }
 
             .col-1-3 {
