@@ -19,6 +19,8 @@ $(function () {
                 $(".sticky").removeClass("show");
 
             }
+            console.log(divOuterHeight)
+
         });
     });/*
     $(document).ready(function () {
