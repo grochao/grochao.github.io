@@ -34,7 +34,7 @@
   cursor: default;
 }
 
-.owl-theme .owl-nav.disabled+.owl-dots {
+.owl-theme .owl-nav.disabled + .owl-dots {
   margin-top: 10px;
 }
 
