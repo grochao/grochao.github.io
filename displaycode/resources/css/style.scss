@@ -9,7 +9,7 @@ html,
 body {
     padding: 0;
     margin: 0;
-    font-size: 18px;
+    font-size: 32px;
 
     &,
     *,
@@ -51,7 +51,7 @@ body {
             padding: 2px;
             display: block;
             width: 90%;
-            max-width: 800px;
+            max-width: 1150px;
             height: 90vh;
             height: 600px;
             box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0.3) inset;
@@ -116,7 +116,7 @@ body {
 
                     &.power-query {
                         font-size: 0.9em;
-                        background-color: #2fa07c;
+                        background-color: #217345;
                         border-radius: 5px;
                         color: #fff;
                         margin-right: 5px;
@@ -207,7 +207,7 @@ body {
                     text-align: left;
                     margin-left: 20px;
                     color: #fff;
-                    font-size: 1em;
+                    font-size: 18px;
                 }
 
                 i {
@@ -217,7 +217,6 @@ body {
                     font-style: normal;
                     padding: 12px 5px;
                     border-radius: 5px;
-                    font-size: 1.15em;
                     margin-right: 10px;
                     background-position: center;
                     background-size: cover;
@@ -231,20 +230,20 @@ body {
                     text-align: right;
                     margin-right: 20px;
                     color: #fff;
-                    font-size: 1em;
+                    font-size: 18px;
                 }
 
                 i {
                     font-style: normal;
                     padding: 12px 5px;
                     border-radius: 5px;
-                    font-size: 1.15em;
+                    font-size: 20px;
                     margin-right: 5px;
                 }
 
                 &.power-query {
                     i {
-                        background-color: #2fa07c;
+                        background-color: #217345;
                         color: #fff;
                     }
                 }
