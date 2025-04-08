@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Code</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+    <!--
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/javascript.min.js"></script>
+-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css">
+    <link rel="stylesheet" href="./resources/css/style.min.css">
+    <script>
+        hljs.highlightAll();
+        document.addEventListener("DOMContentLoaded", function () {
+            const codeElement = document.querySelector("code.language");
+            const codeContent = `` +
+`= Table.ReplaceValue(` +
+`\n    #"paso_anterior",` +
+`\n    each [NOMBRE],` +
+`\n    each` +
+`\n        Text.FromBinary(Text.ToBinary([NOMBRE], 437), 1252),` +
+`\n    Replacer.ReplaceValue,` +
+`\n    {"NOMBRE"}` +
+`\n  )`;
+            codeElement.textContent = codeContent;
+            hljs.highlightBlock(codeElement);
+        }); 
+    </script>
+</head>
+
+<body class="gradient-02">
+    <div class="content-screen">
+        <div class="box-center background-gray">
+            <div class="box-header">
+                <div class="btns">
+                    <span>
+                        <i></i>
+                        <i></i>
+                        <i></i>
+                    </span>
+                </div>
+                <div><span class="fit-text">Display Code</span></div>
+            </div>
+            <pre><code class="language"></code> </pre>
+        </div>
+    </div>
+</body>
+
+</html>
