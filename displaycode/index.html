@@ -18,12 +18,14 @@
             const codeElement = document.querySelector("code.language");
             const codeContent = `` +
 `= Table.ReplaceValue(` +
-`\n    #"paso_anterior",` +
-`\n    each [NOMBRE],` +
-`\n    each Text.FromBinary(Text.ToBinary([NOMBRE], 437), 1252),` +
-`\n    Replacer.ReplaceValue,` +
-`\n    {"NOMBRE"}` +
-`\n  )`;
+`\n  #"paso_anterior",` +
+`\n  each` +
+`\n     [NOMBRE],` +
+`\n  each ` +
+`\n     Text.FromBinary(Text.ToBinary([NOMBRE], 437), 1252),` +
+`\n  Replacer.ReplaceValue,` +
+`\n  {"NOMBRE"}` +
+`\n)`;
             codeElement.textContent = codeContent;
             hljs.highlightBlock(codeElement);
         }); 
