@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Display Code</title>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
     <!--
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/languages/python.min.js"></script>
@@ -12,46 +13,47 @@
 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css">
     <link rel="stylesheet" href="./resources/css/style.min.css">
-    <script>
-        hljs.highlightAll();
-        document.addEventListener("DOMContentLoaded", function () {
-            const codeElement = document.querySelector("code.language");
-            const codeContent = `` +
-`= Table.ReplaceValue(` +
-`\n  #"paso_anterior",` +
-`\n  each` +
-`\n     [NOMBRE],` +
-`\n  each ` +
-`\n     Text.FromBinary(Text.ToBinary([NOMBRE], 437), 1252),` +
-`\n  Replacer.ReplaceValue,` +
-`\n  {"NOMBRE"}` +
-`\n)`;
-            codeElement.textContent = codeContent;
-            hljs.highlightBlock(codeElement);
-        }); 
-    </script>
+    <script src="resources/js/jquery-2.2.4.min.js"></script>
+    <script src="resources/js/script.js"> </script>
 </head>
 
-<body class="gradient-02">
-    <div class="content-screen">
-        <div class="box-center background-gray">
-            <div class="box-header">
-                <div class="btns">
-                    <span>
-                        <i></i>
-                        <i></i>
-                        <i></i>
-                    </span>
+<body class="gradient-02 display-flex">
+    <div class="sidebar-left"></div>
+    <div class="sidebar-center">
+        <div class="__canvas__ display-flex">
+            <div id="__display__" class="__display__">
+                <div class="content-screen">
+                    <div class="box-center background-gray">
+                        <div class="box-header">
+                            <div class="btns">
+                                <span>
+                                    <i></i>
+                                    <i></i>
+                                    <i></i>
+                                </span>
+                            </div>
+                            <div><span class="fit-text"><i class="power-query">.pq</i>Admitir caracteres con tilde/acento</span></div>
+                        </div>
+                        <pre><code class="language"></code></pre>
+                        <div class="box-footer">
+                            <div class="avatar"><i>&nbsp;</i>Guillermo Rocha.</div>
+                            <div class="icon-lenguage power-query"><i>.PQ</i>Power Query M</div>
+                        </div>
+                    </div>
                 </div>
-                <div><span class="fit-text"><i class="power-query">.pq</i>Admitir caracteres con tilde/acento</span></div>
             </div>
-            <pre><code class="language"></code></pre>
-            <div class="box-footer">
-                <div class="avatar"><i>&nbsp;</i>Guillermo Rocha.</div>
-                <div class="icon-lenguage power-query"><i>.PQ</i>Power Query M</div>
+            <div class="export">
+                <span class="content-btn">
+                    <button class="export-png">Exportar</button>
+                    <button class="export-clipboard">Copiar al Portatapeles</button>
+                </span>
             </div>
         </div>
+        <!--
+        
+        -->
     </div>
+    <div class="sidebar-right"></div>
 </body>
 
 </html>
