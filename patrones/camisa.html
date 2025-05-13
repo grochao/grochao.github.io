@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cuadrado con D3.js</title>
+    <title>Trazos Camisa de Hombre</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Marck+Script&display=swap" rel="stylesheet">
@@ -16,24 +16,30 @@
     <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
     <!-- plus a jQuery UI theme, here I use "flick" -->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/flick/jquery-ui.css">
-    <script src="./assets/js/script.js"></script>
-    <link rel="stylesheet" href="./assets/css/style.min.css">
+    <script src="./assets/js/script-camisa.js"></script>
+    <link rel="stylesheet" href="./assets/css/style-camisa.min.css">
 </head>
 
 <body>
     <div class="allcontent">
-        <div class="content-mesures">
+        <div class="content-lienzo">
             <table class="tg">
                 <thead>
                     <tr>
-                        <th class="tg-c3ow" colspan="2">MEDIDAS</th>
-                        <th class="tg-0pky" colspan="5">TRAZOS</th>
+                        <th class="tg-left" >MEDIDAS</th>
+                        <th class="tg-right" >TRAZOS</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <th class="tg-c3ow" colspan="2">MEDIDAS</th>
-                        <th class="tg-0pky" colspan="5">TRAZOS</th>
+                        <td class="tg-left" >
+                            <strong>MEDIDAS DEL CORTE:</strong> 37" x 1.5yrds
+                        </td>
+                        <td class="tg-right">
+                            <div id="svg-container">
+                               
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
                 <!--tbody>
@@ -102,12 +108,6 @@
                     </tr>
                 </-tbody -->
             </table>
-        </div>
-        <div class="content-lienzo">
-            <div class="col2">
-                <div id="content_svg">
-                </div>
-            </div>
         </div>
     </div>
 </body>

@@ -48,22 +48,22 @@ $(function () {
             link.href = base64image;
             link.click();
         });
-        async function copiarImagenAlPortapapeles() {
-            const div = document.getElementById("__display__");
 
-            const canvas = await html2canvas(div, { useCORS: true });
-            canvas.toBlob(async (blob) => {
-                try {
-                    await navigator.clipboard.write([
-                        new ClipboardItem({ "image/png": blob })
-                    ]);
-                    alert("¡Imagen copiada al portapapeles!");
-                } catch (err) {
-                    console.error("Error al copiar:", err);
-                    alert("No se pudo copiar la imagen. ¿Estás en HTTPS?");
-                }
-            }, "image/png");
-        }
+    } async function copiarImagenAlPortapapeles() {
+        const div = document.getElementById("__display__");
+
+        const canvas = await html2canvas(div, { useCORS: true });
+        canvas.toBlob(async (blob) => {
+            try {
+                await navigator.clipboard.write([
+                    new ClipboardItem({ "image/png": blob })
+                ]);
+                alert("¡Imagen copiada al portapapeles!");
+            } catch (err) {
+                console.error("Error al copiar:", err);
+                alert("No se pudo copiar la imagen. ¿Estás en HTTPS?");
+            }
+        }, "image/png");
     }
     $(window).load(function () {
 
@@ -82,7 +82,7 @@ $(function () {
         });
 
 
-        
+
         function resizeAll() {
             let $canvas = $('.__canvas__');
             let display = return_scale_display();

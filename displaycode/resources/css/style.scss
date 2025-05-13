@@ -18,13 +18,18 @@ body {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+
+    &>div {
+        flex: 1 0 0%;
+        width: 100%;
+        max-width: 100%;
+    }
 }
 
 body {
     font-family: Arial, sans-serif;
     background-color: #151516;
     margin: 0;
-   
     width: 100%;
     height: 100vh;
 
@@ -32,6 +37,83 @@ body {
         flex: 1 0 0%;
         width: 100%;
         max-width: 100%;
+    }
+
+    .sidebar-left {
+        .boxs-configuration {
+            display: block;
+            width: 100%;
+            height: 100vh;
+            overflow: auto;
+
+            .box {
+                & {
+                    padding: 7px;
+                }
+
+                span {
+                    color: #fff;
+                    font-size: 0.7em;
+                    font-weight: 600;
+                }
+
+                .fields {
+                    & {
+                        padding: 5px 0;
+                    }
+
+                    .label,
+                    .value {
+                        flex: 0 0 auto;
+                    }
+
+                    .label {
+                        font-size: 0.6em;
+                        padding: 0 0 0 15px;
+                        color: #818181;
+                        width: 150px;
+                    }
+
+                    .value {
+                        font-size: 0.6em;
+                        width: calc(100% - 150px);
+
+                        input[type="text"],
+                        select {
+                            appearance: none;
+                            display: block;
+                            width: 100%;
+                            height: 30px;
+                            padding: 5px 10px;
+                            border-radius: 5px;
+                            background-color: #3d3d3d;
+                            color: #fff;
+                            &,
+                            &:hover,
+                            &:active,
+                            &:focus {
+                                border: none;
+                                outline: none;
+                            }
+                        }
+
+                        [type="range"] {
+                            display: block;
+                            width: 100%;
+                        }
+                        .background{
+                            border-radius: 5px;
+                            background-color: #3d3d3d;
+                            color: #fff;
+                            border-radius: 5px;
+                            display: block;
+                            width: 100%;
+                            height: 30px;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     .sidebar-center {
@@ -68,8 +150,7 @@ body {
                         width: auto;
                         background-color: #1d1d1d;
                         padding: 10px;
-                        border-radius:8px;
-                        
+                        border-radius: 8px;
                     }
 
                     button {
@@ -79,9 +160,9 @@ body {
                         color: #fff;
                         border-radius: 5px;
                         padding: 5px 7px;
-
                         border-radius: 5px;
                         margin: 0 5px;
+
                         &,
                         &:hover,
                         &:active,
@@ -89,9 +170,10 @@ body {
                             border: none;
                             outline: none;
                         }
+
                         &:hover,
                         &:active,
-                        &:focus{
+                        &:focus {
                             background-color: #143661;
                         }
                     }

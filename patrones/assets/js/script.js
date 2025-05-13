@@ -1,6 +1,6 @@
 //const { json } = require("d3");
 
-$(function() {
+$(function () {
     var Step = 3;
     var IDStyleColor = "Blue";
     var svg;
@@ -86,154 +86,154 @@ $(function() {
     function ReturnMeasures(_TYPE_ = "FRONTEND") {
         GetMesures();
         var Ancho_de_marca = traslate.y + (medidas.cadera / 4) + Ratio_cm_px(10)
-        var Aplome = (traslate.y + (((medidas.cadera / 4) + 6) / 2)) /* IMPORTANTE CALCULAR LA OLGURA DEL TURO */ ;
+        var Aplome = (traslate.y + (((medidas.cadera / 4) + 6) / 2)) /* IMPORTANTE CALCULAR LA OLGURA DEL TURO */;
         //console.error(Ancho_de_marca);
         var alto_de_rodilla = (((medidas.alto - medidas.tiro) / 2) - Ratio_cm_px(5)) + medidas.tiro;
 
         if ((_TYPE_).toUpperCase() == "FRONTEND") {
             return [{
-                    Title: null,
-                    Title2: "APLOMO",
-                    TypeLine: "none",
-                    Label: "G",
-                    Marcas: [Coord(0, 0), Coord(0, medidas.alto + Ratio_cm_px(6))],
-                    Cortes: null,
-                    Point: {
-                        a0: null,
-                        a1: null
-                    }
-                },
-                {
-                    Title: "Cintura",
-                    TypeLine: "solid",
-                    TypeLine: "none",
-                    Label: "A",
-                    Marcas: [Coord(0, 0), Coord(Ancho_de_marca, 0)],
-                    Cortes: [Coord(0, 0), Coord(0, 0)],
-                    Point: {
-                        a0: Coord(0, 0),
-                        a1: Coord(Ancho_de_marca, 0)
-                    }
-                },
-
-                {
-                    Title: "Cadera",
-                    Label: "B",
-                    TypeLine: "solid",
-                    Marcas: [Coord(0, medidas.alto_de_cadera), Coord(Ancho_de_marca, medidas.alto_de_cadera)],
-                    Cortes: [Coord(0, 0), Coord(0, medidas.alto_de_cadera)],
-                    Point: {
-                        a0: Coord(0, medidas.alto_de_cadera),
-                        a1: Coord(Ancho_de_marca, medidas.alto_de_cadera)
-                    }
-                },
-                {
-                    Title: "Tiro",
-                    TypeLine: "solid",
-                    Label: "C",
-                    Marcas: [Coord(0, medidas.tiro), Coord(Ancho_de_marca, medidas.tiro)],
-                    Cortes: [Coord(0, 0), Coord(0, medidas.tiro)],
-
-                    Point: {
-                        a0: Coord(0, medidas.tiro),
-                        a1: Coord(Ancho_de_marca, medidas.tiro)
-                    }
+                Title: null,
+                Title2: "APLOMO",
+                TypeLine: "none",
+                Label: "G",
+                Marcas: [Coord(0, 0), Coord(0, medidas.alto + Ratio_cm_px(6))],
+                Cortes: null,
+                Point: {
+                    a0: null,
+                    a1: null
                 }
+            },
+            {
+                Title: "Cintura",
+                TypeLine: "solid",
+                TypeLine: "none",
+                Label: "A",
+                Marcas: [Coord(0, 0), Coord(Ancho_de_marca, 0)],
+                Cortes: [Coord(0, 0), Coord(0, 0)],
+                Point: {
+                    a0: Coord(0, 0),
+                    a1: Coord(Ancho_de_marca, 0)
+                }
+            },
+
+            {
+                Title: "Cadera",
+                Label: "B",
+                TypeLine: "solid",
+                Marcas: [Coord(0, medidas.alto_de_cadera), Coord(Ancho_de_marca, medidas.alto_de_cadera)],
+                Cortes: [Coord(0, 0), Coord(0, medidas.alto_de_cadera)],
+                Point: {
+                    a0: Coord(0, medidas.alto_de_cadera),
+                    a1: Coord(Ancho_de_marca, medidas.alto_de_cadera)
+                }
+            },
+            {
+                Title: "Tiro",
+                TypeLine: "solid",
+                Label: "C",
+                Marcas: [Coord(0, medidas.tiro), Coord(Ancho_de_marca, medidas.tiro)],
+                Cortes: [Coord(0, 0), Coord(0, medidas.tiro)],
+
+                Point: {
+                    a0: Coord(0, medidas.tiro),
+                    a1: Coord(Ancho_de_marca, medidas.tiro)
+                }
+            }
 
                 ,
 
-                {
-                    Title: null,
-                    Title2: "ANCHO DE CADERA",
-                    TypeLine: "dash",
-                    Label: "",
-                    Marcas: null,
-                    Cortes: [Coord(0, medidas.tiro), Coord(Ancho_de_marca, medidas.tiro)],
-                    Point: {
-                        a0: null,
-                        a1: null
-                    }
-                },
-                {
-                    Title: null,
-                    Title2: "ALTO DEL ZIPPER",
-                    TypeLine: "solid",
-                    Label: "",
-                    Marcas: null,
-                    Cortes: [Coord(Ancho_de_marca, medidas.tiro), Coord(Ancho_de_marca - Ratio_cm_px(6), medidas.tiro - Ratio_cm_px(2)), Coord(Ancho_de_marca - Ratio_cm_px(6), 0)],
-                    Point: {
-                        a0: null,
-                        a1: null
-                    }
-                }, {
-                    Title: "Rodilla",
-                    TypeLine: "solid",
-                    Label: "D",
-                    Marcas: [Coord(0, alto_de_rodilla), Coord(Ancho_de_marca, alto_de_rodilla)],
-                    Cortes: [
-                        Coord(0, medidas.tiro),
-                        Coord(medidas.aplome - ((medidas.rodilla / 4) - Ratio_cm_px(0)), alto_de_rodilla - ((alto_de_rodilla - medidas.tiro) * 0.50)),
-                        Coord(medidas.aplome - (medidas.rodilla / 4), alto_de_rodilla)
-                    ],
-                    Point: {
-                        a0: Coord(0, alto_de_rodilla),
-                        a1: Coord(Ancho_de_marca, alto_de_rodilla)
-                    }
-                }, {
-                    Title: "Alto",
-                    TypeLine: "solid",
-                    Label: "E",
-                    Marcas: [Coord(0, medidas.alto), Coord(Ancho_de_marca, medidas.alto)],
-                    Cortes: [Coord(medidas.aplome - (medidas.rodilla / 4), alto_de_rodilla), Coord(medidas.aplome - (medidas.ruedo / 4), medidas.alto)],
-                    Point: {
-                        a0: Coord(0, medidas.alto),
-                        a1: Coord(Ancho_de_marca, medidas.alto)
-                    }
-                }, {
-                    Title: "Bota",
-                    TypeLine: "solid",
-                    Label: "F",
-                    Marcas: [Coord(0, medidas.alto + Ratio_cm_px(6)), Coord(Ancho_de_marca, medidas.alto + Ratio_cm_px(6))],
-                    Cortes: [Coord(medidas.aplome - (medidas.ruedo / 4), medidas.alto), Coord((medidas.aplome - (medidas.ruedo / 4)) - Ratio_cm_px(1.5), medidas.alto + Ratio_cm_px(6))],
-                    Point: {
-                        a0: Coord(0, medidas.alto + Ratio_cm_px(6)),
-                        a1: Coord(Ancho_de_marca, medidas.alto + Ratio_cm_px(6))
-                    }
-                },
-
-                {
-                    Title: "Aplome",
-                    Label: "G",
-                    TypeLine: "none",
-                    Marcas: [Coord(Aplome, 0), Coord(Aplome, medidas.alto + Ratio_cm_px(6))],
-                    Cortes: null,
-                    Point: {
-                        a0: Coord(Aplome, medidas.alto + Ratio_cm_px(6)),
-                        a1: Coord(Aplome, 0)
-                    }
-                },
-
-                {
-                    Title: "Bota-Horizontal",
-                    Label: "G", //G-G₁ 
-                    TypeLine: "solid",
-                    Marcas: [Coord(0, 0), Coord(0, 0)],
-                    Cortes: [Coord((medidas.aplome - (medidas.ruedo / 4)) - Ratio_cm_px(1.5), medidas.alto + Ratio_cm_px(6)), Coord((medidas.aplome + (medidas.ruedo / 4)) + Ratio_cm_px(1.5), medidas.alto + Ratio_cm_px(6))],
-                    Point: {
-                        a0: null, // a0: Coord(0, medidas.alto_de_cadera),
-                        a1: null // a1: Coord(Ancho_de_marca, medidas.alto_de_cadera)
-                    }
-                }, {
-                    Title: "Bota-Vertical",
-                    TypeLine: "solid",
-                    Label: "G-F", //G-F ,
-                    Marcas: null,
-                    Cortes: [Coord((medidas.aplome - (medidas.ruedo / 4)) - Ratio_cm_px(1.5), medidas.alto + Ratio_cm_px(6)), Coord((medidas.aplome + (medidas.ruedo / 4)) + Ratio_cm_px(1.5), medidas.alto + Ratio_cm_px(6))],
-                    Point: {
-                        a0: null, // a0: Coord(0, medidas.alto_de_cadera),
-                        a1: null // a1: Coord(Ancho_de_marca, medidas.alto_de_cadera)
-                    }
+            {
+                Title: null,
+                Title2: "ANCHO DE CADERA",
+                TypeLine: "dash",
+                Label: "",
+                Marcas: null,
+                Cortes: [Coord(0, medidas.tiro), Coord(Ancho_de_marca, medidas.tiro)],
+                Point: {
+                    a0: null,
+                    a1: null
                 }
+            },
+            {
+                Title: null,
+                Title2: "ALTO DEL ZIPPER",
+                TypeLine: "solid",
+                Label: "",
+                Marcas: null,
+                Cortes: [Coord(Ancho_de_marca, medidas.tiro), Coord(Ancho_de_marca - Ratio_cm_px(6), medidas.tiro - Ratio_cm_px(2)), Coord(Ancho_de_marca - Ratio_cm_px(6), 0)],
+                Point: {
+                    a0: null,
+                    a1: null
+                }
+            }, {
+                Title: "Rodilla",
+                TypeLine: "solid",
+                Label: "D",
+                Marcas: [Coord(0, alto_de_rodilla), Coord(Ancho_de_marca, alto_de_rodilla)],
+                Cortes: [
+                    Coord(0, medidas.tiro),
+                    Coord(medidas.aplome - ((medidas.rodilla / 4) - Ratio_cm_px(0)), alto_de_rodilla - ((alto_de_rodilla - medidas.tiro) * 0.50)),
+                    Coord(medidas.aplome - (medidas.rodilla / 4), alto_de_rodilla)
+                ],
+                Point: {
+                    a0: Coord(0, alto_de_rodilla),
+                    a1: Coord(Ancho_de_marca, alto_de_rodilla)
+                }
+            }, {
+                Title: "Alto",
+                TypeLine: "solid",
+                Label: "E",
+                Marcas: [Coord(0, medidas.alto), Coord(Ancho_de_marca, medidas.alto)],
+                Cortes: [Coord(medidas.aplome - (medidas.rodilla / 4), alto_de_rodilla), Coord(medidas.aplome - (medidas.ruedo / 4), medidas.alto)],
+                Point: {
+                    a0: Coord(0, medidas.alto),
+                    a1: Coord(Ancho_de_marca, medidas.alto)
+                }
+            }, {
+                Title: "Bota",
+                TypeLine: "solid",
+                Label: "F",
+                Marcas: [Coord(0, medidas.alto + Ratio_cm_px(6)), Coord(Ancho_de_marca, medidas.alto + Ratio_cm_px(6))],
+                Cortes: [Coord(medidas.aplome - (medidas.ruedo / 4), medidas.alto), Coord((medidas.aplome - (medidas.ruedo / 4)) - Ratio_cm_px(1.5), medidas.alto + Ratio_cm_px(6))],
+                Point: {
+                    a0: Coord(0, medidas.alto + Ratio_cm_px(6)),
+                    a1: Coord(Ancho_de_marca, medidas.alto + Ratio_cm_px(6))
+                }
+            },
+
+            {
+                Title: "Aplome",
+                Label: "G",
+                TypeLine: "none",
+                Marcas: [Coord(Aplome, 0), Coord(Aplome, medidas.alto + Ratio_cm_px(6))],
+                Cortes: null,
+                Point: {
+                    a0: Coord(Aplome, medidas.alto + Ratio_cm_px(6)),
+                    a1: Coord(Aplome, 0)
+                }
+            },
+
+            {
+                Title: "Bota-Horizontal",
+                Label: "G", //G-G₁ 
+                TypeLine: "solid",
+                Marcas: [Coord(0, 0), Coord(0, 0)],
+                Cortes: [Coord((medidas.aplome - (medidas.ruedo / 4)) - Ratio_cm_px(1.5), medidas.alto + Ratio_cm_px(6)), Coord((medidas.aplome + (medidas.ruedo / 4)) + Ratio_cm_px(1.5), medidas.alto + Ratio_cm_px(6))],
+                Point: {
+                    a0: null, // a0: Coord(0, medidas.alto_de_cadera),
+                    a1: null // a1: Coord(Ancho_de_marca, medidas.alto_de_cadera)
+                }
+            }, {
+                Title: "Bota-Vertical",
+                TypeLine: "solid",
+                Label: "G-F", //G-F ,
+                Marcas: null,
+                Cortes: [Coord((medidas.aplome - (medidas.ruedo / 4)) - Ratio_cm_px(1.5), medidas.alto + Ratio_cm_px(6)), Coord((medidas.aplome + (medidas.ruedo / 4)) + Ratio_cm_px(1.5), medidas.alto + Ratio_cm_px(6))],
+                Point: {
+                    a0: null, // a0: Coord(0, medidas.alto_de_cadera),
+                    a1: null // a1: Coord(Ancho_de_marca, medidas.alto_de_cadera)
+                }
+            }
 
 
 
@@ -369,7 +369,7 @@ $(function() {
                                 .attr("dominant-baseline", "middle") // Centrar verticalmente
                                 .attr("dy", "-0.5em")
                                 .style("font-family", "Marck Script")
-                                .attr("transform", `rotate(-90, ${(LienzoWidth) -_points_.Coord.a0.x}, ${_points_.Coord.a0.y-(_points_.Coord.a0.y*0.30) })`)
+                                .attr("transform", `rotate(-90, ${(LienzoWidth) - _points_.Coord.a0.x}, ${_points_.Coord.a0.y - (_points_.Coord.a0.y * 0.30)})`)
                                 .attr("stroke-width", "none")
                                 .attr("stroke-dasharray", "none")
                                 .attr("stroke-linecap", "none")
@@ -593,14 +593,14 @@ $(function() {
                 label: "1/2 yd"
             }],
             [{
-                    x: 0,
-                    y: Yarda,
-                    label: "1 yd"
-                }, {
-                    x: Width_line_scale,
-                    y: Yarda,
-                    label: "1 yd"
-                },
+                x: 0,
+                y: Yarda,
+                label: "1 yd"
+            }, {
+                x: Width_line_scale,
+                y: Yarda,
+                label: "1 yd"
+            },
 
             ],
             [{
@@ -670,9 +670,9 @@ $(function() {
         } else {
             svg =
                 d3.select("#content_svg")
-                .append("svg")
-                .attr("width", LienzoWidth)
-                .attr("height", LienzoHeigh);
+                    .append("svg")
+                    .attr("width", LienzoWidth)
+                    .attr("height", LienzoHeigh);
 
         }
 
@@ -805,19 +805,30 @@ $(function() {
         // CreateBackend();
 
     }
-    $(window).load(function() {
+
+    function cmToReducedPx(cm) {
+        const pxPerCm = 38;
+        const reductionFactor = 0.05640423;
+
+        const pixels = cm * pxPerCm;
+        const reducedPixels = pixels * reductionFactor;
+
+        return reducedPixels;
+    }
+
+    $(window).load(function () {
         const _DPI_ = getDPI();
         $(".slider").slider({
             max: 20,
             min: 1,
             value: Step,
-            slide: function(e, ui) {
+            slide: function (e, ui) {
 
                 Step = ui.value;
                 InitReset(IDStyleColor);
             }
         });
-        $("body").on("click", ".click", function() {
+        $("body").on("click", ".click", function () {
             IDStyleColor = ($(this).attr("id")).replace("btn_click", "");
             InitReset(IDStyleColor);
         })

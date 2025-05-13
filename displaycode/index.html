@@ -18,7 +18,57 @@
 </head>
 
 <body class="gradient-02 display-flex">
-    <div class="sidebar-left"></div>
+    <div class="sidebar-left">
+        <div class="boxs-configuration">
+            <div class="box">
+                <span>Marco</span>
+                <div class="fields display-flex">
+                    <div class="label">
+                        <label for="txt_rrss">Red Social</label>
+                    </div>
+                    <div class="value">
+                        <select id="txt_rrss" class="select" name="txt_rrss">
+                            <option value="0">Facebook</option>
+                            <option value="1">Twitter</option>
+                            <option value="2">Instagram</option>
+                            <option value="3">LinkedIn</option>
+                            <option value="3">Personalizado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="fields display-flex">
+                    <div class="label">
+                        <label for="txt_rrss_size">Tamaño</label>
+                    </div>
+                    <div class="value">
+                        <select id="txt_rrss_size" class="select" name="txt_rrss_size">
+                            <option value="0">Perfil</option>
+                            <option value="0">Portada</option>
+                            <option value="1">Feed</option>
+                            <option value="2">Story</option>
+                            <option value="3">Post</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="fields display-flex">
+                    <div class="label">
+                        <label for="txt_rrss_size">Radio</label>
+                    </div>
+                    <div class="value">
+                        <input type="range" max="100" min="0" value="0" step="1" id="txt_rrss_radius" class="" name="txt_rrss_radius">
+                    </div>
+                </div>
+                <div class="fields display-flex">
+                    <div class="label">
+                        <label for="txt_rrss_size">Fondo</label>
+                    </div>
+                    <div class="value">
+                        <div class="background"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="sidebar-center">
         <div class="__canvas__ display-flex">
             <div id="__display__" class="__display__">
@@ -44,7 +94,7 @@
             </div>
             <div class="export">
                 <span class="content-btn">
-                    <button class="export-png">Exportar</button>
+                    <button class="export-png">Exportar PNG</button>
                     <button class="export-clipboard">Copiar al Portatapeles</button>
                 </span>
             </div>
