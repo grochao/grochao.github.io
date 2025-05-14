@@ -11,7 +11,7 @@ $(function () {
     
     function scale() {
         
-        var WidthLienzo = $("#svg-container").width() - 15;
+        var WidthLienzo = $("#svg-container").width() - 30;
         var WidthReal = LienzoWidth_cm * _DPI_
 
         return ((WidthLienzo * 100)/WidthReal)/100
