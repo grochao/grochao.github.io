@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="100mm"
+   height="25.990999mm"
+   viewBox="0 0 100 25.991"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   sodipodi:docname="almilla.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.26582969"
+     inkscape:cx="-686.52978"
+     inkscape:cy="-18.809035"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1432"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g1"
+       transform="translate(-153.32143,-13.582714)">
+      <path
+         id="path1"
+         style="display:inline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.555385;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;paint-order:fill markers stroke"
+         d="m 186.24303,13.582714 -26.49945,10.525881 c 0,0 2.19295,6.998611 3.68192,15.457319 l 39.86543,0.0078 h 0.061 l 39.86492,-0.0078 c 1.48897,-8.458708 3.68243,-15.457319 3.68243,-15.457319 L 220.39982,13.582714 c 0,0 -2.69852,5.045559 -5.02653,6.477067 -3.48499,2.142948 -12.04236,2.340187 -12.05187,2.340406 -0.01,-2.19e-4 -8.56688,-0.197458 -12.05188,-2.340406 -2.32801,-1.431508 -5.02651,-6.477067 -5.02651,-6.477067 z" />
+    </g>
+  </g>
+</svg>

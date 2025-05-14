@@ -5,21 +5,21 @@ $(function () {
     var LienzoHeigh_cm = (137.16);
     var LienzoWidth_cm = (79) //79cm o 29"
 
-    var LienzoHeigh_px =cmToReducedPx(LienzoHeigh_cm);
-    var LienzoWidth_px =cmToReducedPx(LienzoWidth_cm);
+    var LienzoHeigh_px = cmToReducedPx(LienzoHeigh_cm);
+    var LienzoWidth_px = cmToReducedPx(LienzoWidth_cm);
 
-    
+
     function scale() {
-        
+
         var WidthLienzo = $("#svg-container").width() - 30;
         var WidthReal = LienzoWidth_cm * _DPI_
 
-        return ((WidthLienzo * 100)/WidthReal)/100
+        return ((WidthLienzo * 100) / WidthReal) / 100
 
     }
     function cmToReducedPx(cm) {
         const pxPerCm = _DPI_;
-        const reductionFactor =scale();
+        const reductionFactor = scale();
 
         const pixels = cm * pxPerCm;
         const reducedPixels = pixels * reductionFactor;
@@ -29,17 +29,17 @@ $(function () {
 
 
     function LoadLienzo(params) {
-        
-        if ($("svg").length) {
-              svg.selectAll("*").remove();
-          } else {
-              svg =
-                  d3.select("#svg-container")
-                      .append("svg")
-                      .attr("width", LienzoWidth_px)
-                      .attr("height", LienzoHeigh_px);
-  
-          }
+
+        /*if ($("svg").length) {
+            svg.selectAll("*").remove();
+        } else {
+            svg =
+                d3.select("#svg-container")
+                    .append("svg")
+                    .attr("width", LienzoWidth_px)
+                    .attr("height", LienzoHeigh_px);
+
+        }*/
 
 
     }
@@ -55,19 +55,10 @@ $(function () {
         div.style.width = "1cm";
         div.style.height = "1cm";
         div.style.position = "absolute";
-        //div.style.top = "-100%"; // Ocultarlo fuera de la pantalla
         document.body.appendChild(div);
-
         // Obtener el ancho del elemento en píxeles
         const dpi = div.offsetWidth;
-
-
-        // Eliminar el elemento temporal
-
-        //var _ppp_ = document.getElementById("ppp");
-        //_ppp_.appendChild(document.createTextNode(dpi));
         document.body.removeChild(div);
-
         return dpi;
     }
 
