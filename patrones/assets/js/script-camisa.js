@@ -2,7 +2,7 @@
 
 $(function () {
     var LienzoHeigh = cm_px(137.16);
-    var LienzoWidth = cm_px(50.8)
+    var LienzoWidth = cm_px(79) //79cm o 29"
 
     function cm_px(num) {
         const _DPI_ = getDPI();
