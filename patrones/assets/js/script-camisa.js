@@ -1,6 +1,7 @@
 //const { json } = require("d3");
 
 $(function () {
+    const _DPI_ = getDPI();
     var LienzoHeigh_cm = (137.16);
     var LienzoWidth_cm = (79) //79cm o 29"
 
@@ -9,7 +10,7 @@ $(function () {
 
     
     function scale() {
-        const _DPI_ = getDPI();
+        
         var WidthLienzo = $("#svg-container").width() - 15;
         var WidthReal = LienzoWidth_cm * _DPI_
 
@@ -28,8 +29,7 @@ $(function () {
 
 
     function LoadLienzo(params) {
-        const _DPI_ = getDPI();
-
+        
         if ($("svg").length) {
               svg.selectAll("*").remove();
           } else {
