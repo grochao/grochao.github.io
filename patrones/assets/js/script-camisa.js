@@ -1,19 +1,24 @@
 //const { json } = require("d3");
 
 $(function () {
-    var LienzoHeigh = cm_px(137.16);
-    var LienzoWidth = cm_px(79) //79cm o 29"
+    var LienzoHeigh_cm = (137.16);
+    var LienzoWidth_cm = (79) //79cm o 29"
 
-    function cm_px(num) {
+    var LienzoHeigh_px =cmToReducedPx(LienzoHeigh_cm);
+    var LienzoWidth_px =cmToReducedPx(LienzoWidth_cm);
+
+    
+    function scale() {
         const _DPI_ = getDPI();
-        var base = 1;
-        var pixeles = _DPI_;
-        return (num * pixeles) / base;
-    };
+        var WidthLienzo = $("#svg-container").width() - 15;
+        var WidthReal = LienzoWidth_cm * _DPI_
 
+        return ((WidthLienzo * 100)/WidthReal)/100
+
+    }
     function cmToReducedPx(cm) {
-        const pxPerCm = 38;
-        const reductionFactor = 0.05640423;
+        const pxPerCm = _DPI_;
+        const reductionFactor =scale();
 
         const pixels = cm * pxPerCm;
         const reducedPixels = pixels * reductionFactor;
@@ -25,17 +30,16 @@ $(function () {
     function LoadLienzo(params) {
         const _DPI_ = getDPI();
 
-        console.log("pixeles por pulgadas" + _DPI_);
-        /* if ($("svg").length) {
+        if ($("svg").length) {
               svg.selectAll("*").remove();
           } else {
               svg =
                   d3.select("#svg-container")
                       .append("svg")
-                      .attr("width", LienzoWidth)
-                      .attr("height", LienzoHeigh);
+                      .attr("width", LienzoWidth_px)
+                      .attr("height", LienzoHeigh_px);
   
-          }*/
+          }
 
 
     }
