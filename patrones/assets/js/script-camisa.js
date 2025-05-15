@@ -30,16 +30,23 @@ $(function () {
 
     function LoadLienzo(params) {
 
-        /*if ($("svg").length) {
+        if ($("svg").length) {
             svg.selectAll("*").remove();
         } else {
             svg =
-                d3.select("#svg-container")
+                d3.select("#content-svg")
                     .append("svg")
                     .attr("width", LienzoWidth_px)
                     .attr("height", LienzoHeigh_px);
 
-        }*/
+                    svg.append("image")
+    .attr("href", "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1024px-React-icon.svg.png")
+    .attr("x", 50)
+    .attr("y", 50)
+    .attr("width", 100)
+    .attr("height", 100);
+
+        }
 
 
     }
@@ -64,7 +71,11 @@ $(function () {
 
     $(window).load(function () {
 
-        LoadLienzo();
+        //LoadLienzo();
 
     });
+    $('#txt_zoom').on('input', function() {
+    let valor = $(this).val();
+    $('#pages-zoom').css('transform', 'scale(' + (valor/100) + ')');
+});
 });
