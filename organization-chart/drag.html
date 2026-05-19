@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Múltiples Konva Stage</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+        }
+
+        .konva-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .canvas-container {
+            flex: 1 1 48%;
+            aspect-ratio: 16/9;
+            background: #ddd;
+            border: 1px solid #bbb;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="konva-wrapper" id="wrapper"></div>
+    <script src="https://cdn.jsdelivr.net/npm/konva@9.3.5/konva.min.js"></script>
+    <script>
+        // Función que crea un nuevo Stage con zoom y panning funcional
+        function crearStage(containerId) {
+            const container = document.getElementById(containerId);
+            const stageWidth = container.clientWidth;
+            const stageHeight = container.clientHeight;
+
+            const stage = new Konva.Stage({
+                container: containerId,
+                width: stageWidth,
+                height: stageHeight,
+                draggable: false
+            });
+
+            const layer = new Konva.Layer();
+            stage.add(layer);
+
+            // Zoom con scroll del mouse
+            const scaleLimits = { min: 0.5, max: 3 };
+            stage.on('wheel', (e) => {
+                e.evt.preventDefault();
+                const oldScale = stage.scaleX();
+                const pointer = stage.getPointerPosition();
+                const scaleBy = 1.05;
+                const direction = e.evt.deltaY > 0 ? -1 : 1;
+                const newScale = direction > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+
+                if (newScale < scaleLimits.min || newScale > scaleLimits.max) return;
+
+                stage.scale({ x: newScale, y: newScale });
+
+                const mousePointTo = {
+                    x: (pointer.x - stage.x()) / oldScale,
+                    y: (pointer.y - stage.y()) / oldScale,
+                };
+
+                const newPos = {
+                    x: pointer.x - mousePointTo.x * newScale,
+                    y: pointer.y - mousePointTo.y * newScale,
+                };
+
+                stage.position(newPos);
+                stage.batchDraw();
+            });
+
+            // Panning (arrastrar y soltar)
+            let isDragging = false;
+            let lastPos = null;
+
+            stage.on('mousedown touchstart', (e) => {
+                if (e.target === stage) {
+                    isDragging = true;
+                    lastPos = stage.getPointerPosition();
+                }
+            });
+
+            stage.on('mouseup touchend', () => {
+                isDragging = false;
+            });
+
+            stage.on('mousemove touchmove', (e) => {
+                if (!isDragging || !lastPos) return;
+                const pos = stage.getPointerPosition();
+                const dx = pos.x - lastPos.x;
+                const dy = pos.y - lastPos.y;
+
+                const newX = stage.x() + dx;
+                const newY = stage.y() + dy;
+
+                stage.position({ x: newX, y: newY });
+                stage.batchDraw();
+
+                lastPos = pos;
+            });
+
+            // Resize automático
+            const resizeStage = () => {
+                const w = container.clientWidth;
+                const h = container.clientHeight;
+                stage.width(w);
+                stage.height(h);
+                stage.batchDraw();
+            };
+            window.addEventListener('resize', resizeStage);
+
+            // Agregamos método crearBox dentro del contexto del Stage
+            function crearBox({
+                x = 50,
+                y = 50,
+                nombre = 'Texto',
+                imgURL = '',
+                textSize = 24,
+                textColor = '#026937',
+                borderColor = '#026937',
+                shadowColor = 'black',
+                background = 'white',
+                cornerRadius = 30,
+                padding = 10,
+            }) {
+                const group = new Konva.Group({
+                    x,
+                    y,
+                    name: 'box_noce',
+                    draggable: true,
+                });
+
+                const textNode = new Konva.Text({
+                    text: nombre,
+                    fontSize: textSize,
+                    fill: textColor,
+                    fontStyle: 'bold',
+                });
+
+                const imageSize = 80;
+                const totalHeight = Math.max(imageSize, textNode.height()) + 2 * padding;
+
+                const drawGroup = (hasImage) => {
+                    const contentWidth = textNode.width() + (hasImage ? imageSize + padding : 0) + 2 * padding;
+
+                    const backgroundRect = new Konva.Rect({
+                        width: contentWidth,
+                        height: totalHeight,
+                        fill: background,
+                        cornerRadius,
+                        stroke: borderColor,
+                        strokeWidth: 3,
+                        shadowColor,
+                        shadowBlur: 10,
+                        shadowOffset: { x: 2, y: 2 },
+                        shadowOpacity: 0.1,
+                    });
+
+                    textNode.y((totalHeight - textNode.height()) / 2);
+                    if (hasImage) {
+                        textNode.x(imageSize + 2 * padding);
+                    } else {
+                        textNode.x((contentWidth - textNode.width()) / 2);
+                    }
+
+                    group.add(backgroundRect);
+                    group.add(textNode);
+                    layer.add(group);
+                    layer.draw();
+                };
+
+                if (imgURL) {
+                    const img = new Image();
+                    img.crossOrigin = 'anonymous';
+                    img.onload = () => {
+                        const konvaImg = new Konva.Image({
+                            image: img,
+                            x: padding,
+                            y: padding,
+                            width: imageSize,
+                            height: imageSize,
+                            clipFunc: function (ctx) {
+                                ctx.beginPath();
+                                ctx.arc(imageSize / 2, imageSize / 2, imageSize / 2, 0, Math.PI * 2, false);
+                                ctx.closePath();
+                            },
+                        });
+
+                        group.add(konvaImg);
+                        drawGroup(true);
+                    };
+                    img.onerror = () => drawGroup(false);
+                    img.src = imgURL;
+                } else {
+                    drawGroup(false);
+                }
+            }
+
+            // Ejemplo de uso de crearBox
+            crearBox({
+                x: 100,
+                y: 100,
+                nombre: 'Stage: ' + containerId,
+                imgURL: 'https://lh3.googleusercontent.com/a/ACg8ocJS6Olu6rvue6CDMec6Jo_G4y8PmoSOyLlNARWEWNIj7p3b_9yR=s83-c-mo',
+                textSize: 18,
+                background: '#fff',
+                borderColor: '#09a',
+            });
+
+            return { stage, layer, crearBox };
+        }
+
+        // Crear múltiples Stages dinámicamente
+        const wrapper = document.getElementById('wrapper');
+        const numStages = 3;
+
+        for (let i = 0; i < numStages; i++) {
+            const id = 'canvas-' + i;
+            const div = document.createElement('div');
+            div.className = 'canvas-container';
+            div.id = id;
+            wrapper.appendChild(div);
+
+            crearStage(id); // Crear y configurar el Stage
+        }
+    </script>
+</body>
+
+</html>

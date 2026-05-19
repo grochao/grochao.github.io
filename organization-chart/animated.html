@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./assets/js/konva.min.js"></script>
+</head>
+
+<body>
+    <button type="button" onclick="anim.stop();">STOP</button>
+    <button type="button" onclick="anim.start();">START</button>
+    <div id="container"></div>
+    <script>
+        const stage = new Konva.Stage({
+            container: 'container',
+            width: window.innerWidth,
+            height: window.innerHeight,
+        });
+
+        const layer = new Konva.Layer();
+        stage.add(layer);
+
+        const rect = new Konva.Rect({
+            x: 50,
+            y: 50,
+            width: 50,
+            height: 50,
+            fill: 'green',
+        });
+        layer.add(rect);
+
+        const anim = new Konva.Animation(function (frame) {
+            const time = frame.time;
+            const timeDiff = frame.timeDiff;
+            const frameRate = frame.frameRate;
+
+            // Example: move rectangle in a circle
+            const radius = 50;
+            const x = radius * Math.cos(frame.time * 2 * Math.PI / 2000) + 100;
+            const y = radius * Math.sin(frame.time * 2 * Math.PI / 2000) + 100;
+            rect.position({ x, y });
+
+            console.log('time:', time, 'timeDiff:', timeDiff, 'frameRate:', frameRate);
+        }, layer);
+
+        // anim.start();
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Konva Context Menu</title>
+    <script src="https://cdn.jsdelivr.net/npm/konva@9/konva.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #menu {
+            position: absolute;
+            display: none;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            padding: 5px;
+            z-index: 1000;
+        }
+
+        #menu img {
+            width: 32px;
+            height: 32px;
+            margin: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <div id="menu">
+        <!-- aquí van los iconos svg base64 -->
+        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMzYnIGhlaWdodD0nMzYnIHZpZXdCb3g9JzAgMCAzNiAzNicgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnL3N2Zyc+PHJlY3Qgd2lkdGg9JzM2JyBoZWlnaHQ9JzM2JyBmaWxsPSIjMDBhY2YiLz48L3N2Zz4=" />
+        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMzYnIGhlaWdodD0nMzYnIHZpZXdCb3g9JzAgMCAzNiAzNicgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnL3N2Zyc+PGNpcmNsZSBjeD0iMTgiIGN5PSIxOCIgcj0iMTUiIGZpbGw9IiMwMGFjZiIvPjwvc3ZnPg==" />
+        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMzYnIGhlaWdodD0nMzYnIHZpZXdCb3g9JzAgMCAzNiAzNicgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnL3N2Zyc+PHBvbHlnb24gcG9pbnRzPSIxOCAwIDM2IDM2IDAgMzYiIGZpbGw9IiMwMGFjZiIvPjwvc3ZnPg==" />
+        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMzYnIGhlaWdodD0nMzYnIHZpZXdCb3g9JzAgMCAzNiAzNicgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnL3N2Zyc+PGxpbmUgeDE9IjAiIHkxPSIwIiB4Mj0iMzYiIHkyPSIzNiIgc3Ryb2tlPSIjMDBhY2YiIHN0cm9rZS13aWR0aD0iNCIvPjwvc3ZnPg==" />
+    </div>
+    <script>
+        const stage = new Konva.Stage({
+            container: 'container',
+            width: window.innerWidth,
+            height: window.innerHeight,
+        });
+
+        const layer = new Konva.Layer();
+        stage.add(layer);
+
+        // Creamos el grupo dinámico con un rect
+        const group = new Konva.Group({
+            x: 100,
+            y: 100,
+            draggable: true
+        });
+
+        const rect = new Konva.Rect({
+            width: 100,
+            height: 60,
+            fill: '#0093e1',
+            cornerRadius: 10,
+            shadowColor: 'black',
+            shadowBlur: 5,
+            shadowOpacity: 0.3
+        });
+
+        group.add(rect);
+        layer.add(group);
+        layer.draw();
+
+        // Menú contextual
+        const menu = document.getElementById('menu');
+
+        // Mostrar menú en click derecho
+
+
+        group.on('contextmenu', (e) => {
+            e.evt.preventDefault();
+
+            // posición del mouse relativa al stage (ya incluye drag & offset)
+            const pointer = stage.getPointerPosition();
+
+            // obtenemos el scale actual
+            const scale = stage.scaleX(); // si X e Y son iguales, basta con este
+            // si tenés distinto en X/Y:
+            // const scaleX = stage.scaleX();
+            // const scaleY = stage.scaleY();
+
+            // normalizamos
+            const realX = pointer.x / scale;
+            const realY = pointer.y / scale;
+
+            // obtenemos el rect del contenedor para posicionar el menú en la página
+            const stageRect = stage.container().getBoundingClientRect();
+
+            menu.style.display = 'block';
+            menu.style.left = stageRect.left + pointer.x + 'px';
+            menu.style.top = stageRect.top + pointer.y + 'px';
+
+            console.log("Click derecho en coordenadas reales:", realX, realY);
+        });// Ocultar menú al hacer click en otro lado
+        window.addEventListener('click', () => {
+            menu.style.display = 'none';
+        });
+
+        // Eventos en los íconos
+        Array.from(menu.querySelectorAll('img')).forEach((img, i) => {
+            img.addEventListener('click', () => {
+                console.log('Click en icono', i + 1);
+                menu.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+
+</html>

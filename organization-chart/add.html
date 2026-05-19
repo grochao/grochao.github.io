@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Konva.js Grid + Elementos Dinámicos</title>
+    <script src="https://unpkg.com/konva@9/konva.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #eee;
+        }
+
+        #container {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script>
+        const virtualWidth = window.innerWidth;
+        const virtualHeight = window.innerHeight;
+
+        function CreateContentGraph(drawGrid = false) {
+            const _Grid_ = {
+                width: Math.floor(virtualWidth / 100) * 100,
+                height: (Math.floor(virtualHeight / 100) * 100) - 50,
+                x: (virtualWidth / 2) - ((Math.floor(virtualWidth / 100) * 100) / 2),
+                y: 90
+            };
+
+            const _lienzo_ = new Konva.Group({
+                name: "grid_Pattern",
+                width: _Grid_.width,
+                height: _Grid_.height,
+                x: _Grid_.x,
+                y: _Grid_.y
+            });
+
+            if (drawGrid) {
+                const backgroundRect = new Konva.Rect({
+                    x: 0,
+                    y: 0,
+                    width: _Grid_.width,
+                    height: _Grid_.height,
+                    fill: '#ffffff',
+                    opacity: 0.5,
+                });
+                _lienzo_.add(backgroundRect);
+
+                for (let _x_ = 0; _x_ <= _Grid_.width + 1; _x_ += 10) {
+                    _lienzo_.add(new Konva.Line({
+                        points: [_x_, 0, _x_, _Grid_.height],
+                        stroke: (_x_ % 100 === 0) ? '#0d702e' : (_x_ % 50 === 0) ? '#0d702e' : '#26be59',
+                        strokeWidth: (_x_ % 100 === 0) ? 2 : 1,
+                        lineCap: 'round',
+                        lineJoin: 'round'
+                    }));
+                }
+
+                for (let _y_ = 0; _y_ <= _Grid_.height + 1; _y_ += 10) {
+                    _lienzo_.add(new Konva.Line({
+                        points: [0, _y_, _Grid_.width, _y_],
+                        stroke: (_y_ % 100 === 0) ? '#0d702e' : (_y_ % 50 === 0) ? '#0d702e' : '#26be59',
+                        strokeWidth: (_y_ % 100 === 0) ? 2 : 1,
+                        lineCap: 'round',
+                        lineJoin: 'round'
+                    }));
+                }
+            }
+
+            return _lienzo_;
+        }
+
+        // CREACIÓN DEL STAGE Y LAYER
+        const stage = new Konva.Stage({
+            container: 'container',
+            width: virtualWidth,
+            height: virtualHeight
+        });
+
+        const layer = new Konva.Layer();
+        stage.add(layer);
+
+        // Crear el Lienzo (el Group)
+        const _Lienzo_ = CreateContentGraph();
+        layer.add(_Lienzo_);
+
+        // Agregar un objeto dinámicamente después
+        const _obj_ = new Konva.Text({
+            x: 100,
+            y: 100,
+            text: '¡Hola Brother!',
+            fontSize: 24,
+            fill: '#000000',
+            fontStyle: 'bold'
+        });
+
+        _Lienzo_.add(_obj_);
+        layer.batchDraw();
+
+    </script>
+</body>
+
+</html>

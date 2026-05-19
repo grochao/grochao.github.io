@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./assets/js/konva.min.js"></script>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script>
+        // 🔹 Función para crear un área con scroll vertical dentro de un grupo
+        function createScrollableGroup(layer, {
+            x = 0,
+            y = 0,
+            width = 200,
+            height = 150,
+            contentHeight = 600 // el tamaño total del contenido
+        }) {
+
+            // Grupo principal (la “ventana visible”)
+            const viewport = new Konva.Group({
+                x,
+                y,
+                width,
+                height,
+                clipFunc: function (ctx) {
+                    ctx.rect(0, 0, width, height); // define el área visible
+                }
+            });
+
+            // Grupo interno (el contenido desplazable)
+            const contentGroup = new Konva.Group({
+                x: 0,
+                y: 0
+            });
+            const rect = new Konva.Rect({
+                x: 0,
+                y: 0,
+                width,
+                height,
+                fill: '#dddddd',
+            });
+            contentGroup.add(rect);
+            // Agregar algunos elementos de ejemplo
+            for (let i = 0; i < 15; i++) {
+                const rect = new Konva.Rect({
+                    x: 10,
+                    y: i * 40,
+                    width: width - 20,
+                    height: 30,
+                    fill: i % 2 === 0 ? '#6ec1e4' : '#b8e986',
+                    cornerRadius: 6
+                });
+                contentGroup.add(rect);
+            }
+
+            // Agregar el contenido dentro del viewport
+            viewport.add(contentGroup);
+            layer.add(viewport);
+
+            // 🔹 Control de scroll
+            let scrollY = 0;
+
+            viewport.on('wheel', (e) => {
+                e.evt.preventDefault();
+
+                const delta = e.evt.deltaY;
+
+                // Mueve el contenido dentro de los límites
+                scrollY -= delta * 0.5; // velocidad del scroll
+
+                // Limitar el movimiento para que no se salga
+                scrollY = Math.min(0, scrollY);
+                scrollY = Math.max(-(contentHeight - height), scrollY);
+
+                // Aplicar desplazamiento
+                contentGroup.y(scrollY);
+
+                layer.batchDraw();
+            });
+
+            return viewport;
+        }
+
+        // 🧠 Ejemplo de uso:
+        const stage = new Konva.Stage({
+            container: 'container',
+            width: 500,
+            height: 400
+        });
+
+        const layer = new Konva.Layer();
+        stage.add(layer);
+
+        // Crear el scrollable group
+        createScrollableGroup(layer, {
+            x: 50,
+            y: 50,
+            width: 300,
+            height: 200,
+            contentHeight: 600
+        });
+
+        layer.draw();
+
+    </script>
+</body>
+
+</html>

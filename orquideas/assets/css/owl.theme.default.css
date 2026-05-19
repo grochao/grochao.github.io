@@ -12,7 +12,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.owl-theme .owl-nav [class*='owl-'] {
+.owl-theme .owl-nav [class*=owl-] {
   color: #FFF;
   font-size: 14px;
   margin: 5px;
@@ -23,7 +23,7 @@
   border-radius: 3px;
 }
 
-.owl-theme .owl-nav [class*='owl-']:hover {
+.owl-theme .owl-nav [class*=owl-]:hover {
   background: #869791;
   color: #FFF;
   text-decoration: none;
@@ -65,4 +65,4 @@
 .owl-theme .owl-dots .owl-dot.active span,
 .owl-theme .owl-dots .owl-dot:hover span {
   background: #D28B28 !important;
-}
+}/*# sourceMappingURL=owl.theme.default.css.map */

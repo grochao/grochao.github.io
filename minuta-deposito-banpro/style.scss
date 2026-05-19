@@ -1,0 +1,356 @@
+body {
+    & {
+        margin: 0;
+        padding: 0;
+
+    }
+
+    &.font-1 {
+        font-size: 12px;
+    }
+
+    &.font-2 {
+        font-size: 11px;
+    }
+
+    &.font-3 {
+        font-size: 10px;
+    }
+
+    * {
+
+        &,
+        &::before,
+        &::after {
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+
+
+        * {
+
+            font-family: "Oswald", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+
+
+        }
+
+    }
+
+    @media screen {
+        #minuta-deposito-banpro {
+            min-height: 100vh;
+
+            background-color: #1d1919;
+
+            .page {
+                background-image: url(minuta1.png);
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 179mm 94mm;
+
+                .inner-document {
+                    outline: 10mm solid #a6a6a6;
+                }
+
+                .values {
+                    border: red 1px solid;
+                }
+            }
+        }
+    }
+
+    #minuta-deposito-banpro {
+        display: flex;
+        align-content: baseline;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: center;
+
+
+        .page {
+            overflow: hidden;
+            background-color: #ffffff;
+            height: 94mm;
+            width: 179mm;
+            padding: 5mm 6mm 5mm 8mm;
+
+
+            //rotate: -90deg;
+
+            .inner-document {
+                display: block;
+                width: 100%;
+                height: 100%;
+
+                position: relative;
+                // background-color: #fff;
+
+                * {
+                    color: #221db0;
+                    text-transform: uppercase;
+                }
+
+                #dia,
+                #mes,
+                #anio,
+                #num-cuenta {
+
+                    background-color: transparent;
+                    height: 22px;
+                    outline: none;
+                    border: none;
+                    font-size: 12px;
+                    position: absolute;
+                    top: 26px;
+
+                    text-align: center;
+                }
+
+                #dia {
+                    right: 107px;
+                    width: 33px;
+                    //  outline: red 1px solid;
+                    height: 15px;
+                }
+
+                #mes {
+                    right: 51px;
+                    width: 50px;
+
+                    height: 15px;
+                }
+
+                #anio {
+                    right: 15px;
+                    // outline: red 1px solid;
+                    height: 15px;
+                }
+
+                #num-cuenta {
+                    display: flex;
+                    position: absolute;
+                    align-items: center;
+                    align-content: baseline;
+                    top: 202px;
+                    left: 24px;
+
+
+                    gap: 0;
+
+                    i {
+                        font-size: 1.4em;
+                        // 
+                        display: inline-block;
+                        width: 20px;
+                        letter-spacing: 0;
+                        text-align: center;
+                        position: relative;
+                        height: 18px;
+                        line-height: 1em;
+
+                        &:nth-child(2) {
+                            left: 2px;
+                        }
+
+                        &:nth-child(3) {
+                            left: 4px;
+                        }
+
+                        &:nth-child(4) {
+                            left: 5px;
+                        }
+
+                        &:nth-child(5) {
+                            margin-left: 24px;
+                        }
+
+                        &:nth-child(6) {
+                            margin-left: 0px;
+                        }
+
+                        &:nth-child(7) {
+                            margin-left: 20px;
+                        }
+
+                        &:nth-child(8) {
+                            margin-left: 11px;
+                        }
+
+                        &:nth-child(10) {
+                            margin-left: 2px;
+                        }
+
+                        &:nth-child(11) {
+                            margin-left: 3px;
+                        }
+
+                        &:nth-child(12) {
+                            margin-left: 0px;
+                        }
+
+                        &:nth-child(12) {
+                            margin-left: 2px;
+                        }
+
+                        &:nth-child(14) {
+                            margin-left: 13px;
+                        }
+                    }
+                }
+
+                .values {
+                    background-color: transparent;
+                    height: 22px;
+                    outline: none;
+                    border: none;
+                    font-size: 1.15em;
+                    position: absolute;
+                    outline: red 1px solid;
+                    display: flex;
+                    align-items: center;
+
+                    &:not(.condensed) {
+                        letter-spacing: 0.07em;
+                    }
+                }
+
+                [id*="check-"] {
+                    font-size: 1.55em;
+                }
+
+                #check-1 {
+                    top: 108px;
+                    left: 81px;
+
+                }
+
+                #check-2 {
+                    top: 108px;
+                    left: 203px;
+                }
+
+                #check-3 {
+                    top: 108px;
+                    left: 319px;
+                }
+
+                #id {
+                    width: 202px;
+                    top: 52px;
+                    left: 407px;
+                }
+
+                #nombre {
+
+                    width: 281px;
+                    top: 74px;
+                    left: 22px;
+                }
+
+                #cheque-banpro {
+                    position: absolute;
+                    top: 161px;
+                    right: 5px;
+                    text-align: right;
+                    width: 125px;
+                }
+
+                #cheque-otros {
+                    position: absolute;
+                    top: 202px;
+                    right: 5px;
+                    text-align: right;
+                    width: 125px;
+                }
+
+                #efectivo,
+                #efectivo-total {
+                    position: absolute;
+                    top: 245px;
+                    right: 5px;
+                    width: 125px;
+
+                    text-align: right;
+                }
+
+                #efectivo {
+                    top: 120px;
+                }
+
+                #efectivo-total {
+                    top: 245px;
+                }
+
+                #cant-letra {
+                    position: absolute;
+                    top: 252px;
+                    left: 5px;
+                    width: 516px;
+                    text-wrap-mode: nowrap;
+                    overflow: hidden;
+                }
+
+                #nombre-cuenta {
+                    position: absolute;
+                    top: 292px;
+                    left: 5px;
+                    width: 473px;
+                    text-wrap-mode: nowrap;
+                    overflow: hidden;
+                }
+            }
+        }
+    }
+
+    @media print {
+
+        @page {
+            size: 94mm 179mm;
+
+            /* height: 94mm;
+            width: 179mm;*/
+            /* Carta horizontal */
+            // size: landscape;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 94mm;
+            height: 179mm;
+        }
+
+        #minuta-deposito-banpro {
+            display: flex;
+            align-content: baseline;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page {
+            /* background-image: url(minuta-banpro.png);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 179mm 94mm;*/
+            rotate: -90deg;
+            outline: #000 solid 1px;
+
+
+            transform: translateX(-43mm);
+
+            /* * {
+                //    opacity: 0;
+            }*/
+        }
+    }
+
+}

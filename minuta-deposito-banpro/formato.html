@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @media print {
+
+            @page {
+                size: letter;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        .content1 {
+            display: block;
+        }
+
+        .formato {
+            display: inline-block;
+
+            background-repeat: no-repeat;
+            background-position: center;
+
+            outline: #000 solid 1px;
+
+            margin-bottom: 0px;
+
+        }
+
+        .vertical {
+            width: 94mm;
+            height: 179mm;
+            background-image: url(minuta2.png);
+            background-size: 94mm 179mm;
+        }
+
+        .horizontal {
+            background-image: url(minuta1.png);
+            height: 94mm;
+            width: 179mm;
+            background-size: 179mm 94mm;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content1">
+        <div class="formato vertical"> </div>
+        <div class="formato vertical"> </div>
+    </div>
+    <div class="formato horizontal"> </div>
+</body>
+
+</html>

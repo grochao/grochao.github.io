@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+    <title>Depósitos BANPRO</title>
+</head>
+
+<body class="font-2">
+
+    <div id="minuta-deposito-banpro">
+        <div class="page">
+            <div class="inner-document">
+                <div id="dia">15</div>
+                <div id="mes">May</div>
+                <div id="anio">2026</div>
+                <input type="text" name="id" id="id" class="id values" placeholder="Número de cédula aquí">
+                <input type="text" name="nombre" id="nombre" class="nombre values" placeholder="Nombre aquí">
+
+                <div id="check-1" class="values">✔</div>
+                <div id="check-2" class="values">✔</div>
+                <div id="check-3" class="values">✔</div>
+
+                <div id="num-cuenta">
+                    <i>1</i>
+                    <i>0</i>
+                    <i>0</i>
+                    <i>1</i>
+                    <i>0</i>
+                    <i>4</i>
+                    <i>0</i>
+                    <i>0</i>
+                    <i>0</i>
+                    <i>2</i>
+                    <i>2</i>
+                    <i>0</i>
+                    <i>6</i>
+                    <i>2</i>
+                    <!--
+                    -->
+                </div>
+                <input class="values" type="text" name="efectivo" id="efectivo" placeholder="999,999.99"
+                    value="999,999.99">
+                <input type="text" id="cheque-banpro" class="values" readonly value="──────────">
+                <input type="text" id="cheque-otros" class="values" readonly value="──────────">
+                <input class="values" type="text" name="efectivo-total" id="efectivo-total" placeholder="999,999.99"
+                    value="999,999.99">
+                <div id="cant-letra" class="values condensed">
+                </div>
+                <input type="text" class="values" id="nombre-cuenta" placeholder="Nombre de la cuenta aquí"
+                    value="Asociación Proescuela Americana.-">
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

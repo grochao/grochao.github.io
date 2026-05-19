@@ -1,0 +1,268 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+body.font-1 {
+  font-size: 12px;
+}
+body.font-2 {
+  font-size: 11px;
+}
+body.font-3 {
+  font-size: 10px;
+}
+body *, body *::before, body *::after {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+body * * {
+  font-family: "Oswald", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+@media screen {
+  body #minuta-deposito-banpro {
+    min-height: 100vh;
+    background-color: #1d1919;
+  }
+  body #minuta-deposito-banpro .page {
+    background-image: url(minuta1.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 179mm 94mm;
+  }
+  body #minuta-deposito-banpro .page .inner-document {
+    outline: 10mm solid #a6a6a6;
+  }
+  body #minuta-deposito-banpro .page .values {
+    border: red 1px solid;
+  }
+}
+body #minuta-deposito-banpro {
+  display: flex;
+  align-content: baseline;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+}
+body #minuta-deposito-banpro .page {
+  overflow: hidden;
+  background-color: #ffffff;
+  height: 94mm;
+  width: 179mm;
+  padding: 5mm 6mm 5mm 8mm;
+}
+body #minuta-deposito-banpro .page .inner-document {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+body #minuta-deposito-banpro .page .inner-document * {
+  color: #221db0;
+  text-transform: uppercase;
+}
+body #minuta-deposito-banpro .page .inner-document #dia,
+body #minuta-deposito-banpro .page .inner-document #mes,
+body #minuta-deposito-banpro .page .inner-document #anio,
+body #minuta-deposito-banpro .page .inner-document #num-cuenta {
+  background-color: transparent;
+  height: 22px;
+  outline: none;
+  border: none;
+  font-size: 12px;
+  position: absolute;
+  top: 26px;
+  text-align: center;
+}
+body #minuta-deposito-banpro .page .inner-document #dia {
+  right: 107px;
+  width: 33px;
+  height: 15px;
+}
+body #minuta-deposito-banpro .page .inner-document #mes {
+  right: 51px;
+  width: 50px;
+  height: 15px;
+}
+body #minuta-deposito-banpro .page .inner-document #anio {
+  right: 15px;
+  height: 15px;
+}
+body #minuta-deposito-banpro .page .inner-document #num-cuenta {
+  display: flex;
+  position: absolute;
+  align-items: center;
+  align-content: baseline;
+  top: 202px;
+  left: 24px;
+  gap: 0;
+}
+body #minuta-deposito-banpro .page .inner-document #num-cuenta i {
+  font-size: 1.4em;
+  display: inline-block;
+  width: 20px;
+  letter-spacing: 0;
+  text-align: center;
+  position: relative;
+  height: 18px;
+  line-height: 1em;
+}
+body #minuta-deposito-banpro .page .inner-document #num-cuenta i:nth-child(2) {
+  left: 2px;
+}
+body #minuta-deposito-banpro .page .inner-document #num-cuenta i:nth-child(3) {
+  left: 4px;
+}
+body #minuta-deposito-banpro .page .inner-document #num-cuenta i:nth-child(4) {
+  left: 5px;
+}
+body #minuta-deposito-banpro .page .inner-document #num-cuenta i:nth-child(5) {
+  margin-left: 24px;
+}
+body #minuta-deposito-banpro .page .inner-document #num-cuenta i:nth-child(6) {
+  margin-left: 0px;
+}
+body #minuta-deposito-banpro .page .inner-document #num-cuenta i:nth-child(7) {
+  margin-left: 20px;
+}
+body #minuta-deposito-banpro .page .inner-document #num-cuenta i:nth-child(8) {
+  margin-left: 11px;
+}
+body #minuta-deposito-banpro .page .inner-document #num-cuenta i:nth-child(10) {
+  margin-left: 2px;
+}
+body #minuta-deposito-banpro .page .inner-document #num-cuenta i:nth-child(11) {
+  margin-left: 3px;
+}
+body #minuta-deposito-banpro .page .inner-document #num-cuenta i:nth-child(12) {
+  margin-left: 0px;
+}
+body #minuta-deposito-banpro .page .inner-document #num-cuenta i:nth-child(12) {
+  margin-left: 2px;
+}
+body #minuta-deposito-banpro .page .inner-document #num-cuenta i:nth-child(14) {
+  margin-left: 13px;
+}
+body #minuta-deposito-banpro .page .inner-document .values {
+  background-color: transparent;
+  height: 22px;
+  outline: none;
+  border: none;
+  font-size: 1.15em;
+  position: absolute;
+  outline: red 1px solid;
+  display: flex;
+  align-items: center;
+}
+body #minuta-deposito-banpro .page .inner-document .values:not(.condensed) {
+  letter-spacing: 0.07em;
+}
+body #minuta-deposito-banpro .page .inner-document [id*=check-] {
+  font-size: 1.55em;
+}
+body #minuta-deposito-banpro .page .inner-document #check-1 {
+  top: 108px;
+  left: 81px;
+}
+body #minuta-deposito-banpro .page .inner-document #check-2 {
+  top: 108px;
+  left: 203px;
+}
+body #minuta-deposito-banpro .page .inner-document #check-3 {
+  top: 108px;
+  left: 319px;
+}
+body #minuta-deposito-banpro .page .inner-document #id {
+  width: 202px;
+  top: 52px;
+  left: 407px;
+}
+body #minuta-deposito-banpro .page .inner-document #nombre {
+  width: 281px;
+  top: 74px;
+  left: 22px;
+}
+body #minuta-deposito-banpro .page .inner-document #cheque-banpro {
+  position: absolute;
+  top: 161px;
+  right: 5px;
+  text-align: right;
+  width: 125px;
+}
+body #minuta-deposito-banpro .page .inner-document #cheque-otros {
+  position: absolute;
+  top: 202px;
+  right: 5px;
+  text-align: right;
+  width: 125px;
+}
+body #minuta-deposito-banpro .page .inner-document #efectivo,
+body #minuta-deposito-banpro .page .inner-document #efectivo-total {
+  position: absolute;
+  top: 245px;
+  right: 5px;
+  width: 125px;
+  text-align: right;
+}
+body #minuta-deposito-banpro .page .inner-document #efectivo {
+  top: 120px;
+}
+body #minuta-deposito-banpro .page .inner-document #efectivo-total {
+  top: 245px;
+}
+body #minuta-deposito-banpro .page .inner-document #cant-letra {
+  position: absolute;
+  top: 252px;
+  left: 5px;
+  width: 516px;
+  text-wrap-mode: nowrap;
+  overflow: hidden;
+}
+body #minuta-deposito-banpro .page .inner-document #nombre-cuenta {
+  position: absolute;
+  top: 292px;
+  left: 5px;
+  width: 473px;
+  text-wrap-mode: nowrap;
+  overflow: hidden;
+}
+@media print {
+  @page {
+    body {
+      size: 94mm 179mm;
+      /* height: 94mm;
+      width: 179mm;*/
+      /* Carta horizontal */
+      margin: 0;
+      padding: 0;
+    }
+  }
+  body html,
+  body body {
+    margin: 0;
+    padding: 0;
+    width: 94mm;
+    height: 179mm;
+  }
+  body #minuta-deposito-banpro {
+    display: flex;
+    align-content: baseline;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+  }
+  body .page {
+    /* background-image: url(minuta-banpro.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 179mm 94mm;*/
+    rotate: -90deg;
+    outline: #000 solid 1px;
+    transform: translateX(-43mm);
+    /* * {
+        //    opacity: 0;
+    }*/
+  }
+}/*# sourceMappingURL=style.css.map */

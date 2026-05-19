@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box Dinámico con Centrado de Texto</title>
+    <script src="https://unpkg.com/konva@8.4.0/konva.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            max-width: 800px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(to right, #ff8a00, #da1b60);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            background: rgba(30, 30, 50, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            width: 90%;
+            max-width: 1000px;
+            margin-bottom: 30px;
+        }
+
+        #konvajs-content {
+            background: rgba(10, 15, 30, 0.7);
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 0 auto;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            background: linear-gradient(to right, #ff8a00, #da1b60);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            min-width: 180px;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .info-panel {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-panel h3 {
+            color: #4fc3f7;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.4rem;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 15px;
+            width: 200px;
+            text-align: center;
+        }
+
+        .feature i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+            color: #FF9800;
+        }
+
+        .min-width-slider {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #ff8a00, #da1b60);
+            outline: none;
+        }
+
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Box Dinámico con Centrado de Texto</h1>
+        <p class="subtitle">Texto centrado cuando no hay imagen</p>
+    </div>
+    <div class="container">
+        <div id="konvajs-content"></div>
+        <div class="controls">
+            <button id="add-box">Añadir Box</button>
+            <button id="add-text-only">Añadir Box sin Imagen</button>
+            <button id="change-content">Cambiar Contenido</button>
+            <button id="reset">Reiniciar Canvas</button>
+        </div>
+        <div class="min-width-slider">
+            <h3>Control de minWidth</h3>
+            <div class="slider-container">
+                <div class="slider-label">
+                    <span>minWidth: </span>
+                    <span id="minWidth-value">300</span> px
+                </div>
+                <input type="range" id="minWidth-slider" min="200" max="500" value="300">
+            </div>
+        </div>
+        <div class="info-panel">
+            <h3>Características</h3>
+            <div class="features">
+                <div class="feature">
+                    <i>📏</i>
+                    <p>minWidth ajustable</p>
+                </div>
+                <div class="feature">
+                    <i>🔍</i>
+                    <p>Texto centrado sin imagen</p>
+                </div>
+                <div class="feature">
+                    <i>🖼️</i>
+                    <p>Imagen ajustada al box</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>Desarrollado con Konva.js | Altura del box = 2× alto del texto</p>
+    </div>
+    <script>
+        // Configuración inicial del canvas
+        const width = window.innerWidth * 0.9;
+        const height = window.innerHeight * 0.6;
+
+        const stage = new Konva.Stage({
+            container: 'konvajs-content',
+            width: width,
+            height: height,
+        });
+
+        const layer = new Konva.Layer();
+        stage.add(layer);
+
+        // Variable para almacenar minWidth actual
+        let currentMinWidth = 300;
+
+        // Función para crear boxes con minWidth
+        function crearBox({
+            x,
+            y,
+            nombre,
+            imgURL = '',
+            textsize = 25,
+            textcolor = '#026937',
+            borderColor = '#026937',
+            borderWidth = 3,
+            shadowColor = 'black',
+            shadowBlur = 10,
+            shadowOffsetX = 2,
+            shadowOffsetY = 2,
+            shadowOpacity = 0.1,
+            cornerRadius = 50,
+            background = 'white',
+            padding = 20,
+            extraWidth = 30,
+            maxWidth = 500,
+            minWidth = 300  // Nuevo parámetro minWidth
+        }) {
+            const group = new Konva.Group({ x, y, name: 'box_noce', draggable: true, });
+
+            // Crear texto para medir su altura
+            const textoTitulo = new Konva.Text({
+                text: nombre,
+                fontSize: textsize,
+                fontStyle: 'bold',
+                fill: textcolor,
+                padding: padding,
+                width: maxWidth - padding * 2 - (imgURL ? 80 + padding : 0),
+                wrap: 'word',
+                align: 'left'
+            });
+
+            // Calcular altura del texto
+            const textHeight = textoTitulo.height();
+
+            // Calcular altura del box (2 veces la altura del texto + padding vertical)
+            const boxHeight = (textHeight * 2) + (padding * 2);
+
+            // Tamaño de la imagen (ajustado a la altura del box)
+            const imageSize = imgURL ? boxHeight - padding * 2 : 0;
+
+            // Posición vertical para centrar imagen y texto
+            const verticalCenter = padding;
+
+            // Ancho total del box (considerando minWidth)
+            const textWidth = Math.min(maxWidth - padding * 2 - (imgURL ? imageSize + padding : 0),
+                textoTitulo.getTextWidth());
+
+            // Calcular ancho necesario sin considerar minWidth
+            const calculatedWidth = padding + (imgURL ? imageSize + padding : 0) + textWidth + padding + extraWidth;
+
+            // Aplicar minWidth y maxWidth
+            const totalWidth = Math.max(
+                minWidth,
+                Math.min(maxWidth, calculatedWidth)
+            );
+
+            // Crear rectángulo de fondo
+            const backgroundRect = new Konva.Rect({
+                width: totalWidth,
+                height: boxHeight,
+                fill: background,
+                cornerRadius: cornerRadius,
+                stroke: borderColor,
+                strokeWidth: borderWidth,
+                shadowColor: shadowColor,
+                shadowBlur: shadowBlur,
+                shadowOffset: { x: shadowOffsetX, y: shadowOffsetY },
+                shadowOpacity: shadowOpacity,
+            });
+
+            group.add(backgroundRect);
+
+            // Función para cargar imagen
+            const cargarImagen = (callback) => {
+                if (!imgURL) return callback(null);
+
+                const img = new window.Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => callback(img);
+                img.onerror = () => {
+                    console.warn('⚠️ Imagen no cargó, se omitirá.');
+                    callback(null);
+                };
+                img.src = imgURL;
+            };
+
+            // Cargar imagen y crear elementos
+            cargarImagen((img) => {
+                // Crear imagen si está disponible
+                if (img) {
+                    const imagenKonva = new Konva.Image({
+                        x: padding,
+                        y: verticalCenter,
+                        width: imageSize,
+                        height: imageSize,
+                        image: img,
+                        cornerRadius: imageSize / 2,
+                        clipFunc: function (ctx) {
+                            ctx.beginPath();
+                            ctx.arc(imageSize / 2, imageSize / 2, imageSize / 2, 0, Math.PI * 2);
+                            ctx.closePath();
+                        },
+                    });
+                    group.add(imagenKonva);
+                }
+
+                // Configurar texto - CENTRADO CUANDO NO HAY IMAGEN
+                if (img) {
+                    // Con imagen: texto a la derecha de la imagen
+                    textoTitulo.x(padding + imageSize + padding);
+                } else {
+                    // Sin imagen: texto centrado horizontalmente
+                    textoTitulo.align('center');
+                    textoTitulo.width(totalWidth - padding * 2);
+                    textoTitulo.x(padding);
+                }
+
+                // Centrar verticalmente siempre
+                textoTitulo.y((boxHeight - textHeight) / 2);
+
+                group.add(textoTitulo);
+
+                layer.add(group);
+                layer.draw();
+            });
+        }
+
+        // Posiciones aleatorias para nuevos boxes
+        function getRandomPosition() {
+            return {
+                x: Math.random() * (width - 300),
+                y: Math.random() * (height - 150)
+            };
+        }
+
+        // Ejemplos de contenido para boxes
+        const ejemplos = [
+            {
+                nombre: "Box con texto corto",
+                imgURL: "https://lh3.googleusercontent.com/a/ACg8ocJS6Olu6rvue6CDMec6Jo_G4y8PmoSOyLlNARWEWNIj7p3b_9yR=s83-c-mo",
+                textcolor: "#880E4F",
+                background: "#fff5f9",
+                borderColor: "#FF4081"
+            },
+            {
+                nombre: "Box con texto de longitud media",
+                imgURL: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+                textcolor: "#1A237E",
+                background: "#E3F2FD",
+                borderColor: "#2962FF"
+            },
+            {
+                nombre: "Este es un ejemplo de texto más largo que ocupará varias líneas",
+                imgURL: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+                textcolor: "#004D40",
+                background: "#E8F5E9",
+                borderColor: "#00C853"
+            }
+        ];
+
+        // Ejemplos sin imagen
+        const ejemplosSinImagen = [
+            {
+                nombre: "BOX SOLO TEXTO CENTRADO",
+                textcolor: "#1565C0",
+                background: "#E3F2FD",
+                borderColor: "#0D47A1"
+            },
+            {
+                nombre: "Texto sin imagen, completamente centrado",
+                textcolor: "#BF360C",
+                background: "#FFCCBC",
+                borderColor: "#E64A19"
+            },
+            {
+                nombre: "Este box solo contiene texto que está centrado horizontal y verticalmente sin necesidad de imagen",
+                textcolor: "#1B5E20",
+                background: "#C8E6C9",
+                borderColor: "#388E3C"
+            }
+        ];
+
+        // Crear box inicial
+        crearBox({
+            x: width / 2 - 200,
+            y: height / 2 - 200,
+            nombre: "BOD",
+            textsize: 32,
+            textcolor: "#880E4F",
+            background: "#fff5f9",
+            borderColor: "#FF4081",
+            borderWidth: 4,
+            shadowColor: "#880E4F",
+            shadowBlur: 20,
+            shadowOffsetX: 4,
+            shadowOffsetY: 4,
+            shadowOpacity: 0.3,
+            cornerRadius: 100,
+            padding: 0,
+            extraWidth: 0,
+            minWidth: currentMinWidth
+        });
+
+        crearBox({
+            x: width / 2 - 200,
+            y: height / 2 - 100,
+            nombre: "DIRECTOR GENERAL",
+            imgURL: "https://lh3.googleusercontent.com/a/ACg8ocJQR4X3efLavov-WfIWB0pLlu-2tJHOSDRMvWcDUfwEECA7pg=s120-p-mo",
+            textsize: 24,
+            textcolor: "#880E4F",
+            background: "#fff5f9",
+            borderColor: "#FF4081",
+            borderWidth: 4,
+            shadowColor: "#880E4F",
+            shadowBlur: 20,
+            shadowOffsetX: 4,
+            shadowOffsetY: 4,
+            shadowOpacity: 0.3,
+            cornerRadius: 100,
+            padding: 5,
+            extraWidth: 10,
+            minWidth: currentMinWidth
+        });
+
+        crearBox({
+            x: width / 2 - 200,
+            y: height / 2 - 0,
+            nombre: "Business Director",
+            imgURL: "https://lh3.googleusercontent.com/a-/ALV-UjWQmlBAjAlO1dOcZc1K-K5gp3TZf1OpKIhJuWDuAaFKY17zF5bx=s48-p",
+            textsize: 24,
+            textcolor: "#880E4F",
+            background: "#fff5f9",
+            borderColor: "#FF4081",
+            borderWidth: 4,
+            shadowColor: "#880E4F",
+            shadowBlur: 20,
+            shadowOffsetX: 4,
+            shadowOffsetY: 4,
+            shadowOpacity: 0.3,
+            cornerRadius: 100,
+            padding: 5,
+            extraWidth: 10,
+            minWidth: currentMinWidth
+        });
+
+
+
+
+        // Event listeners para los botones
+        document.getElementById('add-box').addEventListener('click', function () {
+            const randomIndex = Math.floor(Math.random() * ejemplos.length);
+            const config = ejemplos[randomIndex];
+            const pos = getRandomPosition();
+
+            crearBox({
+                ...config,
+                x: pos.x,
+                y: pos.y,
+                textsize: 20 + Math.floor(Math.random() * 10),
+                borderWidth: 2 + Math.floor(Math.random() * 4),
+                cornerRadius: 20 + Math.floor(Math.random() * 30),
+                padding: 15 + Math.floor(Math.random() * 15),
+                minWidth: currentMinWidth
+            });
+        });
+
+        document.getElementById('add-text-only').addEventListener('click', function () {
+            const randomIndex = Math.floor(Math.random() * ejemplosSinImagen.length);
+            const config = ejemplosSinImagen[randomIndex];
+            const pos = getRandomPosition();
+
+            crearBox({
+                ...config,
+                x: pos.x,
+                y: pos.y,
+                textsize: 20 + Math.floor(Math.random() * 10),
+                borderWidth: 2 + Math.floor(Math.random() * 4),
+                cornerRadius: 20 + Math.floor(Math.random() * 30),
+                padding: 15 + Math.floor(Math.random() * 15),
+                minWidth: currentMinWidth
+            });
+        });
+
+        document.getElementById('change-content').addEventListener('click', function () {
+            layer.destroyChildren();
+
+            // Crear nuevo box central
+            const randomIndex = Math.floor(Math.random() * ejemplos.length);
+            const config = ejemplos[randomIndex];
+
+            crearBox({
+                ...config,
+                x: width / 2 - 200,
+                y: height / 2 - 75,
+                textsize: 24,
+                borderWidth: 4,
+                cornerRadius: 50,
+                padding: 20,
+                extraWidth: 40,
+                minWidth: currentMinWidth
+            });
+        });
+
+        document.getElementById('reset').addEventListener('click', function () {
+            layer.destroyChildren();
+
+            // Restaurar box inicial
+            crearBox({
+                x: width / 2 - 200,
+                y: height / 2 - 75,
+                nombre: "BOX CON minWidth = " + currentMinWidth + "px",
+                imgURL: "https://lh3.googleusercontent.com/a/ACg8ocJS6Olu6rvue6CDMec6Jo_G4y8PmoSOyLlNARWEWNIj7p3b_9yR=s83-c-mo",
+                textsize: 24,
+                textcolor: "#880E4F",
+                background: "#fff5f9",
+                borderColor: "#FF4081",
+                borderWidth: 4,
+                shadowColor: "#880E4F",
+                shadowBlur: 20,
+                shadowOffsetX: 4,
+                shadowOffsetY: 4,
+                shadowOpacity: 0.3,
+                cornerRadius: 50,
+                padding: 20,
+                extraWidth: 40,
+                minWidth: currentMinWidth
+            });
+        });
+
+        // Control deslizante para minWidth
+        const minWidthSlider = document.getElementById('minWidth-slider');
+        const minWidthValue = document.getElementById('minWidth-value');
+
+        minWidthSlider.addEventListener('input', function () {
+            currentMinWidth = parseInt(this.value);
+            minWidthValue.textContent = currentMinWidth;
+        });
+    </script>
+</body>
+
+</html>
