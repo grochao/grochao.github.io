@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla con filtro doble (nombre + sede) | Vanilla JS</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', 'Roboto', sans-serif;
+        }
+
+        body {
+            background: #f0f2f5;
+            margin: 0;
+            padding: 30px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            max-width: 1300px;
+            width: 100%;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: #0b2b3b;
+            padding: 1.4rem 2rem;
+            color: white;
+        }
+
+        .card-header h2 {
+            margin: 0 0 0.3rem 0;
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+
+        .card-header p {
+            margin: 0;
+            opacity: 0.8;
+            font-size: 0.85rem;
+        }
+
+        .filtros-container {
+            padding: 1.5rem 2rem;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .filtro-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filtro-group label {
+            font-weight: 600;
+            color: #0f172a;
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .filtro-group input,
+        .filtro-group select {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            background: white;
+            transition: 0.2s;
+        }
+
+        .filtro-group input:focus,
+        .filtro-group select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .tabla-wrapper {
+            overflow-x: auto;
+            padding: 0 2rem 2rem 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            font-weight: 600;
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f2f5;
+            color: #0f172a;
+            font-size: 0.9rem;
+        }
+
+        tbody tr:hover {
+            background-color: #fef9e3;
+        }
+
+        .empty-row td {
+            text-align: center;
+            padding: 2rem;
+            color: #64748b;
+            font-style: italic;
+        }
+
+        /* Badges para la columna Nivel a Matricular (índice 3) */
+        .badge-nivel {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .badge-nivel-orange {
+            background: #ffedd5;
+            color: #9a3412;
+        }
+
+        .badge-nivel-red {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-nivel-yellow {
+            background: #fef9c3;
+            color: #854d0e;
+        }
+
+        /* Botón */
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+            transform: scale(0.96);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h2>📋 Gestión de matrículas</h2>
+            <p>Filtro por nombre + filtro por sede (MAG/EST/LEO) | Botón de acción por fila</p>
+        </div>
+        <div class="filtros-container">
+            <div class="filtro-group">
+                <label>🔎 Filtrar por nombre (columna 1):</label>
+                <input type="text" id="filtroNombre" placeholder="Ej: ESPINOZA, HENRY, NASHLY ..." autocomplete="off">
+            </div>
+            <div class="filtro-group">
+                <label>🏫 Filtrar por sede (columna 2):</label>
+                <select id="filtroSede">
+                    <option value="TODAS">📌 TODAS</option>
+                    <option value="MAG">⭐ MAG</option>
+                    <option value="EST">📘 EST</option>
+                    <option value="LEO">🔰 LEO</option>
+                </select>
+            </div>
+        </div>
+        <div class="tabla-wrapper">
+            <div id="tablaContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        // ============================
+        // DATOS (4 columnas)
+        // ============================
+        const _LIST_ENROLLMENT_AUTOCOMPLETE_ = {
+            "99999": [
+                "DIFERENCIAL CAMBIARIO ...",
+                "MAG",
+                "CP-01",
+                "CP-02"
+            ],
+            "LEO00000": [
+                "ESPINOZA NUÑEZ NASHLY ALAIA",
+                "MAG",
+                "ES-7",
+                "ES-8"
+            ],
+            "LEO00001": [
+                "SIRIAS OSEJO HENRY ALESSANDRO",
+                "MAG",
+                "ADUL-10",
+                "DESERSIÓN"
+            ],
+            "LEO00002": [
+                "HERNÁNDEZ RIVERA KENDRICK ISAAC",
+                "MAG",
+                "ADOL-03",
+                "REPITE"
+            ],
+            "LEO00003": [
+                "PICHARDO SOTO JAIR JOSSIEL",
+                "MAG",
+                "ADOL-09",
+                "PENDIENTE EXAM."
+            ],
+            "LEO00004": [
+                "ZELAYA PARRALES AURA INES",
+                "EST",
+                "ES-08",
+                "ES-09"
+            ]
+        };
+
+        // ============================
+        // CLASE CORE CON DOBLE FILTRO (sin alterar nada existente, solo añadiendo)
+        // ============================
+        class TablaDinamicaFiltro {
+            constructor(contenedor, data, options = {}) {
+                this.contenedor = typeof contenedor === 'string'
+                    ? document.querySelector(contenedor)
+                    : contenedor;
+                if (!this.contenedor) throw new Error('Contenedor no encontrado');
+
+                this.rawData = data;
+                this.registros = [];      // { id, valores[] }
+                this.numColumnas = 0;
+                this.headers = [];
+                this.columnaFiltro = options.columnaFiltro ?? 0;  // 0 = Nombre del estudiante
+                this.columnaSede = options.columnaSede ?? 1;      // 1 = Sede (para el select)
+                this.inputNombreSelector = options.inputNombreSelector || '#filtroNombre';
+                this.selectSedeSelector = options.selectSedeSelector || '#filtroSede';
+                this.inputNombre = null;
+                this.selectSede = null;
+
+                this._parseData();
+                this._determinarHeaders();     // tus encabezados fijos
+                this._vincularFiltros();       // eventos para input y select
+                this._renderTabla();           // primera carga (sin texto, con sede "TODAS")
+            }
+
+            // Convierte el objeto en array
+            _parseData() {
+                this.registros = [];
+                let maxLen = 0;
+                for (const [clave, valores] of Object.entries(this.rawData)) {
+                    if (Array.isArray(valores)) {
+                        maxLen = Math.max(maxLen, valores.length);
+                        this.registros.push({
+                            id: clave,
+                            valores: [...valores]
+                        });
+                    }
+                }
+                this.numColumnas = maxLen;
+            }
+
+            // **** TUS ENCABEZADOS PERSONALIZADOS (sin cambios) ****
+            _determinarHeaders() {
+                if (this.headers.length === this.numColumnas) return;
+                this.headers = [];
+                for (let i = 0; i < this.numColumnas; i++) {
+                    if (i === 0) this.headers.push('Nombre del estudiante');
+                    else if (i === 1) this.headers.push('Sede');
+                    else if (i === 2) this.headers.push('Nivel Ant.');
+                    else if (i === 3) this.headers.push('Nivel a Matri.');
+                    else this.headers.push(`Columna ${i + 1}`);
+                }
+            }
+
+            // Obtener valores actuales de los filtros
+            _getTextoNombre() {
+                return this.inputNombre ? this.inputNombre.value.trim().toLowerCase() : '';
+            }
+
+            _getSedeSeleccionada() {
+                return this.selectSede ? this.selectSede.value : 'TODAS';
+            }
+
+            // Aplica ambos filtros (nombre parcial + sede exacta)
+            _aplicarFiltros() {
+                const texto = this._getTextoNombre();
+                const sede = this._getSedeSeleccionada();
+
+                let filtrados = this.registros;
+
+                // Filtro por nombre (columnaFiltro)
+                if (texto !== '') {
+                    filtrados = filtrados.filter(reg => {
+                        const valor = reg.valores[this.columnaFiltro] || '';
+                        return valor.toLowerCase().includes(texto);
+                    });
+                }
+
+                // Filtro por sede (columnaSede) si no es "TODAS"
+                if (sede !== 'TODAS') {
+                    filtrados = filtrados.filter(reg => {
+                        const valorSede = reg.valores[this.columnaSede] || '';
+                        return valorSede === sede;
+                    });
+                }
+
+                return filtrados;
+            }
+
+            // **** RENDER CON COLUMNA DE ACCIÓN Y BADGES (exactamente como lo tenías, pero usando _aplicarFiltros) ****
+            _renderTabla() {
+                // Ya no recibe parámetro, toma directamente los valores de los inputs
+                const datosFiltrados = this._aplicarFiltros();
+                const textoBusqueda = this._getTextoNombre(); // solo para mostrar en mensaje
+
+                // Cabecera (columnas normales + acción)
+                let theadHTML = '<thead><tr>';
+                for (let i = 0; i < this.numColumnas; i++) {
+                    theadHTML += `<th>${this._escapeHTML(this.headers[i])}</th>`;
+                }
+                theadHTML += '<th>Acción</th></tr></thead>';
+
+                // Cuerpo
+                let tbodyHTML = '<tbody>';
+                if (datosFiltrados.length === 0) {
+                    tbodyHTML += `<tr class="empty-row"><td colspan="${this.numColumnas + 1}">✨ No hay resultados para "<strong>${this._escapeHTML(textoBusqueda)}</strong>" ✨</td></tr>`;
+                } else {
+                    for (const registro of datosFiltrados) {
+                        tbodyHTML += '<tr>';
+                        for (let i = 0; i < this.numColumnas; i++) {
+                            let valor = registro.valores[i] !== undefined ? registro.valores[i] : '';
+                            // Badge especial solo para la cuarta columna (índice 3)
+                            if (i === 3) {
+                                let _html_VALUE_ = this._escapeHTML(valor);
+                                let _color_ = _html_VALUE_.includes("DESERSIÓN") ? "-orange" : (_html_VALUE_.includes("REPITE") ? "-red" : (_html_VALUE_.includes("PENDIENTE") ? "-yellow" : ""));
+                                valor = `<span class="badge-nivel${_color_}">${_html_VALUE_}</span>`;
+                            } else {
+                                valor = this._escapeHTML(valor);
+                            }
+                            tbodyHTML += `<td>${valor}</td>`;
+                        }
+                        // Botón de acción
+                        tbodyHTML += `<td><button class="btn btn-sm btn-primary" data-id="${this._escapeHTML(registro.id)}">Seleccionar</button></td></tr>`;
+                    }
+                }
+                tbodyHTML += '</tbody>';
+
+                const tablaCompleta = `<table>${theadHTML}${tbodyHTML}</table>`;
+                this.contenedor.innerHTML = tablaCompleta;
+
+                // Asignar eventos a los botones después de renderizar
+                this._asignarEventosBotones();
+            }
+
+            // Maneja el clic en los botones "Seleccionar"
+            _asignarEventosBotones() {
+                const botones = this.contenedor.querySelectorAll('.btn-primary');
+                botones.forEach(btn => {
+                    btn.removeEventListener('click', this._handleClick);
+                    btn.addEventListener('click', this._handleClick.bind(this));
+                });
+            }
+
+            _handleClick(e) {
+                const btn = e.currentTarget;
+                const id = btn.getAttribute('data-id');
+                const registro = this.registros.find(r => r.id === id);
+                if (registro) {
+                    alert(`Seleccionaste:\nID: ${registro.id}\nDatos: ${registro.valores.join(' | ')}`);
+                } else {
+                    alert('Registro no encontrado');
+                }
+            }
+
+            // Vinculación de eventos (input y select)
+            _vincularFiltros() {
+                this.inputNombre = document.querySelector(this.inputNombreSelector);
+                this.selectSede = document.querySelector(this.selectSedeSelector);
+
+                if (this.inputNombre) {
+                    this.inputNombre.addEventListener('input', () => this._renderTabla());
+                } else {
+                    console.warn(`Input ${this.inputNombreSelector} no encontrado`);
+                }
+
+                if (this.selectSede) {
+                    this.selectSede.addEventListener('change', () => this._renderTabla());
+                } else {
+                    console.warn(`Select ${this.selectSedeSelector} no encontrado`);
+                }
+            }
+
+            // Seguridad XSS
+            _escapeHTML(str) {
+                if (str === undefined || str === null) return '';
+                return String(str).replace(/[&<>]/g, function (m) {
+                    if (m === '&') return '&amp;';
+                    if (m === '<') return '&lt;';
+                    if (m === '>') return '&gt;';
+                    return m;
+                });
+            }
+
+            // Método público por si cambian los datos
+            setData(nuevoData) {
+                this.rawData = nuevoData;
+                this._parseData();
+                this._determinarHeaders();
+                this._renderTabla();
+            }
+        }
+
+        // ============================
+        // INICIALIZACIÓN
+        // ============================
+        document.addEventListener('DOMContentLoaded', () => {
+            const contenedor = document.getElementById('tablaContainer');
+            if (contenedor) {
+                new TablaDinamicaFiltro(contenedor, _LIST_ENROLLMENT_AUTOCOMPLETE_, {
+                    columnaFiltro: 0,        // filtro nombre en columna 0
+                    columnaSede: 1,          // filtro sede en columna 1
+                    inputNombreSelector: '#filtroNombre',
+                    selectSedeSelector: '#filtroSede'
+                });
+            } else {
+                console.error('No se encontró #tablaContainer');
+            }
+        });
+    </script>
+</body>
+
+</html>
