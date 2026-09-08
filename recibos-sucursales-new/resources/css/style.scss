@@ -448,6 +448,21 @@ body {
                 text-align: right !important;
             }
         }
+
+
+        .material-design input,
+        .material-design select,
+        .material-design textarea {
+            font-size: .95em !important;
+        }
+
+        .material-design input,
+        .material-design textarea,
+        .material-design select {
+            padding: 10px 0 0px 4px !important;
+        }
+
+
     }
 
     @media screen and (min-width: 576px) {
