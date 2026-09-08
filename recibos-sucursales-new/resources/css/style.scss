@@ -236,7 +236,7 @@ body {
 
             #TheForm {
                 & {
-                    padding: 0 0px;
+
                     margin: 0;
                 }
 
@@ -462,13 +462,19 @@ body {
             padding: 10px 0 0px 4px !important;
         }
 
-
+        #TheForm {
+            padding: 0 7px;
+        }
     }
 
     @media screen and (min-width: 576px) {
         body {
             font-size: 18px;
             align-content: center;
+        }
+
+        #TheForm {
+            padding: 0;
         }
 
         .form-receipt {
