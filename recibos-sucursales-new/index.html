@@ -312,7 +312,7 @@
                             readonly>-->
 
                         <textarea readonly class="form-control" name="txt-recibo"
-                            id="txt-recibo">SERIE H #12108</textarea>
+                            id="txt-recibo">SERIE G #0003003</textarea>
 
                     </div>
                     <div class="col-6 col-sm content-date-time">
@@ -325,6 +325,76 @@
                 </div>
             </div>
         </header>
+        <div id="TheForm" class="row">
+
+            <div class="col-12">
+                <div class="row justify-content-end">
+                    <div class="col-12 col-sm max-width-255px order-md-3">
+                        <div class="material-design width-">
+                            <select name="txt_tipo_recibo" id="txt_tipo_recibo" required>
+                                <option value=""></option>
+                                <optgroup label="MATRÍCULA">
+                                    <option value="CLG">Alumno Activo</option>
+                                    <option value="CLG-NUEVO">Alumno Nuevo</option>
+                                    <option value="CLG-MORA">ALUMNO ACTIVO CON MORA</option>
+                                    <!--option value="TLL-ONLINE">TALLER ONLINE</option-->
+                                    <option value="CURSO-INT-ONLINE">ANTICIPO CURSO INTENSIVO</option>
+
+                                </optgroup>
+                                <optgroup label="OTROS">
+                                    <option value="BTL-PLAST">COMPRA DE BOTELLA PLÁSTICA</option>
+                                    <option value="CAN">CANCELACIÓN DE FACTURA</option>
+                                    <option value="ABONO">ABONO A LA CUENTA</option>
+                                    <option value="LBR">COMPRA DE LIBROS</option>
+                                    <option value="CAM-GRAD">CAMISA PARA GRADUACIÓN</option>
+                                    <option value="ANT">ANTICIPO</option>
+                                    <option value="OTROS">OTROS</option>
+                                </optgroup>
+                                <optgroup label="EXÁMENES">
+                                    <option value="UBICA-EXAM">UBICACIÓN ALUMNO NUEVO</option>
+                                    <option value="REUBICA-EXAM">REUBICACIÓN ALUMNO ACTIVO</option>
+                                    <option value="REP-EXAM">REPOSICIÓN</option>
+                                    <option value="REP-MORA">REPOSICIÓN CON MULTA</option>
+                                    <option value="REP-MORA2">REPOSICIÓN FUERA DE TIEMPO</option>
+                                </optgroup>
+                                <optgroup label="COSNTANCIAS">
+                                    <option value="CONST">ALUMNO ACTIVO</option>
+                                    <option value="CONST-EX">ALUMNO INACTIVO</option>
+                                </optgroup>
+                                <optgroup label="REPOSICIONES">
+                                    <option value="REPOSICION">DIPLOMA</option>
+                                    <option value="REPOSICION">CERTIFICADO</option>
+                                </optgroup>
+                                <option value="HIST">HISTORIAL DE NOTAS</option>
+                            </select>
+                            <label for="txt_tipo_recibo">TIPO DE RECIBO:</label>
+                            <span class="barra"></span>
+
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm order-md-1">
+                        <div class="material-design">
+                            <input autocomplete="off" type="text" name="txt_nombre" id="txt_nombre" placeholder=" "
+                                value="Guillermo Rocha">
+                            <label for="pais">APELLIDOS y NOMBRE</label>
+                            <span class="barra"></span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm order-md-2">
+                        <div class="material-design">
+
+                            <input autocomplete="off" type="text" name="txt_empresa" id="txt_empresa" placeholder=" ">
+                            <label for="pais">EMPRESA/RUC:</label>
+                            <span class="barra"></span>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
     </div>
 
 </body>

@@ -44,92 +44,7 @@ body {
 }
 
 @media screen {
-    @media screen and (max-width: 575px) {
-        body {
-            & {
-                font-size: 14px;
-                align-content: flex-start;
-            }
-        }
 
-        .form-receipt {
-            height: auto;
-        }
-
-        #header-svg {
-            margin: 0 auto 15px auto;
-        }
-
-        .roc,
-        .content-date-time {
-            padding: 15px 10px;
-
-            input,
-            textarea {
-
-                @include css3-prefix('appearance', none);
-                background-color: transparent;
-
-                color: #f9bd0e;
-
-                padding: 0;
-                font-size: 1.5em;
-                height: 43px !important;
-            }
-        }
-
-        .roc {
-            * {
-                text-align: left !important;
-            }
-        }
-
-        .content-date-time {
-            * {
-                text-align: right !important;
-            }
-        }
-    }
-
-    @media screen and (min-width: 576px) {
-        body {
-            font-size: 18px;
-            align-content: center;
-        }
-
-        .form-receipt {
-            height: 510px;
-        }
-
-        .roc,
-        .content-date-time {
-
-
-            input,
-            textarea {
-
-                font-size: 0.9em;
-
-            }
-        }
-
-        .roc {
-            * {
-                text-align: center;
-
-
-            }
-        }
-
-        .content-date-time {
-            * {
-                text-align: right;
-
-            }
-
-
-        }
-    }
 
 
 
@@ -185,11 +100,12 @@ body {
             header {
                 margin: 0;
                 background-color: #42257a;
+                padding: 4px 0;
 
                 .roc {
                     position: relative;
                     cursor: pointer;
-                    max-width: 220px;
+
                     font-family: "Oswald", sans-serif !important;
 
                     &::before {
@@ -268,7 +184,7 @@ body {
                 }
 
                 .content-date-time {
-                    max-width: 175px;
+
                     font-family: "Oswald", sans-serif !important;
 
 
@@ -317,6 +233,261 @@ body {
 
 
             }
+
+            #TheForm {
+                & {
+                    padding: 0 0px;
+                    margin: 0;
+                }
+
+                .max-width-255px {
+                    max-width: 255px;
+                }
+
+                .row {
+                    [class*="col-"] {
+                        padding: 0 7px;
+
+                    }
+                }
+
+                .material-design {
+                    /* =============================================
+   ESTILOS MATERIAL DESIGN (Input, Select, Textarea)
+   ============================================= */
+
+                    & {
+                        position: relative;
+                        margin: 7px 0;
+
+                        width: 100%;
+                    }
+
+
+                    /* --- INPUT Y TEXTAREA --- */
+                    input,
+                    textarea,
+                    select {
+                        background-color: #ede7fe;
+                    }
+
+                    input,
+                    textarea {
+                        width: 100%;
+                        padding: 13px 0 0px 4px;
+                        font-size: .76em;
+                        color: #333;
+                        border: none;
+                        border-bottom: 1px solid #aaa;
+                        // background: transparent;
+                        outline: none;
+                        transition: border-color 0.3s ease;
+                        box-sizing: border-box;
+                    }
+
+                    textarea {
+                        resize: vertical;
+                        /* Permite redimensionar solo verticalmente */
+                        min-height: 60px;
+                        font-family: inherit;
+                    }
+
+                    /* --- SELECT (con estilizado personalizado) --- */
+                    select {
+                        width: 100%;
+                        padding: 13px 0 0px 4px;
+                        font-size: .76em;
+                        color: #333;
+                        border: none;
+                        border-bottom: 1px solid #aaa;
+                        /*  background: transparent;*/
+                        outline: none;
+                        transition: border-color 0.3s ease;
+                        box-sizing: border-box;
+                        appearance: none;
+                        /* Elimina el estilo nativo del navegador */
+                        -webkit-appearance: none;
+                        -moz-appearance: none;
+                        cursor: pointer;
+                        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+                        background-repeat: no-repeat;
+                        background-position: right 0 center;
+
+                        /* Espacio para la flecha */
+                    }
+
+                    /* --- LABEL (flotante) --- */
+                    label {
+                        position: absolute;
+                        top: 8px;
+                        left: 4px;
+                        font-size: .75em;
+                        color: #333;
+                        pointer-events: none;
+                        transition: all .3s ease;
+                    }
+
+                    /* --- BARRA (subrayado animado) --- */
+                    .barra {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 0;
+                        height: 2px;
+                        background: #6200ee;
+                        transition: width 0.3s ease;
+                    }
+
+                    /* =============================================
+   ESTADOS DE INTERACCIÓN
+   ============================================= */
+
+                    /* 1. INPUT y TEXTAREA: con foco */
+                    input:focus,
+                    textarea:focus {
+                        border-bottom-color: #6200ee;
+                    }
+
+                    input:focus~.barra,
+                    textarea:focus~.barra {
+                        width: 100%;
+                    }
+
+                    input:focus~label,
+                    textarea:focus~label {
+                        top: 2px;
+                        font-size: 0.55em;
+                        color: #6200ee;
+                    }
+
+                    /* 2. INPUT y TEXTAREA: con contenido */
+                    input:not(:placeholder-shown)~label,
+                    textarea:not(:placeholder-shown)~label {
+                        top: 2px;
+                        font-size: 0.55em;
+                        color: #6a6a6a;
+                    }
+
+                    /* 3. SELECT: con foco */
+                    select:focus {
+                        border-bottom-color: #6200ee;
+                    }
+
+                    select:focus~.barra {
+                        width: 100%;
+                    }
+
+                    select:focus~label {
+                        top: 2px;
+                        font-size: .55em;
+                        color: #6a6a6a;
+                        // color: #6200ee;
+                    }
+
+                    /* 4. SELECT: con valor seleccionado (usando :valid) */
+                    select:valid~label {
+                        top: 2px;
+                        font-size: .55em;
+                        color: #999;
+                    }
+
+                    /* 5. SELECT: cambia la flecha al enfocar */
+                    select:focus {
+                        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236200ee' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+                    }
+                }
+            }
+
+        }
+    }
+
+    @media screen and (max-width: 575px) {
+        body {
+            & {
+                font-size: 14px;
+                align-content: flex-start;
+            }
+        }
+
+        .form-receipt {
+            height: auto;
+        }
+
+        #header-svg {
+            margin: 0 auto 15px auto;
+        }
+
+        .roc,
+        .content-date-time {
+            padding: 15px 10px;
+            max-width: 160px;
+
+            input,
+            textarea {
+
+                @include css3-prefix('appearance', none);
+                background-color: transparent;
+
+                color: #f9bd0e;
+
+                padding: 0;
+                font-size: 1.5em;
+                height: 43px !important;
+            }
+        }
+
+        .roc {
+            * {
+                text-align: left !important;
+            }
+
+        }
+
+        .content-date-time {
+            * {
+                text-align: right !important;
+            }
+        }
+    }
+
+    @media screen and (min-width: 576px) {
+        body {
+            font-size: 18px;
+            align-content: center;
+        }
+
+        .form-receipt {
+            height: 510px;
+        }
+
+        .roc,
+        .content-date-time {
+
+            max-width: 200px;
+
+            input,
+            textarea {
+
+                font-size: 0.9em;
+
+            }
+        }
+
+        .roc {
+            * {
+                text-align: center;
+
+
+            }
+        }
+
+        .content-date-time {
+            * {
+                text-align: right;
+
+            }
+
+
         }
     }
 }
