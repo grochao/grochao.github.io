@@ -61,7 +61,28 @@ body {
 
         .roc,
         .content-date-time {
-            padding: 15px 15px;
+            padding: 15px 10px;
+
+            input {
+                appearance: none;
+                background-color: transparent;
+                text-align: center;
+                color: #f9bd0e;
+                font-weight: bold;
+                padding: 0;
+            }
+        }
+
+        .roc {
+            * {
+                text-align: left !important;
+            }
+        }
+
+        .content-date-time {
+            * {
+                text-align: right !important;
+            }
         }
     }
 
