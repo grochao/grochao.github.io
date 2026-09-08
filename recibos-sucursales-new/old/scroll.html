@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Efecto deslizado: Aparece al scroll down, desaparece al scroll up</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* El body necesita altura extra para poder hacer scroll, mientras el primer div permanece fijo y siempre visible */
+        body {
+            height: 200vh;
+            /* Permite desplazamiento vertical suficiente para activar el evento scroll */
+            background: #0a0f1c;
+            /* Fondo neutro, aunque queda cubierto por el primer div fijo */
+            font-family: system-ui, 'Segoe UI', 'Inter', 'Helvetica Neue', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ----- PRIMER DIV: SIEMPRE VISIBLE (FULL VIEWPORT, FIJO) ----- */
+        .hero {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #0b1120 0%, #1a2a3a 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            z-index: 10;
+            /* Sombra sutil para dar profundidad sobre el contenido de abajo */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 800;
+            background: linear-gradient(120deg, #f0f9ff, #9ac8e0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 80%;
+            color: #ccdeee;
+            margin-top: 0.5rem;
+            font-weight: 400;
+            backdrop-filter: blur(2px);
+        }
+
+        .hero .badge {
+            margin-top: 2rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(4px);
+            font-weight: 500;
+        }
+
+        /* ----- SEGUNDO DIV: PANEL DESLIZABLE DESDE ABAJO ----- */
+        /* Inicialmente oculto (desplazado completamente hacia abajo) */
+        .slide-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 28px 28px 0 0;
+            box-shadow: 0 -10px 35px rgba(0, 0, 0, 0.2);
+            z-index: 20;
+            transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transform: translateY(100%);
+            /* completamente escondido debajo de la pantalla */
+            will-change: transform;
+            /* estilo interno */
+            max-height: 75vh;
+            overflow-y: auto;
+            /* permitir scroll interno si el contenido es muy alto, pero no interfiere con evento principal */
+        }
+
+        /* Cuando tiene la clase 'visible' se desliza hacia arriba y se muestra */
+        .slide-panel.visible {
+            transform: translateY(0);
+        }
+
+        /* Estructura interna del segundo div: contenido atractivo y variado */
+        .panel-content {
+            padding: 2rem 1.5rem 2rem 1.5rem;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 2px solid #eef2f8;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .panel-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(120deg, #1f2b3c, #2c4c6c);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .panel-header span {
+            font-size: 0.85rem;
+            background: #eef3fc;
+            padding: 0.25rem 0.7rem;
+            border-radius: 30px;
+            color: #1f4973;
+            font-weight: 500;
+        }
+
+        .intro-text {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #2c3e4e;
+            margin-bottom: 1.8rem;
+            background: #f8fafd;
+            padding: 1rem;
+            border-radius: 20px;
+        }
+
+        /* Grid de tarjetas internas (estructura rica) */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-card {
+            background: #f9fcff;
+            border-radius: 20px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.2s ease;
+            border: 1px solid #e9edf2;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        .info-card .emoji {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .info-card h4 {
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            color: #0f2b3b;
+        }
+
+        .info-card p {
+            font-size: 0.8rem;
+            color: #4a627a;
+        }
+
+        .action-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1rem;
+            border-top: 1px solid #eef2f8;
+            padding-top: 1.2rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.4rem;
+            border-radius: 40px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: #1e4a76;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background: #0f3b5e;
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: #eef2f8;
+            color: #1e4a76;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        /* scrollbar interno del panel (sutil) */
+        .slide-panel::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .slide-panel::-webkit-scrollbar-track {
+            background: #eef2f8;
+            border-radius: 10px;
+        }
+
+        .slide-panel::-webkit-scrollbar-thumb {
+            background: #b9cdE5;
+            border-radius: 10px;
+        }
+
+        /* Pequeña indicación para el usuario (opcional) */
+        .scroll-hint {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            pointer-events: none;
+            z-index: 25;
+            font-size: 0.8rem;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            width: fit-content;
+            margin: 0 auto;
+            padding: 0.4rem 1rem;
+            border-radius: 60px;
+            color: white;
+            font-weight: 500;
+            transition: opacity 0.3s;
+            opacity: 0.7;
+        }
+
+        /* Ajuste responsivo: mejor márgenes en móvil */
+        @media (max-width: 550px) {
+            .panel-content {
+                padding: 1.5rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .panel-header h2 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- PRIMER DIV: siempre visible gracias a position fixed + 100vh -->
+    <div class="hero">
+        <h1>✨ Horizonte ✨</h1>
+        <p>Primer div | Altura 100vh<br>SIEMPRE visible mientras navegas</p>
+        <div class="badge">
+            ⬇️ Haz scroll hacia abajo para ver el panel deslizante ⬇️
+        </div>
+    </div>
+
+    <!-- SEGUNDO DIV: con estructura interna rica. Inicialmente oculto (transform: translateY(100%)) -->
+    <div id="slidingPanel" class="slide-panel">
+        <div class="panel-content">
+            <div class="panel-header">
+                <h2>📦 Contenido dinámico</h2>
+                <span>✨ Aparece al bajar</span>
+            </div>
+            <div class="intro-text">
+                🎯 Este segundo div aparece desde abajo cuando haces <strong>scroll hacia abajo</strong>
+                y desaparece deslizándose hacia abajo cuando haces <strong>scroll hacia arriba</strong>.
+                Efecto suave y moderno. Primer div siempre fijo.
+            </div>
+
+            <!-- Estructura interna variada (grid cards) -->
+            <div class="cards-grid">
+                <div class="info-card">
+                    <div class="emoji">🚀</div>
+                    <h4>Velocidad</h4>
+                    <p>Transiciones suaves con CSS</p>
+                </div>
+                <div class="info-card">
+                    <div class="emoji">🎨</div>
+                    <h4>Diseño</h4>
+                    <p>Interfaz limpia y adaptable</p>
+                </div>
+                <div class="info-card">
+                    <div class="emoji">⚡</div>
+                    <h4>Interactivo</h4>
+                    <p>Scroll controla la visibilidad</p>
+                </div>
+                <div class="info-card">
+                    <div class="emoji">📱</div>
+                    <h4>Responsive</h4>
+                    <p>Mobile first, se adapta</p>
+                </div>
+            </div>
+
+            <!-- Más contenido para dar estructura interna robusta -->
+            <div style="margin: 0.5rem 0 1rem 0;">
+                <p style="font-weight: 500; color: #1f3b4c;">✨ Funcionalidad adicional ✨</p>
+                <p style="font-size: 0.9rem; color: #365f7e;">Scroll down → panel sube / Scroll up → panel baja.<br>
+                    Detecta la dirección del desplazamiento en tiempo real.</p>
+            </div>
+
+            <div class="action-row">
+                <button class="btn btn-secondary" id="fakeActionBtn">ℹ️ Más info</button>
+                <button class="btn btn-primary" id="closePanelBtn">❌ Cerrar panel</button>
+            </div>
+            <p style="font-size: 0.7rem; text-align: center; margin-top: 1rem; color: #7c8f9c;">
+                El panel también se puede cerrar con el botón. Vuelve a bajar para que aparezca otra vez.
+            </p>
+        </div>
+    </div>
+
+    <!-- pequeño indicador visual (opcional, mejora UX) -->
+    <div class="scroll-hint" id="scrollHint">
+        ↓ Scroll abajo para mostrar panel ↑
+    </div>
+
+    <script>
+        (function () {
+            // Elementos del DOM
+            const panel = document.getElementById('slidingPanel');
+            const hint = document.getElementById('scrollHint');
+
+            // Estado interno: si el panel está visible o no
+            let isPanelVisible = false;
+
+            // Variable para almacenar la posición previa del scroll (detección de dirección)
+            let lastScrollY = window.scrollY;
+
+            // Umbral mínimo de desplazamiento para evitar cambios muy bruscos? 
+            // Por suavidad y precisión, usamos el cambio de dirección directamente.
+            // No se necesita umbral porque la experiencia es natural.
+
+            // Función para mostrar el panel (si no está visible)
+            function showPanel() {
+                if (!isPanelVisible) {
+                    panel.classList.add('visible');
+                    isPanelVisible = true;
+                    // Actualizar texto del hint
+                    if (hint) hint.textContent = '▲ Scroll arriba para ocultar panel ▲';
+                }
+            }
+
+            // Función para ocultar el panel (si está visible)
+            function hidePanel() {
+                if (isPanelVisible) {
+                    panel.classList.remove('visible');
+                    isPanelVisible = false;
+                    if (hint) hint.textContent = '↓ Scroll abajo para mostrar panel ↓';
+                }
+            }
+
+            // Detección del evento scroll → dirección y toggle
+            function handleScroll() {
+                const currentScrollY = window.scrollY;
+                // Diferencia para determinar dirección (positivo = scroll hacia abajo, negativo = hacia arriba)
+                const delta = currentScrollY - lastScrollY;
+
+                // Evitar acciones si el delta es cero (no hubo movimiento real)
+                if (delta === 0) {
+                    // Actualizamos lastScrollY por si acaso, pero no cambiamos estado
+                    lastScrollY = currentScrollY;
+                    return;
+                }
+
+                if (delta > 0) {
+                    // SCROLL HACIA ABAJO: debe aparecer el segundo div (si no está visible)
+                    if (!isPanelVisible) {
+                        showPanel();
+                    }
+                }
+                else if (delta < 0) {
+                    // SCROLL HACIA ARRIBA: debe desaparecer el segundo div
+                    if (isPanelVisible) {
+                        hidePanel();
+                    }
+                }
+
+                // Actualizar última posición para la siguiente iteración
+                lastScrollY = currentScrollY;
+            }
+
+            // Evento scroll con optimización pasiva para mejor rendimiento
+            window.addEventListener('scroll', handleScroll, { passive: true });
+
+            // --- Interacción adicional: Botón de cerrar panel manualmente ---
+            const closeBtn = document.getElementById('closePanelBtn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // Si el panel está visible, lo ocultamos manualmente
+                    if (isPanelVisible) {
+                        hidePanel();
+                        // Opcional: pequeño feedback visual: reseteamos el hint
+                        if (hint) hint.textContent = '↓ Scroll abajo para mostrar panel ↓';
+                    }
+                });
+            }
+
+            // Botón "Más info" solo muestra un mensaje de demo (no afecta el comportamiento scroll)
+            const infoBtn = document.getElementById('fakeActionBtn');
+            if (infoBtn) {
+                infoBtn.addEventListener('click', () => {
+                    alert('📘 Panel interactivo: Aparece/desaparece con el scroll. Prueba a hacer scroll hacia arriba/abajo.');
+                });
+            }
+
+            // Asegurar estado inicial correcto: el panel debe estar oculto al cargar la página (sin clase visible)
+            // Pero por si algún caso extraño de que el scrollY inicial sea > 0, sincronizamos.
+            // Esto previene que si la página se recarga con scrollY >0, el panel se muestre inesperadamente.
+            // Forzamos a que al inicio el panel esté siempre oculto, independientemente del scrollY.
+            // Ya que al cargar la clase no existe 'visible', y isPanelVisible = false. Perfecto.
+            // Sin embargo si por casualidad el usuario recargó con scrollY!=0, debemos forzar oculto visual y estado.
+            // Además, actualizamos lastScrollY con el scroll real.
+            const initScroll = window.scrollY;
+            lastScrollY = initScroll;
+            // Garantizar que el panel no está visible al inicio (clase removida)
+            if (panel.classList.contains('visible')) {
+                panel.classList.remove('visible');
+            }
+            isPanelVisible = false;
+
+            // Si por algún motivo el scroll inicial es mayor a 0 pero el panel debería estar oculto al inicio,
+            // está perfecto. El usuario aún no ha hecho scroll, pero si existe un scroll inicial extraño, 
+            // evitamos que el panel aparezca de manera automática. 
+            // Mejor aún: solo se mostrará cuando el usuario haga scroll hacia abajo desde cualquier posición.
+            // Pero para mejor experiencia, si el usuario está en medio de la página y hace scroll abajo, se mostrará correctamente.
+
+            // Bonus: Prevenir conflictos si el panel tiene scroll interno y el usuario llega al borde.
+            // No afecta la lógica principal porque seguimos detectando delta de scroll en window.
+            // Para que el efecto sea más elegante y no interfiera con el panel interno, 
+            // si el usuario está scrolleando dentro del panel, el window.scroll no cambiará hasta que toque el borde.
+            // Eso es aceptable y el comportamiento sigue siendo natural.
+
+            // Pequeño detalle: cambiar el texto del hint cuando el panel está visible/hidden mediante el scroll
+            // ya lo manejamos en show/hide. Pero si se oculta con botón, el hint también debe reflejar que está oculto.
+            // Ya está cubierto: en hidePanel() actualizamos hint.
+
+            // Añadir opcional: transición de hint suave cada vez que cambia el estado.
+            // Podemos también si el mouse deja de moverse, pero no necesario.
+
+            // Mejora adicional: Al hacer scroll muy rápido, la animación sigue siendo fluida, no hay conflictos.
+            // También aseguramos que el panel no se muestre/oculte múltiples veces innecesarias gracias a la verificación de estado.
+
+            // En caso de que la ventana se redimensione, el panel mantiene su posición relativa al viewport.
+            // Todo correcto.
+
+            // Opcional: si el usuario llega al final del scroll y después sube, funciona.
+            // Prueba de compatibilidad con Android/iOS: scroll suave.
+
+            // ---- Extras: Para que el primer div "siempre visible" no tenga problemas con el panel en móvil ----
+            // Aseguramos que el panel tenga un fondo sólido para legibilidad, el hero está detrás.
+            // El z-index está bien definido: hero (10), panel (20).
+
+            // Pequeño efecto: si el usuario mueve el cursor o toca, no hay doble activación.
+            console.log('✅ Efecto de scroll listo: Panel aparece desde abajo al scroll down, desaparece al scroll up.');
+
+            // Por si es necesario resetear en dispositivos táctiles: todo funciona.
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,245 @@
+@import "_iconos";
+
+$BorderRadiusButtons: 5px;
+
+@mixin css3-prefix($property, $value) {
+    -webkit-#{$property}: #{$value};
+    -khtml-#{$property}: #{$value};
+    -moz-#{$property}: #{$value};
+    -ms-#{$property}: #{$value};
+    -o-#{$property}: #{$value};
+    #{$property}: #{$value};
+}
+
+@mixin transition($properties...) {
+    @if length($properties)>=1 {
+        @include css3-prefix('transition', $properties);
+    }
+
+    @else {
+        @include css3-prefix('transition', "all 0.2s ease-in-out 0s");
+    }
+}
+
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    & {
+        font-size: 12px;
+    }
+
+    * {
+        @include css3-prefix('user-select', none);
+
+        input:read-only {
+            @include css3-prefix('user-select', none);
+
+            cursor: default;
+
+        }
+    }
+}
+
+@media screen {
+    @media screen and (max-width: 575px) {
+        .form-receipt {
+            height: auto;
+        }
+
+        #header-svg {
+            margin: 0 auto 15px auto;
+        }
+
+        .roc,
+        .content-date-time {
+            padding: 15 0;
+        }
+    }
+
+    @media screen and (min-width: 576px) {
+        .form-receipt {
+            height: 510px;
+        }
+    }
+
+
+
+    body {
+        & {
+            position: relative;
+            background-attachment: fixed;
+            background: #63529d;
+            background: linear-gradient(90deg, #63529d 0%, #9a4db8 56%, #63529d 100%);
+
+            display: flex;
+            align-content: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        #header-svg {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 350px;
+
+
+        }
+
+        #header-svg path[aria-label*="sede-"] {
+            display: none;
+        }
+
+        &.sede-leo svg#header-svg path[aria-label*="sede-leo"] {
+            display: block;
+        }
+
+        &.sede-est svg#header-svg path[aria-label*="sede-est"] {
+            display: block;
+        }
+
+        &.sede-sjs svg#header-svg path[aria-label*="sede-sjs"] {
+            display: block;
+        }
+
+        .height-100 {
+            height: 100%;
+        }
+
+        .form-receipt {
+            max-width: 1000px;
+            width: 100%;
+
+
+            background-color: #fff;
+
+            header {
+                margin: 0;
+                background-color: #42257a;
+
+                .roc {
+                    position: relative;
+                    max-width: 220px;
+                    font-family: "Oswald", sans-serif !important;
+
+                    &::before {
+                        pointer-events: none;
+                        @include transition(opacity 0.3s ease-in-out);
+                        opacity: 0;
+                        content: "CAMBIAR #RECIBO";
+
+                        position: absolute;
+                        height: 100%;
+                        width: 100%;
+                        @include css3-prefix('border-radius', $BorderRadiusButtons);
+                        bottom: 0;
+                        left: 0;
+                        display: flex;
+                        justify-content: center;
+                        /* Centra horizontalmente */
+                        align-items: center;
+                        /* Centra verticalmente */
+
+                        background-color: #f9bd0e;
+                        color: #42257a;
+                        font-weight: bold;
+                        text-align: center;
+                        font-size: 18px;
+                        cursor: pointer;
+
+                        padding: 2px 0px;
+
+                    }
+
+                    &:hover {
+                        &::before {
+                            opacity: 1;
+                        }
+                    }
+
+
+                    label {
+                        color: #fff;
+                        font-weight: bold;
+                        text-align: center;
+                        font-size: 18px;
+                        display: block;
+                        width: 100%;
+                    }
+
+                    cursor: pointer;
+
+                    label,
+                    input {
+                        pointer-events: none;
+                    }
+
+                    input {
+
+                        font-family: 'Courier New', Courier, monospace;
+                        font-size: 20px;
+                        appearance: none;
+                        background-color: transparent;
+                        text-align: center;
+                        color: #f9bd0e;
+                        font-weight: bold;
+                        padding: 0;
+
+                        &,
+                        &:focus,
+                        &:active,
+                        &:visited {
+                            outline: none;
+                            border: none;
+                            box-shadow: none;
+
+                        }
+                    }
+                }
+
+                .content-date-time {
+                    max-width: 175px;
+                    font-family: "Oswald", sans-serif !important;
+
+                    label {
+                        color: #fff;
+                        font-weight: bold;
+                        text-align: center;
+                        font-size: 18px;
+                        display: block;
+                        width: 100%;
+                    }
+
+                    input {
+                        font-size: 17px !important;
+                        font-family: 'Courier New', Courier, monospace;
+                        font-size: 20px;
+                        appearance: none;
+
+                        text-align: center;
+
+                        font-weight: bold;
+                        padding: 0;
+
+                        &,
+                        &:focus,
+                        &:active,
+                        &:visited {
+                            outline: none;
+                            border: none;
+                            box-shadow: none;
+
+                        }
+                    }
+                }
+
+
+            }
+        }
+    }
+}

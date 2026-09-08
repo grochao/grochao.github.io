@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Generador y Lector de Código de Barras (Code 39) - Vanilla JS</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, 'Segoe UI', 'Roboto', sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            padding: 20px 24px 32px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            margin-top: 0;
+            margin-bottom: 0.25rem;
+            color: #1e293b;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            margin: 1.5rem 0 0.8rem 0;
+            color: #0f172a;
+            border-left: 4px solid #3b82f6;
+            padding-left: 12px;
+        }
+
+        hr {
+            margin: 1rem 0;
+            border: none;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        input {
+            flex: 2;
+            padding: 10px 14px;
+            font-size: 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 16px;
+            font-family: monospace;
+            background: #f8fafc;
+        }
+
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        button:hover {
+            background: #2563eb;
+            transform: scale(0.98);
+        }
+
+        button.secondary {
+            background: #334155;
+        }
+
+        button.secondary:hover {
+            background: #1e293b;
+        }
+
+        button.danger {
+            background: #ef4444;
+        }
+
+        button.danger:hover {
+            background: #dc2626;
+        }
+
+        button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .barcode-preview {
+            background: #fff;
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        img,
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .result-box {
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 12px 18px;
+            margin-top: 15px;
+            font-family: monospace;
+            word-break: break-all;
+        }
+
+        .cam-area {
+            background: #fef9e3;
+            border-radius: 20px;
+            padding: 16px;
+            margin-top: 10px;
+        }
+
+        video {
+            width: 100%;
+            max-width: 350px;
+            border-radius: 16px;
+            background: #000;
+            margin: 12px auto;
+            display: none;
+        }
+
+        .flex-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .badge {
+            background: #e6f0ff;
+            color: #1e40af;
+            border-radius: 40px;
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        footer {
+            margin-top: 28px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 16px;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>📦 Código de Barras + Cámara</h2>
+        <p style="color: #475569;">Genera códigos <strong>Code 39</strong> (solo dígitos), lee desde imagen o
+            cámara.<br>
+            <span class="badge" id="soporteBadge">Verificando soporte...</span>
+        </p>
+        <hr>
+
+        <!-- ========== SECCIÓN 1: GENERAR Y ASIGNAR ========== -->
+        <h3>🔢 1. Generar código de barras</h3>
+        <div class="input-group">
+            <input type="text" id="numeroInput" value="9876543210" placeholder="Ej: 1234567890" pattern="\d*">
+            <button id="btnGenerar">✨ Generar código</button>
+        </div>
+        <div class="barcode-preview">
+            <img id="barcodeImg" alt="Código de barras" style="width:270px; height:150px; background:#fff;">
+        </div>
+        <div class="flex-buttons">
+            <button id="btnLeerImg">🔍 Leer desde esta imagen</button>
+        </div>
+        <div id="lecturaResultado" class="result-box">⚡ Presiona "Leer" para detectar el código de barras.</div>
+
+        <hr>
+
+        <!-- ========== SECCIÓN 2: CÁMARA Y LECTURA ========== -->
+        <h3>📷 2. Tomar foto y leer código (cámara)</h3>
+        <div class="cam-area">
+            <video id="videoCam" playsinline autoplay muted></video>
+            <div class="flex-buttons">
+                <button id="btnTomarFoto">📸 Abrir cámara y leer código</button>
+            </div>
+            <div id="fotoPreview" style="margin-top: 16px;">
+                <!-- Aquí se mostrará la foto capturada y el resultado -->
+            </div>
+        </div>
+
+        <footer>
+            ⚡ Clase JavaScript pura · Code 39 · BarcodeDetector API · getUserMedia
+        </footer>
+    </div>
+
+    <script>
+        // ------------------------------------------------------------
+        // CLASE COMPLETA: GENERACIÓN + LECTURA + CÁMARA
+        // ------------------------------------------------------------
+        class CodigoBarras {
+            constructor() {
+                this.detector = null;
+                this.soporteBarcode = 'BarcodeDetector' in window;
+                if (this.soporteBarcode) {
+                    try {
+                        this.detector = new BarcodeDetector({ formats: ['code_39'] });
+                    } catch (e) {
+                        this.soporteBarcode = false;
+                        console.warn('BarcodeDetector no soporta code_39', e);
+                    }
+                }
+            }
+
+            // Genera el código de barras como dataURL (270x150, solo barras)
+            generar(numericString) {
+                if (!/^\d+$/.test(numericString)) {
+                    throw new Error('Solo dígitos numéricos (0-9)');
+                }
+
+                const NARROW = 2;
+                const WIDE = 5;
+                const patrones = {
+                    '0': [1, 1, 1, 2, 2, 1, 2, 1, 1], '1': [2, 1, 1, 1, 1, 2, 1, 1, 2],
+                    '2': [1, 2, 1, 1, 1, 2, 1, 1, 2], '3': [2, 2, 1, 1, 1, 2, 1, 1, 2],
+                    '4': [1, 1, 2, 2, 1, 2, 1, 1, 2], '5': [2, 1, 2, 2, 1, 2, 1, 1, 2],
+                    '6': [1, 2, 2, 2, 1, 2, 1, 1, 2], '7': [1, 1, 1, 1, 2, 2, 1, 1, 2],
+                    '8': [2, 1, 1, 1, 2, 2, 1, 1, 2], '9': [1, 2, 1, 1, 2, 2, 1, 1, 2],
+                    '*': [1, 1, 1, 1, 1, 2, 2, 1, 1]
+                };
+
+                const caracteres = ['*', ...numericString.split(''), '*'];
+                const segmentos = [];
+                for (let i = 0; i < caracteres.length; i++) {
+                    segmentos.push(patrones[caracteres[i]]);
+                    if (i < caracteres.length - 1) segmentos.push([0]); // gap entre caracteres
+                }
+
+                // Ancho natural
+                let anchoNatural = 0;
+                for (const seg of segmentos) {
+                    if (seg.length === 1 && seg[0] === 0) anchoNatural += NARROW;
+                    else for (const u of seg) anchoNatural += (u === 1 ? NARROW : WIDE);
+                }
+                const alto = 150;
+
+                // Canvas temporal
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = anchoNatural;
+                tempCanvas.height = alto;
+                const tempCtx = tempCanvas.getContext('2d');
+                tempCtx.fillStyle = '#FFFFFF';
+                tempCtx.fillRect(0, 0, anchoNatural, alto);
+
+                let x = 0;
+                for (const seg of segmentos) {
+                    if (seg.length === 1 && seg[0] === 0) {
+                        tempCtx.fillStyle = '#FFFFFF';
+                        tempCtx.fillRect(x, 0, NARROW, alto);
+                        x += NARROW;
+                        continue;
+                    }
+                    let esBarra = true;
+                    for (const unidad of seg) {
+                        const anchoSeg = unidad === 1 ? NARROW : WIDE;
+                        tempCtx.fillStyle = esBarra ? '#000000' : '#FFFFFF';
+                        tempCtx.fillRect(x, 0, anchoSeg, alto);
+                        x += anchoSeg;
+                        esBarra = !esBarra;
+                    }
+                }
+
+                // Canvas final 270x150
+                const finalCanvas = document.createElement('canvas');
+                finalCanvas.width = 270;
+                finalCanvas.height = 150;
+                const finalCtx = finalCanvas.getContext('2d');
+                finalCtx.fillStyle = '#FFFFFF';
+                finalCtx.fillRect(0, 0, 270, 150);
+                finalCtx.drawImage(tempCanvas, 0, 0, anchoNatural, alto, 0, 0, 270, alto);
+                return finalCanvas.toDataURL('image/png');
+            }
+
+            // Asignar a un elemento img o canvas
+            asignar(numericString, selector) {
+                const dataUrl = this.generar(numericString);
+                const elemento = typeof selector === 'string' ? document.querySelector(selector) : selector;
+                if (!elemento) throw new Error('Elemento no encontrado');
+                if (elemento.tagName === 'IMG') {
+                    elemento.src = dataUrl;
+                } else if (elemento.tagName === 'CANVAS') {
+                    const ctx = elemento.getContext('2d');
+                    const img = new Image();
+                    img.onload = () => {
+                        elemento.width = 270;
+                        elemento.height = 150;
+                        ctx.drawImage(img, 0, 0);
+                    };
+                    img.src = dataUrl;
+                } else {
+                    elemento.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = dataUrl;
+                    img.style.width = '270px';
+                    img.style.height = '150px';
+                    elemento.appendChild(img);
+                }
+                elemento.setAttribute('data-codigo-valor', numericString);
+                return dataUrl;
+            }
+
+            // Leer desde imagen o canvas existente
+            async leer(selector) {
+                if (!this.soporteBarcode) throw new Error('BarcodeDetector no disponible (usa Chrome/Edge/Safari 15.4+)');
+                let elemento = typeof selector === 'string' ? document.querySelector(selector) : selector;
+                if (!elemento) throw new Error('Elemento no encontrado');
+
+                let fuente = null;
+                if (elemento.tagName === 'IMG') {
+                    fuente = elemento;
+                    if (!fuente.complete) await new Promise(resolve => { fuente.onload = resolve; });
+                } else if (elemento.tagName === 'CANVAS') {
+                    const blob = await new Promise(resolve => elemento.toBlob(resolve, 'image/png'));
+                    fuente = await createImageBitmap(blob);
+                } else {
+                    const imgInterno = elemento.querySelector('img');
+                    if (imgInterno) fuente = imgInterno;
+                    else throw new Error('No se encontró imagen válida');
+                    if (!fuente.complete) await new Promise(resolve => { fuente.onload = resolve; });
+                }
+
+                const resultados = await this.detector.detect(fuente);
+                return resultados.length > 0 ? resultados[0].rawValue : null;
+            }
+
+            // Abre cámara, captura foto y lee código
+            async tomarFotoYLeer(videoSelector, canvasPreviewSelector = null) {
+                if (!this.soporteBarcode) throw new Error('Lectura no soportada por el navegador');
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    throw new Error('getUserMedia no soportado (cámara no disponible)');
+                }
+
+                const video = typeof videoSelector === 'string' ? document.querySelector(videoSelector) : videoSelector;
+                if (!video || video.tagName !== 'VIDEO') throw new Error('Elemento video inválido');
+
+                // Mostrar video
+                video.style.display = 'block';
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                video.srcObject = stream;
+                video.setAttribute('playsinline', 'true');
+                await video.play();
+                await new Promise(resolve => setTimeout(resolve, 600)); // estabilización
+
+                // Capturar frame
+                let canvas = canvasPreviewSelector ? (typeof canvasPreviewSelector === 'string' ? document.querySelector(canvasPreviewSelector) : canvasPreviewSelector) : null;
+                let tempCanvas = null;
+                if (!canvas) {
+                    tempCanvas = document.createElement('canvas');
+                    canvas = tempCanvas;
+                }
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                // Detener cámara
+                stream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                video.style.display = 'none';
+
+                // Leer código desde el canvas
+                let valor = null;
+                try {
+                    const resultados = await this.detector.detect(canvas);
+                    valor = resultados.length > 0 ? resultados[0].rawValue : null;
+                } catch (err) {
+                    console.warn('Detección falló', err);
+                }
+                const imagenDataUrl = canvas.toDataURL('image/png');
+                // No eliminamos el canvas temporal si se creó (se perderá)
+                return { valor, imagenDataUrl };
+            }
+
+            haySoporteLectura() {
+                return this.soporteBarcode;
+            }
+        }
+
+        // ------------------------------------------------------------
+        //  INICIALIZACIÓN DE LA DEMO CUANDO EL DOM ESTÉ LISTO
+        // ------------------------------------------------------------
+        document.addEventListener('DOMContentLoaded', () => {
+            const codigoBarras = new CodigoBarras();
+            const badge = document.getElementById('soporteBadge');
+            const numeroInput = document.getElementById('numeroInput');
+            const btnGenerar = document.getElementById('btnGenerar');
+            const barcodeImg = document.getElementById('barcodeImg');
+            const btnLeerImg = document.getElementById('btnLeerImg');
+            const lecturaResultado = document.getElementById('lecturaResultado');
+            const btnTomarFoto = document.getElementById('btnTomarFoto');
+            const videoElem = document.getElementById('videoCam');
+            const fotoPreview = document.getElementById('fotoPreview');
+
+            // Mostrar soporte
+            if (codigoBarras.haySoporteLectura()) {
+                badge.innerHTML = '✅ Lectura de código soportada (Code 39)';
+                badge.style.background = '#dcfce7';
+                badge.style.color = '#166534';
+            } else {
+                badge.innerHTML = '⚠️ Tu navegador NO soporta BarcodeDetector. Solo generación.';
+                badge.style.background = '#fee2e2';
+                badge.style.color = '#991b1b';
+                btnLeerImg.disabled = true;
+                btnTomarFoto.disabled = true;
+            }
+
+            // Función para actualizar la imagen del código
+            function actualizarCodigo() {
+                let valor = numeroInput.value.trim();
+                if (valor === '') valor = '0';
+                if (!/^\d+$/.test(valor)) {
+                    lecturaResultado.innerHTML = '❌ Error: Solo dígitos numéricos permitidos.';
+                    return;
+                }
+                try {
+                    codigoBarras.asignar(valor, '#barcodeImg');
+                    lecturaResultado.innerHTML = '✅ Código generado correctamente. Presiona "Leer" para detectar.';
+                } catch (err) {
+                    lecturaResultado.innerHTML = `⚠️ ${err.message}`;
+                }
+            }
+
+            btnGenerar.addEventListener('click', actualizarCodigo);
+            // Generar el primer código al cargar
+            actualizarCodigo();
+
+            // Leer desde la imagen generada
+            btnLeerImg.addEventListener('click', async () => {
+                if (!codigoBarras.haySoporteLectura()) {
+                    lecturaResultado.innerHTML = '⚠️ Tu navegador no puede leer códigos de barras.';
+                    return;
+                }
+                lecturaResultado.innerHTML = '🔍 Leyendo...';
+                try {
+                    const resultado = await codigoBarras.leer('#barcodeImg');
+                    if (resultado) {
+                        lecturaResultado.innerHTML = `🎯 Código leído correctamente: <strong>${resultado}</strong>`;
+                    } else {
+                        lecturaResultado.innerHTML = '❌ No se detectó ningún código de barras válido en la imagen.';
+                    }
+                } catch (err) {
+                    lecturaResultado.innerHTML = `❌ Error: ${err.message}`;
+                }
+            });
+
+            // Cámara + leer
+            btnTomarFoto.addEventListener('click', async () => {
+                if (!codigoBarras.haySoporteLectura()) {
+                    fotoPreview.innerHTML = '<p style="color:red;">⚠️ Lectura no soportada por el navegador.</p>';
+                    return;
+                }
+                fotoPreview.innerHTML = '<p>📸 Activando cámara... permite los permisos.</p>';
+                try {
+                    const { valor, imagenDataUrl } = await codigoBarras.tomarFotoYLeer(videoElem);
+                    fotoPreview.innerHTML = `
+                    <div style="background:#fff; border-radius:16px; padding:12px;">
+                        <strong>🔍 Resultado de la foto:</strong> ${valor ? `✅ ${valor}` : '❌ No se detectó código'}<br>
+                        <img src="${imagenDataUrl}" style="max-width:100%; margin-top:12px; border-radius:12px; border:1px solid #ccc;">
+                    </div>
+                `;
+                } catch (err) {
+                    fotoPreview.innerHTML = `<p style="color:red;">⚠️ Error: ${err.message}</p>`;
+                    videoElem.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
