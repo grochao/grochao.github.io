@@ -328,8 +328,8 @@
         <div id="TheForm" class="row">
 
             <div class="col-12">
-                <div class="row justify-content-end">
-                    <div class="col-12 col-sm max-width-255px order-md-3">
+                <div class="row justify-content-end horizontal-padding-7px">
+                    <div class="col-12 col-sm-12 col-md   order-sm-1 order-md-3">
                         <div class="material-design width-">
                             <select name="txt_tipo_recibo" id="txt_tipo_recibo" required>
                                 <option value=""></option>
@@ -372,7 +372,7 @@
 
                         </div>
                     </div>
-                    <div class="col-12 col-sm order-md-1">
+                    <div class="col-12 col-sm-6 col-md order-sm-2 order-md-1">
                         <div class="material-design">
                             <input autocomplete="off" type="text" name="txt_nombre" id="txt_nombre" placeholder=" "
                                 value="Guillermo Rocha">
@@ -380,7 +380,7 @@
                             <span class="barra"></span>
                         </div>
                     </div>
-                    <div class="col-12 col-sm order-md-2">
+                    <div class="col-12 col-sm-6 col-md order-sm-3 order-md-2">
                         <div class="material-design">
 
                             <input autocomplete="off" type="text" name="txt_empresa" id="txt_empresa" placeholder=" ">
@@ -393,10 +393,297 @@
                 </div>
             </div>
 
+            <div class="col-12">
+                <div class="row justify-content-between horizontal-padding-7px">
+                    <div class="col-12 col-sm-6 col-md">
+                        <div class="material-design">
+                            <input autocomplete="off" type="text" name="txt_tutor" id="txt_tutor" placeholder=" ">
+                            <label for="pais">NOMBRE TUTOR / CONTACTO</label>
+                            <span class="barra"></span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md">
+                        <div class="material-design">
+                            <input autocomplete="off" type="text" name="txt_correo" id="txt_correo" placeholder=" ">
+                            <label for="pais">CORREO ELECTRÓNICO</label>
+                            <span class="barra"></span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm  ">
+                        <div class="material-design">
+                            <input autocomplete="off" type="text" name="txt_telefono" id="txt_telefono" placeholder=" ">
+                            <label for="pais">N° TELEFÓNICO</label>
+                            <span class="barra"></span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm  ">
+                        <div class="material-design">
+                            <input autocomplete="off" type="text" name="txt_fecha_nacimiento" id="txt_fecha_nacimiento"
+                                placeholder=" ">
+                            <label for="pais">FECHA DE NACIMIENTO</label>
+                            <span class="barra"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="row horizontal-padding-7px">
+                    <div class="col-12 col-sm max-width-165px">
+                        <div class="material-design">
+                            <select name="txt_curso" id="txt_curso" required>
+                                <option value=""></option>
+                                <option value="">2026MAGSAB07</option>
+                            </select>
+                            <label for="pais">SESIÓN</label>
+                            <span class="barra"></span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm max-width-80px">
+                        <div class="material-design">
+                            <select name="txt_nivel" id="txt_nivel" required>
+                                <option value=""></option>
+                                <option value="">1</option>
+                                <option value="">2</option>
+                                <option value="">3</option>
+                                <option value="">4</option>
+                                <option value="">5</option>
+                                <option value="">6</option>
+                                <option value="">7</option>
+                                <option value="">8</option>
+                                <option value="">9</option>
+                                <option value="">10</option>
+                                <option value="">11</option>
+                                <option value="">12</option>
+                                <option value="">13</option>
+                                <option value="">14</option>
+                                <option value="">15</option>
+                                <option value="">16</option>
+                            </select>
+                            <label for="pais">NIVEL</label>
+                            <span class="barra"></span>
+                        </div>
+                    </div>
+                    <div class="col  col-sm max-width-150px">
+                        <div class="material-design">
+                            <select id="txt_categoria" name="txt_categoria" required>
+                                <option value=""></option>
+                                <option value="">Early Success</option>
+                                <option value="">Children Program</option>
+                                <option value="">Adolescentes</option>
+                                <option value="">Adultos</option>
 
+                            </select>
+                            <label for="pais">CATEGORÍA</label>
+                            <span class="barra"></span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm">
+                        <div class="material-design">
+                            <input autocomplete="off" type="text" name="txt_fecha_nacimiento" id="txt_fecha_nacimiento"
+                                placeholder=" ">
+                            <label for="pais">NOMBRE DEL LIBRO</label>
+                            <span class="barra"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 order-2 order-lg-1 payment-method-container">
+                <div class="row horizontal-padding-7px">
+                    <div class="col-6 col-sm ">
+                        <div class="content-check">
+                            <label class="checkbox-boton">
+                                <input type="checkbox" name="txt_efectivo" id="txt_efectivo" />
+                                <span class="check-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                </span>
+                                <span class="texto">EFECTIVO</span>
+                            </label>
+
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm  ">
+                        <div class="content-check">
+                            <label class="checkbox-boton">
+                                <input type="checkbox" name="txt_tarjeta" id="txt_tarjeta" />
+                                <span class="check-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                </span>
+                                <span class="texto">TARJETA</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm">
+                        <div class="content-check">
+                            <label class="checkbox-boton">
+                                <input type="checkbox" name="txt_telepago" id="txt_telepago" />
+                                <span class="check-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                </span>
+                                <span class="texto">TELEPAGO</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm ">
+                        <div class="content-check">
+                            <label class="checkbox-boton">
+                                <input type="checkbox" name="txt_deposito" id="txt_deposito" />
+                                <span class="check-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                </span>
+                                <span class="texto">DEPO/TRANSF</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm ">
+                        <div class="content-check">
+                            <label class="checkbox-boton">
+                                <input type="checkbox" name="txt_cheque" id="txt_cheque" />
+                                <span class="check-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                </span>
+                                <span class="texto">CHEQUE</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm ">
+                        <div class="content-check">
+                            <label class="checkbox-boton">
+                                <input type="checkbox" name="txt_retenciones" id="txt_retenciones" />
+                                <span class="check-icon">
+                                    <svg viewBox="0 0 24 24">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                </span>
+                                <span class="texto">RETENCIONES</span>
+
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-12 order-1 order-lg-2">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-sm previous-image-container">
+                        <div class="image-container">
+
+                            <img src="https://dataanalyst-ans.github.io/thumb/DOODLE-TOWN-3.png" alt="">
+
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm"></div>
+                </div>
+            </div>
         </div>
     </div>
 
+    <dialog id="Details">
+        <div class="content-dialog">
+            <div class="content-dialog-header">
+                <h2>Detalle de efectivo recibido</h2>
+                <button type="button" class="btn-close"><i class="icon-down"></i></button>
+            </div>
+            <div class="content-dialog-body">
+                <ul>
+                    <li>
+                        <div class="cash-container">
+                            <div class="money">C$ 1000</div>
+                            <div class="amount"><input type="number" placeholder="0" min="0" max="1000" step="1"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cash-container">
+                            <div class="money">C$ 500</div>
+                            <div class="amount"><input type="number" placeholder="0" min="0" max="1000" step="1"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cash-container">
+                            <div class="money">C$ 200</div>
+                            <div class="amount"><input type="number" placeholder="0" min="0" max="1000" step="1"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cash-container">
+                            <div class="money">C$ 100</div>
+                            <div class="amount"><input type="number" placeholder="0" min="0" max="1000" step="1"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cash-container">
+                            <div class="money">C$ 50</div>
+                            <div class="amount"><input type="number" placeholder="0" min="0" max="1000" step="1"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cash-container">
+                            <div class="money">C$ 20</div>
+                            <div class="amount"><input type="number" placeholder="0" min="0" max="1000" step="1"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cash-container">
+                            <div class="money">C$ 10</div>
+                            <div class="amount"><input type="number" placeholder="0" min="0" max="1000" step="1"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cash-container">
+                            <div class="money">C$ 5</div>
+                            <div class="amount"><input type="number" placeholder="0" min="0" max="1000" step="1"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cash-container">
+                            <div class="money">C$ 1</div>
+                            <div class="amount"><input type="number" placeholder="0" min="0" max="1000" step="1"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cash-container">
+                            <div class="money">TOTAL</div>
+                            <div class="amount"><input type="text" placeholder="0" readonly disabled value="7.460,00">
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cash-container">
+                            <div class="money">CAMBIO</div>
+                            <div class="amount"><input type="text" placeholder="0" readonly disabled value="0"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class=" content-dialog-footer">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-6">
+                                <button type="button" class="btn btn-outline-secondary btn-sm">Cancelar</button>
+
+                            </div>
+                            <div class="col-6">
+                                <button type="button" class="btn btn-primary btn-sm">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </dialog>
 </body>
 
 </html>
