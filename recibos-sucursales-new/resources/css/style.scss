@@ -61,7 +61,24 @@ body {
             justify-content: center;
         }
 
-        #header-svg {
+        .show-mobile {
+            display: none;
+            background-color: #42257a;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+
+            svg {
+                width: 100%;
+                margin: 0 auto;
+            }
+
+            @media screen and (max-width:576px) {
+                display: block;
+            }
+        }
+
+        .header-svg {
             display: block;
             width: 100%;
             height: auto;
@@ -70,19 +87,19 @@ body {
 
         }
 
-        #header-svg path[aria-label*="sede-"] {
+        .header-svg path[aria-label*="sede-"] {
             display: none;
         }
 
-        &.sede-leo svg#header-svg path[aria-label*="sede-leo"] {
+        &.sede-leo svg.header-svg path[aria-label*="sede-leo"] {
             display: block;
         }
 
-        &.sede-est svg#header-svg path[aria-label*="sede-est"] {
+        &.sede-est svg.header-svg path[aria-label*="sede-est"] {
             display: block;
         }
 
-        &.sede-sjs svg#header-svg path[aria-label*="sede-sjs"] {
+        &.sede-sjs svg.header-svg path[aria-label*="sede-sjs"] {
             display: block;
         }
 
@@ -101,6 +118,12 @@ body {
                 margin: 0;
                 background-color: #42257a;
                 padding: 4px 0;
+
+                @media screen and (max-width:576px) {
+                    .header-svg {
+                        display: none !important;
+                    }
+                }
 
                 .roc {
                     position: relative;
@@ -802,7 +825,7 @@ body {
             height: auto;
         }
 
-        #header-svg {
+        .header-svg {
             margin: 0 auto 15px auto;
         }
 
