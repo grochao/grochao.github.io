@@ -481,20 +481,59 @@ body {
                     max-width: 140px;
                     padding: 0;
 
+                    @media screen and (max-width:575px) {
+                        max-width: 250px;
+
+                    }
+
                     .image-container {
                         display: block;
                         width: 100%;
                         background-position: center;
-                        background-size: 50lvh auto;
+
                         background-repeat: no-repeat;
 
+                        &:not(.zoom) {
+                            background-size: cover;
+                        }
+
                         @media screen and (max-width:575px) {
-                            background-size: 90lvw auto;
+                            &.zomm {
+                                background-size: 90lvw auto;
+
+                            }
+
+                            &[style*="background-image"] {
+                                &.zoom {
+                                    img {
+                                        display: none;
+                                    }
+                                }
+
+                                &:not(.zoom) {
+                                    img {
+                                        visibility: hidden;
+                                        opacity: 0;
+                                    }
+                                }
+
+                            }
                         }
 
                         @media screen and (min-width:576px) {
-                            background-size: 50lvh auto;
+                            .zoom {
+                                background-size: 50lvh auto;
+                            }
+
+                            &[style*="background-image"] {
+                                img {
+                                    visibility: hidden;
+                                    opacity: 0;
+                                }
+                            }
                         }
+
+
 
                         img {
                             width: 100%;
@@ -509,6 +548,8 @@ body {
                                 margin: 0 auto;
 
                             }
+
+
                         }
 
 
@@ -522,6 +563,13 @@ body {
                             height: 100lvh;
                             background-color: rgba(0, 0, 0, .5);
                             backdrop-filter: blur(4px);
+                            z-index: 99999999999;
+                            padding: 0;
+                            margin: 0;
+
+                            img {
+                                display: none;
+                            }
                         }
 
                         @media screen and (max-width:575px) {
