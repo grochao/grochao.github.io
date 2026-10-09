@@ -187,8 +187,8 @@ body {
 
 
         .max-width-200px {
-            max-width: 200px;
-            min-width: 200px;
+            max-width: 183px;
+            min-width: 183px;
         }
 
         .max-width-80px {
@@ -458,7 +458,7 @@ body {
                 }
 
                 footer {
-                    height: 52px;
+                    height: auto;
                     background: color.adjust($barColor, $lightness: -2%);
                     //background: darken($barColor, 2%);
 

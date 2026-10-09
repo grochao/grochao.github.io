@@ -123,8 +123,8 @@
     display: flex;
     flex-wrap: wrap;
     align-content: center;
-    height: 100%;
-    padding: 0 15px;
+
+    padding: 7px 15px;
     column-gap: 15px;
 
     span {
@@ -135,7 +135,7 @@
         text-transform: uppercase;
 
         &:not([class*="type-button"]) {
-            max-width: 38px;
+            max-width: 30px;
         }
 
         &[class*="type-button"] {
@@ -143,7 +143,7 @@
             color: #fff;
         }
 
-        height: 38px;
+        height: 30px;
         @include css3-prefix('transition', all .25s ease-in-out);
         @include css3-prefix('border-radius', 5px);
         outline:3px solid rgba(255, 255, 255, 0.2);

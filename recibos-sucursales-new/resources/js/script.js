@@ -835,7 +835,7 @@ window.addEventListener('load', function () {
             class: ["one_of_three", "align-right"]
         }
     });
-    tabla.createBody({ total_row: 7 });
+    tabla.createBody({ total_row: 6 });
 
 
 
