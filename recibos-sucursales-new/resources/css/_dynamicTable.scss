@@ -1,0 +1,496 @@
+ @use "mixin" as *;
+
+ dialog {
+     & {
+         padding: 10px 15px;
+         margin: auto;
+         border: none;
+         border-radius: 8px;
+
+         max-width: 420px;
+         width: 90vw;
+         box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
+
+         &::backdrop {
+             background: rgba(0, 0, 0, .4);
+         }
+     }
+
+     h3 {
+         font-size: 1.2em;
+         margin: 0 0 7px 0;
+         color: #2c3e50;
+         font-weight: 500;
+     }
+
+     label {
+         display: block;
+         font-size: .8em;
+         font-weight: 500;
+         color: #34495e;
+         margin-top: 4px;
+
+         .req {
+             color: #e74c3c;
+             margin-left: 2px;
+         }
+
+         .sub {
+             color: #616162;
+             margin-left: 2px;
+         }
+     }
+
+
+
+     input,
+     select,
+     textarea {
+         width: 100%;
+         padding: 8px 10px;
+         border: 1px solid #ccc;
+         border-radius: 4px;
+         font-size: .95rem;
+         @include css3-prefix('transition', opacity .25s ease-in-out);
+
+         &,
+         &:focus,
+         &:active,
+         &:hover {
+
+             outline: none;
+         }
+
+         &[readonly],
+         &[disabled] {
+             background-color: #e4e4e4;
+         }
+     }
+
+     textarea {
+         resize: none;
+     }
+
+     &.is-invalid input,
+     &.is-invalid select,
+     &.is-invalid textarea {
+
+         &,
+         &:focus,
+         &:active,
+         &:hover {
+             border-color: #e74c3c;
+             box-shadow: 0 0 0 2px rgba(231, 76, 60, .15);
+
+         }
+     }
+
+
+ }
+
+ dialog {
+     &.dynamic-table-dialog {
+         form {
+
+             margin: 0;
+         }
+
+         .dialog-fields {
+             & {
+                 display: flex;
+                 flex-wrap: wrap;
+                 gap: 10px;
+             }
+
+             .dialog-field {
+                 margin-bottom: 14px;
+                 flex: 1 0 0%;
+                 width: 100%;
+
+
+
+                 &.align-right {
+                     margin: 0 0 0 auto;
+                 }
+
+                 &.one_of_one {
+                     flex: 0 0 auto;
+                     width: 100%;
+                 }
+
+                 &.one_of_two {
+                     flex: 0 0 auto;
+                     width: 50%;
+
+
+                 }
+
+                 &.one_of_three {
+                     flex: 0 0 auto;
+                     width: 33.33333333333333%;
+                 }
+
+                 &.one_of_four {
+                     flex: 0 0 auto;
+                     width: 25%;
+                 }
+
+                 &.two_of_three {
+                     flex: 0 0 auto;
+                     width: 66.66666666666666%;
+                 }
+
+                 &._row_selected_book {
+                     display: flex;
+                     flex-wrap: wrap;
+                     column-gap: 10px;
+                     background-color: #eef2f4;
+                     padding: 3px 15px 7px 15px;
+                     outline: #ddd solid 1px;
+                     border-radius: 3px;
+                     max-width: 390px;
+
+                     &.hide {
+                         display: none;
+
+                     }
+
+                     label {
+                         flex: 1 0 100%;
+                         flex-wrap: wrap;
+
+
+                     }
+
+                     select {
+                         flex: 1 0 0%;
+
+                         &#txt_dialog_categories {
+                             order: 1;
+                             max-width: 215px;
+                         }
+
+                         &#txt_dialog_lavels {
+                             order: 2;
+                         }
+
+
+                     }
+
+
+                 }
+
+
+
+             }
+         }
+
+         .dialog-error {
+             opacity: 0;
+             @include css3-prefix('transition', opacity .25s ease-in-out);
+
+
+             background: #fdecea;
+             border: 1px solid #f5c6c3;
+             border-radius: 6px;
+             color: #c0392b;
+             font-size: .85rem;
+
+             width: 100%;
+
+             &.is-visible {
+                 opacity: 1;
+                 margin-top: 12px;
+                 padding: 8px 12px;
+             }
+         }
+
+         .dialog-actions {
+             display: flex;
+             justify-content: flex-end;
+             gap: 10px;
+             margin-top: 20px;
+         }
+     }
+ }
+
+ .container-table {
+     & {
+         width: 100%;
+         height: 268px;
+         overflow: hidden;
+         border: none;
+         background: #fff;
+         outline: none;
+
+     }
+
+     .tabla-scroll {
+         width: 100%;
+         height: 100%;
+         border-collapse: collapse;
+         table-layout: fixed;
+         display: flex;
+         flex-direction: column;
+     }
+
+     table {
+         width: 100%;
+         height: 100%;
+         border-collapse: collapse;
+         border-spacing: 0;
+         table-layout: fixed;
+         display: flex;
+         flex-direction: column;
+
+         scrollbar-width: 20px;
+         scrollbar-color: $ColorOrange #f1f1f1;
+
+         *::-webkit-scrollbar-thumb {
+             background-color: #22c55e;
+             border-radius: 20px;
+             min-height: 30px;
+         }
+
+         overflow-y: auto;
+         flex: 1;
+
+         thead,
+         tfoot {
+             flex-shrink: 0;
+             position: sticky;
+             z-index: 999999;
+
+             tr {
+                 display: table;
+                 width: 100%;
+                 table-layout: fixed;
+                 // transition: background 0.15s ease;
+             }
+         }
+
+         span {
+             font-size: 1.1em;
+             padding: 0px 7px;
+             display: block;
+             line-height: 1em;
+         }
+
+         tbody {
+             /*scrollbar-width: thin;
+             scrollbar-color: #6200ee #f1f1f1;*/
+             display: block;
+             /*  overflow-y: auto;
+             flex: 1;*/
+             background: #fff;
+
+             tr {
+                 display: table;
+                 width: 100%;
+                 table-layout: fixed;
+
+                 // transition: background 0.15s ease;
+                 td {
+                     height: 25px;
+
+                     &.col-actions {
+                         text-align: center;
+
+                         button {
+                             display: inline-block;
+                             width: 20px;
+                             height: 20px;
+                             font-size: 10px;
+                             @include css3-prefix('appearance', none);
+                             background-color: rgb(136, 11, 11);
+                             color: #fff;
+                             cursor: pointer;
+                             @include css3-prefix('border-radius', 3px);
+
+
+                             @include css3-prefix('transition', all .25s ease-in-out);
+
+                             &:hover {
+                                 background-color: #e75e22;
+                             }
+
+                             &,
+                             &:hover,
+                             &:active {
+                                 border: none;
+                                 outline: none;
+
+                             }
+                         }
+                     }
+                 }
+             }
+         }
+
+         .center {
+             text-align: center;
+         }
+
+         .right {
+             text-align: right;
+         }
+
+         thead,
+         tbody,
+         tfoot {
+
+             th,
+             td {
+                 &:nth-child(1) {
+                     width: 30px;
+                 }
+
+                 &:nth-child(2) {
+                     width: 110px;
+                 }
+
+                 &:nth-child(4) {
+
+                     width: 150px;
+                 }
+
+                 &:nth-child(5) {
+                     text-align: right;
+                     width: 160px;
+                 }
+             }
+         }
+
+         th,
+         td {
+
+
+             font-size: .67em;
+             font-weight: normal;
+             overflow: hidden;
+
+             word-break: normal;
+             vertical-align: middle;
+
+
+
+
+         }
+
+         th {
+             padding: 5px 5px;
+             font-weight: 500;
+             background-color: #d4cbea;
+             color: #65529e;
+             text-align: center;
+         }
+
+
+
+         tbody {
+             tr {
+                 position: relative;
+
+                 &.add-item-row {
+                     position: sticky;
+                     bottom: 33px;
+                     z-index: 99;
+
+                     padding: 7px 0;
+                     height: 40px;
+                     background-color: #ddd;
+
+
+                     .add-item {
+                         text-align: center;
+                         padding: 7px 0;
+                         font-size: 1.2em;
+                         cursor: pointer;
+
+                         transition: all 0.5s ease-in-out;
+                         display: block;
+                         width: 280px;
+                         margin: 5px auto;
+                         border: 1px dashed #9d61a0;
+
+                         &:hover {
+                             background-color: #9d61a0;
+                             color: #fff;
+
+
+                         }
+                     }
+
+                 }
+
+                 td {
+
+                     // border-color: #ddd;
+                     padding: 0;
+                     border-bottom: 1px solid #d4cbea;
+
+                     &:not(:last-child) {
+                         border-right: 1px solid #d4cbea;
+                     }
+
+
+
+
+                     input[type="text"] {
+                         display: block;
+                         width: 100%;
+                         height: 100%;
+                         padding: 0 7px;
+
+                         &,
+                         &:focus,
+                         &:active,
+                         &:hover {
+                             border: none;
+                             outline: none;
+                         }
+                     }
+
+
+
+                 }
+             }
+         }
+
+         thead {
+             top: 0;
+         }
+
+         tfoot {
+             bottom: 0;
+             height: 33px;
+
+             tr {
+                 & {
+                     background-color: #65529e;
+
+                 }
+
+                 td {
+                     & {
+                         padding: 5px 3px;
+                         font-weight: 500;
+                         font-size: 1.3em;
+
+                         color: #fff;
+                     }
+
+                     &:nth-child(3) {
+                         border-right: none;
+                         text-align: right;
+                     }
+
+                     &:nth-child(4) {
+                         width: 120px;
+                         text-align: right;
+                     }
+                 }
+             }
+         }
+     }
+ }

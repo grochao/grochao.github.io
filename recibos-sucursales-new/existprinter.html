@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Monitor de Impresora Bluetooth</title>
+</head>
+
+<body>
+    <h1>Estado de la Impresora Bluetooth</h1>
+    <p id="status">Desconectado</p>
+    <button id="btn-connect">Conectar Impresora</button>
+
+    <script>
+        const statusEl = document.getElementById('status');
+        const btn = document.getElementById('btn-connect');
+        let printerDevice = null;
+
+        // 1. Conectar a una impresora Bluetooth
+        async function connectPrinter() {
+            try {
+                // Solicitamos un dispositivo Bluetooth.
+                // Filtramos por el nombre típico de impresoras térmicas.
+                // Puedes ajustar el filtro según tu modelo (ej. prefijos conocidos).
+                const device = await navigator.bluetooth.requestDevice({
+                    filters: [
+                        { namePrefix: 'BlueTooth Printer' },
+                        { namePrefix: 'POS' },
+                        { namePrefix: 'Thermal' }
+                    ],
+                    optionalServices: [
+                        // UUIDs de servicios comunes en impresoras térmicas.
+                        // Si conoces el UUID de tu impresora, añádelo aquí.
+                        '000018f0-0000-1000-8000-00805f9b34fb', // Servicio de impresora genérico
+                        '0000ff00-0000-1000-8000-00805f9b34fb'  // Ejemplo común en algunas impresoras
+                    ]
+                });
+
+                printerDevice = device;
+                console.log('Dispositivo seleccionado:', device);
+
+                // 2. Escuchar el evento de desconexión
+                device.addEventListener('gattserverdisconnected', () => {
+                    statusEl.textContent = 'Impresora desconectada.';
+                    console.log('La impresora se ha desconectado.');
+                });
+
+                // 3. Conectar al servidor GATT
+                const server = await device.gatt.connect();
+                console.log('Conectado al servidor GATT:', server);
+
+                // 4. Actualizar el estado en la UI
+                statusEl.textContent = `Conectado a: ${device.name || 'Impresora Bluetooth'}`;
+
+                // 5. (Opcional) Puedes obtener servicios y características
+                //    para leer el estado real de la impresora (papel, batería, etc.)
+                //    Esto depende del modelo específico.
+                // const services = await server.getPrimaryServices();
+                // console.log('Servicios disponibles:', services);
+
+            } catch (error) {
+                console.error('Error al conectar:', error);
+                statusEl.textContent = 'Error de conexión o cancelado.';
+            }
+        }
+
+        // 6. Verificar el estado de conexión en cualquier momento
+        function checkConnection() {
+            if (printerDevice && printerDevice.gatt && printerDevice.gatt.connected) {
+                return true;
+            }
+            return false;
+        }
+
+        // 7. Botón para iniciar la conexión
+        btn.addEventListener('click', connectPrinter);
+
+        // 8. (Opcional) Actualizar el estado periódicamente
+        setInterval(() => {
+            if (printerDevice) {
+                const connected = checkConnection();
+                if (connected) {
+                    statusEl.textContent = `Conectado a: ${printerDevice.name}`;
+                } else if (statusEl.textContent !== 'Impresora desconectada.') {
+                    statusEl.textContent = 'Impresora desconectada.';
+                }
+            }
+        }, 2000);
+    </script>
+</body>
+
+</html>

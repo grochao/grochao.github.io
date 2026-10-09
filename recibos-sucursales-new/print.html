@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Impresión Carta con Fondos Forzados</title>
+
+    <style>
+        /* =============================================
+       RESET GENERAL
+       ============================================= */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #e0e0e0;
+            padding: 30px 0;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* =============================================
+       ESTILOS DE PANTALLA
+       ============================================= */
+        .page {
+            width: 8.5in;
+            height: 11in;
+            padding: 0.75in;
+            margin: 0 auto 30px auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+
+            /* 🎨 FONDO CON GRADIENTE (imagen de fondo CSS) */
+            background-image: linear-gradient(135deg, #ffffff 0%, #f0f4ff 50%, #e8f0fe 100%);
+            background-color: #ffffff;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* 🎨 FONDO CON PATRÓN SVG EMBEBIDO (data URI) para la Página 1 */
+        .page-1 {
+            background-image:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='%23d0d8f0' stroke-width='0.5'%3E%3Cpath d='M0 0h60v60H0z'/%3E%3Cpath d='M0 30h60M30 0v60'/%3E%3C/g%3E%3C/svg%3E"),
+                linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
+            background-repeat: repeat, no-repeat;
+            background-size: 60px 60px, cover;
+            background-position: top left, center;
+        }
+
+        /* 🎨 FONDO CON IMAGEN REAL + OVERLAY para la Página 2 */
+        .page-2 {
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)),
+                url("https://picsum.photos/1200/1600?random=1");
+            background-repeat: no-repeat, no-repeat;
+            background-size: cover, cover;
+            background-position: center, center;
+        }
+
+        /* --- Encabezado --- */
+        .page-header {
+            border-bottom: 2px solid #6200ee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
+
+        .page-header h1 {
+            font-size: 22px;
+            color: #6200ee;
+            font-weight: 600;
+        }
+
+        .page-header .numero {
+            font-size: 14px;
+            color: #888;
+            font-weight: 500;
+        }
+
+        /* --- Contenido --- */
+        .page-content {
+            font-size: 14px;
+            color: #333;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .page-content p {
+            margin-bottom: 14px;
+            text-align: justify;
+        }
+
+        .page-content h2 {
+            font-size: 18px;
+            color: #1e1e2f;
+            margin: 20px 0 10px;
+        }
+
+        .page-content ul {
+            margin-left: 20px;
+            margin-bottom: 14px;
+        }
+
+        .page-content li {
+            margin-bottom: 6px;
+        }
+
+        /* --- Caja destacada con fondo --- */
+        .destacado {
+            background-color: #6200ee;
+            color: #fff;
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-weight: 500;
+            /* 🎨 Fondo con gradiente */
+            background-image: linear-gradient(135deg, #6200ee, #9c27b0);
+        }
+
+        /* --- Footer --- */
+        .page-footer {
+            position: absolute;
+            bottom: 0.5in;
+            left: 0.75in;
+            right: 0.75in;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #ccc;
+            padding-top: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 8px;
+            border-radius: 4px;
+        }
+
+        /* --- Botón de impresión --- */
+        .btn-print {
+            display: block;
+            margin: 0 auto 30px auto;
+            padding: 12px 30px;
+            background: #6200ee;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.25s ease;
+        }
+
+        .btn-print:hover {
+            background: #4a00b3;
+        }
+
+        /* =============================================
+       🖨️ ESTILOS DE IMPRESIÓN
+       ============================================= */
+        @media print {
+
+            /* --- 1. Configuración de la hoja --- */
+            @page {
+                size: letter portrait;
+                margin: 0;
+            }
+
+            /* --- 2. Reset del documento --- */
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: auto;
+                background: #fff !important;
+            }
+
+            /* --- 3. Ocultar botón --- */
+            .btn-print {
+                display: none !important;
+            }
+
+            /* --- 4. 🔥 FORZAR IMPRESIÓN DE IMÁGENES DE FONDO Y COLORES --- */
+            /* Aplica a TODOS los elementos (fondos, gradientes, imágenes, patrones) */
+            *,
+            *::before,
+            *::after {
+                -webkit-print-color-adjust: exact !important;
+                -webkit-print-color-adjust: economy;
+                /* fallback */
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+
+            /* --- 5. Cada .page = una hoja Carta exacta --- */
+            .page {
+                width: 8.5in;
+                height: 10.98in;
+                /* 10.98in para evitar página extra por redondeo */
+                padding: 0.75in;
+                margin: 0;
+                box-shadow: none;
+                border: none;
+                border-radius: 0;
+                overflow: hidden;
+                position: relative;
+                page-break-inside: avoid;
+                break-inside: avoid;
+
+                /* Reforzamos las imágenes de fondo en impresión */
+                background-repeat: no-repeat !important;
+                background-size: cover !important;
+                background-position: center !important;
+            }
+
+            /* Mantener el patrón SVG específico de la página 1 */
+            .page-1 {
+                background-repeat: repeat, no-repeat !important;
+                background-size: 60px 60px, cover !important;
+                background-position: top left, center !important;
+            }
+
+            /* Mantener el overlay + imagen de la página 2 */
+            .page-2 {
+                background-repeat: no-repeat, no-repeat !important;
+                background-size: cover, cover !important;
+                background-position: center, center !important;
+            }
+
+            /* --- 6. Salto de página entre .page --- */
+            .page+.page {
+                page-break-before: always;
+                break-before: page;
+            }
+
+            .page:last-of-type {
+                page-break-after: avoid;
+                break-after: avoid;
+            }
+
+            /* --- 7. Evitar huérfanas y viudas --- */
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+                page-break-after: avoid;
+                break-after: avoid;
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+
+            p,
+            li,
+            blockquote {
+                orphans: 3;
+                widows: 3;
+            }
+
+            img,
+            table,
+            figure {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+
+            /* --- 8. Evitar página extra por márgenes residuales --- */
+            .page>*:last-child {
+                margin-bottom: 0 !important;
+                padding-bottom: 0 !important;
+            }
+
+            /* --- 9. Eliminar sombras (los fondos se mantienen) --- */
+            * {
+                box-shadow: none !important;
+                text-shadow: none !important;
+            }
+
+            /* --- 10. Asegurar que los fondos semitransparentes se impriman --- */
+            .page-header,
+            .page-content,
+            .page-footer {
+                background-color: rgba(255, 255, 255, 0.7) !important;
+            }
+
+            .destacado {
+                background-color: #6200ee !important;
+                background-image: linear-gradient(135deg, #6200ee, #9c27b0) !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== BOTÓN DE IMPRESIÓN ===== -->
+    <button class="btn-print" onclick="window.print()">
+        🖨️ Imprimir / Guardar como PDF
+    </button>
+
+    <!-- ============================================= -->
+    <!-- PÁGINA 1 (con patrón SVG de fondo) -->
+    <!-- ============================================= -->
+    <div class="page page-1">
+        <div class="page-header">
+            <h1>📄 Reporte Mensual</h1>
+            <span class="numero">Página 1 de 2</span>
+        </div>
+
+        <div class="page-content">
+            <h2>Introducción</h2>
+            <p>
+                Esta página tiene un <strong>patrón SVG de cuadrícula</strong> como imagen
+                de fondo, además de un gradiente azul claro. Al imprimir, ambos se
+                mantienen gracias a <code>print-color-adjust: exact</code>.
+            </p>
+
+            <div class="destacado">
+                🔥 Este bloque tiene fondo con gradiente morado. También se imprime.
+            </div>
+
+            <h2>Puntos clave</h2>
+            <ul>
+                <li>Fondo con patrón SVG embebido (data URI).</li>
+                <li>Gradiente CSS de fondo.</li>
+                <li>Bloques con colores sólidos.</li>
+                <li>Overlays semitransparentes.</li>
+            </ul>
+
+            <h2>Contenido adicional</h2>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat.
+            </p>
+            <p>
+                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+                eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+                sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+        </div>
+
+        <div class="page-footer">
+            © 2026 Mi Empresa — Documento confidencial
+        </div>
+    </div>
+
+    <!-- ============================================= -->
+    <!-- PÁGINA 2 (con imagen real de fondo) -->
+    <!-- ============================================= -->
+    <div class="page page-2">
+        <div class="page-header">
+            <h1>📄 Reporte Mensual</h1>
+            <span class="numero">Página 2 de 2</span>
+        </div>
+
+        <div class="page-content">
+            <h2>Imagen real de fondo</h2>
+            <p>
+                Esta página tiene una <strong>imagen real de fondo</strong> (desde
+                picsum.photos) con un overlay blanco semitransparente para que el texto
+                sea legible. Al imprimir, la imagen se mantiene.
+            </p>
+
+            <div class="destacado">
+                🎨 Este bloque también tiene gradiente morado forzado en impresión.
+            </div>
+
+            <h2>Tabla de ejemplo</h2>
+            <table
+                style="width: 100%; border-collapse: collapse; margin-bottom: 14px; background: rgba(255,255,255,0.8);">
+                <thead>
+                    <tr style="background: #6200ee; color: #fff;">
+                        <th style="padding: 8px; text-align: left; border: 1px solid #ddd;">Concepto</th>
+                        <th style="padding: 8px; text-align: right; border: 1px solid #ddd;">Monto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;">Servicio A</td>
+                        <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">$1,200.00</td>
+                    </tr>
+                    <tr style="background: #f9f9f9;">
+                        <td style="padding: 8px; border: 1px solid #ddd;">Servicio B</td>
+                        <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">$850.00</td>
+                    </tr>
+                    <tr style="background: #6200ee; color: #fff; font-weight: bold;">
+                        <td style="padding: 8px; border: 1px solid #ddd;">Total</td>
+                        <td style="padding: 8px; text-align: right; border: 1px solid #ddd;">$2,050.00</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Conclusión</h2>
+            <p>
+                Con <code>print-color-adjust: exact</code> aplicado a todos los elementos,
+                los fondos (imágenes, gradientes, patrones y colores) se imprimen
+                correctamente en el papel o en PDF.
+            </p>
+        </div>
+
+        <div class="page-footer">
+            © 2026 Mi Empresa — Documento confidencial
+        </div>
+    </div>
+
+</body>
+
+</html>

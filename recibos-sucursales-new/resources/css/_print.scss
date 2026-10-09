@@ -1,0 +1,392 @@
+ @use "mixin" as *;
+ /* =============================================
+       🖨️ ESTILOS DE IMPRESIÓN
+       ============================================= */
+ @media print {
+
+     /* --- 1. Configuración de la hoja --- */
+     @page {
+         size: letter portrait;
+         margin: 0;
+     }
+
+     /* --- 2. Reset del documento --- */
+     html,
+     body {
+         margin: 0;
+         padding: 0;
+         width: 100%;
+         height: auto;
+         background: #fff !important;
+
+
+     }
+
+     body {
+         font-size: 15px;
+     }
+
+     .form-receipt {
+         display: none;
+     }
+
+     .print-receipt {
+         & {
+             padding: 0;
+             margin: 0;
+             width: 100%;
+             height: 100%;
+             display: block;
+         }
+
+
+     }
+
+
+     /* --- 4. 🔥 FORZAR IMPRESIÓN DE IMÁGENES DE FONDO Y COLORES --- */
+     /* Aplica a TODOS los elementos (fondos, gradientes, imágenes, patrones) */
+     *,
+     *::before,
+     *::after {
+         -webkit-print-color-adjust: exact !important;
+         -webkit-print-color-adjust: economy;
+         /* fallback */
+         print-color-adjust: exact !important;
+         color-adjust: exact !important;
+
+
+
+
+         -webkit-font-smoothing: antialiased;
+         -moz-osx-font-smoothing: grayscale;
+         text-rendering: optimizeLegibility;
+     }
+
+     /* --- 5. Cada .page = una hoja Carta exacta --- */
+     .page {
+         width: 8.5in;
+         height: 10.98in;
+         /* 10.98in para evitar página extra por redondeo */
+         margin: 0;
+         box-shadow: none;
+         border: none;
+         border-radius: 0;
+         overflow: hidden;
+         position: relative;
+         page-break-inside: avoid;
+         break-inside: avoid;
+
+         /* Reforzamos las imágenes de fondo en impresión */
+         background-repeat: no-repeat !important;
+         background-size: cover !important;
+         background-position: center !important;
+
+
+     }
+
+     /* Mantener el patrón SVG específico de la página 1 */
+     .page-1 {
+         background-repeat: repeat, no-repeat !important;
+         background-size: 60px 60px, cover !important;
+         background-position: top left, center !important;
+     }
+
+     /* Mantener el overlay + imagen de la página 2 */
+     .page-2 {
+         background-repeat: no-repeat, no-repeat !important;
+         background-size: cover, cover !important;
+         background-position: center, center !important;
+     }
+
+     /* --- 6. Salto de página entre .page --- */
+     .page+.page {
+         page-break-before: always;
+         break-before: page;
+     }
+
+     .page:last-of-type {
+         page-break-after: avoid;
+         break-after: avoid;
+     }
+
+     /* --- 7. Evitar huérfanas y viudas --- */
+     h1,
+     h2,
+     h3,
+     h4,
+     h5,
+     h6 {
+         page-break-after: avoid;
+         break-after: avoid;
+         page-break-inside: avoid;
+         break-inside: avoid;
+     }
+
+     p,
+     li,
+     blockquote {
+         orphans: 3;
+         widows: 3;
+     }
+
+     img,
+     table,
+     figure {
+         page-break-inside: avoid;
+         break-inside: avoid;
+     }
+
+     /* --- 8. Evitar página extra por márgenes residuales --- */
+     .page>*:last-child {
+         // margin-bottom: 0 !important;
+         // padding-bottom: 0 !important;
+     }
+
+     /* --- 9. Eliminar sombras (los fondos se mantienen) --- */
+     * {
+         box-shadow: none !important;
+         text-shadow: none !important;
+     }
+
+
+
+
+ }
+
+ @media screen {
+     .print-receipt {
+         display: none;
+     }
+ }
+
+ @media screen,
+ print {
+     body {
+         font-family: "Roboto", sans-serif !important;
+
+         *,
+         *::before,
+         *::after {
+             box-sizing: border-box;
+         }
+     }
+
+     .max-width-80mm {
+         max-width: 80mm;
+         //  //outline: green 1px dashed;
+     }
+
+     .half-page {
+         //  background-color: #ddd;
+         height: calc(10.98in / 2);
+         width: 100%;
+         padding: 5mm 13mm 20mm 8mm;
+
+         .print-area {
+             //outline: red 1px dashed;
+             height: 100%;
+             width: 100%;
+             //  padding: 0 15px;
+
+             ._h1_,
+             ._h2_,
+             ._h3_ {
+                 font-family: "Oswald", sans-serif;
+                 font-optical-sizing: auto;
+                 font-weight: 600;
+                 font-style: normal;
+                 margin: 0 !important;
+
+             }
+
+             ._h1_ {
+                 text-align: right;
+                 font-size: 1.2em;
+             }
+
+             ._h2_ {
+                 text-align: center;
+                 font-size: .7em;
+                 line-height: 1.2;
+             }
+
+             ._h3_ {
+                 font-size: .7em;
+                 line-height: 1em;
+                 padding-top: 2mm;
+                 padding-bottom: 1mm;
+
+                 display: block;
+             }
+
+
+
+             .container-header {
+                 height: 28mm;
+
+                 .container-date {
+                     width: 145px;
+                     display: flex;
+                     flex-wrap: wrap;
+                     justify-content: center;
+                     justify-self: end;
+                 }
+
+                 p {
+                     position: relative;
+
+                     &::before {
+                         position: absolute;
+                         top: 0;
+                         left: 0;
+                         right: 0;
+                         bottom: 0;
+                         opacity: 0;
+                         display: block;
+                         transition: opacity 0.3s ease-in-out;
+                         content: '';
+                         width: 100%;
+                         height: 100%;
+                         //outline: green 1px dashed;
+                         z-index: 999;
+                     }
+
+                     &:hover::before {
+                         opacity: 1;
+                     }
+                 }
+
+
+                 .container-headers {
+                     & {
+                         justify-self: end;
+                     }
+
+
+                 }
+
+                 .date {
+                     display: flex;
+                     flex-wrap: wrap;
+                     width: 140px;
+                     border: 2px solid #000;
+                     overflow: hidden;
+                     border-radius: 10px;
+
+
+                     [class*="box-"] {
+                         flex: 1 0 auto;
+                         width: calc(100% / 3);
+
+                         span {
+                             display: block;
+                             width: 100%;
+                             text-align: center;
+
+                             &:first-child {
+                                 background-color: #000;
+                                 color: #fff;
+                                 font-size: 0.7em;
+                             }
+
+                             &:last-child {
+                                 font-size: 0.9em;
+                                 font-weight: bold;
+
+                             }
+
+                         }
+
+                         &:nth-child(2) {
+                             border-left: 2px solid #000;
+                             border-right: 2px solid #000;
+                         }
+
+                     }
+                 }
+             }
+
+             .container-detail {
+                 //outline: green 1px solid;
+                 height: 74.6mm;
+                 padding-top: 1.5mm;
+
+                 .max-height-55mm {
+                     // //outline: purple 1px solid;
+                     height: 55mm;
+                 }
+
+                 .container-amounts {
+                     span {
+                         font-size: 0.67em;
+                     }
+                 }
+
+                 .border-box {
+                     border: #000 solid 1px;
+                     border-radius: 5px;
+                     min-height: 10mm;
+                 }
+
+                 .max-width-90px {
+                     max-width: 90px;
+                 }
+
+                 .max-width-300px {
+                     max-width: 300px;
+                 }
+
+
+                 .bow-row {
+
+                     display: flex;
+                     flex-wrap: wrap;
+                     min-height: 20px;
+                     align-content: center;
+
+                     span {
+                         font-size: 0.67em;
+                         line-height: 1em;
+
+                         &:first-child {
+                             word-break: break-all;
+                             font-weight: 700;
+                             text-align: right;
+                         }
+
+                         &:last-child {
+                             flex: 1;
+                             border-bottom: 1px solid #000;
+                             padding: 0 7px;
+                             text-transform: uppercase;
+                             margin-left: 6px;
+                         }
+                     }
+                 }
+             }
+
+             .container-signatures {
+                 //outline: green 1px solid;
+
+                 .signature {
+                     display: flex;
+                     flex-wrap: nowrap;
+                     justify-content: space-between;
+                     margin-top: 25px;
+
+                     span {
+                         font-size: 8px;
+                         font-weight: bold;
+                         border-top: 1px solid #000;
+                         margin-top: 1px;
+                         padding: 3px 0 0 0;
+                         width: 40mm;
+                         text-align: center;
+                     }
+                 }
+             }
+         }
+     }
+
+
+ }

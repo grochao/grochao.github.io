@@ -1,0 +1,521 @@
+@use "mixin" as *;
+/* ============================================================
+   ChoiceContainerBuilder — Variables
+   ============================================================ */
+$border: #dcdcdc;
+$border-soft: #e6e6e6;
+$border-input: #bbb;
+$border-input-2: #cfcfcf;
+$bg-card: #fff;
+$bg-soft: #fafafa;
+$bg-softer: #f6f8fa;
+$bg-hover: #f0f0f0;
+$primary: #026937;
+$primary-dark: #087a43;
+$primary-ink: #fff;
+$danger: #c22;
+$info: #0a4cd0;
+$focus-shadow: 0 0 0 3px rgba(2, 105, 55, 0.35);
+$menu-shadow: 0 12px 32px rgba(0, 0, 0, .14);
+
+/* ============================================================
+   ChoiceContainerBuilder — .choice-container
+   ============================================================ */
+.choice-container {
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    vertical-align: middle;
+    width: 100%;
+
+    &[data-type_element="radio"] .choice-buttons .icon i {
+        border-radius: 50%;
+    }
+
+    &[data-type_element="checkbox"] .choice-buttons .icon i {
+        border-radius: 4px;
+    }
+
+    &[data-type_element="radio"] .choice_value[value="checked"]~.icon i {
+        background-color: $primary;
+        border-color: $primary;
+        background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22448%22%20height%3D%22448%22%20viewBox%3D%220%200%20448%20448%22%3E%3Ccircle%20cx%3D%22224%22%20cy%3D%22828.362%22%20r%3D%22192%22%20transform%3D%22translate(0%20-604.362)%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fsvg%3E');
+    }
+
+    &[data-type_element="checkbox"] .choice_value[value="checked"]~.icon i {
+        background-color: $primary;
+        border-color: $primary;
+        background-image: url('data:image/svg+xml,%3Csvg%20width%3D%22800%22%20height%3D%22800%22%20viewBox%3D%220%20-4%2030%2030%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3Echeck%3C%2Ftitle%3E%3Cpath%20d%3D%22M29.443.627c.743.795.743%202.06%200%202.855L12.747%2021.373a1.94%201.94%200%200%201-1.65.614%201.94%201.94%200%200%201-1.496-.624L.557%2011.671a2.11%202.11%200%200%201%200-2.855%201.94%201.94%200%200%201%202.854%200l7.768%208.324L26.589.627a1.94%201.94%200%200%201%202.854%200%22%20fill%3D%22%23FFF%22%2F%3E%3C%2Fsvg%3E');
+    }
+}
+
+/* ============================================================
+   ChoiceContainerBuilder — .choice-buttons
+   ============================================================ */
+.choice-buttons {
+    display: inline-flex;
+    width: 100%;
+    align-items: center;
+    gap: .3rem;
+    padding: .2rem .5rem;
+    border: 1px solid $border-input;
+    border-radius: 6px;
+    cursor: pointer;
+    user-select: none;
+    background: $bg-soft;
+    transition: background .15s, border-color .15s;
+
+    &.showmenu {
+        border-color: $primary;
+        background: #eefaf3;
+    }
+
+    &.not-empty {
+        background: #e6f7ef;
+        border-color: $primary;
+    }
+
+    &.hover-menu {
+        box-shadow: 0 0 0 2px rgba(42, 167, 120, .25);
+    }
+
+    &.disabled,
+    &[data-choice-disabled="true"] {
+        opacity: .4;
+        pointer-events: none;
+    }
+
+    .label {
+        line-height: 0;
+        font-size: 0.75rem;
+        width: 100%;
+        text-align: center;
+    }
+
+    .icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        flex: 0 0 20px;
+
+        i {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+
+            background: {
+                repeat: no-repeat;
+                position: center;
+                size: contain;
+                color: #fff;
+            }
+
+            border: 2px solid #666;
+            border-radius: 50%;
+            box-sizing: border-box;
+            transition: background-color .15s,
+            border-color .15s;
+        }
+    }
+}
+
+/* ============================================================
+   ChoiceContainerBuilder — .menu
+   ============================================================ */
+.menu {
+    display: none;
+    position: absolute;
+    z-index: 99999999;
+    top: 100%;
+    left: 0;
+    background: $bg-card;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 7px;
+    width: 272px;
+    box-shadow: $menu-shadow;
+
+    .choice-buttons.showmenu~& {
+        display: block;
+    }
+}
+
+.menu-close-wrapper {
+    position: absolute;
+    right: 7px;
+    top: 2px;
+    // border-bottom: 1px solid #d4cbea;
+    //  margin-bottom: 7px;
+
+}
+
+.menu-close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    @include css3-prefix('transition', all .25s ease-in-out);
+
+    &:hover {
+        background-color: #8a0808;
+        color: #fff;
+    }
+}
+
+.full-line {
+    font-weight: normal;
+    margin-bottom: .35rem;
+    font-size: .9rem;
+    color: #333;
+
+    .details-label {
+        color: $primary;
+    }
+}
+
+/* ============================================================
+   ChoiceContainerBuilder — .menu-row y campos
+   ============================================================ */
+.menu-row {
+    // margin-bottom: .8rem;
+
+
+
+    input,
+    select {
+        width: 100%;
+        padding: .5rem .55rem;
+        border: 1px solid $border-input;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-variant-numeric: tabular-nums;
+
+        &:focus {
+            outline: none;
+            border-color: $primary;
+            box-shadow: $focus-shadow;
+        }
+    }
+
+    input[data-type="number"] {
+        text-align: right;
+    }
+}
+
+/* ============================================================
+   ChoiceContainerBuilder — .field-with-label
+   ============================================================ */
+.field-with-label {
+    display: flex;
+    flex-direction: column;
+    gap: .22rem;
+
+    >label {
+        font-size: .78rem;
+        font-weight: 500;
+        color: #555;
+        letter-spacing: .01em;
+        line-height: 1.1;
+    }
+
+    >input,
+    >select {
+        width: 100%;
+    }
+}
+
+/* ============================================================
+   ChoiceContainerBuilder — tabla
+   ============================================================ */
+.table-block {
+    margin-bottom: .85rem;
+
+    .full-line {
+        padding-right: 30px;
+    }
+
+}
+
+table.choice-table {
+    width: 100%;
+    border-collapse: collapse;
+    outline: 1px solid #d4cbea;
+
+    overflow: hidden;
+
+    thead th {
+        background: #d4cbea;
+        color: #65529e;
+        font-size: .72rem;
+        font-weight: 500;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        padding: .2rem .55rem;
+
+
+        +th {
+            border-left: 1px solid #d4cbea;
+        }
+    }
+
+    tr.menu-row {
+        margin-bottom: 0;
+    }
+
+    tbody td {
+        padding: .25rem .3rem;
+        vertical-align: top;
+        border-bottom: 1px solid #eee;
+
+        +td {
+            border-left: 1px solid #d4cbea;
+        }
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    input,
+    select {
+        width: 100%;
+
+        border: 1px solid $border-input-2;
+        padding: .2rem .5rem;
+
+        border-radius: 4px;
+        font-size: .75rem;
+
+        &:focus {
+            outline: none;
+            border-color: $primary;
+            box-shadow: $focus-shadow;
+        }
+    }
+
+    input[data-type="number"] {
+        text-align: right;
+    }
+
+    .field-with-label>label {
+        font-size: .7rem;
+        color: #666;
+    }
+}
+
+/* ============================================================
+   ChoiceContainerBuilder — type='autosum'
+   ============================================================ */
+.autosum-row {
+    //margin-top: .3rem;
+    padding: 0.1em .3rem;
+    // border-top: 1px dashed #ccc;
+    text-align: right;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 7px;
+
+    &>div {
+        flex: 1 0 0%;
+        align-self: center;
+        margin: 0;
+    }
+
+    input.autosum-value {
+        background: #f2fbf6;
+        font-weight: 700;
+        color: #0a5;
+        border-color: #9c9;
+        padding: .15rem .3rem;
+    }
+}
+
+/* ============================================================
+   ChoiceContainerBuilder — type='cash_calculator'
+   ============================================================ */
+.cash-calculator {
+    border: 1px solid $border;
+    border-radius: 6px;
+    overflow: hidden;
+    background: $bg-card;
+    margin-bottom: .7rem;
+
+    .cash-calc-row,
+    .cash-calc-total-row,
+    .cash-calc-change-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1.4fr;
+        align-items: center;
+        gap: .5rem;
+        padding: .05rem .55rem;
+    }
+
+    .cash-calc-row {
+        border-bottom: 1px solid $border-soft;
+    }
+
+    .cash-calc-total-row {
+        background: $bg-softer;
+        font-weight: 700;
+        border-top: 2px solid $border-input-2;
+    }
+
+    .cash-calc-change-row {
+        background: #fbfbfb;
+        border-top: 1px solid $border-input-2;
+        padding: .05rem .55rem;
+    }
+}
+
+.cash-col-denom {
+    text-align: left;
+    font-weight: 700;
+    color: #333;
+    padding-left: .4rem;
+    text-align: right;
+
+    span {
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+
+}
+
+.cash-col-qty {
+    text-align: center;
+
+
+
+    input {
+        width: 100%;
+        max-width: 110px;
+        margin: 0 auto;
+        display: block;
+        text-align: center;
+        padding: .2rem .4rem;
+        border: 1px solid $border-input-2;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        color: $danger;
+        font-weight: 5700;
+
+        &:focus {
+            outline: none;
+            border-color: $primary;
+            box-shadow: $focus-shadow;
+        }
+    }
+}
+
+.cash-col-sub {
+    text-align: right;
+    padding-right: .4rem;
+}
+
+.cash-col-sub input,
+.cash-calc-total-row input {
+    width: 100%;
+    text-align: right;
+    background: transparent;
+    border: none;
+    padding: .25rem 0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #111;
+    pointer-events: none;
+}
+
+.cash-calc-total-row input {
+    color: #0a5;
+
+    background-color: #def3de;
+    border-radius: 4px;
+    padding: .25rem 0;
+    pointer-events: auto;
+}
+
+.cash-change-label {
+    font-weight: 700;
+}
+
+.cash-change {
+    width: 100%;
+    text-align: right;
+    padding: .35rem .5rem;
+    font-weight: 700;
+    background: #fff;
+    border: 1px solid $border-input-2;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+.cash-change-positive {
+    .cash-change-label {
+        color: $info;
+    }
+
+    .cash-change {
+        color: $info;
+        background: #eef4ff;
+        border-color: #9bbff5;
+    }
+}
+
+.cash-change-negative {
+    .cash-change-label {
+        color: $danger;
+    }
+
+    .cash-change {
+        color: $danger;
+        background: #fff0f0;
+        border-color: #f4a9a9;
+    }
+}
+
+/* ============================================================
+   ChoiceContainerBuilder — botonera
+   ============================================================ */
+.callback-menu-check {
+    display: flex;
+    gap: .5rem;
+    justify-content: flex-end;
+    margin-top: .7rem;
+
+    .btn {
+        padding: .35rem .2rem;
+        border-radius: 6px;
+        border: 1px solid #888;
+        cursor: pointer;
+        background: #fff;
+        font-size: 0.75rem;
+        width: 100%;
+
+        &:hover {
+            background: $bg-hover;
+        }
+
+        &:focus {
+            outline: none;
+            box-shadow: $focus-shadow;
+        }
+    }
+
+    .btn-primary {
+        background: $primary;
+        color: $primary-ink;
+        border-color: $primary;
+
+        &:hover {
+            background: $primary-dark;
+        }
+    }
+
+    .btn-secondary {
+        background: #eee;
+    }
+}

@@ -1,0 +1,612 @@
+// =============================================
+// IMPORTS (al inicio, siempre)
+// =============================================
+@use "sass:map";
+@use "sass:math";
+
+// =============================================
+// VARIABLES DEL GRID
+// =============================================
+$grid-columns: 12;
+$grid-gutter-width: 10px;
+$grid-row-columns: 6;
+
+// Breakpoints (mobile-first)
+$grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px
+);
+
+// Contenedores (por si luego usas .container)
+$container-max-widths: (
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1140px,
+    xxl: 1320px
+);
+
+// Gutters disponibles
+$gutters: (
+    0: 0,
+    1: 0.25rem,
+    2: 0.5rem,
+    3: 1rem,
+    4: 1.5rem,
+    5: 3rem
+);
+
+// =============================================
+// MIXINS
+// =============================================
+
+// Media query mobile-first
+@mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
+    $min: map.get($breakpoints, $name);
+
+    @if $min !=0 {
+        @media (min-width: $min) {
+            @content;
+        }
+    }
+
+    @else {
+        @content;
+    }
+}
+
+// Genera una columna con su ancho específico
+@mixin make-col($size, $columns: $grid-columns) {
+    flex: 0 0 auto;
+    width: math.percentage(math.div($size, $columns));
+}
+
+// Genera una columna de tamaño automático
+@mixin make-col-auto() {
+    flex: 0 0 auto;
+    width: auto;
+}
+
+// Genera una columna que ocupa todo el ancho
+@mixin make-col-full($columns: $grid-columns) {
+    flex: 0 0 auto;
+    width: 100%;
+}
+
+// =============================================
+// CLASE BASE: .row
+// =============================================
+.row {
+    --bs-gutter-x: #{$grid-gutter-width};
+    --bs-gutter-y: 0;
+
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--bs-gutter-y));
+    margin-right: calc(-0.5 * var(--bs-gutter-x));
+    margin-left: calc(-0.5 * var(--bs-gutter-x));
+
+    >* {
+        flex-shrink: 0;
+        width: 100%;
+        max-width: 100%;
+        padding-right: calc(var(--bs-gutter-x) * 0.5);
+        padding-left: calc(var(--bs-gutter-x) * 0.5);
+        margin-top: var(--bs-gutter-y);
+    }
+}
+
+// =============================================
+// COLUMNAS BASE (xs)
+// =============================================
+.col {
+    flex: 1 0 0%;
+}
+
+.col-auto {
+    @include make-col-auto();
+}
+
+@for $i from 1 through $grid-columns {
+    .col-#{$i} {
+        @include make-col($i, $grid-columns);
+    }
+}
+
+// =============================================
+// COLUMNAS RESPONSIVAS POR BREAKPOINT
+// =============================================
+@each $breakpoint, $min-width in $grid-breakpoints {
+    @if $min-width !=0 {
+        @include media-breakpoint-up($breakpoint) {
+            .col-#{$breakpoint} {
+                flex: 1 0 0%;
+            }
+
+            .col-#{$breakpoint}-auto {
+                @include make-col-auto();
+            }
+
+            @for $i from 1 through $grid-columns {
+                .col-#{$breakpoint}-#{$i} {
+                    @include make-col($i, $grid-columns);
+                }
+            }
+        }
+    }
+}
+
+// =============================================
+// GUTTERS
+// =============================================
+@each $size, $value in $gutters {
+
+    .g-#{$size},
+    .gx-#{$size} {
+        --bs-gutter-x: #{$value};
+    }
+
+    .g-#{$size},
+    .gy-#{$size} {
+        --bs-gutter-y: #{$value};
+    }
+}
+
+@each $breakpoint, $min-width in $grid-breakpoints {
+    @if $min-width !=0 {
+        @include media-breakpoint-up($breakpoint) {
+            @each $size, $value in $gutters {
+
+                .g-#{$breakpoint}-#{$size},
+                .gx-#{$breakpoint}-#{$size} {
+                    --bs-gutter-x: #{$value};
+                }
+
+                .g-#{$breakpoint}-#{$size},
+                .gy-#{$breakpoint}-#{$size} {
+                    --bs-gutter-y: #{$value};
+                }
+            }
+        }
+    }
+}
+
+// =============================================
+// ORDER (orden de columnas)
+// =============================================
+$orders: (
+    0: 0,
+    1: 1,
+    2: 2,
+    3: 3,
+    4: 4,
+    5: 5,
+    first: -1,
+    last: 6
+);
+
+@each $name, $value in $orders {
+    .order-#{$name} {
+        order: $value !important;
+    }
+}
+
+// Order responsivo
+@each $breakpoint, $min-width in $grid-breakpoints {
+    @if $min-width !=0 {
+        @include media-breakpoint-up($breakpoint) {
+            @each $name, $value in $orders {
+                .order-#{$breakpoint}-#{$name} {
+                    order: $value !important;
+                }
+            }
+        }
+    }
+}
+
+// =============================================
+// OFFSET (desplazamiento de columnas)
+// =============================================
+@for $i from 0 through $grid-columns {
+    .offset-#{$i} {
+        @if $i ==0 {
+            margin-left: 0;
+        }
+
+        @else {
+            margin-left: math.percentage(math.div($i, $grid-columns));
+        }
+    }
+}
+
+// Offset responsivo
+@each $breakpoint, $min-width in $grid-breakpoints {
+    @if $min-width !=0 {
+        @include media-breakpoint-up($breakpoint) {
+            @for $i from 0 through $grid-columns {
+                .offset-#{$breakpoint}-#{$i} {
+                    @if $i ==0 {
+                        margin-left: 0;
+                    }
+
+                    @else {
+                        margin-left: math.percentage(math.div($i, $grid-columns));
+                    }
+                }
+            }
+        }
+    }
+}
+
+// =============================================
+// JUSTIFY-CONTENT (eje principal horizontal)
+// =============================================
+$justify-content-values: (
+    start: flex-start,
+    end: flex-end,
+    center: center,
+    between: space-between,
+    around: space-around,
+    evenly: space-evenly
+);
+
+@each $name, $value in $justify-content-values {
+    .justify-content-#{$name} {
+        justify-content: $value !important;
+    }
+}
+
+// Responsive
+@each $breakpoint, $min-width in $grid-breakpoints {
+    @if $min-width !=0 {
+        @include media-breakpoint-up($breakpoint) {
+            @each $name, $value in $justify-content-values {
+                .justify-content-#{$breakpoint}-#{$name} {
+                    justify-content: $value !important;
+                }
+            }
+        }
+    }
+}
+
+// =============================================
+// ALIGN-ITEMS (eje transversal vertical)
+// =============================================
+$align-items-values: (
+    start: flex-start,
+    end: flex-end,
+    center: center,
+    baseline: baseline,
+    stretch: stretch
+);
+
+@each $name, $value in $align-items-values {
+    .align-items-#{$name} {
+        align-items: $value !important;
+    }
+}
+
+// Responsive
+@each $breakpoint, $min-width in $grid-breakpoints {
+    @if $min-width !=0 {
+        @include media-breakpoint-up($breakpoint) {
+            @each $name, $value in $align-items-values {
+                .align-items-#{$breakpoint}-#{$name} {
+                    align-items: $value !important;
+                }
+            }
+        }
+    }
+}
+
+// =============================================
+// ALIGN-SELF (alineación individual)
+// =============================================
+$align-self-values: (
+    auto: auto,
+    start: flex-start,
+    end: flex-end,
+    center: center,
+    baseline: baseline,
+    stretch: stretch
+);
+
+@each $name, $value in $align-self-values {
+    .align-self-#{$name} {
+        align-self: $value !important;
+    }
+}
+
+// Responsive
+@each $breakpoint, $min-width in $grid-breakpoints {
+    @if $min-width !=0 {
+        @include media-breakpoint-up($breakpoint) {
+            @each $name, $value in $align-self-values {
+                .align-self-#{$breakpoint}-#{$name} {
+                    align-self: $value !important;
+                }
+            }
+        }
+    }
+}
+
+// =============================================
+// ALIGN-CONTENT (alineación de líneas múltiples)
+// =============================================
+$align-content-values: (
+    start: flex-start,
+    end: flex-end,
+    center: center,
+    between: space-between,
+    around: space-around,
+    stretch: stretch
+);
+
+@each $name, $value in $align-content-values {
+    .align-content-#{$name} {
+        align-content: $value !important;
+    }
+}
+
+// Responsive
+@each $breakpoint, $min-width in $grid-breakpoints {
+    @if $min-width !=0 {
+        @include media-breakpoint-up($breakpoint) {
+            @each $name, $value in $align-content-values {
+                .align-content-#{$breakpoint}-#{$name} {
+                    align-content: $value !important;
+                }
+            }
+        }
+    }
+}
+
+// =============================================
+// FLEX-WRAP
+// =============================================
+.flex-wrap {
+    flex-wrap: wrap !important;
+}
+
+.flex-nowrap {
+    flex-wrap: nowrap !important;
+}
+
+.flex-wrap-reverse {
+    flex-wrap: wrap-reverse !important;
+}
+
+// Responsive
+@each $breakpoint, $min-width in $grid-breakpoints {
+    @if $min-width !=0 {
+        @include media-breakpoint-up($breakpoint) {
+            .flex-#{$breakpoint}-wrap {
+                flex-wrap: wrap !important;
+            }
+
+            .flex-#{$breakpoint}-nowrap {
+                flex-wrap: nowrap !important;
+            }
+
+            .flex-#{$breakpoint}-wrap-reverse {
+                flex-wrap: wrap-reverse !important;
+            }
+        }
+    }
+}
+
+// =============================================
+// FLEX-DIRECTION
+// =============================================
+.flex-row {
+    flex-direction: row !important;
+}
+
+.flex-row-reverse {
+    flex-direction: row-reverse !important;
+}
+
+.flex-column {
+    flex-direction: column !important;
+}
+
+.flex-column-reverse {
+    flex-direction: column-reverse !important;
+}
+
+// Responsive
+@each $breakpoint, $min-width in $grid-breakpoints {
+    @if $min-width !=0 {
+        @include media-breakpoint-up($breakpoint) {
+            .flex-#{$breakpoint}-row {
+                flex-direction: row !important;
+            }
+
+            .flex-#{$breakpoint}-row-reverse {
+                flex-direction: row-reverse !important;
+            }
+
+            .flex-#{$breakpoint}-column {
+                flex-direction: column !important;
+            }
+
+            .flex-#{$breakpoint}-column-reverse {
+                flex-direction: column-reverse !important;
+            }
+        }
+    }
+}
+
+// =============================================
+// FLEX-GROW / FLEX-SHRINK / FLEX-FILL
+// =============================================
+.flex-fill {
+    flex: 1 1 auto !important;
+}
+
+.flex-grow-0 {
+    flex-grow: 0 !important;
+}
+
+.flex-grow-1 {
+    flex-grow: 1 !important;
+}
+
+.flex-shrink-0 {
+    flex-shrink: 0 !important;
+}
+
+.flex-shrink-1 {
+    flex-shrink: 1 !important;
+}
+
+// Responsive (solo las más usadas)
+@each $breakpoint, $min-width in $grid-breakpoints {
+    @if $min-width !=0 {
+        @include media-breakpoint-up($breakpoint) {
+            .flex-#{$breakpoint}-fill {
+                flex: 1 1 auto !important;
+            }
+
+            .flex-#{$breakpoint}-grow-0 {
+                flex-grow: 0 !important;
+            }
+
+            .flex-#{$breakpoint}-grow-1 {
+                flex-grow: 1 !important;
+            }
+
+            .flex-#{$breakpoint}-shrink-0 {
+                flex-shrink: 0 !important;
+            }
+
+            .flex-#{$breakpoint}-shrink-1 {
+                flex-shrink: 1 !important;
+            }
+        }
+    }
+}
+
+// =============================================
+// AUTO-MARGINS (muy útiles para empujar elementos)
+// =============================================
+.m-auto {
+    margin: auto !important;
+}
+
+.mt-auto {
+    margin-top: auto !important;
+}
+
+.mb-auto {
+    margin-bottom: auto !important;
+}
+
+.ms-auto {
+    margin-left: auto !important;
+}
+
+.me-auto {
+    margin-right: auto !important;
+}
+
+.mx-auto {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.my-auto {
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+}
+
+// Responsive
+@each $breakpoint, $min-width in $grid-breakpoints {
+    @if $min-width !=0 {
+        @include media-breakpoint-up($breakpoint) {
+            .m-#{$breakpoint}-auto {
+                margin: auto !important;
+            }
+
+            .mt-#{$breakpoint}-auto {
+                margin-top: auto !important;
+            }
+
+            .mb-#{$breakpoint}-auto {
+                margin-bottom: auto !important;
+            }
+
+            .ms-#{$breakpoint}-auto {
+                margin-left: auto !important;
+            }
+
+            .me-#{$breakpoint}-auto {
+                margin-right: auto !important;
+            }
+
+            .mx-#{$breakpoint}-auto {
+                margin-left: auto !important;
+                margin-right: auto !important;
+            }
+
+            .my-#{$breakpoint}-auto {
+                margin-top: auto !important;
+                margin-bottom: auto !important;
+            }
+        }
+    }
+}
+
+// =============================================
+// DISPLAY FLEX (por si lo necesitas fuera de .row)
+// =============================================
+.d-flex {
+    display: flex !important;
+}
+
+.d-inline-flex {
+    display: inline-flex !important;
+}
+
+.d-block {
+    display: block !important;
+}
+
+.d-inline-block {
+    display: inline-block !important;
+}
+
+.d-none {
+    display: none !important;
+}
+
+// Responsive
+@each $breakpoint, $min-width in $grid-breakpoints {
+    @if $min-width !=0 {
+        @include media-breakpoint-up($breakpoint) {
+            .d-#{$breakpoint}-flex {
+                display: flex !important;
+            }
+
+            .d-#{$breakpoint}-inline-flex {
+                display: inline-flex !important;
+            }
+
+            .d-#{$breakpoint}-block {
+                display: block !important;
+            }
+
+            .d-#{$breakpoint}-inline-block {
+                display: inline-block !important;
+            }
+
+            .d-#{$breakpoint}-none {
+                display: none !important;
+            }
+        }
+    }
+}

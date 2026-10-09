@@ -1,35 +1,156 @@
-@import "_iconos";
+@use "sass:color";
+@use "sass:list";
+@use "mixin" as *;
+@use "grid" as *;
+@use "iconos";
+@use "print";
 
-$BorderRadiusButtons: 5px;
-
-@mixin css3-prefix($property, $value) {
-    -webkit-#{$property}: #{$value};
-    -khtml-#{$property}: #{$value};
-    -moz-#{$property}: #{$value};
-    -ms-#{$property}: #{$value};
-    -o-#{$property}: #{$value};
-    #{$property}: #{$value};
-}
-
-@mixin transition($properties...) {
-    @if length($properties)>=1 {
-        @include css3-prefix('transition', $properties);
-    }
-
-    @else {
-        @include css3-prefix('transition', "all 0.2s ease-in-out 0s");
-    }
-}
-
+@use "dynamicTable";
+@use "checkbox";
+@use "material_design";
 
 html,
 body {
     margin: 0;
     padding: 0;
+
+}
+
+/*
+.not-padding-x {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+*/
+.not-margin-x {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.padding-right-30px {
+    padding-right: 30px;
+}
+
+* .text-align {
+    &-center {
+        text-align: center
+    }
+
+    &-left {
+        text-align: left
+    }
+
+    &-right {
+        text-align: right
+    }
+}
+
+.container-amounts {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+
+    padding: 0 5px;
+
+    span {
+        font-size: 0.6em;
+        flex: 1 0 0%;
+        text-align: right;
+
+        &.label {
+            border-right: 1px solid #000;
+            padding-right: 3px;
+        }
+
+        &.amount {
+
+            //border-bottom: 1px solid #000;
+            max-width: 86px;
+        }
+    }
+
+    &.amoutn_others {
+        .amount {
+            padding: 0 0 0 5px;
+        }
+
+        input {
+            @include css3-prefix('appearance', none);
+            border: 1px solid #787777;
+            outline: none;
+            display: block;
+            width: 100%;
+            text-align: right;
+        }
+    }
+
+    &:not(.black) {
+        span {
+            line-height: 1.1em;
+        }
+    }
+
+    &.black {
+
+        color: #000000;
+        // background-color: #026937;
+        border-top: 1px solid #000;
+        font-weight: bold;
+
+        span {
+            padding-top: 3px;
+            padding-bottom: 3px;
+        }
+    }
+
+    &.grand_total {
+        width: 100%;
+        /*
+                                background-color: #d4cbea;
+                                color: #026937;*/
+
+
+        padding: 0;
+        font-size: 1em;
+
+
+
+        &.green {
+            margin-top: 3px;
+            color: #fff;
+            background-color: #026937;
+
+            span {
+                font-size: 1em;
+                padding: 4px 0;
+                border: none;
+            }
+        }
+
+        span {
+
+
+
+
+            border-bottom: none;
+            max-width: unset;
+            padding: 0 5px;
+            font-weight: 500;
+        }
+
+    }
 }
 
 body {
+    @media screen and (min-width: 576px) and (min-height:589px) {
+        height: 100lvh;
+    }
 
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
 
     * {
         @include css3-prefix('user-select', none);
@@ -41,12 +162,14 @@ body {
 
         }
     }
+
+    .hide {
+        display: none !important;
+
+    }
 }
 
 @media screen {
-
-
-
 
     body {
         & {
@@ -59,6 +182,60 @@ body {
 
             flex-wrap: wrap;
             justify-content: center;
+        }
+
+
+
+        .max-width-200px {
+            max-width: 200px;
+            min-width: 200px;
+        }
+
+        .max-width-80px {
+            @media (max-width: 575px) {
+                flex: 0 0 80px;
+                max-width: 80px;
+            }
+
+            @media (min-width: 576px) {
+                max-width: 80px;
+            }
+        }
+
+        .max-width-150px {
+            @media (max-width: 575px) {
+                flex: 0 0 auto;
+                max-width: calc(100% - 80px);
+            }
+
+            @media (min-width: 576px) {
+                max-width: 150px;
+            }
+        }
+
+
+
+
+        .max-width-300px {
+            @media (min-width: 576px) {
+                max-width: 300px;
+            }
+        }
+
+        .max-width-165px {
+
+
+            @media (min-width: 576px) {
+                max-width: 165px;
+            }
+        }
+
+        .max-width-290px {
+
+            @media (min-width: 576px) {
+                max-width: 290px;
+                width: 290px;
+            }
         }
 
         .show-mobile {
@@ -84,12 +261,12 @@ body {
             height: auto;
             max-width: 350px;
 
-
+            path[aria-label*="sede-"] {
+                display: none;
+            }
         }
 
-        .header-svg path[aria-label*="sede-"] {
-            display: none;
-        }
+
 
         &.sede-leo svg.header-svg path[aria-label*="sede-leo"] {
             display: block;
@@ -107,16 +284,27 @@ body {
             height: 100%;
         }
 
+        .height-230 {
+            height: 230px;
+        }
+
+        .height-212 {
+            height: 212px;
+        }
+
+
+
         .form-receipt {
             max-width: 1000px;
             width: 100%;
 
 
-            background-color: #ede7fe;
+            background-color: #d4cbea;
 
             header {
                 margin: 0;
-                background-color: #42257a;
+
+                background: color.adjust($barColor, $lightness: -5%);
                 padding: 4px 0;
 
                 @media screen and (max-width:575px) {
@@ -129,7 +317,6 @@ body {
                     position: relative;
                     cursor: pointer;
 
-                    font-family: "Oswald", sans-serif !important;
 
                     &::before {
                         pointer-events: none;
@@ -166,49 +353,14 @@ body {
                         }
                     }
 
-                    /*
-                    label {
-                        color: #fff;
-                        font-weight: bold;
-                        text-align: center;
-                        font-size: 1em;
-                        display: block;
-                        width: 100%;
-                    }
 
-                    
-
-                    label,
-                    input {
-                        pointer-events: none;
-                    }
-
-                    input {
-
-                        font-family: 'Courier New', Courier, monospace;
-                        font-size: 1.1em;
-                        appearance: none;
-                        background-color: transparent;
-                        text-align: center;
-                        color: #f9bd0e;
-                        font-weight: bold;
-                        padding: 0;
-
-                        &,
-                        &:focus,
-                        &:active,
-                        &:visited {
-                            outline: none;
-                            border: none;
-                            box-shadow: none;
-
-                        }
-                    }*/
                 }
 
                 .content-date-time {
+                    position: relative;
 
-                    font-family: "Oswald", sans-serif !important;
+
+
 
 
                 }
@@ -226,11 +378,12 @@ body {
 
                     input,
                     textarea {
-
+                        display: block;
+                        width: 100%;
                         font-family: 'Courier New', Courier, monospace;
-
+                        background-color: transparent;
                         @include css3-prefix('appearance', none);
-
+                        color: $ColorYellow;
                         text-align: center;
 
                         font-weight: bold;
@@ -258,327 +411,57 @@ body {
             }
 
             #TheForm {
-                & {
-
-                    margin: 0;
-                }
-
-                .horizontal-padding-7px>[class*="col-"] {
-                    padding-left: 7px;
-                    padding-right: 7px;
-                }
-
-                .max-width-80px {
-                    @media (max-width: 575px) {
-                        flex: 0 0 80px;
-                        max-width: 80px;
-                    }
-
-                    @media (min-width: 576px) {
-                        max-width: 80px;
-                    }
-                }
-
-                .max-width-150px {
-                    @media (max-width: 575px) {
-                        flex: 0 0 auto;
-                        max-width: calc(100% - 80px);
-                    }
-
-                    @media (min-width: 576px) {
-                        max-width: 150px;
-                    }
-                }
-
-                .max-width-75px {
-
-
-                    @media (min-width: 576px) {
-                        max-width: 75px;
-                    }
-                }
-
-                .max-width-255px {
-
-
-                    @media (min-width: 576px) {
-                        max-width: 255px;
-                    }
-                }
-
-                .max-width-165px {
-
-
-                    @media (min-width: 576px) {
-                        max-width: 165px;
-                    }
-                }
+                padding: 0;
+                margin: 0;
 
                 .payment-method-container {
-                    background-color: #d4cbea;
-                    padding-top: 7px;
-                    padding-bottom: 7px;
+                    padding: 7px 10px;
+
+                    //   background-color: #d4cbea;
+                    .max-width-retencion {
+                        max-width: 130px;
+                    }
+
                 }
 
-                .material-design {
-                    /* =============================================
-   ESTILOS MATERIAL DESIGN (Input, Select, Textarea)
-   ============================================= */
-
-                    & {
-                        position: relative;
-                        margin: 3px 0;
-
-                        width: 100%;
-                    }
-
-
-                    /* --- INPUT Y TEXTAREA --- */
-                    input,
-                    textarea,
-                    select {
-                        background-color: #fff;
-                    }
-
-                    input,
-                    textarea {
-                        width: 100%;
-                        padding: 13px 0 0px 4px;
-                        font-size: .76em;
-                        color: #333;
-                        border: none;
-                        border-bottom: 1px solid #aaa;
-                        // background: transparent;
-                        outline: none;
-                        transition: border-color 0.3s ease;
-                        box-sizing: border-box;
-                    }
-
-                    textarea {
-                        resize: vertical;
-                        /* Permite redimensionar solo verticalmente */
-                        min-height: 60px;
-                        font-family: inherit;
-                    }
-
-                    /* --- SELECT (con estilizado personalizado) --- */
-                    select {
-                        width: 100%;
-                        padding: 13px 0 0px 4px;
-                        font-size: .76em;
-                        color: #333;
-                        border: none;
-                        border-bottom: 1px solid #aaa;
-                        /*  background: transparent;*/
-                        outline: none;
-                        transition: border-color 0.3s ease;
-                        box-sizing: border-box;
-                        appearance: none;
-                        /* Elimina el estilo nativo del navegador */
-                        -webkit-appearance: none;
-                        -moz-appearance: none;
-                        cursor: pointer;
-                        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-                        background-repeat: no-repeat;
-                        background-position: calc(100% - 7px) 50%;
-
-                        /* Espacio para la flecha */
-                    }
-
-                    /* --- LABEL (flotante) --- */
-                    label {
-                        position: absolute;
-                        top: 8px;
-                        left: 4px;
-
-                        color: #333;
-                        pointer-events: none;
-                        transition: all .3s ease;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-
-                        @media screen and (max-width:575px) {
-                            font-size: .9em;
-                        }
-
-                        @media screen and (min-width:576px) {
-                            font-size: .68em;
-                        }
-                    }
-
-                    /* --- BARRA (subrayado animado) --- */
-                    .barra {
-                        position: absolute;
-                        bottom: 0;
-                        left: 0;
-                        width: 0;
-                        height: 2px;
-                        background: #42257a;
-                        transition: width 0.3s ease;
-                    }
-
-                    /* =============================================
-   ESTADOS DE INTERACCIÓN
-   ============================================= */
-
-                    /* 1. INPUT y TEXTAREA: con foco */
-                    input:focus,
-                    textarea:focus {
-                        border-bottom-color: #42257a;
-                    }
-
-                    input:focus~.barra,
-                    textarea:focus~.barra {
-                        width: 100%;
-                    }
-
-                    input:focus~label,
-                    textarea:focus~label {
-                        top: 2px;
-                        font-size: 0.55em;
-                        color: #42257a;
-                    }
-
-                    /* 2. INPUT y TEXTAREA: con contenido */
-                    input:not(:placeholder-shown)~label,
-                    textarea:not(:placeholder-shown)~label {
-                        top: 2px;
-                        font-size: 0.55em;
-                        color: #6a6a6a;
-                    }
-
-                    /* 3. SELECT: con foco */
-                    select:focus {
-                        border-bottom-color: #42257a;
-                    }
-
-                    select:focus~.barra {
-                        width: 100%;
-                    }
-
-                    select:focus~label {
-                        top: 2px;
-                        font-size: .55em;
-                        color: #6a6a6a;
-                        // color: #42257a;
-                    }
-
-                    /* 4. SELECT: con valor seleccionado (usando :valid) */
-                    select:valid~label {
-                        top: 2px;
-                        font-size: .55em;
-                        color: #999;
-                    }
-
-                    /* 5. SELECT: cambia la flecha al enfocar */
-                    select:focus {
-                        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236200ee' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+                .payment-discount-container {
+                    @media screen and (min-width:576px) {
+                        max-width: 210px;
+                        background-color: #d4cbea;
                     }
                 }
+
+
+
 
                 .previous-image-container {
-                    max-width: 140px;
+                    width: 100%;
+                    text-align: center;
+                    background-color: #d4cbea;
                     padding: 0;
 
-                    @media screen and (max-width:575px) {
-                        max-width: 250px;
-
-                    }
-
-                    .image-container {
-                        display: block;
+                    img {
+                        background-color: #65529e;
                         width: 100%;
-                        background-position: center;
+                        /* El ancho que quieras */
+                        aspect-ratio: 369 / 522;
+                        /* Relación de aspecto (ancho / alto) */
+                        object-fit: cover;
+                        padding: 3px;
 
-                        background-repeat: no-repeat;
-
-                        &:not(.zoom) {
-                            background-size: cover;
+                        &[src="#empty"] {
+                            opacity: 0;
                         }
-
-                        @media screen and (max-width:575px) {
-                            &.zomm {
-                                background-size: 90lvw auto;
-
-                            }
-
-                            &[style*="background-image"] {
-                                &.zoom {
-                                    img {
-                                        display: none;
-                                    }
-                                }
-
-                                &:not(.zoom) {
-                                    img {
-                                        visibility: hidden;
-                                        opacity: 0;
-                                    }
-                                }
-
-                            }
-                        }
-
-                        @media screen and (min-width:576px) {
-                            .zoom {
-                                background-size: 50lvh auto;
-                            }
-
-                            &[style*="background-image"] {
-                                img {
-                                    visibility: hidden;
-                                    opacity: 0;
-                                }
-                            }
-                        }
-
-
-
-                        img {
-                            width: 100%;
-                            display: block;
-                            height: auto;
-                            -o-object-fit: contain;
-                            object-fit: contain;
-
-                            @media screen and (max-width:575px) {
-                                width: 90%;
-                                height: auto;
-                                margin: 0 auto;
-
-                            }
-
-
-                        }
-
-
-                        &.zoom {
-                            position: fixed;
-                            width: 100lvw;
-                            top: 0%;
-                            left: 0%;
-                            right: 0%;
-                            bottom: auto;
-                            height: 100lvh;
-                            background-color: rgba(0, 0, 0, .5);
-                            backdrop-filter: blur(4px);
-                            z-index: 99999999999;
-                            padding: 0;
-                            margin: 0;
-
-                            img {
-                                display: none;
-                            }
-                        }
-
-                        @media screen and (max-width:575px) {
-
-                            margin: 7px 0 14px 0;
-                        }
-
-
                     }
+
+
+                }
+
+                footer {
+                    height: 52px;
+                    background: color.adjust($barColor, $lightness: -2%);
+                    //background: darken($barColor, 2%);
+
                 }
             }
 
@@ -589,14 +472,10 @@ body {
         /* =============================================
        RESET básico
     ============================================= */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+
             background: #f0f2f5;
             display: flex;
             justify-content: center;
@@ -608,7 +487,8 @@ body {
         .contenedor {
             background: #ffffff;
             padding: 40px 30px;
-            border-radius: 16px;
+
+            @include css3-prefix('border-radius', 15px);
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
             max-width: 500px;
             width: 100%;
@@ -622,288 +502,76 @@ body {
             letter-spacing: 0.3px;
         }
 
-        /* =============================================
-       CHECKBOX COMO BOTÓN
-    ============================================= */
-
-        .grupo-opciones {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            margin-bottom: 20px;
-        }
-
-        /* --- Cada opción es un label con estilo de botón --- */
-        .content-check {
-            position: relative;
-
+        .header-group-fields {
+            color: $LabelColor;
+            font-size: 12px;
+            font-weight: normal;
+            display: block;
+            width: 100%;
 
         }
 
-        .checkbox-boton {
+        .border-left {
+            @media (min-width:576px) {
+                border-left: 1px solid rgba(66, 37, 122, 0.349);
+            }
+        }
+
+
+
+        .content-details-payments {
+
             & {
-                display: flex;
-                align-items: center;
-                gap: 5px;
-                padding: 4px 7px;
-                background-color: #f8f9fc;
-                border: 2px solid #d0d5dd;
-                border-radius: 10px;
-                cursor: pointer;
-                transition: all 0.25s ease;
+                min-height: 210px;
+                margin-left: 0px !important;
+                margin-right: 0px !important;
+                @include css3-prefix('border-radius', 5px);
+            }
 
-                color: #1e1e2f;
-                font-weight: 450;
-                user-select: none;
+            &.txt_disabled {
+                opacity: 0.5;
 
-                @media screen and (max-width:575px) {
-                    font-size: 0.9em;
-                    margin: 7px 0;
-                }
-
-                @media screen and (min-width:576px) {
-                    font-size: 0.75em;
+                * {
+                    pointer-events: none;
                 }
             }
 
 
-            /* --- Ocultamos el checkbox nativo --- */
-            input[type="checkbox"] {
-                display: none;
-            }
+            [class*="box-"] {
+                padding: 0;
+                margin: 0;
 
-            /* --- Contenedor del icono (cuadrado) --- */
-            .check-icon {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 20px;
-                height: 20px;
-                border: 2.5px solid #b0b8c5;
-                border-radius: 6px;
-                background-color: #ffffff;
-                transition: all 0.25s ease;
-                flex-shrink: 0;
-            }
+                .group-color {
+                    margin: 0;
+                    border: 0px solid #000;
+                    background-color: #fff;
+                    @include css3-prefix('border-radius', 5px);
+                    overflow: hidden;
 
-            /* --- SVG dentro del icono (inicialmente oculto) --- */
-            .check-icon svg {
-                width: 18px;
-                height: 18px;
-                fill: none;
-                stroke: #ffffff;
-                stroke-width: 3;
-                stroke-linecap: round;
-                stroke-linejoin: round;
-                opacity: 0;
-                transform: scale(0.5);
-                transition: all 0.2s ease;
-            }
+                    &:not(:first-child) {
+                        margin-top: 15px;
+                    }
+                }
 
-            /* --- Estados de Hover --- */
-            &:hover {
-                background-color: #eef1f7;
-                border-color: #a0aec0;
-                transform: translateY(-1px);
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            }
 
-            &:hover .check-icon {
-                border-color: #e75e22;
-            }
+                &.box-details-payments {
+                    padding: 0 7px;
 
-            /* --- Estado CHECKED --- */
-            input:checked+.check-icon {
-                background-color: #e75e22;
-                border-color: #e75e22;
-                box-shadow: 0 0 0 3px rgba(98, 0, 238, 0.2);
-            }
+                    #Dynacmic-table-eli {
+                        border: #65529e 3px solid;
+                    }
+                }
 
-            input:checked+.check-icon svg {
-                opacity: 1;
-                transform: scale(1);
-            }
-
-            /* --- Foco (accesibilidad) --- */
-            input:focus-visible+.check-icon {
-                outline: 2px solid #e75e22;
-                outline-offset: 3px;
-            }
-
-            /* --- Texto de la opción (puede tener emojis) --- */
-            .texto {
-                flex: 1;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
 
             }
+
+
 
         }
 
 
-        dialog {
-            & {
-
-                width: 100lvw;
-                height: 100lvh;
-                background-color: transparent;
-                align-items: center;
-                justify-content: center;
-                border: none;
-                outline: none;
-                max-width: unset;
-                max-height: unset;
-
-                &:not([open]) {
-                    display: none;
-                }
-
-                &[open] {
-                    display: flex;
-                }
 
 
-                &::backdrop {
-                    background-color: rgba(0, 0, 0, 0.5);
-                    backdrop-filter: blur(4px);
-                }
-            }
-
-
-
-            .content-dialog {
-                background-color: #f8f9fc;
-
-                border-radius: 6px;
-                transition: all .25s ease;
-
-                .content-dialog-header {
-                    & {
-                        padding: 7px 7px;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        border-bottom: 1px solid #ddd;
-                    }
-
-                    h2 {
-                        font-size: 0.6em;
-                    }
-
-                    button {
-                        border: 0;
-                        background-color: rgba(0, 0, 0, 0);
-                        cursor: pointer;
-                        width: 15px;
-                        height: 15px;
-                        padding: 0;
-
-
-                        i {
-                            font-size: 1em;
-                        }
-                    }
-                }
-
-                .content-dialog-body {
-                    padding: 7px 7px;
-
-                }
-
-                .content-dialog-footer {
-                    padding: 7px 7px;
-                    border-top: 1px solid #ddd;
-
-                    button {
-                        width: 100%;
-                    }
-                }
-            }
-
-            &#Details {
-                .content-dialog {
-
-                    width: 200px;
-                    height: auto;
-
-                }
-
-                ul {
-                    list-style: none;
-                    padding: 5px;
-                    display: flex;
-                    flex-direction: column;
-
-
-                    li {
-                        display: flex;
-
-                        .cash-container {
-                            display: flex;
-                            width: 100%;
-
-                            .money,
-                            .amount {
-                                flex: 1 0 0%;
-
-                                width: 50%;
-
-                                input {
-                                    width: 100%;
-                                    display: block;
-                                    text-align: right;
-
-                                    &,
-                                    &:active,
-                                    &:focus {
-
-                                        @include css3-prefix('appearance', none);
-                                        @include css3-prefix('border-radius', 0px);
-                                        border: 1px solid #42257a;
-                                        outline: none;
-                                    }
-
-                                    &:active,
-                                    &:focus {
-
-                                        background-color: rgba(65, 37, 122, 0.2);
-
-                                    }
-
-
-                                }
-                            }
-
-                            .money {
-                                text-align: right;
-                                padding: 0 7px;
-                            }
-
-                            .money,
-                            .amount input {
-                                font-size: 0.75em;
-                            }
-                        }
-
-                        &:not(:first-child) {
-                            input {
-                                border-top: none !important;
-                            }
-                        }
-
-                        &:nth-last-child(1),
-                        &:nth-last-child(2) {
-                            input {
-                                border: none !important;
-                            }
-                        }
-                    }
-
-
-                }
-            }
-        }
 
 
 
@@ -962,21 +630,8 @@ body {
         }
 
 
-        .material-design input,
-        .material-design select,
-        .material-design textarea {
-            font-size: 1.1em !important;
-        }
 
-        .material-design input,
-        .material-design textarea,
-        .material-design select {
-            padding: 10px 17 0px 4px !important;
-        }
 
-        #TheForm {
-            padding: 0 7px;
-        }
 
         .checkbox-boton {
             padding: 12px 16px;
@@ -1002,23 +657,17 @@ body {
 
 
 
-        #TheForm {
-            padding: 0;
-        }
 
-        .form-receipt {
-            height: 510px;
-        }
+
 
         .roc,
         .content-date-time {
 
-            max-width: 200px;
 
             input,
             textarea {
 
-                font-size: 0.9em;
+                font-size: 1.3em;
 
             }
         }
@@ -1026,8 +675,6 @@ body {
         .roc {
             * {
                 text-align: center;
-
-
             }
         }
 
@@ -1039,5 +686,16 @@ body {
 
 
         }
+    }
+}
+
+.logoEli {
+    background-image: url($logoELI);
+    background-repeat: no-repeat;
+
+    &.header-align {
+        background-position: 3mm 8mm;
+        background-size: 20mm;
+
     }
 }
