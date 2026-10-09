@@ -3,89 +3,415 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Monitor de Impresora Bluetooth</title>
+    <title>PrinterUSB auto</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            padding: 20px;
+        }
+
+        #status {
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .ok {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .waiting {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        #log {
+            background: #111;
+            color: #0f0;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 13px;
+            height: 200px;
+            overflow-y: auto;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Estado de la Impresora Bluetooth</h1>
-    <p id="status">Desconectado</p>
-    <button id="btn-connect">Conectar Impresora</button>
+    <h1>Monitor Impresora USB (clase auto)</h1>
+    <div id="status" class="waiting">Sin conectar</div>
+    <button id="btn-select">Seleccionar impresora</button>
+    <button id="btn-check">Consultar estado</button>
+    <div id="log"></div>
 
-    <script>
-        const statusEl = document.getElementById('status');
-        const btn = document.getElementById('btn-connect');
-        let printerDevice = null;
+    <script>/**
+* PrinterUSB
+* ----------
+* Gestiona una impresora USB vía WebUSB con:
+*  - Auto-detección de conexión/desconexión (navigator.usb connect/disconnect)
+*  - Recuperación de dispositivos previamente autorizados
+*  - Consulta de estado ESC/POS (DLE EOT)
+*  - Sistema de eventos: on('connect' | 'disconnect' | 'status' | 'error', cb)
+*
+* Requisitos: HTTPS o localhost, navegador Chromium.
+*/
+        class PrinterUSB {
+            constructor(options = {}) {
+                this.filters = options.filters ?? [
+                    { classCode: 7 },   // Printer
+                    { classCode: 255 }  // Vendor-specific (ESC/POS raw)
+                ];
+                this.autoQueryStatus = options.autoQueryStatus ?? false;
+                this.statusIntervalMs = options.statusIntervalMs ?? 0; // 0 = sin polling
 
-        // 1. Conectar a una impresora Bluetooth
-        async function connectPrinter() {
-            try {
-                // Solicitamos un dispositivo Bluetooth.
-                // Filtramos por el nombre típico de impresoras térmicas.
-                // Puedes ajustar el filtro según tu modelo (ej. prefijos conocidos).
-                const device = await navigator.bluetooth.requestDevice({
-                    filters: [
-                        { namePrefix: 'BlueTooth Printer' },
-                        { namePrefix: 'POS' },
-                        { namePrefix: 'Thermal' }
-                    ],
-                    optionalServices: [
-                        // UUIDs de servicios comunes en impresoras térmicas.
-                        // Si conoces el UUID de tu impresora, añádelo aquí.
-                        '000018f0-0000-1000-8000-00805f9b34fb', // Servicio de impresora genérico
-                        '0000ff00-0000-1000-8000-00805f9b34fb'  // Ejemplo común en algunas impresoras
-                    ]
-                });
+                this.device = null;
+                this.endpointOut = null;
+                this.endpointIn = null;
+                this.interfaceNumber = null;
 
-                printerDevice = device;
-                console.log('Dispositivo seleccionado:', device);
+                this._listeners = new Map(); // evento -> Set<fn>
+                this._statusTimer = null;
+                this._boundUsbConnect = this._onUsbConnect.bind(this);
+                this._boundUsbDisconnect = this._onUsbDisconnect.bind(this);
 
-                // 2. Escuchar el evento de desconexión
-                device.addEventListener('gattserverdisconnected', () => {
-                    statusEl.textContent = 'Impresora desconectada.';
-                    console.log('La impresora se ha desconectado.');
-                });
-
-                // 3. Conectar al servidor GATT
-                const server = await device.gatt.connect();
-                console.log('Conectado al servidor GATT:', server);
-
-                // 4. Actualizar el estado en la UI
-                statusEl.textContent = `Conectado a: ${device.name || 'Impresora Bluetooth'}`;
-
-                // 5. (Opcional) Puedes obtener servicios y características
-                //    para leer el estado real de la impresora (papel, batería, etc.)
-                //    Esto depende del modelo específico.
-                // const services = await server.getPrimaryServices();
-                // console.log('Servicios disponibles:', services);
-
-            } catch (error) {
-                console.error('Error al conectar:', error);
-                statusEl.textContent = 'Error de conexión o cancelado.';
+                this._attachUsbListeners();
             }
-        }
 
-        // 6. Verificar el estado de conexión en cualquier momento
-        function checkConnection() {
-            if (printerDevice && printerDevice.gatt && printerDevice.gatt.connected) {
-                return true;
+            /* ============================================================
+             *  API de eventos
+             * ============================================================ */
+            on(event, cb) {
+                if (!this._listeners.has(event)) this._listeners.set(event, new Set());
+                this._listeners.get(event).add(cb);
+                return () => this.off(event, cb);
             }
-            return false;
-        }
 
-        // 7. Botón para iniciar la conexión
-        btn.addEventListener('click', connectPrinter);
+            off(event, cb) {
+                this._listeners.get(event)?.delete(cb);
+            }
 
-        // 8. (Opcional) Actualizar el estado periódicamente
-        setInterval(() => {
-            if (printerDevice) {
-                const connected = checkConnection();
-                if (connected) {
-                    statusEl.textContent = `Conectado a: ${printerDevice.name}`;
-                } else if (statusEl.textContent !== 'Impresora desconectada.') {
-                    statusEl.textContent = 'Impresora desconectada.';
+            _emit(event, payload) {
+                this._listeners.get(event)?.forEach(fn => {
+                    try { fn(payload, this); }
+                    catch (e) { console.error(`[PrinterUSB] Error en listener '${event}':`, e); }
+                });
+            }
+
+            /* ============================================================
+             *  Listeners USB globales
+             * ============================================================ */
+            _attachUsbListeners() {
+                if (!('usb' in navigator)) {
+                    console.warn('[PrinterUSB] WebUSB no soportado en este navegador.');
+                    this._emit('error', new Error('WebUSB no soportado'));
+                    return;
+                }
+                navigator.usb.addEventListener('connect', this._boundUsbConnect);
+                navigator.usb.addEventListener('disconnect', this._boundUsbDisconnect);
+            }
+
+            destroy() {
+                navigator.usb?.removeEventListener('connect', this._boundUsbConnect);
+                navigator.usb?.removeEventListener('disconnect', this._boundUsbDisconnect);
+                this._stopStatusPolling();
+                this._listeners.clear();
+            }
+
+            /* ============================================================
+             *  Inicialización: recupera dispositivos ya autorizados
+             * ============================================================ */
+            async init() {
+                try {
+                    const devices = await navigator.usb.getDevices();
+                    const printer = devices.find(d => this._looksLikePrinter(d));
+                    if (printer) {
+                        await this._setupDevice(printer);
+                    } else {
+                        this._emit('status', { connected: false, reason: 'no-authorized' });
+                    }
+                } catch (err) {
+                    this._emit('error', err);
+                }
+                return this;
+            }
+
+            /* ============================================================
+             *  Selección manual por parte del usuario
+             * ============================================================ */
+            async requestDevice() {
+                try {
+                    const dev = await navigator.usb.requestDevice({ filters: this.filters });
+                    await this._setupDevice(dev);
+                    return dev;
+                } catch (err) {
+                    if (err.name !== 'NotFoundError') this._emit('error', err);
+                    return null;
                 }
             }
-        }, 2000);
+
+            /* ============================================================
+             *  Detección genérica: ¿tiene pinta de impresora?
+             * ============================================================ */
+            _looksLikePrinter(dev) {
+                if (!dev.configuration) return false;
+                return dev.configuration.interfaces.some(iface =>
+                    iface.alternates.some(alt =>
+                        alt.interfaceClass === 7 || alt.interfaceClass === 255
+                    )
+                );
+            }
+
+            /* ============================================================
+             *  Configuración del dispositivo (abrir, claim, buscar endpoints)
+             * ============================================================ */
+            async _setupDevice(dev) {
+                try {
+                    if (!dev.opened) await dev.open();
+                    if (dev.configuration === null) await dev.selectConfiguration(1);
+
+                    let ifaceNum = null;
+                    let epOut = null;
+                    let epIn = null;
+
+                    // Preferimos vendor-specific con bulk OUT
+                    for (const iface of dev.configuration.interfaces) {
+                        for (const alt of iface.alternates) {
+                            const out = alt.endpoints.find(e => e.type === 'bulk' && e.direction === 'out');
+                            const inEp = alt.endpoints.find(e => e.type === 'bulk' && e.direction === 'in');
+                            if (out && alt.interfaceClass === 255) {
+                                ifaceNum = iface.interfaceNumber;
+                                epOut = out;
+                                epIn = inEp;
+                                break;
+                            }
+                        }
+                        if (ifaceNum !== null) break;
+                    }
+
+                    // Fallback: cualquier interfaz con bulk OUT
+                    if (ifaceNum === null) {
+                        for (const iface of dev.configuration.interfaces) {
+                            for (const alt of iface.alternates) {
+                                const out = alt.endpoints.find(e => e.type === 'bulk' && e.direction === 'out');
+                                if (out) {
+                                    ifaceNum = iface.interfaceNumber;
+                                    epOut = out;
+                                    epIn = alt.endpoints.find(e => e.type === 'bulk' && e.direction === 'in');
+                                    break;
+                                }
+                            }
+                            if (ifaceNum !== null) break;
+                        }
+                    }
+
+                    if (ifaceNum === null) throw new Error('No se encontró endpoint bulk OUT. ¿Falta WinUSB/Zadig?');
+
+                    await dev.claimInterface(ifaceNum);
+
+                    this.device = dev;
+                    this.endpointOut = epOut;
+                    this.endpointIn = epIn;
+                    this.interfaceNumber = ifaceNum;
+
+                    this._emit('connect', this._deviceInfo());
+
+                    if (this.autoQueryStatus) await this.queryStatus();
+                    if (this.statusIntervalMs > 0) this._startStatusPolling();
+                } catch (err) {
+                    this._emit('error', err);
+                }
+            }
+
+            _deviceInfo() {
+                const d = this.device;
+                if (!d) return null;
+                return {
+                    device: d,
+                    name: d.productName || 'Impresora USB',
+                    vendorId: d.vendorId,
+                    productId: d.productId,
+                    serialNumber: d.serialNumber,
+                    interfaceNumber: this.interfaceNumber,
+                    endpointOut: this.endpointOut?.endpointNumber ?? null,
+                    endpointIn: this.endpointIn?.endpointNumber ?? null
+                };
+            }
+
+            /* ============================================================
+             *  Eventos globales USB -> auto gestión
+             * ============================================================ */
+            async _onUsbConnect(event) {
+                // Solo auto-conectamos si ya estaba autorizado previamente
+                // (los no autorizados requieren requestDevice() con gesto del usuario)
+                const authorized = await navigator.usb.getDevices();
+                if (authorized.includes(event.device) && !this.device && this._looksLikePrinter(event.device)) {
+                    await this._setupDevice(event.device);
+                }
+            }
+
+            _onUsbDisconnect(event) {
+                if (this.device && event.device === this.device) {
+                    this._stopStatusPolling();
+                    const info = this._deviceInfo();
+                    this.device = null;
+                    this.endpointOut = null;
+                    this.endpointIn = null;
+                    this.interfaceNumber = null;
+                    this._emit('disconnect', info);
+                }
+            }
+
+            /* ============================================================
+             *  Consulta de estado ESC/POS
+             * ============================================================ */
+            async queryStatus() {
+                if (!this.device || !this.endpointOut) {
+                    throw new Error('Impresora no conectada');
+                }
+                const results = {};
+
+                for (const n of [1, 2, 3, 4]) {
+                    try {
+                        await this.device.transferOut(
+                            this.endpointOut.endpointNumber,
+                            new Uint8Array([0x10, 0x04, n])
+                        );
+
+                        // Si no hay endpoint IN, no podemos leer respuesta
+                        if (!this.endpointIn) {
+                            results[n] = null;
+                            continue;
+                        }
+
+                        const res = await Promise.race([
+                            this.device.transferIn(this.endpointIn.endpointNumber, 1),
+                            new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 1000))
+                        ]).catch(() => null);
+
+                        results[n] = (res?.data?.byteLength > 0) ? res.data.getUint8(0) : null;
+                    } catch (err) {
+                        results[n] = null;
+                    }
+                }
+
+                const parsed = this._parseStatus(results);
+                this._emit('status', { connected: true, raw: results, parsed });
+                return parsed;
+            }
+
+            _parseStatus(raw) {
+                const out = { online: null, paperOut: null, paperLow: null, coverOpen: null, error: null };
+                const b1 = raw[1], b4 = raw[4];
+
+                if (typeof b1 === 'number') {
+                    out.online = (b1 & 0b00001000) === 0; // bit 3 = offline
+                    out.error = (b1 & 0b01000000) !== 0; // bit 6 = error fatal
+                    out.coverOpen = (b1 & 0b00100000) !== 0; // bit 5 = error recuperable (habitualmente tapa)
+                }
+                if (typeof b4 === 'number') {
+                    out.paperOut = (b4 & 0b00001100) !== 0;
+                    out.paperLow = (b4 & 0b01100000) !== 0;
+                }
+                return out;
+            }
+
+            _startStatusPolling() {
+                this._stopStatusPolling();
+                this._statusTimer = setInterval(() => {
+                    this.queryStatus().catch(err => this._emit('error', err));
+                }, this.statusIntervalMs);
+            }
+
+            _stopStatusPolling() {
+                if (this._statusTimer) {
+                    clearInterval(this._statusTimer);
+                    this._statusTimer = null;
+                }
+            }
+
+            /* ============================================================
+             *  Utilidades de impresión
+             * ============================================================ */
+            async sendBytes(bytes) {
+                if (!this.device || !this.endpointOut) throw new Error('Impresora no conectada');
+                return this.device.transferOut(
+                    this.endpointOut.endpointNumber,
+                    bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes)
+                );
+            }
+
+            async printText(text) {
+                const enc = new TextEncoder();
+                // ESC @ (init) + texto + \n
+                const payload = new Uint8Array([0x1B, 0x40, ...enc.encode(text), 0x0A]);
+                return this.sendBytes(payload);
+            }
+
+            get isConnected() {
+                return !!this.device && this.device.opened;
+            }
+        }</script>
+    <script>
+        const statusEl = document.getElementById('status');
+        const logEl = document.getElementById('log');
+
+        const log = (m) => {
+            logEl.textContent += `[${new Date().toLocaleTimeString()}] ${m}\n`;
+            logEl.scrollTop = logEl.scrollHeight;
+        };
+        const setStatus = (t, c) => { statusEl.textContent = t; statusEl.className = c; };
+
+        // ---- Instancia única ----
+        const printer = new PrinterUSB({
+            autoQueryStatus: true,       // consulta estado justo tras conectar
+            statusIntervalMs: 0          // sin polling automático
+        });
+
+        // ---- Suscripciones a eventos ----
+        printer.on('connect', (info) => {
+            log(`✅ Conectada: ${info.name} (VID:${info.vendorId.toString(16)} PID:${info.productId.toString(16)})`);
+            setStatus(`Conectada: ${info.name}`, 'ok');
+        });
+
+        printer.on('disconnect', () => {
+            log('❌ Impresora desconectada.');
+            setStatus('Impresora desconectada', 'error');
+        });
+
+        printer.on('status', ({ connected, parsed, raw }) => {
+            if (!connected) return;
+            log(`📊 Estado: ${JSON.stringify(parsed)}`);
+            if (parsed.online === false) setStatus('Impresora OFFLINE', 'error');
+            if (parsed.paperOut) setStatus('⚠️ SIN PAPEL', 'error');
+            if (parsed.coverOpen) setStatus('⚠️ TAPA ABIERTA', 'error');
+        });
+
+        printer.on('error', (err) => {
+            log('💥 Error: ' + err.message);
+            setStatus('Error: ' + err.message, 'error');
+        });
+
+        // ---- Auto-inicialización al cargar la página ----
+        printer.init().then(() => {
+            if (!printer.isConnected) {
+                setStatus('Sin conectar. Pulsa "Seleccionar impresora".', 'waiting');
+            }
+        });
+
+        // ---- Botones ----
+        document.getElementById('btn-select').addEventListener('click', () => printer.requestDevice());
+        document.getElementById('btn-check').addEventListener('click', () => printer.queryStatus());
+
+        // ---- Limpieza si es SPA ----
+        window.addEventListener('beforeunload', () => printer.destroy());
     </script>
 </body>
 

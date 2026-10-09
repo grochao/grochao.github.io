@@ -1,0 +1,200 @@
+@use "mixin" as *;
+
+[data-tooltip] {
+    position: relative;
+    cursor: pointer;
+}
+
+[data-tooltip]::before,
+[data-tooltip]::after {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    pointer-events: none;
+    z-index: 1000;
+}
+
+[data-tooltip]::before {
+    content: attr(data-tooltip);
+    background: rgba(26, 26, 26, 1);
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    max-width: 130px;
+    width: max-content;
+    text-align: center;
+    font-size: 14px;
+    filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
+}
+
+[data-tooltip]::after {
+    content: "";
+    border: 9px solid transparent;
+}
+
+/* Positions */
+[data-direction="top"]::before,
+[data-direction="top"]::after {
+    left: 50%;
+    bottom: 100%;
+    transform: translateX(-50%) translateY(10px);
+}
+
+[data-direction="top"]::after {
+    border-top-color: rgba(26, 26, 26, 1);
+    margin-bottom: -4px;
+}
+
+[data-direction="top"]::before {
+    margin-bottom: 12px;
+}
+
+[data-direction="bottom"]::before,
+[data-direction="bottom"]::after {
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%) translateY(-10px);
+}
+
+[data-direction="bottom"]::after {
+    border-bottom-color: rgba(26, 26, 26, 1);
+    margin-top: -4px;
+}
+
+[data-direction="bottom"]::before {
+    margin-top: 12px;
+}
+
+[data-direction="left"]::before,
+[data-direction="left"]::after {
+    top: 50%;
+    right: 100%;
+    transform: translateY(-50%) translateX(10px);
+}
+
+[data-direction="left"]::after {
+    border-left-color: rgba(26, 26, 26, 1);
+    margin-right: -4px;
+}
+
+[data-direction="left"]::before {
+    margin-right: 12px;
+}
+
+[data-direction="right"]::before,
+[data-direction="right"]::after {
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%) translateX(-10px);
+}
+
+[data-direction="right"]::after {
+    border-right-color: rgba(26, 26, 26, 1);
+    margin-left: -4px;
+}
+
+[data-direction="right"]::before {
+    margin-left: 12px;
+}
+
+/* Trigger */
+[data-tooltip]:hover::before,
+[data-tooltip]:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+[data-direction="top"]:hover::before,
+[data-direction="top"]:hover::after,
+[data-direction="bottom"]:hover::before,
+[data-direction="bottom"]:hover::after {
+    transform: translateX(-50%) translateY(0);
+}
+
+[data-direction="left"]:hover::before,
+[data-direction="left"]:hover::after,
+[data-direction="right"]:hover::before,
+[data-direction="right"]:hover::after {
+    transform: translateY(-50%) translateX(0);
+}
+
+.container-actionbuttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    height: 100%;
+    padding: 0 15px;
+    column-gap: 15px;
+
+    span {
+        padding: 5px;
+        flex: 1 0 0%;
+        width: 100%;
+        font-size: 0.8em;
+        text-transform: uppercase;
+
+        &:not([class*="type-button"]) {
+            max-width: 38px;
+        }
+
+        &[class*="type-button"] {
+            max-width: 130px;
+            color: #fff;
+        }
+
+        height: 38px;
+        @include css3-prefix('transition', all .25s ease-in-out);
+        @include css3-prefix('border-radius', 5px);
+        outline:3px solid rgba(255, 255, 255, 0.2);
+        display: inline-flex;
+        align-items: center;
+        flex-wrap: wrap;
+
+        i {
+            display: block;
+            position: relative;
+            color: #fff;
+            @include css3-prefix('transition', all .25s ease-in-out);
+            max-width: 40px;
+
+
+
+            &.counter {
+                display: block;
+                position: absolute;
+                color: #fff;
+                width: 25px;
+                height: 25px;
+                @include css3-prefix('border-radius', 100px);
+                background-color: red;
+                font-family: 'Courier New', Courier, monospace;
+                top: -7px;
+                left: -7px;
+                font-size: 12px;
+                font-style: normal;
+                text-align: center;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: center;
+                padding: 0;
+            }
+        }
+
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            outline-color: $ColorYellow;
+            color: $ColorYellow ;
+
+            i {
+                color: $ColorYellow;
+            }
+        }
+
+        &:last-child {
+            margin-left: auto;
+        }
+    }
+}
