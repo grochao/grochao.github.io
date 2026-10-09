@@ -57,7 +57,7 @@ $menu-shadow: 0 12px 32px rgba(0, 0, 0, .14);
     width: 100%;
     align-items: center;
     gap: .3rem;
-    padding: .2rem .5rem;
+    padding: .05rem .5rem;
     border: 1px solid $border-input;
     border-radius: 6px;
     cursor: pointer;
@@ -96,14 +96,14 @@ $menu-shadow: 0 12px 32px rgba(0, 0, 0, .14);
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 20px;
-        height: 20px;
+        width: 17px;
+        height: 17px;
         flex: 0 0 20px;
 
         i {
             display: inline-block;
-            width: 18px;
-            height: 18px;
+            width: 15px;
+            height: 15px;
 
             background: {
                 repeat: no-repeat;
@@ -350,7 +350,7 @@ table.choice-table {
         grid-template-columns: 1fr 1fr 1.4fr;
         align-items: center;
         gap: .5rem;
-        padding: .05rem .55rem;
+        padding: .01rem .55rem;
     }
 
     .cash-calc-row {
@@ -396,12 +396,12 @@ table.choice-table {
         margin: 0 auto;
         display: block;
         text-align: center;
-        padding: .2rem .4rem;
+        padding: .05rem .4rem;
         border: 1px solid $border-input-2;
         border-radius: 4px;
-        font-size: 0.75rem;
+        font-size: 0.70rem;
         color: $danger;
-        font-weight: 5700;
+        font-weight: 500;
 
         &:focus {
             outline: none;
@@ -422,7 +422,7 @@ table.choice-table {
     text-align: right;
     background: transparent;
     border: none;
-    padding: .25rem 0;
+    padding: .23rem 0;
     font-size: 0.75rem;
     font-weight: 500;
     color: #111;
