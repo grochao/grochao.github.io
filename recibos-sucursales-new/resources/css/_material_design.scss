@@ -32,7 +32,7 @@
 
     /* 🔥 INPUT: padding-top pequeño porque el texto va centrado */
     input {
-        padding: 13px 0 0px 4px;
+        padding: 11px 0 0px 4px;
     }
 
     /* 🔥 TEXTAREA: padding-top MÁS GRANDE para que el texto no choque con la etiqueta flotante */
@@ -86,7 +86,7 @@
         }
 
         @media screen and (min-width: 576px) {
-            font-size: 0.68em;
+            font-size: 0.62em;
         }
     }
 
