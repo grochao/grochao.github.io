@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>_HELPERS_.dateTime() · Demo Vanilla JS</title>
+
+    <!-- ===================== STYLE ===================== -->
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 2rem 1rem 4rem;
+        }
+
+        .demo-panel {
+            max-width: 980px;
+            margin: 0 auto;
+            display: grid;
+            gap: 1.25rem;
+        }
+
+        .demo-panel__title {
+            font-size: 1.5rem;
+            margin: 0 0 0.25rem;
+            color: #f1f5f9;
+        }
+
+        .demo-panel__subtitle {
+            margin: 0;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .demo-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            padding: 1rem 1.25rem;
+        }
+
+        .demo-card__title {
+            margin: 0 0 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #94a3b8;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 0.6rem;
+        }
+
+        .demo-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .demo-row+.demo-row {
+            margin-top: 0.6rem;
+        }
+
+        .demo-btn {
+            appearance: none;
+            border: 1px solid #475569;
+            background: #334155;
+            color: #e2e8f0;
+            padding: 0.5rem 0.85rem;
+            border-radius: 0.5rem;
+            font: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s, transform 0.05s;
+        }
+
+        .demo-btn:hover {
+            background: #3f4d63;
+            border-color: #64748b;
+        }
+
+        .demo-btn:active {
+            transform: translateY(1px);
+        }
+
+        .demo-btn:focus-visible {
+            outline: 2px solid #60a5fa;
+            outline-offset: 2px;
+        }
+
+        .demo-btn--primary {
+            background: #2563eb;
+            border-color: #3b82f6;
+        }
+
+        .demo-btn--primary:hover {
+            background: #1d4ed8;
+        }
+
+        .demo-btn--danger {
+            background: #b91c1c;
+            border-color: #dc2626;
+        }
+
+        .demo-btn--danger:hover {
+            background: #991b1b;
+        }
+
+        .demo-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            min-width: 150px;
+        }
+
+        .demo-field label {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .demo-field input,
+        .demo-field select {
+            background: #0f172a;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+            border-radius: 0.4rem;
+            padding: 0.4rem 0.55rem;
+            font: inherit;
+            font-size: 0.85rem;
+        }
+
+        .demo-field input:focus,
+        .demo-field select:focus {
+            outline: 2px solid #60a5fa;
+            outline-offset: 1px;
+        }
+
+        .demo-output {
+            background: #020617;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 0.6rem 0.75rem;
+            font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #cbd5e1;
+            min-height: 2.2rem;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .demo-output--live {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: #4ade80;
+            text-align: center;
+            letter-spacing: 0.02em;
+        }
+
+        .demo-kv {
+            display: grid;
+            grid-template-columns: max-content 1fr;
+            gap: 0.3rem 0.9rem;
+            font-size: 0.85rem;
+        }
+
+        .demo-kv dt {
+            color: #94a3b8;
+            font-family: ui-monospace, monospace;
+        }
+
+        .demo-kv dd {
+            margin: 0;
+            color: #f1f5f9;
+            font-family: ui-monospace, monospace;
+            word-break: break-all;
+        }
+
+        .demo-log {
+            background: #020617;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 0.6rem 0.75rem;
+            max-height: 260px;
+            overflow-y: auto;
+            font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+
+        .demo-log__line {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.1rem 0;
+            border-bottom: 1px dashed #1e293b;
+        }
+
+        .demo-log__line:last-child {
+            border-bottom: none;
+        }
+
+        .demo-log__time {
+            color: #64748b;
+            flex-shrink: 0;
+        }
+
+        .demo-log__msg {
+            color: #cbd5e1;
+            word-break: break-word;
+        }
+
+        .demo-log__msg--ok {
+            color: #4ade80;
+        }
+
+        .demo-log__msg--warn {
+            color: #fbbf24;
+        }
+
+        .demo-log__msg--err {
+            color: #f87171;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="demo-panel">
+        <header>
+            <h1 class="demo-panel__title">_HELPERS_.dateTime() · Demo</h1>
+            <p class="demo-panel__subtitle">
+                Cada botón invoca un método real. Los resultados aparecen en los paneles inferiores.
+            </p>
+        </header>
+
+        <!-- ---- Configuración encadenable ---- -->
+        <section class="demo-card" aria-labelledby="cfg-title">
+            <h2 class="demo-card__title" id="cfg-title">Configuración (chaining · devuelve this)</h2>
+            <div class="demo-row">
+                <div class="demo-field">
+                    <label for="cfg-locale">locale</label>
+                    <select id="cfg-locale">
+                        <option value="es-NI">es-NI</option>
+                        <option value="es-ES">es-ES</option>
+                        <option value="en-US">en-US</option>
+                        <option value="fr-FR">fr-FR</option>
+                        <option value="de-DE">de-DE</option>
+                        <option value="ja-JP">ja-JP</option>
+                        <option value="ar-EG">ar-EG</option>
+                    </select>
+                </div>
+                <div class="demo-field">
+                    <label for="cfg-tz">timeZone</label>
+                    <input id="cfg-tz" type="text" value="America/Managua" />
+                </div>
+                <div class="demo-field">
+                    <label for="cfg-hour12">hour12</label>
+                    <select id="cfg-hour12">
+                        <option value="">(default)</option>
+                        <option value="true">true</option>
+                        <option value="false">false</option>
+                    </select>
+                </div>
+                <button class="demo-btn demo-btn--primary"
+                    id="btn-apply">setLocale().setTimeZone().setOptions()</button>
+                <button class="demo-btn" id="btn-chain-check">Verificar chaining</button>
+                <button class="demo-btn demo-btn--danger" id="btn-reset-cfg">Reset config</button>
+            </div>
+            <dl class="demo-kv" style="margin-top:0.75rem">
+                <dt>locale</dt>
+                <dd id="kv-locale">—</dd>
+                <dt>timeZone</dt>
+                <dd id="kv-tz">—</dd>
+            </dl>
+        </section>
+
+        <!-- ---- Formatters ---- -->
+        <section class="demo-card" aria-labelledby="fmt-title">
+            <h2 class="demo-card__title" id="fmt-title">Formatters (devuelven Intl.DateTimeFormat)</h2>
+            <div class="demo-row">
+                <button class="demo-btn" id="btn-fmt-date">getDateFormatter()</button>
+                <button class="demo-btn" id="btn-fmt-time">getTimeFormatter()</button>
+                <button class="demo-btn" id="btn-fmt-datetime">getDateTimeFormatter()</button>
+                <button class="demo-btn" id="btn-fmt-date-weekday">getDateFormatter({ weekday:'long', month:'long'
+                    })</button>
+            </div>
+            <div class="demo-output" id="out-formatter" style="margin-top:0.75rem">—</div>
+        </section>
+
+        <!-- ---- Valores listos ---- -->
+        <section class="demo-card" aria-labelledby="val-title">
+            <h2 class="demo-card__title" id="val-title">Valores formateados (devuelven string / object)</h2>
+            <div class="demo-row">
+                <button class="demo-btn" id="btn-current-date">currentDate()</button>
+                <button class="demo-btn" id="btn-current-time">currentTime()</button>
+                <button class="demo-btn" id="btn-current-datetime">currentDateTime()</button>
+                <button class="demo-btn" id="btn-format-iso">format('2026-12-25T09:30:00Z')</button>
+                <button class="demo-btn" id="btn-parts">parts()</button>
+            </div>
+            <div class="demo-output" id="out-value" style="margin-top:0.75rem">—</div>
+        </section>
+
+        <!-- ---- Reloj en vivo + updateDateTime ---- -->
+        <section class="demo-card" aria-labelledby="dom-title">
+            <h2 class="demo-card__title" id="dom-title">updateDateTime() · Reloj en vivo</h2>
+            <div class="demo-row">
+                <button class="demo-btn demo-btn--primary" id="btn-clock-start">Iniciar reloj</button>
+                <button class="demo-btn demo-btn--danger" id="btn-clock-stop">Detener reloj</button>
+                <button class="demo-btn" id="btn-update-once">updateDateTime('#live-clock')</button>
+                <button class="demo-btn" id="btn-update-compat">_HELPERS_.updateDateTime() (retro-compat)</button>
+            </div>
+            <div class="demo-output demo-output--live" id="live-clock" data-datetime style="margin-top:0.75rem">—</div>
+        </section>
+
+        <!-- ---- Consola de eventos ---- -->
+        <section class="demo-card" aria-labelledby="log-title">
+            <h2 class="demo-card__title" id="log-title">Consola de eventos</h2>
+            <div class="demo-row">
+                <button class="demo-btn" id="btn-clear-log">Limpiar log</button>
+            </div>
+            <div class="demo-log" id="log" role="log" aria-live="polite" aria-atomic="false" style="margin-top:0.75rem">
+            </div>
+        </section>
+    </main>
+
+    <!-- ===================== JAVASCRIPT ===================== -->
+    <script type="module">
+        'use strict';
+
+        /* ============================================================
+         *  DateTimeHelper — helper con estado + chaining fluido
+         * ============================================================ */
+        class DateTimeHelper {
+            #locale;
+            #timeZone;
+            #options;
+            #cache;
+
+            constructor({ locale, timeZone, options } = {}) {
+                this.#locale = locale ?? (typeof navigator !== 'undefined' ? navigator.language : 'es-NI');
+                this.#timeZone = timeZone ?? undefined;
+                this.#options = options ?? {};
+                this.#cache = new Map();
+            }
+
+            // ---------- Configuración (chainable) ----------
+            setLocale(locale) { this.#locale = locale; this.#cache.clear(); return this; }
+            setTimeZone(tz) { this.#timeZone = tz; this.#cache.clear(); return this; }
+            setOptions(opts) { this.#options = { ...this.#options, ...opts }; this.#cache.clear(); return this; }
+
+            // ---------- Getters de configuración ----------
+            get locale() { return this.#locale; }
+            get timeZone() { return this.#timeZone; }
+            get options() { return { ...this.#options }; }
+
+            // ---------- Formatters cacheados ----------
+            #getFormatter(type, options) {
+                const key = type + '|' + this.#locale + '|' + (this.#timeZone ?? '') + '|' + JSON.stringify(options);
+                if (this.#cache.has(key)) return this.#cache.get(key);
+
+                const fmt = new Intl.DateTimeFormat(this.#locale, {
+                    timeZone: this.#timeZone,
+                    ...this.#options,
+                    ...options,
+                });
+                this.#cache.set(key, fmt);
+                return fmt;
+            }
+
+            getDateFormatter(options = {}) {
+                return this.#getFormatter('date', {
+                    year: 'numeric', month: '2-digit', day: '2-digit', ...options,
+                });
+            }
+
+            getTimeFormatter(options = {}) {
+                return this.#getFormatter('time', {
+                    hour: '2-digit', minute: '2-digit', second: '2-digit', ...options,
+                });
+            }
+
+            getDateTimeFormatter(options = {}) {
+                return this.#getFormatter('datetime', {
+                    year: 'numeric', month: '2-digit', day: '2-digit',
+                    hour: '2-digit', minute: '2-digit', second: '2-digit',
+                    ...options,
+                });
+            }
+
+            // ---------- Valores listos para usar ----------
+            currentDate(options = {}) {
+                return this.getDateFormatter(options).format(new Date());
+            }
+
+            currentTime(options = {}) {
+                return this.getTimeFormatter(options).format(new Date());
+            }
+
+            currentDateTime(options = {}) {
+                return this.getDateTimeFormatter(options).format(new Date());
+            }
+
+            // ---------- Utilidades misceláneas ----------
+            format(date, options = {}) {
+                const d = date instanceof Date ? date : new Date(date);
+                if (Number.isNaN(d.getTime())) throw new RangeError('Fecha inválida: ' + date);
+                return this.getDateTimeFormatter(options).format(d);
+            }
+
+            parts(date = new Date()) {
+                const d = date instanceof Date ? date : new Date(date);
+                if (Number.isNaN(d.getTime())) throw new RangeError('Fecha inválida: ' + date);
+                const p = this.getDateTimeFormatter().formatToParts(d);
+                return Object.fromEntries(p.map(({ type, value }) => [type, value]));
+            }
+
+            /** Actualiza un elemento del DOM con la fecha/hora actuales. */
+            updateDateTime(target = '[data-datetime]', options = {}) {
+                const el = typeof target === 'string' ? document.querySelector(target) : target;
+                if (!el) return this;
+                el.textContent = this.currentDateTime(options);
+                return this;
+            }
+        }
+
+        /* ============================================================
+         *  _HELPERS_ — fachada con namespaces cacheables
+         * ============================================================ */
+        const _HELPERS_ = (() => {
+            const instances = new Map();
+
+            const ns = (name, Factory, opts) => {
+                if (!instances.has(name)) instances.set(name, new Factory(opts));
+                return instances.get(name);
+            };
+
+            return {
+                dateTime(options) {
+                    return ns('dateTime', DateTimeHelper, options);
+                },
+                updateDateTime(target, options) {
+                    return this.dateTime().updateDateTime(target, options);
+                },
+            };
+        })();
+
+        /* ============================================================
+         *  DEMO · Wiring UI ↔ _HELPERS_
+         * ============================================================ */
+        (() => {
+            const $ = (id) => document.getElementById(id);
+            const logEl = $('log');
+            const outFormatter = $('out-formatter');
+            const outValue = $('out-value');
+            const kvLocale = $('kv-locale');
+            const kvTz = $('kv-tz');
+            const liveClock = $('live-clock');
+
+            let clockInterval = null;
+
+            const log = (msg, kind = '') => {
+                const line = document.createElement('div');
+                line.className = 'demo-log__line';
+                line.innerHTML = `<span class="demo-log__time">${new Date().toLocaleTimeString()}</span>
+                      <span class="demo-log__msg ${kind ? 'demo-log__msg--' + kind : ''}">${msg}</span>`;
+                logEl.appendChild(line);
+                logEl.scrollTop = logEl.scrollHeight;
+                while (logEl.children.length > 100) logEl.removeChild(logEl.firstChild);
+            };
+
+            const safe = (label, fn) => {
+                try {
+                    const result = fn();
+                    log(`${label} → OK`, 'ok');
+                    return result;
+                } catch (err) {
+                    log(`${label} → ERROR: ${err.message}`, 'err');
+                    return null;
+                }
+            };
+
+            const refreshConfigView = () => {
+                const dt = _HELPERS_.dateTime();
+                kvLocale.textContent = dt.locale;
+                kvTz.textContent = dt.timeZone ?? '(del sistema)';
+            };
+
+            // ---------- Configuración ----------
+            $('btn-apply').addEventListener('click', () => {
+                const hour12 = $('cfg-hour12').value;
+                const opts = hour12 === '' ? {} : { hour12: hour12 === 'true' };
+
+                const dt = _HELPERS_.dateTime();
+                const ret = safe('setLocale().setTimeZone().setOptions()', () =>
+                    dt.setLocale($('cfg-locale').value)
+                        .setTimeZone($('cfg-tz').value || undefined)
+                        .setOptions(opts)
+                );
+                if (ret) {
+                    refreshConfigView();
+                    log(`Config aplicada · locale=${dt.locale} · tz=${dt.timeZone ?? 'sistema'} · opts=${JSON.stringify(opts)}`);
+                }
+            });
+
+            $('btn-chain-check').addEventListener('click', () => {
+                const dt = _HELPERS_.dateTime();
+                const a = dt.setLocale(dt.locale);
+                const b = a.setTimeZone(dt.timeZone);
+                const same = a === b && b === dt;
+                log(`Chaining devuelve la misma instancia: ${same}`, same ? 'ok' : 'err');
+                outFormatter.textContent = `setLocale() === setTimeZone() === _HELPERS_.dateTime() → ${same}`;
+            });
+
+            $('btn-reset-cfg').addEventListener('click', () => {
+                _HELPERS_.dateTime().setLocale(navigator.language).setTimeZone(undefined).setOptions({});
+                $('cfg-locale').value = 'es-NI';
+                $('cfg-tz').value = 'America/Managua';
+                $('cfg-hour12').value = '';
+                refreshConfigView();
+                log('Configuración reseteada');
+            });
+
+            // ---------- Formatters ----------
+            const showFormatter = (label, factory) => {
+                const fmt = safe(label, () => factory(_HELPERS_.dateTime()));
+                if (!fmt) return;
+                const now = new Date();
+                outFormatter.textContent =
+                    `resolvedOptions() = ${JSON.stringify(fmt.resolvedOptions(), null, 2)}\n` +
+                    `format(now)       = ${fmt.format(now)}`;
+                log(`Formatter activo: ${label}`);
+            };
+
+            $('btn-fmt-date').addEventListener('click', () =>
+                showFormatter('getDateFormatter()', (dt) => dt.getDateFormatter()));
+
+            $('btn-fmt-time').addEventListener('click', () =>
+                showFormatter('getTimeFormatter()', (dt) => dt.getTimeFormatter()));
+
+            $('btn-fmt-datetime').addEventListener('click', () =>
+                showFormatter('getDateTimeFormatter()', (dt) => dt.getDateTimeFormatter()));
+
+            $('btn-fmt-date-weekday').addEventListener('click', () =>
+                showFormatter('getDateFormatter({ weekday:"long", month:"long" })',
+                    (dt) => dt.getDateFormatter({ weekday: 'long', month: 'long' })));
+
+            // ---------- Valores ----------
+            const showValue = (label, fn) => {
+                const val = safe(label, () => fn(_HELPERS_.dateTime()));
+                if (val === null || val === undefined) return;
+                outValue.textContent =
+                    typeof val === 'object'
+                        ? JSON.stringify(val, null, 2)
+                        : String(val);
+                log(`${label} → ${typeof val === 'object' ? 'object' : val}`);
+            };
+
+            $('btn-current-date').addEventListener('click', () =>
+                showValue('currentDate()', (dt) => dt.currentDate()));
+
+            $('btn-current-time').addEventListener('click', () =>
+                showValue('currentTime()', (dt) => dt.currentTime()));
+
+            $('btn-current-datetime').addEventListener('click', () =>
+                showValue('currentDateTime()', (dt) => dt.currentDateTime()));
+
+            $('btn-format-iso').addEventListener('click', () =>
+                showValue("format('2026-12-25T09:30:00Z')", (dt) => dt.format('2026-12-25T09:30:00Z')));
+
+            $('btn-parts').addEventListener('click', () =>
+                showValue('parts()', (dt) => dt.parts()));
+
+            // ---------- updateDateTime + reloj ----------
+            $('btn-update-once').addEventListener('click', () => {
+                const ret = safe("updateDateTime('#live-clock')", () =>
+                    _HELPERS_.dateTime().updateDateTime('#live-clock'));
+                if (ret) log(`DOM actualizado: "${liveClock.textContent}"`);
+            });
+
+            $('btn-update-compat').addEventListener('click', () => {
+                const ret = safe('_HELPERS_.updateDateTime() [retro-compat]', () =>
+                    _HELPERS_.updateDateTime('#live-clock'));
+                if (ret) log(`Retro-compat OK: "${liveClock.textContent}"`, 'ok');
+            });
+
+            $('btn-clock-start').addEventListener('click', () => {
+                if (clockInterval) { log('Reloj ya está corriendo', 'warn'); return; }
+                const tick = () => _HELPERS_.dateTime().updateDateTime('#live-clock');
+                tick();
+                clockInterval = setInterval(tick, 1000);
+                log('⏱️ Reloj iniciado');
+            });
+
+            $('btn-clock-stop').addEventListener('click', () => {
+                if (!clockInterval) { log('Reloj no está corriendo', 'warn'); return; }
+                clearInterval(clockInterval);
+                clockInterval = null;
+                log('⏹️ Reloj detenido', 'warn');
+            });
+
+            $('btn-clear-log').addEventListener('click', () => {
+                logEl.innerHTML = '';
+                log('🧼 Log limpiado');
+            });
+
+            // ---------- Arranque ----------
+            refreshConfigView();
+            log('👋 Demo listo. Cada botón ejecuta un método real.');
+            log(`Intl soportado: ${typeof Intl !== 'undefined' && typeof Intl.DateTimeFormat === 'function'}`);
+        })();
+    </script>
+
+</body>
+
+</html>

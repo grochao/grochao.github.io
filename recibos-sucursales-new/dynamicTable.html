@@ -2,308 +2,451 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <title>DynamicTable – Full Demo (clearBody con memoria)</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DynamicTable · onChange + silent</title>
+
+    <!-- ===================== STYLE ===================== -->
     <style>
-        * {
+        *,
+        *::before,
+        *::after {
             box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif;
         }
 
         body {
-            background: #f5f7fa;
-            padding: 30px;
             margin: 0;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 2rem 1rem 4rem;
         }
 
-        .container {
-            max-width: 1000px;
+        .demo-panel {
+            max-width: 1080px;
             margin: 0 auto;
-            background: #fff;
-            padding: 24px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+            display: grid;
+            gap: 1.25rem;
         }
 
-        h2 {
-            margin-top: 0;
-            color: #2c3e50;
+        .demo-panel__title {
+            font-size: 1.5rem;
+            margin: 0 0 0.25rem;
+            color: #f1f5f9;
         }
 
-        table.dynamic-table {
+        .demo-panel__subtitle {
+            margin: 0;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .demo-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            padding: 1rem 1.25rem;
+        }
+
+        .demo-card__title {
+            margin: 0 0 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #94a3b8;
+        }
+
+        .demo-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .demo-row+.demo-row {
+            margin-top: 0.6rem;
+        }
+
+        .demo-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            min-width: 150px;
+        }
+
+        .demo-field label {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .demo-field input,
+        .demo-field select {
+            background: #0f172a;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+            border-radius: 0.4rem;
+            padding: 0.4rem 0.55rem;
+            font: inherit;
+            font-size: 0.85rem;
+        }
+
+        .demo-field input:focus,
+        .demo-field select:focus {
+            outline: 2px solid #60a5fa;
+            outline-offset: 1px;
+        }
+
+        .demo-btn {
+            appearance: none;
+            border: 1px solid #475569;
+            background: #334155;
+            color: #e2e8f0;
+            padding: 0.5rem 0.85rem;
+            border-radius: 0.5rem;
+            font: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s, transform 0.05s;
+        }
+
+        .demo-btn:hover {
+            background: #3f4d63;
+            border-color: #64748b;
+        }
+
+        .demo-btn:active {
+            transform: translateY(1px);
+        }
+
+        .demo-btn:focus-visible {
+            outline: 2px solid #60a5fa;
+            outline-offset: 2px;
+        }
+
+        .demo-btn--primary {
+            background: #2563eb;
+            border-color: #3b82f6;
+        }
+
+        .demo-btn--primary:hover {
+            background: #1d4ed8;
+        }
+
+        .demo-btn--danger {
+            background: #b91c1c;
+            border-color: #dc2626;
+        }
+
+        .demo-btn--danger:hover {
+            background: #991b1b;
+        }
+
+        .demo-btn[disabled] {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .demo-stats {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 0.75rem;
+        }
+
+        .demo-stat {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.85rem;
+            min-width: 130px;
+        }
+
+        .demo-stat__label {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .demo-stat__value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            color: #f1f5f9;
+            margin-top: 0.15rem;
+        }
+
+        .demo-stat__value--data {
+            color: #4ade80;
+        }
+
+        .demo-stat__value--empty {
+            color: #fbbf24;
+        }
+
+        .demo-log {
+            background: #020617;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 0.6rem 0.75rem;
+            max-height: 340px;
+            overflow-y: auto;
+            font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+
+        .demo-log__line {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.1rem 0;
+            border-bottom: 1px dashed #1e293b;
+        }
+
+        .demo-log__line:last-child {
+            border-bottom: none;
+        }
+
+        .demo-log__time {
+            color: #64748b;
+            flex-shrink: 0;
+        }
+
+        .demo-log__msg {
+            color: #cbd5e1;
+            word-break: break-word;
+        }
+
+        .demo-log__msg--ok {
+            color: #4ade80;
+        }
+
+        .demo-log__msg--warn {
+            color: #fbbf24;
+        }
+
+        .demo-log__msg--err {
+            color: #f87171;
+        }
+
+        .demo-log__msg--info {
+            color: #60a5fa;
+        }
+
+        /* ============ DynamicTable ============ */
+        .dynamic-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 12px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            font-size: 0.875rem;
         }
 
-        table.dynamic-table th,
-        table.dynamic-table td {
-            border: 1px solid #dfe4ea;
-            padding: 8px 10px;
+        .dynamic-table thead th {
+            background: #1e293b;
+            color: #94a3b8;
             text-align: left;
-            font-size: .95rem;
+            padding: 0.6rem 0.75rem;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid #334155;
         }
 
-        table.dynamic-table thead th {
-            background: #2c3e50;
-            color: #fff;
+        .dynamic-table tbody td {
+            padding: 0.5rem 0.75rem;
+            border-bottom: 1px solid #1e293b;
+            vertical-align: middle;
         }
 
-        table.dynamic-table tbody tr:nth-child(even) {
-            background: #f9fbfd;
+        .dynamic-table tbody tr[data-empty="false"] td[data-col] {
+            color: #e2e8f0;
         }
 
-        table.dynamic-table tfoot td {
-            background: #eef2f7;
-            font-weight: bold;
+        .dynamic-table tbody tr[data-empty="true"] {
+            outline: 1px dashed #475569;
+            outline-offset: -1px;
         }
 
-        table.dynamic-table tbody tr[data-empty="true"] td {
-            background: #fffdf5;
+        .dynamic-table tbody tr[data-empty="true"] td[data-col] {
+            color: #64748b;
         }
 
-        .add-item-row td {
-            text-align: center;
-            background: #f8fafc;
+        .dynamic-table tbody tr[data-custom-id="true"] {
+            box-shadow: inset 3px 0 0 #60a5fa;
         }
 
-        .add-item {
-            background: #3498db;
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: .9rem;
-        }
-
-        .add-item:hover {
-            background: #2c80b4;
-        }
-
-        .add-item:disabled {
-            background: #bdc3c7;
-            cursor: not-allowed;
-            opacity: .8;
-        }
-
-        .remove-row {
-            background: #e74c3c;
-            color: #fff;
-            border: none;
-            padding: 4px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: .8rem;
-        }
-
-        .remove-row:hover {
-            background: #c0392b;
-        }
-
-        .col-actions {
+        .dynamic-table td.col-actions {
             width: 40px;
             text-align: center;
-            padding: 4px !important;
         }
 
-        .disableTable {
-            position: relative;
-            opacity: .55;
-            filter: grayscale(.5);
-            pointer-events: none;
-            transition: opacity .2s, filter .2s;
-        }
-
-        .disableTable::after {
-            content: "TABLA DESHABILITADA";
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: #c0392b;
-            color: #fff;
-            font-size: .7rem;
-            font-weight: 700;
-            letter-spacing: .5px;
-            padding: 4px 10px;
-            border-radius: 12px;
-            pointer-events: none;
-        }
-
-        .toolbar {
-            margin-top: 16px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
+        .dynamic-table .remove-row {
+            appearance: none;
+            border: 1px solid #7f1d1d;
+            background: #7f1d1d;
+            color: #fee2e2;
+            width: 1.6rem;
+            height: 1.6rem;
+            border-radius: 50%;
+            font-size: 0.75rem;
+            line-height: 1;
             cursor: pointer;
-            font-size: .9rem;
+            transition: background 0.15s;
         }
 
-        .btn-secondary {
-            background: #95a5a6;
-            color: #fff;
+        .dynamic-table .remove-row:hover {
+            background: #991b1b;
         }
 
-        .btn-secondary:hover {
-            background: #7f8c8d;
+        .dynamic-table .add-item-row td {
+            padding: 0.65rem 0.75rem;
+            text-align: center;
+            background: #0f172a;
         }
 
-        .btn-success {
-            background: #27ae60;
-            color: #fff;
+        .dynamic-table .add-item {
+            appearance: none;
+            border: 1px dashed #475569;
+            background: transparent;
+            color: #cbd5e1;
+            padding: 0.4rem 0.9rem;
+            border-radius: 0.5rem;
+            font: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s, color 0.15s;
         }
 
-        .btn-success:hover {
-            background: #1e8449;
+        .dynamic-table .add-item:hover {
+            background: #1e293b;
+            color: #f1f5f9;
+            border-color: #64748b;
         }
 
-        .btn-primary {
-            background: #3498db;
-            color: #fff;
+        .dynamic-table .add-item:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
         }
 
-        .btn-primary:hover {
-            background: #2c80b4;
+        .dynamic-table tfoot td {
+            background: #1e293b;
+            font-weight: 600;
+            color: #f1f5f9;
+            padding: 0.6rem 0.75rem;
+            border-top: 1px solid #334155;
         }
 
-        .btn-warning {
-            background: #f39c12;
-            color: #fff;
+        .dynamic-table-container.disableTable {
+            opacity: 0.55;
+            filter: grayscale(0.4);
         }
 
-        .btn-warning:hover {
-            background: #d68910;
+        .dynamic-table-container.disableTable .add-item {
+            cursor: not-allowed;
         }
 
-        .btn-danger {
-            background: #e74c3c;
-            color: #fff;
+        /* ============ Dialog ============ */
+        .dynamic-table-dialog {
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.25rem 1.5rem;
+            min-width: 340px;
+            max-width: 520px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
 
-        .btn-danger:hover {
-            background: #c0392b;
+        .dynamic-table-dialog::backdrop {
+            background: rgba(0, 0, 0, 0.6);
         }
 
-        .btn-dark {
-            background: #34495e;
-            color: #fff;
-        }
-
-        .btn-dark:hover {
-            background: #2c3e50;
-        }
-
-        dialog.dynamic-table-dialog {
-            border: none;
-            border-radius: 8px;
-            padding: 0;
-            min-width: 420px;
-            max-width: 90vw;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
-        }
-
-        dialog.dynamic-table-dialog::backdrop {
-            background: rgba(0, 0, 0, .4);
-        }
-
-        dialog.dynamic-table-dialog form {
-            padding: 24px;
-        }
-
-        dialog.dynamic-table-dialog h3 {
-            margin: 0 0 16px 0;
-            color: #2c3e50;
+        .dynamic-table-dialog h3 {
+            margin: 0 0 1rem;
+            color: #f1f5f9;
+            font-size: 1.1rem;
         }
 
         .dialog-fields {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0 16px;
+            gap: 0.75rem;
+            max-height: 55vh;
+            overflow-y: auto;
+            padding-right: 0.25rem;
         }
 
-        .dialog-fields .dialog-field {
-            margin-bottom: 14px;
-            grid-column: span 1;
+        .dialog-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
         }
 
-        .dialog-fields .dialog-field label {
-            display: block;
-            font-size: .85rem;
-            font-weight: 600;
-            color: #34495e;
-            margin-bottom: 4px;
+        .dialog-field label {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.35rem;
         }
 
-        .dialog-fields .dialog-field label .req {
-            color: #e74c3c;
-            margin-left: 2px;
+        .dialog-field label .req {
+            color: #f87171;
+            font-weight: 700;
         }
 
-        .dialog-fields .dialog-field label .sub {
-            color: #7f8c8d;
-            font-size: .75rem;
-            margin-left: 4px;
-            font-weight: 400;
-            vertical-align: baseline;
+        .dialog-field label .sub {
+            color: #64748b;
+            font-size: 0.7rem;
+            text-transform: none;
+            letter-spacing: 0;
         }
 
-        .dialog-fields .dialog-field input,
-        .dialog-fields .dialog-field select,
-        .dialog-fields .dialog-field textarea {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: .95rem;
-            transition: border-color .15s, box-shadow .15s;
+        .dialog-field input,
+        .dialog-field select,
+        .dialog-field textarea {
+            background: #0f172a;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+            border-radius: 0.4rem;
+            padding: 0.45rem 0.6rem;
+            font: inherit;
+            font-size: 0.875rem;
         }
 
-        .dialog-fields .dialog-field input:focus,
-        .dialog-fields .dialog-field select:focus,
-        .dialog-fields .dialog-field textarea:focus {
-            outline: none;
-            border-color: #3498db;
+        .dialog-field input:focus,
+        .dialog-field select:focus,
+        .dialog-field textarea:focus {
+            outline: 2px solid #60a5fa;
+            outline-offset: 1px;
         }
 
-        .dialog-fields .dialog-field.is-invalid input,
-        .dialog-fields .dialog-field.is-invalid select,
-        .dialog-fields .dialog-field.is-invalid textarea {
-            border-color: #e74c3c;
-            box-shadow: 0 0 0 2px rgba(231, 76, 60, .15);
-        }
-
-        .dialog-fields .dialog-field.full-width {
-            grid-column: span 2;
-        }
-
-        .dialog-fields .dialog-field.one-half,
-        .dialog-fields .dialog-field.half-width {
-            grid-column: span 1;
-        }
-
-        .dialog-fields .dialog-field.highlight {
-            background: #f0f7ff;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #d0e3f7;
+        .dialog-field.is-invalid input,
+        .dialog-field.is-invalid select,
+        .dialog-field.is-invalid textarea {
+            border-color: #ef4444;
+            outline-color: #ef4444;
         }
 
         .dialog-error {
             display: none;
-            margin-top: 12px;
-            padding: 8px 12px;
-            background: #fdecea;
-            border: 1px solid #f5c6c3;
-            border-radius: 6px;
-            color: #c0392b;
-            font-size: .85rem;
-            grid-column: span 2;
+            margin-top: 0.75rem;
+            padding: 0.6rem 0.75rem;
+            background: #450a0a;
+            color: #fecaca;
+            border: 1px solid #7f1d1d;
+            border-radius: 0.4rem;
+            font-size: 0.85rem;
         }
 
         .dialog-error.is-visible {
@@ -313,143 +456,206 @@
         .dialog-actions {
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 0.5rem;
+            margin-top: 1rem;
         }
 
-        select optgroup {
-            font-weight: 600;
-            color: #2c3e50;
+        .dialog-actions .btn {
+            appearance: none;
+            border-radius: 0.4rem;
+            padding: 0.5rem 0.9rem;
+            font: inherit;
+            font-size: 0.875rem;
+            cursor: pointer;
         }
 
-        select optgroup option {
-            font-weight: 400;
-            color: #333;
+        .dialog-actions .btn-secondary {
+            background: #334155;
+            border: 1px solid #475569;
+            color: #e2e8f0;
         }
 
-        .legend {
-            margin-top: 20px;
-            padding: 14px 18px;
-            background: #f9fbfd;
-            border-left: 4px solid #3498db;
-            border-radius: 4px;
-            font-size: .88rem;
-            color: #34495e;
-        }
-
-        .legend h3 {
-            margin: 0 0 8px 0;
-            font-size: .95rem;
-            color: #2c3e50;
-        }
-
-        .legend code {
-            background: #eef2f7;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: Consolas, monospace;
-            font-size: .85rem;
+        .dialog-actions .btn-primary {
+            background: #2563eb;
+            border: 1px solid #3b82f6;
+            color: #fff;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container">
-        <h2>DynamicTable – Demo completa (clearBody con memoria de total_row)</h2>
-        <div id="tabla-container"></div>
+    <main class="demo-panel">
+        <header>
+            <h1 class="demo-panel__title">DynamicTable · onChange + silent</h1>
+            <p class="demo-panel__subtitle">
+                <code>ctx.silent(fn)</code> ejecuta mutaciones sin disparar <code>onChange</code>.
+                También disponible <code>table.suspendOnChange()</code> / <code>resumeOnChange()</code>.
+            </p>
+        </header>
 
-        <div class="toolbar">
-            <button class="btn btn-secondary" id="btn-clear">🧹 Limpiar filas</button>
-            <button class="btn btn-success" id="btn-log">📋 Mostrar datos</button>
-            <button class="btn btn-primary" id="btn-add-removable">➕ Fila removible</button>
-            <button class="btn btn-warning" id="btn-add-locked">🔒 Fila NO removible</button>
-            <button class="btn btn-danger" id="btn-neg">➖ Fila con MONTO negativo</button>
-            <button class="btn btn-dark" id="btn-getcell">🔎 Probar getCellValue</button>
-            <button class="btn btn-dark" id="btn-getrows">📑 Probar getRowsByCellValue</button>
-            <button class="btn btn-dark" id="btn-totals">💰 Probar getTotalAllColumn</button>
-            <button class="btn btn-primary" id="btn-insertafter">🎯 Insertar después de CLG</button>
-            <button class="btn btn-success" id="btn-aftertable">📥 Insertar al final</button>
-            <button class="btn btn-warning" id="btn-update-first">✏️ Actualizar primera fila</button>
-            <button class="btn btn-danger" id="btn-remove-first">🗑️ Eliminar primera fila</button>
-            <button class="btn btn-danger" id="btn-disable-table">⛔ Deshabilitar tabla</button>
-            <button class="btn btn-success" id="btn-enable-table">✅ Habilitar tabla</button>
-            <button class="btn btn-dark" id="btn-set-totalrow-3">🔢 Cambiar a total_row: 3</button>
-        </div>
+        <section class="demo-card">
+            <h2 class="demo-card__title">Configuración</h2>
+            <div class="demo-row">
+                <div class="demo-field">
+                    <label for="cfg-position">insertPosition</label>
+                    <select id="cfg-position">
+                        <option value="afterLastData">afterLastData (default)</option>
+                        <option value="firstEmpty">firstEmpty (legacy)</option>
+                        <option value="beforeAdd">beforeAdd (abajo del todo)</option>
+                    </select>
+                </div>
+                <div class="demo-field">
+                    <label for="cfg-rows">total_row (createBody)</label>
+                    <input id="cfg-rows" type="number" min="0" max="20" value="3" />
+                </div>
+                <div class="demo-field">
+                    <label for="cfg-debug">debug</label>
+                    <select id="cfg-debug">
+                        <option value="true">true</option>
+                        <option value="false">false</option>
+                    </select>
+                </div>
+                <div class="demo-field">
+                    <label for="cfg-afteropen">afterOpen</label>
+                    <select id="cfg-afteropen">
+                        <option value="on">activado</option>
+                        <option value="off">desactivado</option>
+                    </select>
+                </div>
+                <div class="demo-field">
+                    <label for="cfg-onchange">onChange</label>
+                    <select id="cfg-onchange">
+                        <option value="on">activado (con silent)</option>
+                        <option value="off">desactivado</option>
+                    </select>
+                </div>
+                <button class="demo-btn demo-btn--primary" id="btn-recreate">Recrear tabla</button>
+                <button class="demo-btn demo-btn--danger" id="btn-destroy">destroy()</button>
+            </div>
+        </section>
 
-        <div class="legend">
-            <h3>📌 Características implementadas</h3>
-            <ul style="margin: 6px 0 0 18px; padding: 0; line-height: 1.6;">
-                <li><code>setHeaders</code> · <code>setFieldSchema</code> · <code>createBody</code></li>
-                <li><code>insertRow({ row, remove, insertAfterto })</code></li>
-                <li><code>updateTFoot({ sumAllColumn, LabelTotal })</code></li>
-                <li><code>getCellValue</code> · <code>getRowsByCellValue</code> · <code>getTotalAllColumn</code></li>
-                <li><code>getData({ includeEmpty })</code> → incluye <code>__raw</code> con números parseados.</li>
-                <li><code>updateRow</code> · <code>updateCellValue</code> · <code>removeRow</code></li>
-                <li><code>disableTable()</code> · <code>enableTable()</code> — disponibles también vía <code>ctx</code>.
-                </li>
-                <li><strong>NUEVO:</strong> <code>clearBody()</code> recuerda el <code>total_row</code> del último
-                    <code>createBody()</code>. Si nunca lo llamaste, genera <strong>1 fila vacía</strong> por defecto.
-                </li>
-                <li><strong>NUEVO:</strong> ya no necesitas hacer <code>clearBody()</code> + <code>createBody()</code>
-                    en cada limpieza. Basta con <code>clearBody()</code>.</li>
-                <li><strong>NUEVO:</strong> <code>getLastTotalRow()</code> getter para consultar el valor recordado.
-                </li>
-            </ul>
-        </div>
-    </div>
+        <section class="demo-card">
+            <h2 class="demo-card__title">Simulaciones</h2>
 
-    <script>
-        /* ================================================================
-         *  HELPERS GLOBALES
-         * ================================================================ */
-        const _HELPERS_ = {
-            existe(v) {
-                if (typeof v === 'undefined' || v === null) return false;
-                if (typeof v === 'string' && v.trim() === '') return false;
-                if (Array.isArray(v) && v.length === 0) return false;
-                if (typeof v === 'object' && Object.keys(v).length === 0) return false;
-                return true;
-            }
-        };
+            <div class="demo-row">
+                <button class="demo-btn demo-btn--primary" id="btn-sim-idrow">1 · Recibo Especial
+                    (option.idRow)</button>
+                <button class="demo-btn" id="btn-sim-idrow-dup">1b · Recibo Especial Otra Vez → BLOQUEA</button>
+            </div>
 
-        /* ================================================================
-         *  DYNAMIC TABLE
-         * ================================================================ */
+            <div class="demo-row">
+                <button class="demo-btn demo-btn--primary" id="btn-sim-factura">2 · Factura A (idSlug +
+                    blockRow:true)</button>
+                <button class="demo-btn" id="btn-sim-factura-dup">2b · Factura A Otra Vez → BLOQUEA</button>
+            </div>
+
+            <div class="demo-row">
+                <button class="demo-btn demo-btn--primary" id="btn-sim-nota">3 · Nota Crédito (idSlug +
+                    blockRow:false)</button>
+                <button class="demo-btn" id="btn-sim-nota-dup">3b · Nota Crédito Otra Vez → fallback auto</button>
+            </div>
+
+            <div class="demo-row">
+                <button class="demo-btn demo-btn--primary" id="btn-sim-combo">4 · Combo (option.idRow gana sobre
+                    idSlug)</button>
+                <button class="demo-btn" id="btn-sim-vale">5 · Vale Interno (option.idRow, blockRow:false)</button>
+            </div>
+
+            <div class="demo-row">
+                <button class="demo-btn" id="btn-sim-update">6 · updateCellValue() → 'updateCell'</button>
+                <button class="demo-btn" id="btn-sim-remove">7 · removeRow() → 'remove'</button>
+                <button class="demo-btn" id="btn-sim-insert-direct">8 · insertRow() directo → 'insert'</button>
+            </div>
+
+            <div class="demo-row">
+                <button class="demo-btn demo-btn--primary" id="btn-loop-insert">🔁 Insertar RETENCION (loop resuelto con
+                    silent)</button>
+                <button class="demo-btn demo-btn--primary" id="btn-loop-insert-bad">⚠️ Insertar RETENCION sin silent →
+                    loop</button>
+            </div>
+
+            <div class="demo-row">
+                <button class="demo-btn demo-btn--primary" id="btn-open-dialog">Abrir diálogo (afterOpen)</button>
+                <button class="demo-btn" id="btn-clear-body">clearBody() · sin onChange</button>
+                <button class="demo-btn" id="btn-disable">disableTable() · sin onChange</button>
+                <button class="demo-btn" id="btn-enable">enableTable()</button>
+            </div>
+
+            <div class="demo-stats">
+                <div class="demo-stat">
+                    <div class="demo-stat__label">Filas con datos</div>
+                    <div class="demo-stat__value demo-stat__value--data" id="st-data">0</div>
+                </div>
+                <div class="demo-stat">
+                    <div class="demo-stat__label">Filas vacías</div>
+                    <div class="demo-stat__value demo-stat__value--empty" id="st-empty">0</div>
+                </div>
+                <div class="demo-stat">
+                    <div class="demo-stat__label">total_row recordado</div>
+                    <div class="demo-stat__value" id="st-lastrow">—</div>
+                </div>
+                <div class="demo-stat">
+                    <div class="demo-stat__label">isTableDisabled</div>
+                    <div class="demo-stat__value" id="st-disabled">—</div>
+                </div>
+                <div class="demo-stat">
+                    <div class="demo-stat__label">Eventos onChange</div>
+                    <div class="demo-stat__value" id="st-events">0</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="demo-card">
+            <h2 class="demo-card__title">Tabla</h2>
+            <div id="table-container" class="dynamic-table-container"></div>
+        </section>
+
+        <section class="demo-card">
+            <h2 class="demo-card__title">Consola de eventos</h2>
+            <div class="demo-row">
+                <button class="demo-btn" id="btn-clear-log">Limpiar log</button>
+            </div>
+            <div class="demo-log" id="log" role="log" aria-live="polite" style="margin-top:0.75rem"></div>
+        </section>
+    </main>
+
+    <!-- ===================== JAVASCRIPT ===================== -->
+    <script type="module">
+        'use strict';
+
+        /* ============================================================
+         *  DynamicTable
+         *  insertPosition + idRow + idSlug + blockRow + afterOpen + onChange + silent
+         * ============================================================ */
         class DynamicTable {
-            // ─── Referencias del DOM ───────────────────────────────
             #container;
             #table = null;
             #thead = null;
             #tbody = null;
             #tfoot = null;
 
-            // ─── Estado interno ────────────────────────────────────
             #headers = {};
             #options = {};
             #debug = false;
             #lastTFootOptions = { sumAllColumn: {}, LabelTotal: {} };
             #fieldSchema = {};
+            #schemaAfterOpen = null;
+            #onChange = null;
+            #changeDepth = 0;
             #rowCounter = 0;
             #abortController = null;
             #tableDisabled = false;
 
-            /**
-             * [NUEVO] Recuerda el último `total_row` que se pasó a `createBody()`.
-             * - `null`  → nunca se ha llamado a createBody (clearBody usará 1 por defecto).
-             * - `0`     → el usuario pidió explícitamente 0 filas.
-             * - `N > 0` → el usuario pidió N filas.
-             */
             #lastTotalRow = null;
 
-            // ─── Dialog ────────────────────────────────────────────
             #dialog = null;
             #dialogFieldsContainer = null;
             #dialogErrorBox = null;
 
             #NUMERIC_TYPES = new Set(['number', 'currency', 'money', 'decimal', 'float', 'int', 'integer']);
             #DISABLED_CLASS = 'disableTable';
-            #DEFAULT_TOTAL_ROW = 1;   // [NUEVO] fallback para clearBody sin createBody previo
+            #DEFAULT_TOTAL_ROW = 1;
 
             constructor(container, options = {}) {
                 this.#container = (typeof container === 'string')
@@ -459,6 +665,7 @@
                 if (!this.#container) throw new Error('DynamicTable: contenedor no encontrado.');
 
                 this.#debug = options.debug ?? false;
+                this.#onChange = typeof options.onChange === 'function' ? options.onChange : null;
                 this.#options = {
                     tableClass: options.tableClass ?? 'dynamic-table',
                     addItemRowClass: options.addItemRowClass ?? 'add-item-row',
@@ -466,7 +673,9 @@
                     addItemButtonText: options.addItemButtonText ?? '+ Agregar fila',
                     removeButtonClass: options.removeButtonClass ?? 'remove-row',
                     defaultRemovable: options.defaultRemovable ?? false,
-                    disabledClass: options.disabledClass ?? this.#DISABLED_CLASS
+                    disabledClass: options.disabledClass ?? this.#DISABLED_CLASS,
+                    insertPosition: ['afterLastData', 'firstEmpty', 'beforeAdd']
+                        .includes(options.insertPosition) ? options.insertPosition : 'afterLastData'
                 };
 
                 this.#table = document.createElement('table');
@@ -496,9 +705,7 @@
                 this.#buildDialog(signal);
             }
 
-            /* ============================================================
-             *  MÉTODOS PRIVADOS NUMÉRICOS
-             * ============================================================ */
+            /* ---------- Numéricos ---------- */
             #sanitizeNumeric(value) {
                 let v = String(value ?? '');
                 const trimmed = v.trimStart();
@@ -509,12 +716,8 @@
                 if (firstDot !== -1) {
                     v = v.slice(0, firstDot + 1) + v.slice(firstDot + 1).replace(/\./g, '');
                 }
-                if (!v.startsWith('0.')) {
-                    v = v.replace(/^0+(?=\d)/, '');
-                }
-                if (isNegative && v !== '' && v !== '.') {
-                    v = '-' + v;
-                }
+                if (!v.startsWith('0.')) v = v.replace(/^0+(?=\d)/, '');
+                if (isNegative && v !== '' && v !== '.') v = '-' + v;
                 return v;
             }
 
@@ -536,9 +739,7 @@
                     decPart = v.slice(firstDot);
                 }
                 intPart = intPart.replace(/^0+(?=\d)/, '');
-                if (intPart) {
-                    intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                }
+                if (intPart) intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                 return (isNegative ? '-' : '') + intPart + decPart;
             }
 
@@ -574,9 +775,18 @@
                 return isNaN(n) ? null : n;
             }
 
-            /* ============================================================
-             *  HELPERS DE TEXTO Y CELDAS
-             * ============================================================ */
+            /* ---------- Slug ---------- */
+            #slugify(str) {
+                return String(str ?? '')
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .toLowerCase()
+                    .trim()
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-+|-+$/g, '');
+            }
+
+            /* ---------- Texto / celdas ---------- */
             #setText(el, text) {
                 if (!el) return;
                 while (el.firstChild) el.removeChild(el.firstChild);
@@ -587,11 +797,8 @@
                 if (!el) return '';
                 let out = '';
                 const walk = (node) => {
-                    if (node.nodeType === 3) {
-                        out += node.nodeValue;
-                    } else if (node.childNodes && node.childNodes.length) {
-                        node.childNodes.forEach(walk);
-                    }
+                    if (node.nodeType === 3) out += node.nodeValue;
+                    else if (node.childNodes && node.childNodes.length) node.childNodes.forEach(walk);
                 };
                 el.childNodes.forEach(walk);
                 return out;
@@ -609,10 +816,7 @@
             #setTdValue(td, value) {
                 if (!td) return;
                 let span = td.querySelector('span');
-                if (!span) {
-                    span = document.createElement('span');
-                    td.appendChild(span);
-                }
+                if (!span) { span = document.createElement('span'); td.appendChild(span); }
                 while (span.firstChild) span.removeChild(span.firstChild);
                 span.appendChild(document.createTextNode(value ?? ''));
             }
@@ -623,9 +827,7 @@
                 return this.#readText(span || td);
             }
 
-            /* ============================================================
-             *  HELPERS DE ESTILOS
-             * ============================================================ */
+            /* ---------- Estilos ---------- */
             #applyStyles(rootContainer, stylesMap) {
                 if (!rootContainer || !stylesMap) return;
 
@@ -633,9 +835,8 @@
                     if (!cssProps || typeof cssProps !== 'object') return;
 
                     let el = null;
-                    try {
-                        el = rootContainer.querySelector(`#${CSS.escape(targetKey)}`);
-                    } catch (_) { el = null; }
+                    try { el = rootContainer.querySelector(`#${CSS.escape(targetKey)}`); }
+                    catch (_) { el = null; }
 
                     if (!el) {
                         const wrapper = rootContainer.querySelector(`.dialog-field[data-col="${targetKey}"]`);
@@ -664,9 +865,7 @@
                 return all;
             }
 
-            /* ============================================================
-             *  HELPERS DE OPCIONES
-             * ============================================================ */
+            /* ---------- Opciones / selects ---------- */
             #isGroupItem(item) {
                 return !!(item && typeof item === 'object' && item.group && typeof item.group === 'object');
             }
@@ -684,9 +883,7 @@
                     if (this.#isGroupItem(item)) {
                         const inner = this.#getGroupOptions(item.group);
                         inner.forEach(o => out.push(o));
-                    } else {
-                        out.push(item);
-                    }
+                    } else out.push(item);
                 });
                 return out;
             }
@@ -723,15 +920,11 @@
                             optgroup.appendChild(this.#createOptionElement(opt));
                         });
                         select.appendChild(optgroup);
-                    } else {
-                        select.appendChild(this.#createOptionElement(item));
-                    }
+                    } else select.appendChild(this.#createOptionElement(item));
                 });
             }
 
-            /* ============================================================
-             *  FILTRO NUMÉRICO
-             * ============================================================ */
+            /* ---------- Filtro numérico ---------- */
             #attachNumericFilter(input) {
                 const self = this;
 
@@ -786,20 +979,15 @@
                 input.addEventListener('paste', () => { setTimeout(applyFilter, 0); });
             }
 
-            /* ============================================================
-             *  HELPERS DE LABEL DINÁMICO
-             * ============================================================ */
+            /* ---------- Label dinámico ---------- */
             #updateLabelText(labelEl, newText) {
                 if (!labelEl) return;
                 let textNode = null;
                 for (const child of labelEl.childNodes) {
                     if (child.nodeType === 3) { textNode = child; break; }
                 }
-                if (textNode) {
-                    textNode.nodeValue = newText ?? '';
-                } else {
-                    labelEl.insertBefore(document.createTextNode(newText ?? ''), labelEl.firstChild);
-                }
+                if (textNode) textNode.nodeValue = newText ?? '';
+                else labelEl.insertBefore(document.createTextNode(newText ?? ''), labelEl.firstChild);
             }
 
             #applyLabelField(fieldConfig, option) {
@@ -817,9 +1005,7 @@
 
                 if (option && typeof option.label_field === 'string' && option.label_field.trim() !== '') {
                     const lf = option.label_field.trim();
-                    newLabel = Object.prototype.hasOwnProperty.call(this.#headers, lf)
-                        ? this.#headers[lf]
-                        : lf;
+                    newLabel = Object.prototype.hasOwnProperty.call(this.#headers, lf) ? this.#headers[lf] : lf;
                 }
                 this.#updateLabelText(targetLabel, newLabel);
             }
@@ -834,9 +1020,7 @@
                 return label.textContent.trim();
             }
 
-            /* ============================================================
-             *  HEADERS / SCHEMA
-             * ============================================================ */
+            /* ---------- Headers / schema ---------- */
             setHeaders(headers = {}) {
                 this.#headers = { ...headers };
                 this.#thead.innerHTML = '';
@@ -859,26 +1043,14 @@
             }
 
             setFieldSchema(schema = {}) {
-                this.#fieldSchema = { ...schema };
+                const { __afterOpen, ...fields } = schema;
+                this.#fieldSchema = { ...fields };
+                this.#schemaAfterOpen = typeof __afterOpen === 'function' ? __afterOpen : null;
                 return this;
             }
 
-            /* ============================================================
-             *  BODY
-             * ============================================================ */
-
-            /**
-             * Crea el cuerpo de la tabla con N filas vacías + la fila "Añadir".
-             *
-             * [NUEVO] Recuerda el `total_row` para que `clearBody()` pueda
-             * regenerar el body sin que tengas que volver a llamar a este método.
-             *
-             * @param {object} opts
-             * @param {number} opts.total_row  Nº de filas vacías iniciales.
-             */
+            /* ---------- Body ---------- */
             createBody({ total_row = 0 } = {}) {
-                // [NUEVO] Guardar el valor para clearBody().
-                // Guardamos incluso el 0 explícito (ver #lastTotalRow).
                 this.#lastTotalRow = total_row;
 
                 this.#tbody.innerHTML = '';
@@ -887,24 +1059,61 @@
                 }
                 this.#tbody.appendChild(this.#createAddItemRow());
 
-                // Reaplicar estado disabled tras reconstruir el DOM.
                 this.#syncAddButtonState();
                 return this;
+            }
+
+            #findLastDataRow() {
+                const rows = this.#tbody.querySelectorAll(`tr:not(.${this.#options.addItemRowClass})`);
+                let last = null;
+                for (const tr of rows) {
+                    const cells = tr.querySelectorAll('td[data-col]');
+                    const hasData = cells.length > 0 &&
+                        Array.from(cells).some(td => this.#getTdValue(td).trim() !== '');
+                    if (hasData) last = tr;
+                }
+                return last;
+            }
+
+            #findFirstEmptyRow() {
+                const rows = this.#tbody.querySelectorAll(`tr:not(.${this.#options.addItemRowClass})`);
+                for (const tr of rows) {
+                    const cells = tr.querySelectorAll('td[data-col]');
+                    const isEmpty = cells.length > 0 &&
+                        Array.from(cells).every(td => this.#getTdValue(td).trim() === '');
+                    if (isEmpty) return tr;
+                }
+                return null;
             }
 
             insertRow(options = {}) {
                 const cols = Object.keys(this.#headers);
                 if (cols.length === 0) return null;
 
-                let data, canRemove, insertAfterto;
+                let data, canRemove, insertAfterto, insertPosition, idRow;
                 if (options && typeof options === 'object' && 'row' in options && typeof options.row === 'object') {
                     data = options.row || {};
                     canRemove = options.remove !== false;
                     insertAfterto = options.insertAfterto || null;
+                    insertPosition = options.insertPosition || this.#options.insertPosition;
+                    idRow = (typeof options.idRow === 'string' && options.idRow.trim() !== '')
+                        ? options.idRow.trim() : null;
                 } else {
                     data = options || {};
                     canRemove = true;
                     insertAfterto = null;
+                    insertPosition = this.#options.insertPosition;
+                    idRow = null;
+                }
+
+                if (idRow) {
+                    const collision = this.#tbody.querySelector(`tr[data-row-id="${CSS.escape(idRow)}"]`);
+                    if (collision) {
+                        if (this.#debug) {
+                            console.warn(`DynamicTable: idRow "${idRow}" ya existe; se usará uno autogenerado.`);
+                        }
+                        idRow = null;
+                    }
                 }
 
                 let target = null;
@@ -927,29 +1136,46 @@
                         }
 
                         if (matchRow) {
-                            target = this.#createEmptyRow(false);
+                            target = this.#createEmptyRow(false, idRow);
                             matchRow.parentNode.insertBefore(target, matchRow.nextSibling);
-                            if (this.#debug) console.log('DynamicTable: insertAfterto → fila insertada después de matchRow', matchRow);
                         }
                     }
                 }
 
                 if (!target) {
-                    const rows = this.#tbody.querySelectorAll(`tr:not(.${this.#options.addItemRowClass})`);
-                    for (const tr of rows) {
-                        const dataCells = tr.querySelectorAll('td[data-col]');
-                        const isEmpty = dataCells.length > 0 &&
-                            Array.from(dataCells).every(td => this.#getTdValue(td).trim() === '');
-                        if (isEmpty) { target = tr; break; }
+                    if (insertPosition === 'firstEmpty') {
+                        target = this.#findFirstEmptyRow();
+                        if (target && idRow) {
+                            target.dataset.rowId = idRow;
+                            target.dataset.customId = 'true';
+                        }
                     }
 
                     if (!target) {
-                        target = this.#createEmptyRow(false);
+                        target = this.#createEmptyRow(false, idRow);
                         const addRow = this.#tbody.querySelector(`.${this.#options.addItemRowClass}`);
-                        if (addRow) this.#tbody.insertBefore(target, addRow);
-                        else this.#tbody.appendChild(target);
+
+                        if (insertPosition === 'beforeAdd') {
+                            if (addRow) this.#tbody.insertBefore(target, addRow);
+                            else this.#tbody.appendChild(target);
+                        } else {
+                            const lastDataRow = this.#findLastDataRow();
+                            if (lastDataRow) {
+                                lastDataRow.parentNode.insertBefore(target, lastDataRow.nextSibling);
+                            } else {
+                                const firstRow = this.#tbody.querySelector(`tr:not(.${this.#options.addItemRowClass})`);
+                                if (firstRow) this.#tbody.insertBefore(target, firstRow);
+                                else if (addRow) this.#tbody.insertBefore(target, addRow);
+                                else this.#tbody.appendChild(target);
+                            }
+                        }
                     }
                 }
+
+                if (idRow && target.dataset.rowId !== idRow) {
+                    target.dataset.rowId = idRow;
+                }
+                if (idRow) target.dataset.customId = 'true';
 
                 if (canRemove) this.#addDeleteButton(target);
                 else this.#removeDeleteButton(target);
@@ -966,16 +1192,116 @@
                 });
 
                 this.#markRowEmptyState(target);
-
-                if (this.#debug) console.log('DynamicTable: fila insertada', { data, canRemove, insertAfterto, id: target.dataset.rowId });
-
                 this._refreshTFoot();
+
+                this.#emitChange('insert', {
+                    row: target,
+                    rowId: target.dataset.rowId || null,
+                    data: this.#snapshotRow(target)
+                });
+
                 return target;
             }
 
-            /* ============================================================
-             *  TFOOT
-             * ============================================================ */
+            insertFromDialogValues(values = {}) {
+                const data = {};
+                const consumed = new Set();
+                let insertAfterto = null;
+                let derivedIdRow = null;
+                let blockRow = false;
+                let blockRowSource = null;
+
+                Object.entries(this.#headers).forEach(([key]) => {
+                    if (consumed.has(key)) return;
+
+                    const cfg = this.#fieldSchema[key] || {};
+                    const rawValue = values[key];
+
+                    if (cfg.type === 'select') {
+                        const value = (rawValue === undefined || rawValue === null) ? '' : String(rawValue);
+                        if (value === '') { data[key] = ''; return; }
+
+                        const flat = this.#flattenOptions(cfg.options || []);
+                        const optConfig = flat.find(o => String(o.value) === value);
+                        const label = optConfig?.label ?? value;
+
+                        if (optConfig) {
+                            if (!derivedIdRow
+                                && typeof optConfig.idRow === 'string'
+                                && optConfig.idRow.trim() !== '') {
+                                derivedIdRow = optConfig.idRow.trim();
+                            }
+                            if (!derivedIdRow && optConfig.idSlug === true) {
+                                const s = this.#slugify(optConfig.value);
+                                if (s) derivedIdRow = s;
+                            }
+                            if (optConfig.blockRow === true) {
+                                blockRow = true;
+                                blockRowSource = key;
+                            }
+                            if (optConfig.insertAfterto
+                                && typeof optConfig.insertAfterto === 'object'
+                                && !insertAfterto) {
+                                insertAfterto = optConfig.insertAfterto;
+                            }
+                        }
+
+                        /*if (cfg.insertLabel && typeof cfg.insertLabel === 'string') {
+                            data[key] = value;
+                            data[cfg.insertLabel] = label;
+                            consumed.add(cfg.insertLabel);
+                        } else {
+                        }*/
+                        data[key] = `${value}`;
+                    } else if (this.#NUMERIC_TYPES.has(String(cfg.type || '').toLowerCase())) {
+                        data[key] = this.#formatNumeric2Decimals(rawValue ?? '');
+                    } else {
+                        data[key] = String(rawValue ?? '').trim();
+                    }
+                });
+
+                Object.entries(this.#fieldSchema).forEach(([colKey, cfg]) => {
+                    if (!cfg || typeof cfg !== 'object') return;
+                    if (typeof cfg.onBeforeSave !== 'function') return;
+                    if (!(colKey in data)) return;
+                    try {
+                        const original = data[colKey];
+                        const modified = cfg.onBeforeSave(original, data);
+                        if (modified !== undefined && modified !== null) data[colKey] = modified;
+                    } catch (err) {
+                        console.error(`DynamicTable: error en onBeforeSave("${colKey}")`, err);
+                    }
+                });
+
+                if (blockRow && derivedIdRow) {
+                    const collision = this.#tbody.querySelector(`tr[data-row-id="${CSS.escape(derivedIdRow)}"]`);
+                    if (collision) {
+                        const fieldLabel = this.#headers[blockRowSource] ?? blockRowSource;
+                        this.#showError(`Ya existe una fila con id "${derivedIdRow}" (derivado de "${fieldLabel}"). Elige otra opción.`);
+                        if (this.#debug) {
+                            console.warn(`DynamicTable: insertRow bloqueado por blockRow:true · idRow="${derivedIdRow}" ya existe.`);
+                        }
+                        return null;
+                    }
+                }
+
+                const tr = this.insertRow({
+                    row: data,
+                    remove: true,
+                    insertAfterto,
+                    ...(derivedIdRow ? { idRow: derivedIdRow } : {})
+                });
+
+                if (this.#debug) {
+                    console.log('DynamicTable: insertFromDialogValues', {
+                        derivedIdRow, blockRow, blockRowSource, id: tr?.dataset.rowId
+                    });
+                }
+
+                return tr;
+            }
+
+            /* ---------- Tfoot ---------- */
             updateTFoot({ sumAllColumn = {}, LabelTotal = {} } = {}) {
                 this.#lastTFootOptions = {
                     sumAllColumn: { ...sumAllColumn },
@@ -993,11 +1319,8 @@
 
                 cols.forEach(key => {
                     let value = '';
-                    if (sumAllColumn[key] === true) {
-                        value = this.#formatNumber(this.#sumColumn(key));
-                    } else if (LabelTotal[key]) {
-                        value = (LabelTotal[key] === true) ? 'TOTAL' : LabelTotal[key];
-                    }
+                    if (sumAllColumn[key] === true) value = this.#formatNumber(this.#sumColumn(key));
+                    else if (LabelTotal[key]) value = (LabelTotal[key] === true) ? 'TOTAL' : LabelTotal[key];
                     tr.appendChild(this.#createTd(key, value));
                 });
 
@@ -1005,9 +1328,7 @@
                 return this;
             }
 
-            /* ============================================================
-             *  DIALOG
-             * ============================================================ */
+            /* ---------- Dialog ---------- */
             openInsertDialog() {
                 if (!this.#dialog) return;
                 if (this.#tableDisabled) {
@@ -1137,22 +1458,42 @@
 
                 this.#applyStyles(this.#dialogFieldsContainer, collectedStyles);
 
-                const firstField = this.#dialogFieldsContainer.querySelector('input, select, textarea');
-                if (firstField) setTimeout(() => firstField.focus(), 50);
-
                 this.#dialog.showModal();
+
+                Object.entries(this.#headers).forEach(([key]) => {
+                    const cfg = this.#fieldSchema[key];
+                    if (!cfg || typeof cfg.afterOpen !== 'function') return;
+                    const wrapper = this.#dialogFieldsContainer.querySelector(`.dialog-field[data-col="${key}"]`);
+                    const field = wrapper?.querySelector('input, select, textarea');
+                    if (!field) return;
+                    const ctx = this.#buildFieldContext(key);
+                    try { cfg.afterOpen(field, ctx); }
+                    catch (err) { console.error(`DynamicTable: error en afterOpen("${key}")`, err); }
+                });
+
+                if (this.#schemaAfterOpen) {
+                    const ctx = this.#buildFieldContext(null);
+                    try { this.#schemaAfterOpen(ctx); }
+                    catch (err) { console.error('DynamicTable: error en __afterOpen', err); }
+                }
+
+                setTimeout(() => {
+                    const active = document.activeElement;
+                    if (active && this.#dialog && this.#dialog.contains(active)) return;
+                    const firstField = this.#dialogFieldsContainer.querySelector('input, select, textarea');
+                    if (firstField) firstField.focus();
+                }, 50);
             }
 
             closeInsertDialog() {
                 if (this.#dialog) this.#dialog.close();
             }
 
-            /* ============================================================
-             *  CONTEXTO PARA onChange
-             * ============================================================ */
+            /* ---------- Contexto ---------- */
             #buildFieldContext(currentCol) {
                 const container = this.#dialogFieldsContainer;
                 const schema = this.#fieldSchema;
+                const self = this;
 
                 const getWrapper = (colKey) => {
                     if (!colKey) return null;
@@ -1170,10 +1511,34 @@
                     f.dispatchEvent(new Event(evName, { bubbles: true }));
                 };
 
-                const self = this;
-
                 return {
                     currentCol,
+                    dialog: self.#dialog,
+                    fieldsContainer: container,
+
+                    getAllValues() {
+                        const out = {};
+                        Object.keys(self.#headers).forEach(k => {
+                            const f = getInnerField(k);
+                            if (f) out[k] = f.value;
+                        });
+                        return out;
+                    },
+
+                    setValues(map, { trigger = false } = {}) {
+                        if (!map || typeof map !== 'object') return false;
+                        Object.entries(map).forEach(([k, v]) => {
+                            const f = getInnerField(k);
+                            if (!f) return;
+                            f.value = v ?? '';
+                            if (trigger) dispatch(f);
+                        });
+                        return true;
+                    },
+
+                    showError(msg) { self.#showError(msg); return true; },
+                    hideError() { self.#hideError(); return true; },
+                    close() { self.closeInsertDialog(); return true; },
 
                     getWrapper(colKey) { return getWrapper(colKey); },
                     getField(colKey) { return getInnerField(colKey); },
@@ -1246,16 +1611,13 @@
                     getTotalAllColumn() {
                         return self.getTotalAllColumn();
                     },
-
                     disableTable() { return self.disableTable(); },
                     enableTable() { return self.enableTable(); },
                     isTableDisabled() { return self.isTableDisabled; }
                 };
             }
 
-            /* ============================================================
-             *  VALIDACIÓN
-             * ============================================================ */
+            /* ---------- Validación ---------- */
             #validateRequired() {
                 const invalidFields = [];
                 let firstInvalidField = null;
@@ -1275,9 +1637,7 @@
                         if (!labelText) labelText = this.#headers[key] || key;
                         invalidFields.push(labelText);
                         if (!firstInvalidField) firstInvalidField = field;
-                    } else {
-                        wrapper.classList.remove('is-invalid');
-                    }
+                    } else wrapper.classList.remove('is-invalid');
                 });
 
                 if (invalidFields.length > 0) {
@@ -1309,16 +1669,14 @@
                 this.#dialogErrorBox.classList.remove('is-visible');
             }
 
-            /* ============================================================
-             *  HELPERS DE FILA
-             * ============================================================ */
+            /* ---------- Filas ---------- */
             #nextRowId() {
                 return `row-${++this.#rowCounter}`;
             }
 
-            #createEmptyRow(withDeleteButton = false) {
+            #createEmptyRow(withDeleteButton = false, customId = null) {
                 const tr = document.createElement('tr');
-                tr.dataset.rowId = this.#nextRowId();
+                tr.dataset.rowId = customId || this.#nextRowId();
                 tr.dataset.empty = 'true';
 
                 const tdActions = document.createElement('td');
@@ -1358,8 +1716,7 @@
                 removeBtn.title = 'Eliminar fila';
 
                 removeBtn.addEventListener('click', () => {
-                    tr.remove();
-                    this._refreshTFoot();
+                    this.removeRow(tr);
                 });
 
                 tdActions.appendChild(removeBtn);
@@ -1451,80 +1808,25 @@
                 document.body.appendChild(this.#dialog);
             }
 
-            /* ============================================================
-             *  SUBMIT
-             * ============================================================ */
+            /* ---------- Submit ---------- */
             #handleInsertSubmit() {
                 if (!this.#validateRequired()) return;
 
-                const data = {};
-                let insertAfterto = null;
-                const consumed = new Set();
-
+                const values = {};
                 const fields = this.#dialogFieldsContainer.querySelectorAll(
                     'input[data-col], select[data-col], textarea[data-col]'
                 );
-
                 fields.forEach(field => {
                     const key = field.dataset.col;
-                    if (consumed.has(key)) return;
-
-                    const fieldType = field.dataset.fieldType;
-                    const config = this.#fieldSchema[key] || {};
-
-                    if (fieldType === 'select') {
-                        const selected = field.options[field.selectedIndex];
-                        if (!selected || !field.value) { data[key] = ''; return; }
-                        const value = field.value;
-                        const label = selected.dataset.label || this.#readText(selected);
-
-                        const flat = this.#flattenOptions(config.options || []);
-                        const optConfig = flat.find(o => String(o.value) === String(value));
-
-                        if (optConfig
-                            && optConfig.insertAfterto
-                            && typeof optConfig.insertAfterto === 'object'
-                            && !insertAfterto) {
-                            insertAfterto = optConfig.insertAfterto;
-                        }
-
-                        if (config.insertLabel && typeof config.insertLabel === 'string') {
-                            data[key] = value;
-                            data[config.insertLabel] = label;
-                            consumed.add(config.insertLabel);
-                        } else {
-                            data[key] = `${value}/${label}`;
-                        }
-                    } else if (fieldType === 'number') {
-                        data[key] = this.#formatNumeric2Decimals(field.value);
-                    } else {
-                        data[key] = field.value.trim();
-                    }
+                    if (key in values) return;
+                    values[key] = field.value;
                 });
 
-                Object.entries(this.#fieldSchema).forEach(([colKey, cfg]) => {
-                    if (!cfg || typeof cfg !== 'object') return;
-                    if (typeof cfg.onBeforeSave !== 'function') return;
-                    if (!(colKey in data)) return;
-
-                    try {
-                        const original = data[colKey];
-                        const modified = cfg.onBeforeSave(original, data);
-                        if (modified !== undefined && modified !== null) {
-                            data[colKey] = modified;
-                        }
-                    } catch (err) {
-                        console.error(`DynamicTable: error en onBeforeSave("${colKey}")`, err);
-                    }
-                });
-
-                this.insertRow({ row: data, remove: true, insertAfterto });
-                this.closeInsertDialog();
+                const tr = this.insertFromDialogValues(values);
+                if (tr) this.closeInsertDialog();
             }
 
-            /* ============================================================
-             *  CÁLCULOS
-             * ============================================================ */
+            /* ---------- Cálculos ---------- */
             #sumColumn(colKey) {
                 let total = 0;
                 const rows = this.#tbody.querySelectorAll(`tr:not(.${this.#options.addItemRowClass})`);
@@ -1556,25 +1858,69 @@
                 }
             }
 
-            /* ============================================================
-             *  GETTERS PÚBLICOS
-             * ============================================================ */
+            /* ---------- onChange + silent ---------- */
+            #snapshotRow(tr) {
+                const out = {};
+                if (!tr) return out;
+                Object.keys(this.#headers).forEach(key => {
+                    const td = tr.querySelector(`td[data-col="${key}"]`);
+                    out[key] = td ? this.#getTdValue(td) : '';
+                });
+                return out;
+            }
+
+            #silent(fn) {
+                if (typeof fn !== 'function') return undefined;
+                this.#changeDepth++;
+                try { return fn(); }
+                finally { this.#changeDepth--; }
+            }
+
+            #emitChange(action, detail = {}) {
+                if (this.#changeDepth > 0) return;
+                if (typeof this.#onChange !== 'function') return;
+
+                const self = this;
+                const ctx = {
+                    action,
+                    table: this,
+
+                    // ─── Modo silencioso ───
+                    silent: (fn) => self.#silent(fn),
+
+                    // ─── Lecturas ───
+                    getData: (opts) => self.getData(opts),
+                    getTotalAllColumn: () => self.getTotalAllColumn(),
+                    getCellValue: (c, s, r) => self.getCellValue(c, s, r),
+                    getRowsByCellValue: (c, s) => self.getRowsByCellValue(c, s),
+
+                    // ─── Mutaciones ───
+                    insertRow: (opts) => self.insertRow(opts),
+                    removeRow: (r) => self.removeRow(r),
+                    updateRow: (r, row) => self.updateRow(r, row),
+                    updateCellValue: (r, col, val) => self.updateCellValue(r, col, val),
+
+                    clearBody: () => self.clearBody(),
+                    disableTable: () => self.disableTable(),
+                    enableTable: () => self.enableTable(),
+
+                    ...detail
+                };
+
+                try { this.#onChange.call(this, ctx); }
+                catch (err) { console.error('DynamicTable: error en onChange', err); }
+            }
+
+            /* ---------- Getters ---------- */
             get table() { return this.#table; }
             get thead() { return this.#thead; }
             get tbody() { return this.#tbody; }
             get tfoot() { return this.#tfoot; }
             get headers() { return { ...this.#headers }; }
             get isTableDisabled() { return this.#tableDisabled; }
-
-            /**
-             * [NUEVO] Devuelve el último `total_row` configurado en createBody().
-             * Devuelve `null` si nunca se llamó a createBody().
-             */
             get lastTotalRow() { return this.#lastTotalRow; }
 
-            /* ============================================================
-             *  API PÚBLICA DE CONSULTA
-             * ============================================================ */
+            /* ---------- Consulta ---------- */
             getCellValue(searchCol, search, returnCol = null) {
                 const results = [];
                 if (!searchCol || typeof searchCol !== 'string') return results;
@@ -1655,6 +2001,7 @@
                     if (hasData || includeEmpty) {
                         obj.__removable = !!tr.querySelector(`.${this.#options.removeButtonClass}`);
                         obj.__rowId = tr.dataset.rowId || null;
+                        obj.__customId = tr.dataset.customId === 'true';
                         obj.__empty = !hasData;
                         obj.__raw = raw;
                         rows.push(obj);
@@ -1679,13 +2026,11 @@
                 return { rows, tfoot, summarized, totals: this.getTotalAllColumn() };
             }
 
-            /* ============================================================
-             *  API PÚBLICA DE MANIPULACIÓN
-             * ============================================================ */
+            /* ---------- Manipulación ---------- */
             #resolveRow(rowIdOrTr) {
                 if (!rowIdOrTr) return null;
                 if (typeof rowIdOrTr === 'string') {
-                    return this.#tbody.querySelector(`tr[data-row-id="${rowIdOrTr}"]`);
+                    return this.#tbody.querySelector(`tr[data-row-id="${CSS.escape(rowIdOrTr)}"]`);
                 }
                 if (rowIdOrTr instanceof HTMLTableRowElement) return rowIdOrTr;
                 return null;
@@ -1704,6 +2049,13 @@
 
                 this.#markRowEmptyState(tr);
                 this._refreshTFoot();
+
+                this.#emitChange('update', {
+                    row: tr,
+                    rowId: tr.dataset.rowId || null,
+                    data: { ...row }
+                });
+
                 return true;
             }
 
@@ -1719,6 +2071,15 @@
 
                 this.#markRowEmptyState(tr);
                 this._refreshTFoot();
+
+                this.#emitChange('updateCell', {
+                    row: tr,
+                    rowId: tr.dataset.rowId || null,
+                    colKey,
+                    value: finalValue,
+                    data: this.#snapshotRow(tr)
+                });
+
                 return true;
             }
 
@@ -1726,25 +2087,49 @@
                 const tr = this.#resolveRow(rowIdOrTr);
                 if (!tr) return false;
                 if (tr.classList.contains(this.#options.addItemRowClass)) return false;
+
+                const rowId = tr.dataset.rowId || null;
+                const snapshot = this.#snapshotRow(tr);
+
                 tr.remove();
                 this._refreshTFoot();
+
+                this.#emitChange('remove', {
+                    row: null,
+                    rowId,
+                    data: snapshot
+                });
+
                 return true;
             }
 
-            /* ============================================================
-             *  DESHABILITAR / HABILITAR TABLA
-             * ============================================================ */
+            /* ---------- Suspend / Resume público ---------- */
+            /**
+             * Suspende la emisión de onChange hasta resumeOnChange().
+             * Anidable por contador. Ideal para envolver varias mutaciones
+             * (incluido casos async con await).
+             */
+            suspendOnChange() {
+                this.#changeDepth++;
+                return this;
+            }
+
+            /**
+             * Reanuda la emisión de onChange. No baja de 0.
+             */
+            resumeOnChange() {
+                if (this.#changeDepth > 0) this.#changeDepth--;
+                return this;
+            }
+
+            /* ---------- Disable / Enable ---------- */
             disableTable() {
-                this.clearBody();     // ← ahora regenera filas según #lastTotalRow
+                this.clearBody();
                 this.#tableDisabled = true;
                 this.#syncAddButtonState();
 
-                if (this.#container) {
-                    this.#container.classList.add(this.#options.disabledClass);
-                }
-                if (this.#dialog && this.#dialog.open) {
-                    this.closeInsertDialog();
-                }
+                if (this.#container) this.#container.classList.add(this.#options.disabledClass);
+                if (this.#dialog && this.#dialog.open) this.closeInsertDialog();
 
                 if (this.#debug) console.log('DynamicTable: tabla deshabilitada');
                 return this;
@@ -1753,40 +2138,19 @@
             enableTable() {
                 this.#tableDisabled = false;
                 this.#syncAddButtonState();
-
-                if (this.#container) {
-                    this.#container.classList.remove(this.#options.disabledClass);
-                }
-
+                if (this.#container) this.#container.classList.remove(this.#options.disabledClass);
                 if (this.#debug) console.log('DynamicTable: tabla habilitada');
                 return this;
             }
 
-            /* ============================================================
-             *  LIMPIEZA Y DESTRUCCIÓN
-             * ============================================================ */
-
-            /**
-             * Limpia el cuerpo y lo reconstruye usando el `total_row` recordado.
-             *
-             * [NUEVO] Ya no hace falta llamar a createBody() después:
-             *   - Si hiciste createBody({ total_row: 5 }) alguna vez → 5 filas vacías.
-             *   - Si nunca lo llamaste                                → 1 fila vacía (default).
-             *   - Si pasaste createBody({ total_row: 0 })             → 0 filas (respeta el 0).
-             *
-             * @returns {this}
-             */
+            /* ---------- Limpieza ---------- */
             clearBody() {
                 const totalRow = (this.#lastTotalRow === null)
                     ? this.#DEFAULT_TOTAL_ROW
                     : this.#lastTotalRow;
 
-                // createBody ya hace innerHTML='', añade las filas y sincroniza el botón.
                 this.createBody({ total_row: totalRow });
-
-                // refrescar tfoot (createBody no lo toca).
                 this._refreshTFoot();
-
                 if (this.#debug) console.log(`DynamicTable: clearBody() → ${totalRow} fila(s) vacía(s)`);
                 return this;
             }
@@ -1807,247 +2171,395 @@
             }
         }
 
-        /* ================================================================
-         *  INSTANCIA Y CONFIGURACIÓN
-         * ================================================================ */
-        const tabla = new DynamicTable('#tabla-container', {
-            addItemButtonText: '+ Agregar fila',
-            debug: true
-        });
+        /* ============================================================
+         *  DEMO · Wiring UI ↔ DynamicTable
+         * ============================================================ */
+        (() => {
+            const $ = (id) => document.getElementById(id);
+            const container = $('table-container');
+            const logEl = $('log');
+            const stData = $('st-data');
+            const stEmpty = $('st-empty');
+            const stLastRow = $('st-lastrow');
+            const stDisabled = $('st-disabled');
+            const stEvents = $('st-events');
 
-        tabla.setHeaders({
-            Col1: 'TIPO',
-            Col2: 'DESCRIPCIÓN',
-            Col3: 'MONTO'
-        });
+            let table = null;
+            let eventCount = 0;
+            let loopGuardEnabled = true; // si false, simulamos el bug (sin silent)
 
-        tabla.setFieldSchema({
-            Col1: {
-                type: 'select',
-                required: true,
-                insertLabel: 'Col2',
-                class: ['full-width', 'highlight'],
-                options: [
-                    { value: 'LBR', label: 'COMPRA DE LIBRO' },
-                    { value: 'OTROS', label: 'OTROS SERVICIOS' },
-                    { value: 'CLG', label: 'COLEGIATURA' },
-                    {
-                        group: {
-                            label: 'BECAS',
-                            options: [
-                                {
-                                    value: '050-MB', label: '50% MEDIA BECA', discount: '50',
-                                    insertAfterto: { cell: 'Col1', search: 'CLG' }
-                                },
-                                { value: '100-BC', label: '100% BECA COMPLETA', discount: '100' }
-                            ]
-                        }
-                    },
-                    {
-                        group: {
-                            label: 'TRANSPORTE',
-                            options: [
-                                { value: 'TRANSP-SEBACO', label: 'SÉBACO', price: '600.00' },
-                                { value: 'TRANSP-SAN_ISIDRO', label: 'SAN ISIDRO', price: '600.00' },
-                                { value: 'TRANSP-TRINIDAD', label: 'LA TRINIDAD', price: '600.00' }
-                            ]
-                        }
-                    },
-                    {
-                        group: {
-                            label: 'EXÁMENES',
-                            options: [
-                                { value: 'UBICA-EXAM', label: 'UBICACIÓN ALUMNO NUEVO', price: '600.00', label_field: 'MOTIVO DEL EXAMEN' },
-                                { value: 'REUBICA-EXAM', label: 'REUBICACIÓN ALUMNO ACTIVO', price: '600.00', label_field: 'MOTIVO DEL EXAMEN' },
-                                { value: 'REP-EXAM', label: 'REPOSICIÓN', price: '600.00', label_field: 'MOTIVO DE LA REPOSICIÓN' },
-                                { value: 'REP-MORA', label: 'REPOSICIÓN CON MULTA', price: '600.00', label_field: 'MOTIVO DE LA REPOSICIÓN' },
-                                { value: 'REP-MORA-FT', label: 'REPOSICIÓN FUERA DE TIEMPO', price: '600.00', label_field: 'MOTIVO DE LA REPOSICIÓN' }
-                            ]
-                        }
-                    },
-                    {
-                        group: {
-                            label: 'DESCUENTOS',
-                            options: [
-                                { value: 'DESC-NEG', label: 'AJUSTE NEGATIVO', price: '-500.00', label_field: 'Col3' },
-                                { value: 'DESC-NEG-2', label: 'AJUSTE NEGATIVO 2', price: '-1,250.75', label_field: 'Col3' }
-                            ]
-                        }
-                    },
-                    { value: 'OTROS2', label: 'OTROS' }
-                ],
-                styles: {
-                    'field-Col1': { 'text-align': 'left' },
-                    'field-Col2': { 'text-align': 'left' },
-                    'field-Col3': { 'text-align': 'right' }
-                },
-                onChange: (value, option, field, ctx) => {
-                    console.log('--- onChange Col1 ---', { value, option });
+            const log = (msg, kind = '') => {
+                const line = document.createElement('div');
+                line.className = 'demo-log__line';
+                line.innerHTML = `<span class="demo-log__time">${new Date().toLocaleTimeString()}</span>
+                          <span class="demo-log__msg ${kind ? 'demo-log__msg--' + kind : ''}">${msg}</span>`;
+                logEl.appendChild(line);
+                logEl.scrollTop = logEl.scrollHeight;
+                while (logEl.children.length > 200) logEl.removeChild(logEl.firstChild);
+            };
 
-                    ctx.setLabel(option ? option.label : '');
-                    ctx.clearField('Col3');
+            const HEADERS = {
+                tipo: 'Tipo',
+                codigo: 'Código',
+                nombre: 'Nombre',
+                total: 'Total'
+            };
 
-                    if (_HELPERS_.existe(option) && _HELPERS_.existe(option.price)) {
-                        ctx.setValue({
-                            colKey: 'Col3',
-                            val: option.price,
-                            readOnly: true,
-                            disabled: true
-                        });
+            const buildSchema = () => {
+                const afterOpenEnabled = $('cfg-afteropen').value === 'on';
+
+                const schema = {
+                    codigo: {
+                        type: 'text',
+                        required: true
+                    },
+                    nombre: {
+                        type: 'text',
+                        required: true
+                    },
+                    total: {
+                        type: 'number',
+                        required: false
+                    },
+                    tipo: {
+                        type: 'select',
+                        required: true,
+                        options: [
+                            { value: 'recibo-x', label: 'Recibo Especial', idRow: 'REC-2026-0001', blockRow: true },
+                            { value: 'vale-y', label: 'Vale Interno', idRow: 'VALE-001', blockRow: false },
+                            { value: 'factura-a', label: 'Factura A', idSlug: true, blockRow: true },
+                            { value: 'factura-b', label: 'Factura B', idSlug: true, blockRow: true },
+                            { value: 'nota-credito', label: 'Nota Crédito', idSlug: true, blockRow: false },
+                            { value: 'nota-debito', label: 'Nota Débito', idSlug: true, blockRow: false },
+                            { value: 'combo-z', label: 'Combo (idRow gana)', idRow: 'COMBO-XYZ', idSlug: true, blockRow: true },
+                            { value: 'retencion', label: 'Retención', idRow: 'RETENCION', blockRow: false }
+                        ]
                     }
+                };
+
+                if (afterOpenEnabled) {
+                    schema.__afterOpen = (ctx) => {
+                        log('🌐 __afterOpen global disparado', 'info');
+                        log(`   dialog: <${ctx.dialog.tagName.toLowerCase()}.${ctx.dialog.className}>`);
+                        log(`   valores iniciales: ${JSON.stringify(ctx.getAllValues())}`);
+                    };
+
+                    schema.codigo.afterOpen = (field, ctx) => {
+                        const n = String(Date.now() % 100000).padStart(5, '0');
+                        ctx.setValue({ colKey: 'codigo', val: `AUTO-${n}`, trigger: false });
+                        log(`📌 afterOpen codigo → autogenerado "AUTO-${n}"`, 'info');
+                        field.focus();
+                        field.select();
+                    };
+
+                    schema.total.afterOpen = (field, ctx) => {
+                        const totals = ctx.getTotalAllColumn();
+                        const raw = totals?.__raw?.total;
+                        if (typeof raw === 'number' && raw > 0) {
+                            ctx.setValue({ colKey: 'total', val: String(raw), trigger: false });
+                            log(`📌 afterOpen total → pre-rellenado con ${raw}`, 'info');
+                        }
+                    };
                 }
-            },
-            Col2: {
-                required: false,
-                type: 'text',
-                class: ['half-width'],
-                onBeforeSave: (cellValue, row) => {
-                    const base = String(cellValue ?? '').trim();
-                    if (base === '') return base;
-                    const tipo = row?.Col1 ?? '';
-                    return `[${tipo}] ${base}`;
+
+                return schema;
+            };
+
+            /* ─────────────────────────────────────────────────────────
+             *  onChange de la demo
+             *
+             *  Simula el caso real: al insertar una fila RETENCION,
+             *  el callback elimina cualquier fila RETENCION previa
+             *  (idempotencia: sólo debe existir una). Sin silent, esto
+             *  produce un loop: insert → onChange insert → removeRow →
+             *  onChange remove → (callback ve 'remove' y no hace nada en
+             *  el caso simple, pero si tuviera más lógica podría volver a
+             *  insertar). El silent corta el ciclo de raíz.
+             * ───────────────────────────────────────────────────────── */
+            const buildOnChange = () => {
+                const onChangeEnabled = $('cfg-onchange').value === 'on';
+                if (!onChangeEnabled) return null;
+
+                return function (ctx) {
+                    eventCount++;
+                    stEvents.textContent = String(eventCount);
+
+                    const badge = {
+                        insert: ['➕ insert', 'ok'],
+                        remove: ['➖ remove', 'warn'],
+                        update: ['✏️ update', 'info'],
+                        updateCell: ['✏️ updateCell', 'info']
+                    }[ctx.action] ?? [ctx.action, ''];
+
+                    const rowInfo = ctx.rowId ? `rowId="${ctx.rowId}"` : '(sin rowId)';
+                    const extra = ctx.colKey ? ` · col="${ctx.colKey}" · val="${ctx.value}"` : '';
+                    log(`${badge[0]} · ${rowInfo}${extra}`, badge[1]);
+
+                    // ─── Regla: sólo una fila RETENCION ───
+                    // Si acabamos de insertar una, borramos las demás RETENCION.
+                    // Con silent evitamos que cada removeRow dispare otro onChange.
+                    if (ctx.action === 'insert') {
+                        const allRows = ctx.getData({ includeEmpty: false }).rows;
+                        const retenciones = allRows.filter(r =>
+                            r.__rowId === 'RETENCION' && r.__rowId !== ctx.rowId
+                        );
+
+                        if (retenciones.length > 0 && loopGuardEnabled) {
+                            log(`🧹 Detectadas ${retenciones.length} RETENCION previa(s). Aplicando ctx.silent()`, 'info');
+                            ctx.silent(() => {
+                                retenciones.forEach(r => ctx.removeRow(r.__rowId));
+                            });
+                            log('✅ silent() completado — sin disparar onChange', 'ok');
+                        } else if (retenciones.length > 0 && !loopGuardEnabled) {
+                            log('⚠️ Modo SIN silent: se disparará onChange por cada remove', 'err');
+                            retenciones.forEach(r => ctx.removeRow(r.__rowId));
+                        }
+                    }
+                };
+            };
+
+            const refreshStats = () => {
+                if (!table || !table.tbody) {
+                    stData.textContent = '0';
+                    stEmpty.textContent = '0';
+                    stLastRow.textContent = '—';
+                    stDisabled.textContent = '—';
+                    return;
                 }
-            },
-            Col3: {
-                required: true,
-                type: 'currency',
-                class: ['half-width']
-            }
-        });
+                const rows = table.tbody.querySelectorAll('tr:not(.add-item-row)');
+                let data = 0, empty = 0;
+                rows.forEach(tr => {
+                    const cells = tr.querySelectorAll('td[data-col]');
+                    const isEmpty = cells.length === 0 || Array.from(cells)
+                        .every(td => (td.querySelector('span')?.textContent ?? '').trim() === '');
+                    if (isEmpty) empty++; else data++;
+                });
+                stData.textContent = data;
+                stEmpty.textContent = empty;
+                stLastRow.textContent = table.lastTotalRow === null ? 'null' : String(table.lastTotalRow);
+                stDisabled.textContent = table.isTableDisabled ? 'true' : 'false';
+            };
 
-        tabla.updateTFoot({
-            sumAllColumn: { Col3: true },
-            LabelTotal: { Col2: true }
-        });
+            let observer = null;
+            const observeTbody = () => {
+                if (observer) observer.disconnect();
+                if (!table || !table.tbody) return;
+                observer = new MutationObserver(refreshStats);
+                observer.observe(table.tbody, { childList: true, subtree: true, characterData: true });
+            };
 
-        // ✅ Aquí definimos el total_row que clearBody() recordará.
-        tabla.createBody({ total_row: 5 });
+            const buildTable = () => {
+                if (table) table.destroy();
+                eventCount = 0;
+                stEvents.textContent = '0';
 
-        /* ─── Filas iniciales ─── */
-        tabla.insertRow({ row: { Col1: 'CLG', Col2: '[CLG] COLEGIATURA', Col3: 1500 }, remove: true });
-        tabla.insertRow({ row: { Col1: 'DESC-NEG', Col2: '[DESC-NEG] AJUSTE NEGATIVO', Col3: '-500.00' }, remove: true });
-        tabla.insertRow({ row: { Col1: 'TRANSP-SEBACO', Col2: '[TRANSP-SEBACO] SÉBACO', Col3: '600.00' }, remove: true });
-        tabla.insertRow({ row: { Col1: 'CLG', Col2: '[CLG] COLEGIATURA 2', Col3: '2000.4789' }, remove: true });
+                const onChangeFn = buildOnChange();
 
-        /* ================================================================
-         *  BOTONES DEL TOOLBAR
-         * ================================================================ */
+                try {
+                    table = new DynamicTable(container, {
+                        insertPosition: $('cfg-position').value,
+                        debug: $('cfg-debug').value === 'true',
+                        ...(onChangeFn ? { onChange: onChangeFn } : {})
+                    });
+                    table.setHeaders(HEADERS);
+                    table.setFieldSchema(buildSchema());
+                    table.updateTFoot({ sumAllColumn: { total: true }, LabelTotal: { tipo: true } });
+                    const n = Math.max(0, Number($('cfg-rows').value) || 0);
+                    table.createBody({ total_row: n });
 
-        // ✅ AHORA una sola llamada basta. clearBody() recuerda el total_row.
-        document.getElementById('btn-clear').addEventListener('click', () => {
-            tabla.clearBody();
-            console.log('🧹 Limpiado → filas vacías:', tabla.lastTotalRow);
-        });
+                    observeTbody();
+                    refreshStats();
+                    log(`✅ Tabla creada · insertPosition="${$('cfg-position').value}" · afterOpen=${$('cfg-afteropen').value} · onChange=${$('cfg-onchange').value}`, 'ok');
+                } catch (err) {
+                    log(`❌ Error al crear: ${err.message}`, 'err');
+                    table = null;
+                }
+            };
 
-        document.getElementById('btn-log').addEventListener('click', () => {
-            const data = tabla.getData();
-            console.log('=== DATOS DE LA TABLA ===');
-            console.log('rows:', data.rows);
-            console.log('tfoot:', data.tfoot);
-            console.log('summarized:', data.summarized);
-            console.log('totals:', data.totals);
-        });
+            /* ---------- Handlers ---------- */
+            $('btn-recreate').addEventListener('click', buildTable);
 
-        document.getElementById('btn-add-removable').addEventListener('click', () => {
-            tabla.insertRow({
-                row: { Col1: 'EXTRA', Col2: 'FILA REMOVIBLE', Col3: '1500.4789' },
-                remove: true
+            $('btn-destroy').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                table.destroy();
+                table = null;
+                if (observer) { observer.disconnect(); observer = null; }
+                refreshStats();
+                log('🗑️ destroy() ejecutado', 'warn');
             });
-        });
 
-        document.getElementById('btn-add-locked').addEventListener('click', () => {
-            tabla.insertRow({
-                row: { Col1: 'FIJA', Col2: 'FILA NO REMOVIBLE', Col3: 250 },
-                remove: false
+            $('btn-open-dialog').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                if (table.isTableDisabled) { log('⚠️ Tabla deshabilitada.', 'warn'); return; }
+                log('📝 Abriendo diálogo...', 'info');
+                table.openInsertDialog();
             });
-        });
 
-        document.getElementById('btn-neg').addEventListener('click', () => {
-            tabla.insertRow({
-                row: { Col1: 'NEG', Col2: '[NEG] AJUSTE NEGATIVO', Col3: -789.45 },
-                remove: true
+            // 1 · option.idRow
+            $('btn-sim-idrow').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                const n = Date.now() % 10000;
+                table.insertFromDialogValues({
+                    tipo: 'recibo-x', codigo: `R-${n}`, nombre: 'Recibo Demo', total: '250'
+                });
             });
-        });
 
-        document.getElementById('btn-getcell').addEventListener('click', () => {
-            console.log('=== getCellValue ===');
-            console.log('getCellValue("Col1", "CLG") →', tabla.getCellValue('Col1', 'CLG'));
-            console.log('getCellValue("Col1", "CLG", "Col3") →', tabla.getCellValue('Col1', 'CLG', 'Col3'));
-            console.log('getCellValue("Col1", "TRANSP", "Col2") →', tabla.getCellValue('Col1', 'TRANSP', 'Col2'));
-        });
-
-        document.getElementById('btn-getrows').addEventListener('click', () => {
-            console.log('=== getRowsByCellValue ===');
-            const filasCLG = tabla.getRowsByCellValue('Col1', 'CLG');
-            console.log(`Filas con CLG (${filasCLG.length}):`, filasCLG);
-        });
-
-        document.getElementById('btn-totals').addEventListener('click', () => {
-            console.log('=== getTotalAllColumn ===');
-            const totales = tabla.getTotalAllColumn();
-            console.log('Totales formateados:', totales);
-            console.log('  → Col3 (raw number):', totales.__raw?.Col3);
-        });
-
-        document.getElementById('btn-insertafter').addEventListener('click', () => {
-            tabla.insertRow({
-                row: { Col1: 'BECA-ESPECIAL', Col2: '[BECA-ESPECIAL] 50% DESCUENTO', Col3: -750 },
-                remove: true,
-                insertAfterto: { cell: 'Col1', search: 'CLG' }
+            $('btn-sim-idrow-dup').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                const n = Date.now() % 10000;
+                const tr = table.insertFromDialogValues({
+                    tipo: 'recibo-x', codigo: `R-${n}`, nombre: 'Recibo dup', total: '10'
+                });
+                if (!tr) log('🛑 Bloqueada: id "REC-2026-0001" ya existe', 'warn');
             });
-        });
 
-        document.getElementById('btn-aftertable').addEventListener('click', () => {
-            tabla.insertRow({
-                row: { Col1: 'FINAL', Col2: '[FINAL] Insertada al final', Col3: 999.99 },
-                remove: true
+            // 2 · idSlug + blockRow
+            $('btn-sim-factura').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                const n = Date.now() % 10000;
+                table.insertFromDialogValues({
+                    tipo: 'factura-a', codigo: `F-${n}`, nombre: 'Cliente Demo', total: '1500'
+                });
             });
-        });
 
-        document.getElementById('btn-update-first').addEventListener('click', () => {
-            const data = tabla.getData({ includeEmpty: true });
-            const first = data.rows.find(r => !r.__empty);
-            if (!first) { console.log('No hay filas con datos'); return; }
-            tabla.updateRow(first.__rowId, {
-                Col1: 'EDITADO',
-                Col2: '[EDITADO] Fila actualizada',
-                Col3: 9999.99
+            $('btn-sim-factura-dup').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                const n = Date.now() % 10000;
+                const tr = table.insertFromDialogValues({
+                    tipo: 'factura-a', codigo: `F-${n}`, nombre: 'Factura dup', total: '200'
+                });
+                if (!tr) log('🛑 Bloqueada: id "factura-a" ya existe', 'warn');
             });
-            console.log('✏️ Fila actualizada:', first.__rowId);
-        });
 
-        document.getElementById('btn-remove-first').addEventListener('click', () => {
-            const data = tabla.getData({ includeEmpty: true });
-            const first = data.rows.find(r => !r.__empty);
-            if (!first) { console.log('No hay filas con datos'); return; }
-            tabla.removeRow(first.__rowId);
-            console.log('🗑️ Fila eliminada:', first.__rowId);
-        });
+            // 3 · idSlug + blockRow:false
+            $('btn-sim-nota').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                const n = Date.now() % 10000;
+                table.insertFromDialogValues({
+                    tipo: 'nota-credito', codigo: `N-${n}`, nombre: 'Nota Demo', total: '50'
+                });
+            });
 
-        document.getElementById('btn-disable-table').addEventListener('click', () => {
-            tabla.disableTable();
-            console.log('⛔ Tabla deshabilitada · isTableDisabled:', tabla.isTableDisabled);
-        });
+            $('btn-sim-nota-dup').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                const n = Date.now() % 10000;
+                table.insertFromDialogValues({
+                    tipo: 'nota-credito', codigo: `N-${n}`, nombre: 'Nota dup', total: '75'
+                });
+            });
 
-        document.getElementById('btn-enable-table').addEventListener('click', () => {
-            tabla.enableTable();
-            console.log('✅ Tabla habilitada · isTableDisabled:', tabla.isTableDisabled);
-        });
+            // 4 · Combo
+            $('btn-sim-combo').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                const n = Date.now() % 10000;
+                const tr = table.insertFromDialogValues({
+                    tipo: 'combo-z', codigo: `Z-${n}`, nombre: 'Combo Demo', total: '999'
+                });
+                if (tr) {
+                    const isLiteral = tr.dataset.rowId === 'COMBO-XYZ';
+                    log(`   ${isLiteral ? 'option.idRow ganó sobre idSlug' : 'fallback'}`, 'info');
+                }
+            });
 
-        // [NUEVO] Demo: cambiar el total_row recordado → próximos clearBody() usan 3
-        document.getElementById('btn-set-totalrow-3').addEventListener('click', () => {
-            tabla.createBody({ total_row: 3 });
-            console.log('🔢 total_row cambiado a 3. Próximos clearBody() usarán 3.');
-        });
+            // 5 · Vale
+            $('btn-sim-vale').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                const n = Date.now() % 10000;
+                table.insertFromDialogValues({
+                    tipo: 'vale-y', codigo: `V-${n}`, nombre: 'Vale Demo', total: '25'
+                });
+            });
 
-        /* ================================================================
-         *  DEMO INICIAL EN CONSOLA
-         * ================================================================ */
-        console.log('%c🚀 DynamicTable demo cargada (clearBody con memoria)', 'color:#fff;background:#3498db;padding:4px 10px;border-radius:4px;font-weight:bold;');
-        console.log('  · clearBody() ahora recuerda el total_row pasado a createBody().');
-        console.log('  · Si nunca llamaste a createBody(), clearBody() genera 1 fila por defecto.');
-        console.log('  · Prueba: click en "🧹 Limpiar filas" → verás 5 filas vacías (el total_row configurado).');
-        console.log('  · Luego click en "🔢 Cambiar a total_row: 3" → próximas limpiezas dejarán 3 filas.');
+            // 6 · updateCellValue
+            $('btn-sim-update').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                const data = table.getData();
+                if (data.rows.length === 0) { log('⚠️ No hay filas con datos.', 'warn'); return; }
+                const target = data.rows[data.rows.length - 1];
+                const newVal = `EDIT-${Date.now() % 10000}`;
+                log(`✏️ updateCellValue("${target.__rowId}", 'codigo', "${newVal}")`, 'info');
+                table.updateCellValue(target.__rowId, 'codigo', newVal);
+            });
+
+            // 7 · removeRow
+            $('btn-sim-remove').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                const data = table.getData();
+                if (data.rows.length === 0) { log('⚠️ No hay filas con datos.', 'warn'); return; }
+                const target = data.rows[data.rows.length - 1];
+                log(`➖ removeRow("${target.__rowId}")`, 'info');
+                table.removeRow(target.__rowId);
+            });
+
+            // 8 · insertRow directo
+            $('btn-sim-insert-direct').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                const n = Date.now() % 10000;
+                log('➕ insertRow() directo', 'info');
+                table.insertRow({
+                    row: { tipo: 'manual', codigo: `DIR-${n}`, nombre: `Directo ${n}`, total: 42 },
+                    remove: true
+                });
+            });
+
+            // ─── Loop demo ───
+            $('btn-loop-insert').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                loopGuardEnabled = true;
+                log('▶️ Insertando RETENCION con silent activo (una sola pasada)', 'info');
+                table.insertFromDialogValues({
+                    tipo: 'retencion',
+                    codigo: `RET-${Date.now() % 10000}`,
+                    nombre: 'Retención Demo',
+                    total: '100'
+                });
+                log('🏁 Inserta completa. Revisa que sólo hay UNA fila RETENCION.', 'ok');
+            });
+
+            $('btn-loop-insert-bad').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                loopGuardEnabled = false;
+                log('⚠️ Insertando RETENCION SIN silent (se verá el ciclo de onChange)', 'err');
+                table.insertFromDialogValues({
+                    tipo: 'retencion',
+                    codigo: `RET-${Date.now() % 10000}`,
+                    nombre: 'Retención SIN silent',
+                    total: '100'
+                });
+                log('🏁 Inserta completa. Compara con la versión silenciosa.', 'warn');
+                loopGuardEnabled = true;
+            });
+
+            // Utilidades
+            $('btn-clear-body').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                table.clearBody();
+                log(`🧹 clearBody() → ${table.lastTotalRow ?? 1} fila(s) · SIN onChange`, 'info');
+            });
+
+            $('btn-disable').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                table.disableTable();
+                refreshStats();
+                log('🔒 disableTable() · SIN onChange', 'warn');
+            });
+
+            $('btn-enable').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                table.enableTable();
+                refreshStats();
+                log('🔓 enableTable()', 'ok');
+            });
+
+            $('btn-clear-log').addEventListener('click', () => {
+                logEl.innerHTML = '';
+                log('🧼 Log limpiado');
+            });
+
+            /* ---------- Arranque ---------- */
+            log('👋 Demo listo. Prueba "🔁 Insertar RETENCION" (silent) vs "⚠️ sin silent".', 'info');
+            buildTable();
+        })();
     </script>
 
 </body>

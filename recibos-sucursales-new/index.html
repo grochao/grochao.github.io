@@ -15,9 +15,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap" rel="stylesheet">
 
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+
+        const $getEl = (selector) => {
+            const e = document.querySelectorAll(selector);
+            return (!e) ? null : (e.length > 1 ? e : e[0]);
+        };
+
+        window._NEW_DATE_ = { status: false, day: "", month: "", year: "" };
         window._SEDE_ = 'LEO';
         window._SESIONES_ = {
             "sesion": {
@@ -1931,12 +1938,16 @@
             }
         };
     </script>
-
+    <script src="resources/js/MdlMsgBox.js"></script>
     <link rel="stylesheet" href="resources/css/style.css">
     <script src="resources/js/books.js"></script>
     <script src="resources/js/DynamicTable.js"></script>
     <script src="resources/js/FormChangeWatcher.js"></script>
     <script src="resources/js/ChoiceContainerBuilder.js"></script>
+    <script src="resources/js/WheelFloating.js"></script>
+    <script src="resources/js/CountDownBanner.js"></script>
+
+
     <script src="resources/js/script.js"></script>
 
 </head>
@@ -2516,14 +2527,12 @@
                                                 <select name="txt_receipt_type" id="txt_receipt_type" required>
                                                     <option value=""></option>
                                                     <optgroup label="MATRÍCULA">
-                                                        <option value="CLG">Alumno Activo</option>
-                                                        <option value="CLG-NUEVO">Alumno Nuevo</option>
-                                                        <option value="CLG-MORA">ALUMNO ACTIVO CON MORA</option>
-                                                        <!--option value="TLL-ONLINE">TALLER ONLINE</option-->
-                                                        <option value="CURSO-INT-ONLINE">ANTICIPO CURSO INTENSIVO
-                                                        </option>
+                                                        <option value="CLG">ALUMNO ACTIVO</option>
+                                                        <option value="CLG-NUEVO">ALUMNO NUEVO</option>
+                                                        <option value="CLG-REPITE">ALUMNO REPITENTE</option>
 
                                                     </optgroup>
+                                                    <option value="OTROS">OTROS SERVICIOS</option>
 
                                                 </select>
                                                 <label for="txt_receipt_type">TIPO DE RECIBO:</label>
@@ -2563,25 +2572,16 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-12 col-sm">
-                                            <div class="material-design" data-field_status="txt_contact_info">
-                                                <input autocomplete="off" type="text" name="txt_contact_info"
-                                                    id="txt_contact_info" placeholder="">
-                                                <label for="txt_contact_info">INFORMACIÓN DE CONTACTO:</label>
-                                                <span class="barra"></span>
-
-                                            </div>
-                                        </div>
 
                                     </div>
                                 </div>
 
                             </div>
-                            <div class="row hide">
+                            <div class="row ">
                                 <div class="col-12">
                                     <div class="row justify-content-between ">
 
-                                        <div class="col-12 ">
+                                        <div class="col-4 ">
                                             <div class="material-design" data-field_status="txt_contact_name">
                                                 <input autocomplete="off" type="text" name="txt_contact_name"
                                                     id="txt_contact_name" placeholder="">
@@ -2589,7 +2589,7 @@
                                                 <span class="barra"></span>
                                             </div>
                                         </div>
-                                        <div class="col-12">
+                                        <div class="col-4">
                                             <div class="material-design" data-field_status="txt_email">
                                                 <input autocomplete="off" type="text" name="txt_email" id="txt_email"
                                                     placeholder="">
@@ -2597,7 +2597,7 @@
                                                 <span class="barra"></span>
                                             </div>
                                         </div>
-                                        <div class="col-12">
+                                        <div class="col-2">
                                             <div class="material-design" data-field_status="txt_phone">
                                                 <input autocomplete="off" type="text" name="txt_phone" id="txt_phone"
                                                     placeholder="">
@@ -2605,7 +2605,7 @@
                                                 <span class="barra"></span>
                                             </div>
                                         </div>
-                                        <div class="col-12">
+                                        <div class="col-2">
                                             <div class="material-design" data-field_status="txt_fecha_nacimiento">
                                                 <input autocomplete="off" type="text" name="txt_fecha_nacimiento"
                                                     id="txt_fecha_nacimiento" placeholder="">
@@ -2616,56 +2616,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- 
-                            <dialog id="contactModal">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h3>INFORMACIÓN DE ALUMNO NUEVO</h3>
-                                    </div>
 
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <p for="txt_allInfoSheets">Copie la fila entera en el Google Sheets y
-                                                peguela en el cuadro de abajo</p>
-                                            <textarea name="txt_allInfoSheets" id="txt_allInfoSheets"></textarea>
-                                        </div>
-                                        
-                                        <div class="col-12 col-md-6">
-                                            <label for="field-nombre">NOMBRE<span class="req">*</span></label>
-                                            <input type="text" id="field-nombre">
-                                        </div>
-                                        <div class="col-12 col-md-6">
-                                            <label for="field-apellido">APELLIDO<span class="req">*</span></label>
-                                            <input type="text" id="field-apellido">
-                                        </div>
-                                        <div class="col-12">
-                                            <label for="field-fecha-nacimiento">FECHA DE NACIMIENTO</label>
-                                            <input type="text" id="field-fecha-nacimiento">
-                                        </div>
-                                        <div class="col-12">
-                                            <label for="field-telefono">N° TELÉFONO</label>
-                                            <input type="text" id="field-telefono">
-                                        </div>
-                                        <div class="col-12">
-                                            <label for="field-email">CORREO ELECTRÓNICO</label>
-                                            <input type="text" id="field-email">
-                                        </div>
-                                        <div class="col-12">
-                                            <label for="field-email">DIRECCIÓN</label>
-                                            <input type="text" id="field-email">
-                                        </div>
-                                        <div class="col-12">
-                                            <label for="field-email">NOMBRE DE CONTACTO</label>
-                                            <input type="text" id="field-email">
-                                        </div> 
-                                        
-
-
-                        </div>
-                    </div>
-                    </dialog>
-
-                    -->
 
                             <div class="row">
                                 <div class="col-12">
@@ -2832,13 +2783,31 @@
                     <footer>
 
                         <div class="container-actionbuttons">
-                            <span data-tooltip="Cambiar Fecha" data-direction="top">
+                            <span class="type-conection">
+                                <i class="icon-connected"></i>
+                                <i>
+                                    Con Conección
+                                </i>
+                            </span>
+                            <span id="btn_changeDateTime" data-tooltip="Cambiar Fecha" data-direction="top">
                                 <i class="icon-calendar"></i>
 
                             </span>
-                            <span data-tooltip="Sincronizar Decibos" data-direction="top">
+                            <span data-tooltip="Cambiar N° Recibo" data-direction="top">
+                                <i class="icon-number"></i>
+                            </span>
+                            <span data-tooltip="Sincronizar Recibos" data-direction="top">
                                 <i class="icon-sync"></i>
                                 <i class="counter">13</i>
+                            </span>
+                            <span data-tooltip="Instructivo" data-direction="top">
+                                <i class="icon-help"></i>
+                            </span>
+                            <span data-tooltip="Telepagos" data-direction="top">
+                                <i class="icon-telepago"></i>
+                            </span>
+                            <span data-tooltip="Reporte" data-direction="top">
+                                <i class="icon-report"></i>
                             </span>
                             <span class="type-button">
                                 <i class="icon-printer"></i>Imprimir
@@ -2856,7 +2825,7 @@
         </form>
     </div>
 
-    <div class="print-receipt">
+    <div id="preview-print" class="print-receipt">
         <!-- ============================================= -->
         <!-- PÁGINA 1 -->
         <!-- ============================================= -->
@@ -2866,16 +2835,22 @@
                 <div class="print-area">
                     <div class="row container-header">
                         <div class="col max-width-80mm logoEli header-align">
-                            <p class="_h1_ text-end">COLEGIO AMERICANO NICARAGÜENSE</p>
-                            <div class="container-headers">
+                            <div class="row">
+                                <div class="col-12">
+                                    <p class="_h1_ text-end">COLEGIO AMERICANO NICARAGÜENSE</p>
+                                    <div class="container-address">
 
-                                <p class=" text-center _h2_">INSTITUTO DEL IDIOMA INGLES<br>ENGLISH LANGUAGE INSTITUTE
-                                    <br><span>E.L.I -
-                                        SAN JUAN DEL SUR </span>
-                                    <br>San Juan del Sur Day School Finca Las Nubes,<br>Barrio Hermanos Mendiza, Km
-                                    136<br>
-                                    Carretera San Juan del Sur. TElÉFONO: 8150-5470
-                                </p>
+                                        <p class=" text-center _h2_">INSTITUTO DEL IDIOMA INGLES<br>ENGLISH LANGUAGE
+                                            INSTITUTE
+                                            <br><span>E.L.I -
+                                                SAN JUAN DEL SUR </span>
+                                            <br>San Juan del Sur Day School Finca Las Nubes,<br>Barrio Hermanos Mendiza,
+                                            Km
+                                            136<br>
+                                            Carretera San Juan del Sur. TElÉFONO: 8150-5470
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col">
@@ -2905,9 +2880,9 @@
                         <div class="row">
 
                             <div class="col">
-                                <div class="bow-row">
-                                    <span>RECIBIMOS DE:<br>EN REPRESENTACIÓN DE:</span>
-                                    <span>Compañía Cervecera de Nicaragua<br>Rocha Ortiz Guillermo Mauricio</span>
+                                <div class="bow-row" data-idfield="txt_name">
+                                    <span class="label">A NOMBRE DE:</span>
+                                    <span class="value"></span>
                                 </div>
                             </div>
 
@@ -2917,32 +2892,32 @@
                         <div class="row">
 
                             <div class="col max-width-90px">
-                                <div class="bow-row">
-                                    <span>SESIÓN</span>
-                                    <span class="text-align-center">5</span>
+                                <div class="bow-row" data-idfield="txt_session">
+                                    <span class="label">SESIÓN</span>
+                                    <span class="value text-align-center"></span>
                                 </div>
                             </div>
-                            <div class="col max-width-300px">
+                            <div class="col max-width-300px" data-idfield="txt_level_category">
                                 <div class="bow-row">
-                                    <span>NIVEL - CATEGORÍA</span>
-                                    <span class="text-align-center">5 - Children Program ONLINE</span>
+                                    <span class="label">NIVEL - CATEGORÍA</span>
+                                    <span class="value text-align-center"></span>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="bow-row">
-                                    <span>NOMBRE DEL LIBRO:</span>
-                                    <span class="text-align-center">DOODLE TOWN NURSERY</span>
+                                <div class="bow-row" data-idfield="txt_book_name">
+                                    <span class="label">NOMBRE DEL LIBRO:</span>
+                                    <span class="value text-align-center"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col">
-                                <span class="_h3_">OBSERVACIONES/COMENTARIOS</span>
-                                <div class="border-box max-height-55mm"></div>
+                            <div class="col" data-idfield="txt_notes">
+                                <span class="label _h3_">OBSERVACIONES/COMENTARIOS</span>
+                                <div class="value border-box max-height-55mm"></div>
                             </div>
-                            <div class="col max-width-300px align-content-end">
+                            <div class="col-auto align-content-end">
                                 <span class="_h3_">EN CONCEPTO DE</span>
-                                <div class="border-box align-content-end">
+                                <div class="box_concepts border-box align-content-end ">
                                     <div class="container-amounts">
                                         <span class="label">COLEGIATURA:</span>
                                         <span class="amount">4,578.75</span>
@@ -2988,9 +2963,127 @@
         <!-- ============================================= -->
         <div class="page page-2">
             <div class="half-page">
-                ...
-            </div>
+                <div class="print-area">
+                    <div class="row container-header">
+                        <div class="col max-width-80mm logoEli header-align">
+                            <div class="row">
+                                <div class="col-12">
+                                    <p class="_h1_ text-end">COLEGIO AMERICANO NICARAGÜENSE</p>
+                                    <div class="container-address">
 
+                                        <p class=" text-center _h2_">INSTITUTO DEL IDIOMA INGLES<br>ENGLISH LANGUAGE
+                                            INSTITUTE
+                                            <br><span>E.L.I -
+                                                SAN JUAN DEL SUR </span>
+                                            <br>San Juan del Sur Day School Finca Las Nubes,<br>Barrio Hermanos Mendiza,
+                                            Km
+                                            136<br>
+                                            Carretera San Juan del Sur. TElÉFONO: 8150-5470
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="container-date">
+                                <p class="_h1_ 
+                     ">RECIBO DE CAJA</p>
+                                <div class="date">
+
+                                    <div class="box-day">
+                                        <span>DÍA</span>
+                                        <span class="number-day">25</span>
+                                    </div>
+                                    <div class="box-month">
+                                        <span>MES</span>
+                                        <span class="number-month">09</span>
+                                    </div>
+                                    <div class="box-year">
+                                        <span>AÑO</span>
+                                        <span class="number-year">2026</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-detail">
+                        <div class="row">
+
+                            <div class="col">
+                                <div class="bow-row" data-idfield="txt_name">
+                                    <span class="label">A NOMBRE DE:</span>
+                                    <span class="value"></span>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col max-width-90px">
+                                <div class="bow-row" data-idfield="txt_session">
+                                    <span class="label">SESIÓN</span>
+                                    <span class="value text-align-center"></span>
+                                </div>
+                            </div>
+                            <div class="col max-width-300px" data-idfield="txt_level_category">
+                                <div class="bow-row">
+                                    <span class="label">NIVEL - CATEGORÍA</span>
+                                    <span class="value text-align-center"></span>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="bow-row" data-idfield="txt_book_name">
+                                    <span class="label">NOMBRE DEL LIBRO:</span>
+                                    <span class="value text-align-center"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col" data-idfield="txt_notes">
+                                <span class="label _h3_">OBSERVACIONES/COMENTARIOS</span>
+                                <div class="value border-box max-height-55mm"></div>
+                            </div>
+                            <div class="col-auto align-content-end">
+                                <span class="_h3_">EN CONCEPTO DE</span>
+                                <div class="box_concepts border-box align-content-end ">
+                                    <div class="container-amounts">
+                                        <span class="label">COLEGIATURA:</span>
+                                        <span class="amount">4,578.75</span>
+                                    </div>
+                                    <div class="container-amounts">
+                                        <span class="label">DESCUENTO:</span>
+                                        <span class="amount">-470.00</span>
+                                    </div>
+                                    <div class="container-amounts">
+                                        <span class="label">LIBRO:</span>
+                                        <span class="amount">4,578.75</span>
+                                    </div>
+                                    <div class="container-amounts">
+                                        <span class="label">RETENCIÓN 2%:</span>
+                                        <span class="amount">-470.00</span>
+                                    </div>
+
+                                    <div class="container-amounts black">
+                                        <span class="label">TOTAL C$:</span>
+                                        <span class="amount">999,999,999.00</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row container-signatures">
+                        <div class="col signature">
+                            <span>RECIBÍ CONFORME</span>
+                            <span>ENTREGUÉ CONFORME</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

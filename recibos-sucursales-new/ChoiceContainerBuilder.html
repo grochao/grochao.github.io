@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>ChoiceContainerBuilder – Cash Calculator con label</title>
+    <title>ChoiceContainerBuilder – Todos los métodos</title>
     <style>
         :root {
             --border: #dcdcdc;
@@ -23,6 +23,34 @@
             --menu-shadow: 0 12px 32px rgba(0, 0, 0, .14);
         }
 
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: system-ui, sans-serif;
+            padding: 1.5rem;
+            background: #f7f7f9;
+            color: #222;
+            margin: 0
+        }
+
+        h1 {
+            margin: 0 0 1rem;
+            font-size: 1.25rem
+        }
+
+        h2 {
+            margin: 0 0 .5rem;
+            font-size: .85rem;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: #666
+        }
+
+        /* ============================================================
+   ChoiceContainerBuilder
+   ============================================================ */
         .choice-container {
             position: relative;
             display: inline-block;
@@ -139,7 +167,6 @@
             font-size: 1.1rem
         }
 
-        /* ✅ label de bloque directo en .menu (cash_calculator) */
         .menu>.full-line {
             font-weight: 600;
             margin-bottom: .55rem;
@@ -353,7 +380,7 @@
             margin: 0 auto;
             display: block;
             text-align: center;
-            padding: .05rem .4rem;
+            padding: .35rem .4rem;
             border: 1px solid var(--border-input-2);
             border-radius: 4px;
             font-size: 1rem;
@@ -463,11 +490,20 @@
             background: #eee
         }
 
-        body {
-            font-family: system-ui, sans-serif;
-            padding: 2rem;
-            background: #f7f7f9;
-            color: #222
+        /* ============================================================
+   Layout demo
+   ============================================================ */
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(480px, 1fr) minmax(360px, 1fr);
+            gap: 1.25rem;
+            align-items: start
+        }
+
+        @media (max-width:1100px) {
+            .layout {
+                grid-template-columns: 1fr
+            }
         }
 
         .choice-grouped {
@@ -484,78 +520,370 @@
             color: #333
         }
 
-        .demo-tools {
-            display: flex;
-            gap: .5rem;
-            flex-wrap: wrap;
-            margin: 1rem 0
+        .panel {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem
         }
 
-        .demo-tools button {
-            padding: .4rem .8rem;
+        .panel+.panel {
+            margin-top: 1rem
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .35rem;
+            margin-bottom: .5rem
+        }
+
+        .toolbar button {
+            padding: .4rem .7rem;
             border: 1px solid #888;
             border-radius: 6px;
             background: #fff;
-            cursor: pointer
+            cursor: pointer;
+            font-size: .8rem;
+            font-family: ui-monospace, Menlo, monospace
         }
 
-        .demo-tools button.primary {
+        .toolbar button:hover {
+            background: #f0f0f0
+        }
+
+        .toolbar button.primary {
             background: var(--primary);
             color: #fff;
             border-color: var(--primary)
         }
 
+        .toolbar button.primary:hover {
+            background: var(--primary-dark)
+        }
+
+        .toolbar button.danger {
+            background: var(--danger);
+            color: #fff;
+            border-color: var(--danger)
+        }
+
+        .toolbar button.danger:hover {
+            background: #a51a1a
+        }
+
+        .toolbar-group {
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            padding: .55rem;
+            margin-bottom: .55rem
+        }
+
+        .toolbar-group h4 {
+            margin: 0 0 .4rem;
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: #777;
+            font-family: ui-monospace, Menlo, monospace
+        }
+
         #out {
-            margin-top: 1rem;
+            margin: 0;
             padding: .8rem;
-            background: #111;
-            color: #0f0;
+            background: #0e1116;
+            color: #8ef7a8;
             font-family: ui-monospace, Menlo, monospace;
             white-space: pre-wrap;
             border-radius: 8px;
-            max-height: 420px;
+            font-size: .75rem;
+            max-height: 400px;
             overflow: auto;
-            font-size: .8rem
+            min-height: 220px
+        }
+
+        .state-row {
+            display: flex;
+            gap: .4rem;
+            flex-wrap: wrap;
+            margin-top: .5rem;
+            font-size: .75rem
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            padding: .15rem .5rem;
+            border-radius: 999px;
+            background: #eef2f7;
+            color: #333;
+            border: 1px solid var(--border);
+            font-family: ui-monospace, monospace
+        }
+
+        .badge.on {
+            background: #e6f7ef;
+            border-color: #9ad9b8;
+            color: #0a5
+        }
+
+        .badge.off {
+            background: #fff0f0;
+            border-color: #f4a9a9;
+            color: var(--danger)
+        }
+
+        .logs {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #0e1116;
+            color: #cfe9ff;
+            font-family: ui-monospace, monospace;
+            font-size: .7rem;
+            max-height: 180px;
+            overflow: auto;
+            padding: .55rem
+        }
+
+        .logs .ln {
+            white-space: pre-wrap;
+            padding: .05rem 0
+        }
+
+        .logs .ts {
+            color: #7c8c9c
+        }
+
+        .logs .kind {
+            color: #f7d774;
+            font-weight: 600
+        }
+
+        .logs .empty {
+            color: #666;
+            font-style: italic
         }
     </style>
 </head>
 
 <body>
 
-    <h1>ChoiceContainerBuilder – Cash Calculator con label</h1>
+    <h1>ChoiceContainerBuilder – Todos los métodos públicos</h1>
 
-    <section class="choice-grouped" id="grupo-pagos">
-        <h3>Formas de pago (checkbox)</h3>
-        <div class="choice-container" data-choice_id="pago_efectivo" data-type_element="checkbox"></div>
-        <div class="choice-container" data-choice_id="pago_cheques" data-type_element="checkbox"></div>
-        <div class="choice-container" data-choice_id="pago_transferencia" data-type_element="checkbox"></div>
-        <div class="choice-container" data-choice_id="pago_otro" data-type_element="checkbox"></div>
-    </section>
+    <div class="layout">
 
-    <section class="choice-grouped" id="grupo-turno">
-        <h3>Turno (radio)</h3>
-        <div class="choice-container" data-choice_id="turno_dia" data-type_element="radio"></div>
-        <div class="choice-container" data-choice_id="turno_noche" data-type_element="radio"></div>
-        <div class="choice-container" data-choice_id="turno_madrugada" data-type_element="radio"></div>
-    </section>
+        <!-- ================================================== -->
+        <!-- COLUMNA IZQUIERDA: choices + botones               -->
+        <!-- ================================================== -->
+        <div>
+            <section class="choice-grouped" id="grupo-pagos">
+                <h3>Formas de pago (checkbox)</h3>
+                <div class="choice-container" data-choice_id="txt_method_cash" data-type_element="checkbox"></div>
+                <div class="choice-container" data-choice_id="pago_cheques" data-type_element="checkbox"></div>
+                <div class="choice-container" data-choice_id="pago_transferencia" data-type_element="checkbox"></div>
+                <div class="choice-container" data-choice_id="pago_otro" data-type_element="checkbox"></div>
+            </section>
 
-    <div class="demo-tools">
-        <button id="b-build" class="primary">buildAll()</button>
-        <button id="b-get-choices">getChoices()</button>
-        <button id="b-get-choice">getChoice(pago_efectivo)</button>
-        <button id="b-set-choice">setChoice()</button>
-        <button id="b-remove-choice">removeChoice()</button>
-        <button id="b-has-choice">hasChoice()</button>
-        <button id="b-disable">disableAll()</button>
-        <button id="b-enable">enableAll()</button>
-        <button id="b-groups">listGroups()</button>
-        <button id="b-all-json">getAllChoicesJSON()</button>
-        <button id="b-last">lastAcceptedValues</button>
-        <button id="b-detach">detachEvents()</button>
-        <button id="b-attach">attachEvents()</button>
+            <section class="choice-grouped" id="grupo-turno">
+                <h3>Turno (radio)</h3>
+                <div class="choice-container" data-choice_id="turno_dia" data-type_element="radio"></div>
+                <div class="choice-container" data-choice_id="turno_noche" data-type_element="radio"></div>
+                <div class="choice-container" data-choice_id="turno_madrugada" data-type_element="radio"></div>
+            </section>
+
+            <!-- ====== PANEL: BUILD / RESET ====== -->
+            <div class="panel">
+                <h2>Build / Reset</h2>
+                <div class="toolbar-group">
+                    <h4>Construcción</h4>
+                    <div class="toolbar">
+                        <button class="primary" data-api="buildAll">buildAll()</button>
+                        <button data-api="build-one">build(el)</button>
+                        <button data-api="createFragment">createFragment({…})</button>
+                        <button data-api="appendFragment">append fragment al DOM</button>
+                        <button data-api="resetUsedIds">resetUsedIds()</button>
+                        <button data-api="getUsedIds">getUsedIds()</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== PANEL: CONFIG ====== -->
+            <div class="panel">
+                <h2>Configuración de choices</h2>
+                <div class="toolbar-group">
+                    <h4>Lectura / escritura</h4>
+                    <div class="toolbar">
+                        <button data-api="getChoices">getChoices()</button>
+                        <button data-api="getChoice">getChoice(txt_method_cash)</button>
+                        <button data-api="setChoice">setChoice(pago_otro, …)</button>
+                        <button class="danger" data-api="removeChoice">removeChoice(pago_otro)</button>
+                        <button data-api="hasChoice">hasChoice(txt_method_cash)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== PANEL: ENABLE / DISABLE ====== -->
+            <div class="panel">
+                <h2>Enable / Disable</h2>
+                <div class="toolbar-group">
+                    <div class="toolbar">
+                        <button class="danger" data-api="disableAll">disableAll()</button>
+                        <button class="primary" data-api="enableAll">enableAll()</button>
+                        <button data-api="areAllDisabled">areAllDisabled ?</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== PANEL: UNCHECK ====== -->
+            <div class="panel">
+                <h2>Uncheck</h2>
+                <div class="toolbar-group">
+                    <h4>Uno solo</h4>
+                    <div class="toolbar">
+                        <button class="danger" data-api="uncheck-cash">uncheck(txt_method_cash)</button>
+                        <button class="danger" data-api="uncheck-chq">uncheck(pago_cheques)</button>
+                        <button class="danger" data-api="uncheck-radio">uncheck(turno_dia)</button>
+                    </div>
+                </div>
+                <div class="toolbar-group">
+                    <h4>Por grupo / contexto</h4>
+                    <div class="toolbar">
+                        <button class="danger" data-api="uncheck-group-pagos">uncheckAll(#grupo-pagos)</button>
+                        <button class="danger" data-api="uncheck-group-turno">uncheckAll(#grupo-turno)</button>
+                        <button class="danger" data-api="uncheck-all">uncheckAll()</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== PANEL: GRUPOS ====== -->
+            <div class="panel">
+                <h2>Grupos</h2>
+                <div class="toolbar-group">
+                    <div class="toolbar">
+                        <button data-api="listGroups">listGroups()</button>
+                        <button data-api="getGroupType">getGroupType(#grupo-pagos)</button>
+                        <button data-api="getGroupId">getGroupId(#grupo-turno)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== PANEL: LECTURA ====== -->
+            <div class="panel">
+                <h2>Lectura de valores</h2>
+                <div class="toolbar-group">
+                    <div class="toolbar">
+                        <button data-api="getContainerAccepted">getContainerAccepted(txt_method_cash)</button>
+                        <button data-api="getGroupedValues">getGroupedValues(#grupo-pagos)</button>
+                        <button data-api="getGroupedString">getGroupedString(#grupo-pagos)</button>
+                        <button data-api="getGroupedFlat">getGroupedFlat(#grupo-pagos)</button>
+                        <button data-api="getMenuValues">getMenuValues(pago_cheques)</button>
+                        <button data-api="lastAccepted">lastAcceptedValues</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== PANEL: SNAPSHOT / JSON ====== -->
+            <div class="panel">
+                <h2>Snapshots / JSON</h2>
+                <div class="toolbar-group">
+                    <div class="toolbar">
+                        <button data-api="getAllChoices">getAllChoices()</button>
+                        <button class="primary" data-api="getAllChoicesJSON">getAllChoicesJSON()</button>
+                        <button data-api="getAllChoicesJSONGrp">getAllChoicesJSON(#grupo-pagos)</button>
+                        <button data-api="getAllChoicesJSONOne">getAllChoicesJSON(txt_method_cash)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== PANEL: TABLA (filas dinámicas) ====== -->
+            <div class="panel">
+                <h2>Tabla – Filas dinámicas (pago_cheques)</h2>
+                <div class="toolbar-group">
+                    <h4>insertRow</h4>
+                    <div class="toolbar">
+                        <button class="primary" data-api="insertRow-auto">insertRow({fields}) [auto]</button>
+                        <button data-api="insertRow-nuevoID">insertRow({idRow:"nuevoID"})</button>
+                        <button data-api="insertRow-cheque-abc">insertRow({idRow:"cheque-abc"})</button>
+                    </div>
+                </div>
+                <div class="toolbar-group">
+                    <h4>removeRow / getRows / getRow / getTable</h4>
+                    <div class="toolbar">
+                        <button class="danger" data-api="removeRow-last">removeRow(última)</button>
+                        <button class="danger" data-api="removeRow-nuevoID">removeRow("nuevoID")</button>
+                        <button data-api="getRows">getRows(pago_cheques)</button>
+                        <button data-api="getRow">getRow(pago_cheques, "1")</button>
+                        <button data-api="getTable">getTable(pago_cheques).getRows()</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====== PANEL: EVENTOS / LISTENERS / CALLBACKS ====== -->
+            <div class="panel">
+                <h2>Eventos · Listeners · Callbacks</h2>
+                <div class="toolbar-group">
+                    <h4>Listeners</h4>
+                    <div class="toolbar">
+                        <button data-api="attachEvents">attachEvents()</button>
+                        <button data-api="detachEvents">detachEvents()</button>
+                        <button data-api="isListening">isListening()</button>
+                    </div>
+                </div>
+                <div class="toolbar-group">
+                    <h4>Debug</h4>
+                    <div class="toolbar">
+                        <button data-api="setDebugTrue">setDebug(true)</button>
+                        <button data-api="setDebugFalse">setDebug(false)</button>
+                    </div>
+                </div>
+                <div class="toolbar-group">
+                    <h4>Callbacks</h4>
+                    <div class="toolbar">
+                        <button data-api="setOnAccept">setOnAccept(logger)</button>
+                        <button data-api="clearOnAccept">setOnAccept(null)</button>
+                        <button data-api="setOnChange">setOnChange(logger)</button>
+                        <button data-api="clearOnChange">setOnChange(null)</button>
+                        <button data-api="setOnClick">setOnClick(logger)</button>
+                        <button data-api="clearOnClick">setOnClick(null)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================== -->
+        <!-- COLUMNA DERECHA: output + logs + estado            -->
+        <!-- ================================================== -->
+        <div>
+            <div class="panel">
+                <h2>Estado actual</h2>
+                <div class="state-row">
+                    <span class="badge" id="st-listening">isListening: —</span>
+                    <span class="badge" id="st-disabled">areAllDisabled: —</span>
+                    <span class="badge" id="st-debug">debug: —</span>
+                    <span class="badge" id="st-onclick">onClick: —</span>
+                    <span class="badge" id="st-onchange">onchange: —</span>
+                    <span class="badge" id="st-onaccept">onAccept: —</span>
+                    <span class="badge" id="st-choices">getChoices().length: —</span>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2>Output</h2>
+                <pre id="out">(pulsa cualquier botón)</pre>
+            </div>
+
+            <div class="panel">
+                <h2>Logs (onclick · onchange · onAccept · choice:accepted · choice:unchecked)</h2>
+                <div class="logs" id="logs">
+                    <div class="empty">(todavía sin eventos)</div>
+                </div>
+                <div class="toolbar" style="margin-top:.5rem">
+                    <button data-api="clearLogs">Limpiar logs</button>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <pre id="out">(pulsa un botón)</pre>
 
     <script>
         /* ================================================================
@@ -598,7 +926,7 @@
             #clickHandler = null; #listenerAttached = false; #clickDebug = false;
             #usedIds = new Set();
             #lastAcceptedValues = null;
-            #onAccept = null; #onChange = null;
+            #onAccept = null; #onChange = null; #onClick = null;
             #choicesMap = new Map();
 
             static DEFAULT_DENOMINATIONS = [1000, 500, 200, 100, 50, 20, 10, 5, 1];
@@ -616,18 +944,14 @@
                 this.#clickDebug = this.#options.debug;
                 this.#onAccept = options.onAccept || null;
                 this.#onChange = options.onchange || options.onChange || null;
+                this.#onClick = options.onclick || options.onClick || null;
 
-                if (Array.isArray(options.choices)) {
-                    options.choices.forEach(c => this.#registerChoiceConfig(c));
-                }
-
+                if (Array.isArray(options.choices)) options.choices.forEach(c => this.#registerChoiceConfig(c));
                 this.#ensureGroupIds();
                 if (this.#options.autoAttachEvents) this.attachEvents();
             }
 
-            // ============================================================
-            //  API DE CONFIGURACIÓN
-            // ============================================================
+            // === API de configuración ===
             #registerChoiceConfig(choice) {
                 if (!choice || choice.id == null) return;
                 const id = String(choice.id);
@@ -638,9 +962,7 @@
                     type_element: choice.type_element ?? choice.typeElement ?? null
                 });
             }
-            getChoices() {
-                return Array.from(this.#choicesMap.entries()).map(([id, v]) => ({ id, ...v }));
-            }
+            getChoices() { return Array.from(this.#choicesMap.entries()).map(([id, v]) => ({ id, ...v })); }
             getChoice(id) { return this.#choicesMap.get(String(id)) || null; }
             setChoice(id, config = {}) { this.#registerChoiceConfig({ id, ...config }); return this; }
             removeChoice(id) { this.#choicesMap.delete(String(id)); return this; }
@@ -653,15 +975,12 @@
                 return Array.from(c).every(x => x.querySelector('.choice-buttons')?.hasAttribute('data-choice-disabled') ?? false);
             }
 
-            // ============================================================
-            //  CONSTRUCCIÓN
-            // ============================================================
+            // === Construcción ===
             buildAll() {
                 this.#ensureGroupIds();
                 const c = this.#context.querySelectorAll(this.#selector);
                 let n = 0; c.forEach(x => { if (this.build(x)) n++; }); return n;
             }
-
             build(containerOrSelector) {
                 const c = this.#resolveContainer(containerOrSelector);
                 if (!c) { console.warn('build: no encontrado →', containerOrSelector); return false; }
@@ -669,9 +988,7 @@
 
                 const id = c.dataset.choice_id || '';
                 if (!id) { console.warn('build: falta data-choice_id'); return false; }
-
                 const cfg = this.#choicesMap.get(id) || null;
-
                 if (cfg?.type_element && !c.dataset.type_element) c.dataset.type_element = cfg.type_element;
                 if (cfg?.label && !c.dataset.choice_label) c.dataset.choice_label = cfg.label;
 
@@ -679,7 +996,6 @@
                 if (!c.dataset.type_element) c.dataset.type_element = type;
 
                 const label = c.dataset.choice_label || '';
-
                 const structure = this.#createStructure({ typeElement: type, id, label });
                 c.insertBefore(structure, c.firstChild);
 
@@ -692,7 +1008,6 @@
 
                 let menuSpan = c.querySelector('span.menu');
                 const cfgHasTemplate = !!(cfg && cfg.template);
-
                 if (!menuSpan && cfgHasTemplate) {
                     menuSpan = document.createElement('span');
                     menuSpan.classList.add('menu');
@@ -707,7 +1022,6 @@
                     menuSpan.addEventListener('input', () => this.#emitChange(c));
                     menuSpan.addEventListener('change', () => this.#emitChange(c));
                 }
-
                 if (!this.#options.preserveAttributes) {
                     delete c.dataset.type_element;
                     delete c.dataset.choice_id;
@@ -722,11 +1036,108 @@
             }
             resetUsedIds() { this.#usedIds.clear(); return this; }
             getUsedIds() { return [...this.#usedIds]; }
-
             disableAll() { const c = this.#context.querySelectorAll(this.#selector); c.forEach(x => this.#setDisabled(x, true)); return this; }
             enableAll() { const c = this.#context.querySelectorAll(this.#selector); c.forEach(x => this.#setDisabled(x, false)); return this; }
 
-            // TIPO
+            // === Uncheck ===
+            uncheck(choiceOrSelector) {
+                const container = this.#resolveContainer(choiceOrSelector);
+                if (!container) { console.warn('uncheck: no encontrado →', choiceOrSelector); return false; }
+                if (!container.querySelector('.choice-buttons')) { console.warn('uncheck: no construido'); return false; }
+                this.#deselectContainer(container);
+                this.#emitClick(container, false);
+                this.#emitChange(container);
+                const detail = this.#buildMeta(container, false);
+                container.dispatchEvent(new CustomEvent('choice:unchecked', { bubbles: true, detail }));
+                return true;
+            }
+            uncheckAll(target) {
+                let containers = [];
+                if (!target) containers = Array.from(this.#context.querySelectorAll(this.#selector));
+                else {
+                    const one = this.#resolveContainer(target);
+                    if (one) containers = [one];
+                    else {
+                        const grp = this.#resolveGrouped(target);
+                        if (grp) containers = Array.from(grp.querySelectorAll(this.#selector));
+                        else if (target instanceof Element) containers = Array.from(target.querySelectorAll(this.#selector));
+                        else if (typeof target === 'string') {
+                            const q = this.#context.querySelector(target);
+                            if (q) containers = Array.from(q.querySelectorAll(this.#selector));
+                        }
+                    }
+                }
+                let n = 0;
+                containers.forEach(c => { if (this.uncheck(c)) n++; });
+                return n;
+            }
+
+            // === Tabla dinámica ===
+            #nextTableRowId(table) {
+                const used = new Set(); let max = 0;
+                table.querySelectorAll('tr[data-row-id]').forEach(tr => {
+                    const v = tr.getAttribute('data-row-id') || '';
+                    used.add(v);
+                    const n = parseInt(v, 10);
+                    if (!isNaN(n) && n > max) max = n;
+                });
+                let n = max + 1; while (used.has(String(n))) n++;
+                return String(n);
+            }
+            insertRow(choiceOrSelector, rowData = {}) {
+                const container = this.#resolveContainer(choiceOrSelector); if (!container) return null;
+                const menu = container.querySelector('.menu'); if (!menu) return null;
+                const table = menu.querySelector('table.choice-table'); if (!table) return null;
+                const tbody = table.querySelector('tbody'); if (!tbody) return null;
+                const hasCustom = rowData.idRow != null && String(rowData.idRow).trim() !== '';
+                const rowId = hasCustom ? String(rowData.idRow).trim() : this.#nextTableRowId(table);
+                const tr = document.createElement('tr');
+                tr.classList.add('menu-row');
+                tr.setAttribute('data-row-id', rowId);
+                (Array.isArray(rowData.fields) ? rowData.fields : []).forEach(f => {
+                    const td = document.createElement('td'); td.appendChild(this.#renderField(f)); tr.appendChild(td);
+                });
+                if (rowData.beforeRowId != null) {
+                    const ref = tbody.querySelector(`tr[data-row-id="${CSS.escape(String(rowData.beforeRowId))}"]`);
+                    if (ref) tbody.insertBefore(tr, ref); else tbody.appendChild(tr);
+                } else tbody.appendChild(tr);
+                this.#wireNumberInputs(tr); this.#wireIntegerInputs(tr);
+                this.#updateAutosum(menu); this.#emitChange(container);
+                return tr;
+            }
+            removeRow(choiceOrSelector, rowId) {
+                const container = this.#resolveContainer(choiceOrSelector); if (!container) return false;
+                const table = container.querySelector('table.choice-table'); if (!table) return false;
+                const tr = table.querySelector(`tr[data-row-id="${CSS.escape(String(rowId))}"]`); if (!tr) return false;
+                tr.remove();
+                this.#updateAutosum(container.querySelector('.menu'));
+                this.#emitChange(container);
+                return true;
+            }
+            getRows(choiceOrSelector) {
+                const container = this.#resolveContainer(choiceOrSelector); if (!container) return [];
+                const table = container.querySelector('table.choice-table'); if (!table) return [];
+                return Array.from(table.querySelectorAll('tbody tr[data-row-id]'))
+                    .map(tr => ({ idRow: tr.getAttribute('data-row-id'), element: tr }));
+            }
+            getRow(choiceOrSelector, rowId) {
+                const container = this.#resolveContainer(choiceOrSelector); if (!container) return null;
+                const table = container.querySelector('table.choice-table'); if (!table) return null;
+                return table.querySelector(`tr[data-row-id="${CSS.escape(String(rowId))}"]`);
+            }
+            getTable(choiceOrSelector) {
+                const container = this.#resolveContainer(choiceOrSelector); if (!container) return null;
+                const self = this;
+                return {
+                    element: container,
+                    insertRow: (rowData = {}) => self.insertRow(container, rowData),
+                    removeRow: (rowId) => self.removeRow(container, rowId),
+                    getRows: () => self.getRows(container),
+                    getRow: (rowId) => self.getRow(container, rowId)
+                };
+            }
+
+            // === Tipo ===
             getGroupType(input) {
                 let container = null;
                 if (input instanceof Element && input.classList.contains('choice-container')) container = input;
@@ -759,7 +1170,7 @@
                     .map(g => ({ id: g.id, type: this.getGroupType(g), element: g }));
             }
 
-            // LECTURA
+            // === Lectura ===
             getContainerAccepted(c) {
                 const el = this.#resolveContainer(c); if (!el) return null;
                 const i = el.querySelector('input.choice_accepted'); if (!i || !i.value) return null;
@@ -790,7 +1201,7 @@
                 return this.#collectValues(m);
             }
 
-            // SNAPSHOT
+            // === Snapshot ===
             getAllChoices(target) {
                 let root = this.#context;
                 if (target) {
@@ -818,6 +1229,17 @@
                 const menu = container.querySelector('.menu');
                 const cfg = this.#choicesMap.get(container.dataset.choice_id || '') || null;
 
+                let type_template = 'default';
+                if (cfg?.template?.type) type_template = String(cfg.template.type).toLowerCase();
+                else if (menu) {
+                    const raw = menu.getAttribute('data-template');
+                    if (raw) {
+                        try {
+                            const parsed = this.#parseTemplate(raw);
+                            if (parsed && parsed.type) type_template = String(parsed.type).toLowerCase();
+                        } catch (_) { }
+                    }
+                }
                 let acceptedData = null;
                 if (acceptedInput?.value) {
                     try {
@@ -834,10 +1256,12 @@
                     menuData = { rows: live.rows, flat: this.#restructureFlat(live.rows), prefixes: live.prefixes };
                 }
                 const autosum = menu ? this.#computeAutosum(menu) : 0;
+
                 return {
                     choiceId: container.dataset.choice_id || null,
                     label: container.dataset.choice_label || '',
                     type: this.getGroupType(container),
+                    type_template,
                     checked: choiceValue?.value === 'checked',
                     accepted: !!acceptedData,
                     disabled: labelEl?.hasAttribute('data-choice-disabled') ?? false,
@@ -868,7 +1292,7 @@
                 return { row: rowArr, ...extras };
             }
 
-            // EVENTOS
+            // === Eventos ===
             attachEvents() {
                 if (this.#listenerAttached && this.#clickHandler) return this;
                 this.#clickHandler = (e) => this.#handleClick(e);
@@ -886,12 +1310,40 @@
             setDebug(b = true) { this.#clickDebug = b; return this; }
             setOnAccept(cb) { this.#onAccept = cb || null; return this; }
             setOnChange(cb) { this.#onChange = cb || null; return this; }
+            setOnClick(cb) { this.#onClick = cb || null; return this; }
 
             #emitChange(container) {
                 if (typeof this.#onChange !== 'function' || !container) return;
                 const menu = container.querySelector('.menu');
                 const values = this.#buildValuesArray(menu);
-                try { this.#onChange(container, values); } catch (e) { console.error(e); }
+                try { this.#onChange(container, values, this); } catch (e) { console.error(e); }
+            }
+            #emitClick(container, isChecked) {
+                if (typeof this.#onClick !== 'function' || !container) return;
+                const meta = this.#buildMeta(container, isChecked);
+                try { this.#onClick(container, isChecked, meta, this); } catch (e) { console.error(e); }
+            }
+            #buildMeta(container, isChecked) {
+                const labelEl = container.querySelector('.choice-buttons');
+                const cfg = this.#choicesMap.get(container.dataset.choice_id || '') || null;
+                let type_template = 'default';
+                if (cfg?.template?.type) type_template = String(cfg.template.type).toLowerCase();
+                else {
+                    const menu = container.querySelector('.menu');
+                    if (menu?.getAttribute('data-template')) {
+                        try {
+                            const parsed = this.#parseTemplate(menu.getAttribute('data-template'));
+                            if (parsed?.type) type_template = String(parsed.type).toLowerCase();
+                        } catch (_) { }
+                    }
+                }
+                return {
+                    choiceId: container.dataset.choice_id || null,
+                    label: labelEl?.querySelector('.label')?.textContent?.trim() || '',
+                    type: this.getGroupType(container),
+                    type_template,
+                    state: isChecked ? 'checked' : 'unchecked'
+                };
             }
             #buildValuesArray(menu) {
                 if (!menu) return [];
@@ -913,7 +1365,7 @@
                 return out;
             }
 
-            // HELPERS NUMÉRICOS
+            // === Helpers numéricos ===
             #formatNumber(v) {
                 const n = (typeof v === 'number') ? v : parseFloat(String(v ?? '').replace(/,/g, ''));
                 if (!isFinite(n)) return '';
@@ -951,7 +1403,6 @@
                 if (c === '') return null;
                 const n = parseFloat(c); return isFinite(n) ? n : null;
             }
-
             #wireNumberInputs(root) {
                 root.querySelectorAll('input[data-type="number"]:not(.autosum-value):not(.cash-change)').forEach(input => {
                     if (input.dataset.numberWired === '1') return;
@@ -1001,7 +1452,6 @@
                     if (t.classList.contains('cash-subtotal')) return;
                     if (t.classList.contains('cash-total')) return;
                     if (t.classList.contains('cash-change')) return;
-
                     const inputs = Array.from(menu.querySelectorAll('input'))
                         .filter(i => i.type !== 'hidden' && i.type !== 'checkbox' && i.type !== 'radio'
                             && !i.readOnly
@@ -1024,7 +1474,7 @@
                 });
             }
 
-            // RENDER
+            // === Render ===
             #renderTableBlock(tableDef) {
                 const block = document.createElement('div'); block.classList.add('table-block');
                 if (tableDef?.label) block.appendChild(this.#renderBlockLabel(tableDef.label));
@@ -1037,17 +1487,18 @@
                     thead.appendChild(trh); table.appendChild(thead);
                 }
                 const tbody = document.createElement('tbody');
+                let autoId = 0;
                 (Array.isArray(tableDef?.fields) ? tableDef.fields : []).forEach(rowFields => {
                     const cols = Array.isArray(rowFields) ? rowFields : [rowFields];
-                    const tr = document.createElement('tr'); tr.classList.add('menu-row');
+                    const tr = document.createElement('tr');
+                    tr.classList.add('menu-row');
+                    tr.setAttribute('data-row-id', String(++autoId));
                     cols.forEach(f => { const td = document.createElement('td'); td.appendChild(this.#renderField(f)); tr.appendChild(td); });
                     tbody.appendChild(tr);
                 });
                 table.appendChild(tbody); block.appendChild(table);
                 return block;
             }
-
-            /** ✅ NUEVO: helper que arma el bloque .full-line + .details-label */
             #renderBlockLabel(text) {
                 const lc = document.createElement('div');
                 lc.classList.add('full-line');
@@ -1057,7 +1508,6 @@
                 lc.appendChild(ls);
                 return lc;
             }
-
             #renderAutosumRow() {
                 const row = document.createElement('div'); row.classList.add('menu-row', 'autosum-row');
                 const lc = document.createElement('div'); lc.classList.add('full-line');
@@ -1140,6 +1590,7 @@
                     ci.type = 'text'; ci.id = `details-${this.#resolveUniqueId('cash_change')}`; ci.name = ci.id;
                     ci.setAttribute('data-type', 'number'); ci.readOnly = true; ci.tabIndex = -1;
                     ci.classList.add('cash-change'); ci.value = 'C$ 0.00';
+                    ci.setAttribute('data-sign', 'positive');
                     c3.appendChild(ci);
                     cr.append(c1, c2, c3); w.appendChild(cr);
                 }
@@ -1176,6 +1627,7 @@
                 const max = this.#parseMaxAmount(menu.getAttribute('data-maxAmount'));
                 if (max == null) return;
                 const diff = gt - max;
+                cEl.setAttribute('data-sign', diff >= 0 ? 'positive' : 'negative');
                 cEl.value = 'C$ ' + this.#formatNumber(Math.abs(diff));
                 cRow.classList.remove('cash-change-positive', 'cash-change-negative');
                 cRow.classList.add(diff >= 0 ? 'cash-change-positive' : 'cash-change-negative');
@@ -1183,7 +1635,7 @@
                 if (lbl) lbl.textContent = diff >= 0 ? 'Vuelto:' : 'Falta:';
             }
 
-            // PRIVADOS
+            // === Privados ===
             #setDisabled(c, disabled) {
                 if (!c) return;
                 const l = c.querySelector('.choice-buttons');
@@ -1238,17 +1690,13 @@
                 const l = document.createElement('label');
                 l.classList.add('choice-buttons', 'calltoaction-click-choice');
                 l.setAttribute('for', id);
-
                 const i = document.createElement('input');
                 i.classList.add('choice_value'); i.type = 'hidden';
                 i.value = 'unchecked';
                 i.name = id; i.id = id;
-
                 const ic = document.createElement('span'); ic.classList.add('icon');
                 ic.appendChild(document.createElement('i'));
-
                 const ls = document.createElement('span'); ls.classList.add('label'); ls.textContent = label;
-
                 l.append(i, ic, ls);
                 return l;
             }
@@ -1261,7 +1709,6 @@
                     catch (e) { console.error('error data-template', e); return; }
                 }
                 if (!tpl || typeof tpl !== 'object') return;
-
                 menuSpan.innerHTML = '';
                 menuSpan.appendChild(this.#renderTemplate(tpl, menuSpan));
                 const type = (tpl.type || 'default').toLowerCase();
@@ -1283,16 +1730,12 @@
                     return new Function('return (' + n + ')')();
                 }
             }
-
-            /** ✅ MODIFICADO: ahora renderiza el label del cash_calculator si lo trae */
             #renderTemplate(tpl, menuEl) {
                 const f = document.createDocumentFragment();
                 f.appendChild(this.#renderMenuCloseButton());
                 const type = (tpl.type || 'default').toLowerCase();
-
                 if (type === 'cash_calculator') {
                     const max = this.#parseMaxAmount(menuEl?.getAttribute('data-maxAmount'));
-                    // 👇 NUEVO: si el template trae `label`, se pinta encima de la calculadora
                     if (typeof tpl.label === 'string' && tpl.label.trim() !== '') {
                         f.appendChild(this.#renderBlockLabel(tpl.label));
                     }
@@ -1305,7 +1748,6 @@
                 f.appendChild(this.#renderButtons());
                 return f;
             }
-
             #renderMenuCloseButton() {
                 const w = document.createElement('div'); w.classList.add('menu-close-wrapper');
                 const b = document.createElement('button');
@@ -1343,7 +1785,7 @@
                     if (type) el.setAttribute('data-type', type);
                     if (!hasLabel) el.placeholder = field.placeholder ?? (type === 'number' ? '0.00' : '');
                 }
-                if (pv) el.setAttribute('data-prefix_value', pv);
+                if (pv) el.setAttribute('data-prefix-value', pv);
                 if (hasLabel) {
                     const w = document.createElement('div'); w.classList.add('field-with-label');
                     const lb = document.createElement('label'); lb.setAttribute('for', id); lb.textContent = field.label;
@@ -1394,11 +1836,16 @@
                             const n = parseInt(this.#sanitizeIntegerInput(f.value) || '0', 10);
                             v = isNaN(n) ? 0 : n;
                         } else if (dt === 'number') {
-                            const n = this.#parseFormattedNumber(f.value.replace(/^C\$\s*/, ''));
+                            let n = this.#parseFormattedNumber(f.value.replace(/^C\$\s*/, ''));
+                            if (!isNaN(n)) {
+                                const sign = f.getAttribute('data-sign');
+                                if (sign === 'negative') n = -Math.abs(n);
+                                else if (sign === 'positive') n = Math.abs(n);
+                            }
                             v = isNaN(n) ? '' : n;
                         } else v = f.value;
                         vals[name] = v; flat[name] = v;
-                        const p = f.getAttribute('data-prefix_value'); if (p) prefixes[name] = p;
+                        const p = f.getAttribute('data-prefix-value'); if (p) prefixes[name] = p;
                     });
                     rows.push({ index: idx, label, classes: Array.from(row.classList), values: vals });
                 });
@@ -1422,7 +1869,7 @@
                     if (el.classList.contains('autosum-value')) return;
                     if (el.classList.contains('cash-subtotal')) return;
                     if (el.classList.contains('cash-total')) return;
-                    if (el.classList.contains('cash-change')) return;
+                    if (el.classList.contains('cash-change')) { el.setAttribute('data-sign', 'positive'); return; }
                     if (el.type === 'checkbox' || el.type === 'radio') el.checked = false;
                     else if (el.tagName === 'SELECT' && el.multiple) Array.from(el.options).forEach(o => o.selected = false);
                     else el.value = '';
@@ -1485,12 +1932,13 @@
                             groupContainers.forEach(o => { if (o !== container) this.#deselectContainer(o); });
                             if (menu) labelEl.classList.add('showmenu');
                             cv.value = 'checked';
+                            this.#emitClick(container, true);
                             if (menu) this.#emitChange(container);
                         } else {
                             const hasMenu = !!menu;
                             const acc = this.#isContainerAccepted(container);
                             if (cv.value === 'checked') {
-                                if (hasMenu && acc) { labelEl.classList.add('showmenu'); this.#emitChange(container); return; }
+                                if (hasMenu && acc) { labelEl.classList.add('showmenu'); this.#emitClick(container, true); this.#emitChange(container); return; }
                                 labelEl.classList.remove('showmenu', 'not-empty', 'hover-menu');
                                 cv.value = 'unchecked';
                                 const a = container?.querySelector('input.choice_accepted');
@@ -1500,6 +1948,7 @@
                                     if (ol && !ol.classList.contains('showmenu')) ol.classList.remove('disabled');
                                 });
                                 if (menu) this.#clearMenuInputs(menu);
+                                this.#emitClick(container, false);
                             } else {
                                 if (menu) labelEl.classList.add('showmenu');
                                 cv.value = 'checked';
@@ -1510,6 +1959,7 @@
                                         if (ol && !ol.classList.contains('showmenu')) ol.classList.add('disabled');
                                     });
                                 }
+                                this.#emitClick(container, true);
                                 if (menu) this.#emitChange(container);
                             }
                         }
@@ -1541,9 +1991,11 @@
                             }
                             a.value = JSON.stringify(data);
                             container.dispatchEvent(new CustomEvent('choice:accepted', { bubbles: true, detail: this.#lastAcceptedValues }));
+                            this.#emitClick(container, true);
                             this.#emitChange(container);
                             if (typeof this.#onAccept === 'function') {
-                                try { this.#onAccept(this.#lastAcceptedValues, container); } catch (e) { console.error(e); }
+                                try { this.#onAccept(this.#lastAcceptedValues, container, this); }
+                                catch (err) { console.error('error en onAccept', err); }
                             }
                         }
                         break;
@@ -1560,6 +2012,7 @@
                             const ol = o.querySelector('.choice-buttons');
                             if (ol && !ol.classList.contains('showmenu')) ol.classList.remove('disabled');
                         });
+                        this.#emitClick(container, false);
                         this.#emitChange(container);
                         break;
                     }
@@ -1582,8 +2035,57 @@
         }
 
         /* ================================================================
-           INSTANCIA DEMO — ahora el cash_calculator lleva `label`
+           DEMO + WIRING DE TODOS LOS BOTONES
            ================================================================ */
+        const out = document.getElementById('out');
+        const logs = document.getElementById('logs');
+
+        function print(title, data) {
+            const s = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+            out.textContent = `// ${title}\n${s}`;
+        }
+        function log(kind, ...args) {
+            if (logs.querySelector('.empty')) logs.innerHTML = '';
+            const ts = new Date().toLocaleTimeString();
+            const body = args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ');
+            const ln = document.createElement('div');
+            ln.className = 'ln';
+            ln.innerHTML = `<span class="ts">[${ts}]</span> <span class="kind">${kind}</span> ${body}`;
+            logs.appendChild(ln);
+            logs.scrollTop = logs.scrollHeight;
+            while (logs.children.length > 40) logs.removeChild(logs.firstChild);
+        }
+        function badge(id, text, on) {
+            const el = document.getElementById(id);
+            el.textContent = text;
+            el.className = 'badge ' + (on === undefined ? '' : (on ? 'on' : 'off'));
+        }
+        function refreshState() {
+            badge('st-listening', `isListening: ${builder.isListening()}`, builder.isListening());
+            badge('st-disabled', `areAllDisabled: ${builder.areAllDisabled}`, builder.areAllDisabled ? false : true);
+            badge('st-debug', `debug: ${debugFlag}`, debugFlag);
+            badge('st-onclick', `onClick: ${currentOnClick ? 'set' : 'null'}`);
+            badge('st-onchange', `onchange: ${currentOnChange ? 'set' : 'null'}`);
+            badge('st-onaccept', `onAccept: ${currentOnAccept ? 'set' : 'null'}`);
+            badge('st-choices', `getChoices().length: ${builder.getChoices().length}`);
+        }
+
+        let debugFlag = false;
+        let currentOnClick = null;
+        let currentOnChange = null;
+        let currentOnAccept = null;
+
+        const defaultOnClick = (el, isChecked, meta, ctx) => log('onclick', meta.choiceId, isChecked ? 'CHECKED' : 'UNCHECKED', `(${meta.type_template})`);
+        const defaultOnChange = (el, values, ctx) => log('onchange', el.dataset.choice_id, values.length, 'campos');
+        const defaultOnAccept = (accepted, container, ctx) => {
+            log('onAccept', container.dataset.choice_id, '→', accepted.getFlat());
+            refreshState();
+        };
+
+        currentOnClick = defaultOnClick;
+        currentOnChange = defaultOnChange;
+        currentOnAccept = defaultOnAccept;
+
         const builder = new ChoiceContainerBuilder({
             selector: '.choice-container[data-choice_id]',
             context: document,
@@ -1591,16 +2093,18 @@
             onlyEmpty: true,
             autoAttachEvents: true,
             debug: false,
-
+            onclick: currentOnClick,
+            onchange: currentOnChange,
+            onAccept: currentOnAccept,
             choices: [
                 {
-                    id: 'pago_efectivo',
-                    label: 'Efectivo',
+                    id: 'txt_method_cash',
+                    label: 'EFECTIVO',
                     type_element: 'checkbox',
                     maxAmount: 7894.50,
                     template: {
                         type: 'cash_calculator',
-                        label: 'Detalle el pago recibido en efectivo:',  // ✅ NUEVO
+                        label: 'Detalle el pago recibido en efectivo:',
                         denominations: [500, 100, 20, 5, 1]
                     }
                 },
@@ -1639,15 +2143,11 @@
                     }
                 },
                 { id: 'pago_otro', label: 'Otro', type_element: 'checkbox' },
-
                 {
                     id: 'turno_dia',
                     label: 'Día',
                     type_element: 'radio',
-                    template: {
-                        type: 'default',
-                        row: [{ fields: [{ label: 'Observación', type: 'text', id: 'turno_note' }] }]
-                    }
+                    template: { type: 'default', row: [{ fields: [{ label: 'Observación', type: 'text', id: 'turno_note' }] }] }
                 },
                 { id: 'turno_noche', label: 'Noche', type_element: 'radio' },
                 { id: 'turno_madrugada', label: 'Madrugada', type_element: 'radio' }
@@ -1655,32 +2155,174 @@
         });
 
         builder.buildAll();
-        document.addEventListener('choice:accepted', e => console.log('[choice:accepted]', e.detail.choiceId, e.detail.getFlat()));
+        refreshState();
+        print('init', { creados: builder.buildAll(), ids: builder.getUsedIds() });
 
-        const out = document.getElementById('out');
-        const print = (title, data) => {
-            const s = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
-            out.textContent = `// ${title}\n${s}`;
+        document.addEventListener('choice:accepted', e => log('choice:accepted', e.detail.choiceId, '→', e.detail.getFlat()));
+        document.addEventListener('choice:unchecked', e => log('choice:unchecked', e.detail.choiceId));
+
+        /* ================================================================
+           WIRING: cada botón ejecuta su método
+           ================================================================ */
+        const handlers = {
+            // --- Build / Reset ---
+            buildAll: () => {
+                const n = builder.buildAll();
+                print('buildAll()', { creados: n, ids: builder.getUsedIds() });
+                refreshState();
+            },
+            'build-one': () => {
+                const host = document.getElementById('grupo-turno');
+                const c = document.createElement('div');
+                c.className = 'choice-container';
+                c.dataset.choice_id = 'turno_extra_' + Date.now();
+                c.dataset.choice_label = 'Extra';
+                c.dataset.type_element = 'radio';
+                host.appendChild(c);
+                const ok = builder.build(c);
+                print('build(el)', { ok, id: c.dataset.choice_id, usedIds: builder.getUsedIds() });
+            },
+            createFragment: () => {
+                const frag = builder.createFragment({ typeElement: 'checkbox', id: 'frag_demo', label: 'Fragment demo' });
+                window.__lastFragment = frag;
+                print('createFragment({…})', { nodos: frag.childNodes.length, ids: builder.getUsedIds() });
+            },
+            appendFragment: () => {
+                if (!window.__lastFragment) return print('append fragment', 'no hay fragment previo');
+                const wrap = document.createElement('div');
+                wrap.className = 'choice-container';
+                wrap.dataset.choice_id = 'frag_demo';
+                wrap.dataset.choice_label = 'Fragment';
+                wrap.dataset.type_element = 'checkbox';
+                wrap.appendChild(window.__lastFragment);
+                document.getElementById('grupo-turno').appendChild(wrap);
+                window.__lastFragment = null;
+                print('append fragment', 'ok');
+            },
+            resetUsedIds: () => { builder.resetUsedIds(); print('resetUsedIds()', { ids: builder.getUsedIds() }); },
+            getUsedIds: () => print('getUsedIds()', builder.getUsedIds()),
+
+            // --- Config ---
+            getChoices: () => print('getChoices()', builder.getChoices().map(c => ({ id: c.id, type_template: c.template?.type, maxAmount: c.maxAmount, type_element: c.type_element }))),
+            getChoice: () => print('getChoice("txt_method_cash")', builder.getChoice('txt_method_cash')),
+            setChoice: () => {
+                builder.setChoice('pago_otro', {
+                    template: { type: 'default', row: [{ fields: [{ label: 'Nota', type: 'text', id: 'otro_note' }] }] }
+                });
+                print('setChoice("pago_otro", …)', 'ok — pulsa buildAll para reconstruir');
+            },
+            removeChoice: () => { builder.removeChoice('pago_otro'); print('removeChoice("pago_otro")', { has: builder.hasChoice('pago_otro') }); },
+            hasChoice: () => print('hasChoice("txt_method_cash")', { value: builder.hasChoice('txt_method_cash') }),
+
+            // --- Enable / Disable ---
+            disableAll: () => { builder.disableAll(); print('disableAll()', { areAllDisabled: builder.areAllDisabled }); refreshState(); },
+            enableAll: () => { builder.enableAll(); print('enableAll()', { areAllDisabled: builder.areAllDisabled }); refreshState(); },
+            areAllDisabled: () => print('areAllDisabled', { value: builder.areAllDisabled }),
+
+            // --- Uncheck ---
+            'uncheck-cash': () => print('uncheck("txt_method_cash")', { ok: builder.uncheck('txt_method_cash') }),
+            'uncheck-chq': () => print('uncheck("pago_cheques")', { ok: builder.uncheck('pago_cheques') }),
+            'uncheck-radio': () => print('uncheck("turno_dia")', { ok: builder.uncheck('turno_dia') }),
+            'uncheck-group-pagos': () => print('uncheckAll("#grupo-pagos")', { total: builder.uncheckAll('#grupo-pagos') }),
+            'uncheck-group-turno': () => print('uncheckAll("#grupo-turno")', { total: builder.uncheckAll('#grupo-turno') }),
+            'uncheck-all': () => print('uncheckAll()', { total: builder.uncheckAll() }),
+
+            // --- Grupos ---
+            listGroups: () => print('listGroups()', builder.listGroups().map(g => ({ id: g.id, type: g.type }))),
+            getGroupType: () => print('getGroupType("#grupo-pagos")', { type: builder.getGroupType('#grupo-pagos') }),
+            getGroupId: () => print('getGroupId("#grupo-turno")', { id: builder.getGroupId('#grupo-turno') }),
+
+            // --- Lectura ---
+            getContainerAccepted: () => {
+                const r = builder.getContainerAccepted('txt_method_cash');
+                print('getContainerAccepted("txt_method_cash")', r ? r.toJSON() : 'null (no aceptado)');
+            },
+            getGroupedValues: () => print('getGroupedValues("#grupo-pagos")', builder.getGroupedValues('#grupo-pagos').map(x => x.toJSON())),
+            getGroupedString: () => print('getGroupedString("#grupo-pagos")', builder.getGroupedString('#grupo-pagos')),
+            getGroupedFlat: () => print('getGroupedFlat("#grupo-pagos")', builder.getGroupedFlat('#grupo-pagos')),
+            getMenuValues: () => print('getMenuValues("pago_cheques")', builder.getMenuValues('pago_cheques')),
+            lastAccepted: () => { const v = builder.lastAcceptedValues; print('lastAcceptedValues', v ? v.toJSON() : 'null'); },
+
+            // --- Snapshots ---
+            getAllChoices: () => print('getAllChoices()', builder.getAllChoices().map(c => ({
+                choiceId: c.choiceId, type: c.type, type_template: c.type_template,
+                checked: c.checked, accepted: c.accepted, autosum: c.autosum
+            }))),
+            getAllChoicesJSON: () => out.textContent = builder.getAllChoicesJSON(undefined, { pretty: true }),
+            getAllChoicesJSONGrp: () => out.textContent = builder.getAllChoicesJSON('#grupo-pagos', { pretty: true }),
+            getAllChoicesJSONOne: () => out.textContent = builder.getAllChoicesJSON('txt_method_cash', { pretty: true }),
+
+            // --- Tabla dinámica ---
+            'insertRow-auto': () => {
+                const tr = builder.insertRow('pago_cheques', {
+                    fields: [
+                        { type: 'text', prefix_value: 'REF: ', id: 'reference-nuevo' },
+                        { type: 'number', prefix_value: 'C$ ', id: 'amount-nuevo' }
+                    ]
+                });
+                print('insertRow("pago_cheques", {fields}) [auto]', { dataRowId: tr?.getAttribute('data-row-id') });
+            },
+            'insertRow-nuevoID': () => {
+                const tr = builder.insertRow('pago_cheques', {
+                    idRow: 'nuevoID',
+                    fields: [
+                        { type: 'text', prefix_value: 'REF: ', id: 'reference-nuevoID' },
+                        { type: 'number', prefix_value: 'C$ ', id: 'amount-nuevoID' }
+                    ]
+                });
+                print('insertRow("pago_cheques", {idRow:"nuevoID"})', { dataRowId: tr?.getAttribute('data-row-id') });
+            },
+            'insertRow-cheque-abc': () => {
+                const tr = builder.insertRow('pago_cheques', {
+                    idRow: 'cheque-abc',
+                    fields: [
+                        { type: 'text', prefix_value: 'REF: ', id: 'reference-abc' },
+                        { type: 'number', prefix_value: 'C$ ', id: 'amount-abc' }
+                    ]
+                });
+                print('insertRow("pago_cheques", {idRow:"cheque-abc"})', { dataRowId: tr?.getAttribute('data-row-id') });
+            },
+            'removeRow-last': () => {
+                const rows = builder.getRows('pago_cheques');
+                if (!rows.length) return print('removeRow', 'no hay filas');
+                const last = rows[rows.length - 1].idRow;
+                const ok = builder.removeRow('pago_cheques', last);
+                print(`removeRow("pago_cheques", "${last}")`, { ok });
+            },
+            'removeRow-nuevoID': () => print('removeRow("pago_cheques", "nuevoID")', { ok: builder.removeRow('pago_cheques', 'nuevoID') }),
+            getRows: () => print('getRows("pago_cheques")', builder.getRows('pago_cheques').map(r => r.idRow)),
+            getRow: () => print('getRow("pago_cheques", "1")', builder.getRow('pago_cheques', '1')?.getAttribute('data-row-id') || null),
+            getTable: () => {
+                const tbl = builder.getTable('pago_cheques');
+                print('getTable("pago_cheques").getRows()', tbl ? tbl.getRows().map(r => r.idRow) : null);
+            },
+
+            // --- Eventos / Listeners / Callbacks ---
+            attachEvents: () => { builder.attachEvents(); print('attachEvents()', { isListening: builder.isListening() }); refreshState(); },
+            detachEvents: () => { builder.detachEvents(); print('detachEvents()', { isListening: builder.isListening() }); refreshState(); },
+            isListening: () => print('isListening()', { value: builder.isListening() }),
+
+            setDebugTrue: () => { debugFlag = true; builder.setDebug(true); print('setDebug(true)', 'ok'); refreshState(); },
+            setDebugFalse: () => { debugFlag = false; builder.setDebug(false); print('setDebug(false)', 'ok'); refreshState(); },
+
+            setOnAccept: () => { currentOnAccept = defaultOnAccept; builder.setOnAccept(currentOnAccept); print('setOnAccept(fn)', 'ok'); refreshState(); },
+            clearOnAccept: () => { currentOnAccept = null; builder.setOnAccept(null); print('setOnAccept(null)', 'ok'); refreshState(); },
+            setOnChange: () => { currentOnChange = defaultOnChange; builder.setOnChange(currentOnChange); print('setOnChange(fn)', 'ok'); refreshState(); },
+            clearOnChange: () => { currentOnChange = null; builder.setOnChange(null); print('setOnChange(null)', 'ok'); refreshState(); },
+            setOnClick: () => { currentOnClick = defaultOnClick; builder.setOnClick(currentOnClick); print('setOnClick(fn)', 'ok'); refreshState(); },
+            clearOnClick: () => { currentOnClick = null; builder.setOnClick(null); print('setOnClick(null)', 'ok'); refreshState(); },
+
+            clearLogs: () => { logs.innerHTML = '<div class="empty">(todavía sin eventos)</div>'; },
         };
 
-        document.getElementById('b-build').onclick = () => print('buildAll()', { creados: builder.buildAll(), ids: builder.getUsedIds() });
-        document.getElementById('b-get-choices').onclick = () => print('getChoices()', builder.getChoices().map(c => ({ id: c.id, hasTemplate: !!c.template, hasLabel: !!(c.template && c.template.label), maxAmount: c.maxAmount, type_element: c.type_element })));
-        document.getElementById('b-get-choice').onclick = () => print('getChoice("pago_efectivo")', builder.getChoice('pago_efectivo'));
-        document.getElementById('b-set-choice').onclick = () => {
-            builder.setChoice('pago_otro', {
-                template: { type: 'default', row: [{ fields: [{ label: 'Nota', type: 'text', id: 'otro_note' }] }] }
+        document.querySelectorAll('[data-api]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const key = btn.dataset.api;
+                const h = handlers[key];
+                if (!h) return console.warn('sin handler para', key);
+                try { h(); } catch (e) { console.error('error en', key, e); }
             });
-            print('setChoice("pago_otro", …)', 'ok — vuelve a pulsar buildAll');
-        };
-        document.getElementById('b-remove-choice').onclick = () => { builder.removeChoice('pago_otro'); print('removeChoice("pago_otro")', { has: builder.hasChoice('pago_otro') }); };
-        document.getElementById('b-has-choice').onclick = () => print('hasChoice("pago_efectivo")', { value: builder.hasChoice('pago_efectivo') });
-        document.getElementById('b-disable').onclick = () => { builder.disableAll(); print('disableAll()', { areAllDisabled: builder.areAllDisabled }); };
-        document.getElementById('b-enable').onclick = () => { builder.enableAll(); print('enableAll()', { areAllDisabled: builder.areAllDisabled }); };
-        document.getElementById('b-groups').onclick = () => print('listGroups()', builder.listGroups().map(g => ({ id: g.id, type: g.type })));
-        document.getElementById('b-all-json').onclick = () => out.textContent = builder.getAllChoicesJSON(undefined, { pretty: true });
-        document.getElementById('b-last').onclick = () => { const v = builder.lastAcceptedValues; print('lastAcceptedValues', v ? v.toJSON() : 'null'); };
-        document.getElementById('b-detach').onclick = () => { builder.detachEvents(); print('detachEvents()', { isListening: builder.isListening() }); };
-        document.getElementById('b-attach').onclick = () => { builder.attachEvents(); print('attachEvents()', { isListening: builder.isListening() }); };
+        });
     </script>
 </body>
 

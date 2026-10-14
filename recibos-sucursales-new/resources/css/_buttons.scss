@@ -134,19 +134,67 @@
         font-size: 0.8em;
         text-transform: uppercase;
 
-        &:not([class*="type-button"]) {
+        &:not([class*="type-button"]):not([class*="type-conection"]) {
             max-width: 30px;
+
+            i {
+                font-size: 0.55rem;
+            }
+        }
+
+        &[class*="type-conection"] {
+            max-width: 117px;
+
+            [class*="icon-"] {
+                max-width: 24px !important;
+            }
+
+            .icon {
+
+
+                &-connected {
+                    color: #25c755;
+
+                    &+i {
+                        color: #25c755;
+                    }
+                }
+
+                &-unconnected {
+                    color: #d29090;
+
+                    &+i {
+                        color: #d29090;
+                    }
+                }
+            }
+
+            i {
+                font-size: 10px;
+                font-style: normal;
+            }
+
+
         }
 
         &[class*="type-button"] {
-            max-width: 130px;
+            max-width: 100px;
             color: #fff;
+
+            [class*="icon"] {
+                max-width: 25px;
+            }
         }
 
         height: 30px;
         @include css3-prefix('transition', all .25s ease-in-out);
         @include css3-prefix('border-radius', 5px);
-        outline:3px solid rgba(255, 255, 255, 0.2);
+
+        &:not([class*="type-conection"]) {
+
+            outline: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
         display: inline-flex;
         align-items: center;
         flex-wrap: wrap;
@@ -156,22 +204,26 @@
             position: relative;
             color: #fff;
             @include css3-prefix('transition', all .25s ease-in-out);
-            max-width: 40px;
+
+            &[class*="icon"] {
+                max-width: 40px;
+            }
 
 
 
             &.counter {
+                pointer-events: none;
                 display: block;
                 position: absolute;
                 color: #fff;
-                width: 25px;
-                height: 25px;
+                width: 22px;
+                height: 22px;
                 @include css3-prefix('border-radius', 100px);
                 background-color: red;
                 font-family: 'Courier New', Courier, monospace;
-                top: -7px;
-                left: -7px;
-                font-size: 12px;
+                top: -12px;
+                left: -8px;
+                font-size: 11px;
                 font-style: normal;
                 text-align: center;
                 display: flex;
@@ -183,7 +235,7 @@
         }
 
 
-        &:hover {
+        &:hover:not([class*="type-conection"]) {
             background-color: rgba(255, 255, 255, 0.15);
             outline-color: $ColorYellow;
             color: $ColorYellow ;
@@ -191,6 +243,10 @@
             i {
                 color: $ColorYellow;
             }
+        }
+
+        &:nth-child(4) {
+            margin-left: 25px;
         }
 
         &:last-child {

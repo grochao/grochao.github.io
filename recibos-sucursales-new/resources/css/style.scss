@@ -8,6 +8,7 @@
 @use "dynamicTable";
 @use "checkbox";
 @use "material_design";
+@use "swal2";
 
 html,
 body {
@@ -182,6 +183,7 @@ body {
 
             flex-wrap: wrap;
             justify-content: center;
+
         }
 
 

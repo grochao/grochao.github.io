@@ -1,0 +1,74 @@
+.swal2-container {
+    z-index: 9999999999;
+}
+
+.swal2-height-auto {
+    height: auto !important;
+    min-height: 100lvh;
+    overflow: hidden !important;
+}
+
+@keyframes fadeBackground {
+    0% {
+        background-color: rgba(0, 0, 0, .5)
+    }
+
+    50% {
+        background-color: #ef5555
+    }
+
+    100% {
+        background-color: rgba(0, 0, 0, .5)
+    }
+}
+
+.previous-receipt {
+    font-family: "Source Sans Pro", Roboto, "San Francisco", "Segoe UI", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 0 15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    z-index: 99999;
+    animation: fadeBackground 2s ease-in-out infinite;
+    // background-color: #0000008f;
+    font-size: 0.8rem;
+
+}
+
+.previous-receipt p {
+    font-weight: 300;
+    color: #fff !important;
+    margin: 0
+}
+
+.previous-receipt p strong {
+    font-weight: 400;
+    color: #fff !important;
+    background-color: #ef5555;
+    padding: 0 4px;
+    border-radius: 3px
+}
+
+.previous-receipt button {
+    height: 26px;
+    color: #fff;
+    width: 26px;
+    border: 1px solid #fff;
+    outline: 0;
+    text-align: center;
+    font-size: 11px;
+    border-radius: 3px;
+    color: #fff;
+    background-color: rgba(122, 8, 8, .4);
+    flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0
+}

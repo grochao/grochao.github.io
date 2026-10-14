@@ -1,4 +1,122 @@
 const _HELPERS_ = {
+    InsertAmount({ data = {} } = null) {
+        //console.log(JSON.stringify(data));
+        if (!data) return;
+        const CreateAmountBox = ({ data = {}, isTotal = false } = {}) => {
+            if (!data && !data?.label && !data?.amount) return;
+
+            const box = document.createElement('div');
+            box.classList.add('container-amounts');
+            if (isTotal) {
+                box.classList.add('black');
+            }
+
+
+            const label = document.createElement('span');
+            label.classList.add('label');
+            label.textContent = data.label;
+
+            const amount = document.createElement('span');
+            amount.classList.add('amount');
+            amount.textContent = data.amount;
+
+            box.appendChild(label);
+            box.appendChild(amount);
+
+            return box;
+        }
+        const _box_concepts_ = $getEl('#preview-print .box_concepts');
+
+        const amount = {
+            productos: data.rows.map(_row_ => {
+                let _label_ = [];
+                if ((_row_?.Col2).includes('/')) {
+                    _label_ = (_row_?.Col2).split('/');
+                }
+                else {
+                    _label_[0] = _row_?.Col2;
+                }
+                return {
+                    label: String(_label_[0]).trim().toUpperCase() + ' (C$)',
+                    amount: _row_?.Col4
+                }
+            }),
+            total: [{
+                label: 'TOTAL:', amount: data.totals.Col4
+            }]
+        }
+
+
+        if (_box_concepts_) {
+            _box_concepts_.forEach(el => {
+                el.replaceChildren();
+                (amount.productos || []).forEach(item => {
+                    const _new_amount_box_ = CreateAmountBox({ data: item });
+                    el.appendChild(_new_amount_box_);
+                });
+
+                (amount.total || []).forEach(item => {
+                    const _new_amount_box_ = CreateAmountBox({ data: item, isTotal: true });
+                    el.appendChild(_new_amount_box_);
+                });
+            })
+        }
+    },
+    updateDateTime() {
+        const hoy = new Date();
+        const year = hoy.getFullYear();
+        const month = String(hoy.getMonth() + 1).padStart(2, '0');
+        const day = String(hoy.getDate()).padStart(2, '0');
+        let _new_date_localStorage_ = JSON.parse(localStorage.getItem(window._SEDE_ + "_new_date"));
+
+        let _current_date_ = `${day}/${_HELPERS_.loadMonthName({ month: month })}/${year}`;
+        if ((_new_date_localStorage_?.status || false) == true) {
+            _current_date_ = _new_date_localStorage_.day + "/" + this.loadMonthName({ month: _new_date_localStorage_.month }) + "/" + _new_date_localStorage_.year;
+        } else {
+            _new_date_localStorage_ = { status: true, day: day, month: this.loadMonthName({ month: month }), year: year };
+        }
+
+        const dateScreen = document.getElementById('txt-fecha');
+        if (dateScreen) {
+            dateScreen.value = _current_date_;
+        }
+
+        const datePrint = document.querySelectorAll('#preview-print .page .date');
+        if (datePrint) {
+
+            datePrint.forEach(_date_ => {
+                let day = _date_.querySelector('span.number-day');
+                let month = _date_.querySelector('span.number-month');
+                let year = _date_.querySelector('span.number-year');
+
+                if (day) { day.replaceChildren(); day.appendChild(document.createTextNode(_new_date_localStorage_.day)) };
+                if (month) { month.replaceChildren(); month.appendChild(document.createTextNode(_HELPERS_.loadMonthName({ month: _new_date_localStorage_.month }))) };
+                if (year) { year.replaceChildren(); year.appendChild(document.createTextNode(_new_date_localStorage_.year)) };
+            });
+        }
+
+        return _current_date_;
+    },
+    loadMonthName({ month = null, length = 'short' }) {
+        if (month === null) return 'ENE';
+        const meses = {
+            '1': { long: 'ENERO', short: 'ENE' },
+            '2': { long: 'FEBRERO', short: 'FEB' },
+            '3': { long: 'MARZO', short: 'MAR' },
+            '4': { long: 'ABRIL', short: 'ABR' },
+            '5': { long: 'MAYO', short: 'MAY' },
+            '6': { long: 'JUNIO', short: 'JUN' },
+            '7': { long: 'JULIO', short: 'JUL' },
+            '8': { long: 'AGOSTO', short: 'AGO' },
+            '9': { long: 'SEPTIEMBRE', short: 'SEP' },
+            '10': { long: 'OCTUBRE', short: 'OCT' },
+            '11': { long: 'NOVIEMBRE', short: 'NOV' },
+            '12': { long: 'DICIEMBRE', short: 'DIC' }
+        };
+
+        if (!meses[month]) return '';
+        return length === 'short' ? meses[Number(month)].short : meses[Number(month)].long;
+    },
     padWithZeros({ value = '', length = 1, direction = 'left' }) {
         const str = String(value);
 
@@ -223,8 +341,172 @@ const _HELPERS_ = {
 }
 
 
+
+
+function UpdatePrintBox() {
+    const _ELEMENT_ = document.querySelectorAll("#preview-print .page") || null;
+
+    if (!_ELEMENT_) return false;
+
+    const _DATA_RECEIPT_TYPE_ = document.querySelector("#txt_receipt_type") || null;
+    const _DATA_NAME_ = document.querySelector("#txt_name") || null;
+    const _DATA_COMPANY_ = document.querySelector("#txt_company") || null;
+    const _DATA_SESSION_ = document.querySelector("#txt_session") || null;
+    const _DATA_CATEGORIES_ = document.querySelector("#txt_categories") || null;
+    const _DATA_LEVELS_ = document.querySelector("#txt_levels") || null;
+    const _DATA_BOOK_ = document.querySelector("#txt_book") || null;
+    const _DATA_NOTES_ = document.querySelector("#txt_notes") || null;
+
+    if (_DATA_RECEIPT_TYPE_ !== null && _DATA_NAME_ !== null && _DATA_COMPANY_ !== null && _DATA_SESSION_ !== null && _DATA_CATEGORIES_ !== null && _DATA_LEVELS_ !== null && _DATA_BOOK_ !== null && _DATA_NOTES_ !== null) {
+
+        //2026LEOSAB06
+        const _session_number_ = _DATA_SESSION_.value.trim().slice(-2);
+        const _name_company_ = String(_DATA_COMPANY_.value || "").trim();
+        const _name_ = String(_DATA_NAME_.value).trim();
+        const _book_name_ = String(_DATA_BOOK_.value || "").trim()
+        const _level_category_ = String(String(_DATA_LEVELS_.value || '').trim() + " - " + String(_DATA_CATEGORIES_.value || '').trim()).trim();
+
+        const paymentMethods = JSON.parse(window.ChoiceField.getAllChoicesJSON(undefined, { pretty: true }));
+
+
+        console.clear();
+        console.groupCollapsed("paymentMethods");
+
+        console.log(JSON.stringify(paymentMethods));
+        console.groupEnd();
+        const paymentMethods_Values = paymentMethods.filter(field => (field.checked === true && field.accepted === true)).map(field => {
+
+
+            const flat = field.menu.flat;
+
+            _value_ = flat?.["details-cash_total"] || (flat?.["details-autosum"] || 0);
+
+            let _details_ = '';
+            if (field.type_template == "autosum") {
+                _details_ = flat.row.map(obj => Object.values(obj)) // [["sdfsd", 7848], ["454", 457], ["", ""]]
+                    .filter(([ref, amount]) => !(ref === '' && amount === '')) // quita los que tienen ambos vacíos
+                    .map(([ref, amount], i) => ((String(ref).trim() !== "") ? ` [REF#${i + 1}:${ref} ` : `[`) + `C$${amount}]`);
+            } else {
+                _details_ = ["C$" + _value_ + (flat?.["details-cash_total"] && flat?.["details-cash_change"] ? ((flat?.["details-cash_change"] || 0) > 0 ? " | VUELTO -> C$:" + flat["details-cash_change"] : "") : "")];
+            }
+            return {
+                key: field.label,
+                value: _value_,
+                print: _details_
+            }
+        }) || [];
+        console.groupCollapsed("paymentMethods_Values");
+        console.log(JSON.stringify(paymentMethods_Values));
+        console.groupEnd();
+
+        let _notes_ = '';
+        if (paymentMethods_Values.length > 0) {
+
+            const resultado = paymentMethods_Values
+                .map(({ key, print = [] }) => `  🞂 EN ${key}:${print.join(',')}`)
+                .join('.~\n');
+            _notes_ = 'MÉTODO DE PAGO:\n' + resultado + '.~';
+        }
+
+        const UpdateValue = {
+            "txt_name": (_name_company_ !== '' ? `${_name_company_}\n${_name_}` : _name_),
+            "txt_session": _session_number_,
+            "txt_level_category": _level_category_.replace('_', ''),
+            "txt_book_name": _book_name_,
+            "txt_notes": _notes_
+
+
+        }
+        console.groupCollapsed("UpdateValue:");
+        console.log(JSON.stringify(UpdateValue));
+        console.groupEnd();
+
+
+        _ELEMENT_.forEach(page => {
+
+            _ContainerFields_ = page.querySelectorAll('[data-idField*="txt_"]');
+            if (_ContainerFields_) {
+
+                _ContainerFields_.forEach(_field_ => {
+                    const _dataset_idField_ = String(_field_.dataset.idfield || '').trim();
+
+
+
+
+                    if (Object.keys(UpdateValue).includes(_dataset_idField_)) {
+                        const _value_ = UpdateValue[_dataset_idField_] || '';
+                        const SpanValue = _field_.querySelector(".value") || null;
+                        const SpanLabel = _field_.querySelector(".label") || null;
+
+
+                        if (SpanValue) {
+                            SpanValue.replaceChildren();
+                            _field_.classList.remove('hide');
+
+                            if (_dataset_idField_ === "txt_name") {
+                                SpanLabel.replaceChildren();
+                                if (_name_company_ !== '') {
+                                    SpanLabel.appendChild(document.createTextNode('RECIBIMOS DE:\nEN REPRESENTACIÓN DE:'));
+                                } else {
+                                    SpanLabel.appendChild(document.createTextNode('RECIBIMOS DE:'));
+                                }
+                            }
+                            if (_dataset_idField_ === "txt_book_name" && _value_ === "") {
+                                _field_.classList.add('hide');
+                            } else {
+
+                                SpanValue.appendChild(document.createTextNode(_value_));
+                            }
+                        }
+                    }
+
+                })
+            }
+        });
+    }
+}
+const actualizarEstadoConexion = (online) => {
+    console.log(online ? '🟢 Conexión restaurada' : '🔴 Conexión perdida');
+
+    const status_connection = document.querySelector('.type-conection');
+    if (!status_connection) return;
+
+    const icon = status_connection.querySelector('[class*="icon-"]');
+    if (icon) {
+        icon.classList.toggle('icon-connected', online);
+        icon.classList.toggle('icon-unconnected', !online);
+    }
+
+    const label = status_connection.querySelector('i:not([class*="icon-"])');
+    if (label) {
+        label.textContent = online ? 'Con Conexión' : 'Sin Conexión';
+    }
+};
+
+window.addEventListener('online', () => actualizarEstadoConexion(true));
+window.addEventListener('offline', () => actualizarEstadoConexion(false));
+
+
+
 window.addEventListener('load', function () {
-    const ChoiceField = new ChoiceContainerBuilder({
+
+    const floating = new WheelFloating({
+        element: '#preview-print',
+        excludeSelector: '#Dynacmic-table-eli, .swal2-container, .mdl-msgbox-root',   // '.scroll-box, .otro-panel'
+        threshold: 2,
+        hideDelay: 0,
+        minAllowedWidth: 600,    // si el viewport < 600px → efecto desactivado
+        minScroll: 150,    // mostrar solo tras acumular 200 de deltaY bajando
+        closeOnEsc: true,
+        closeOnClick: true,
+        closeButton: true,
+        closeButtonLabel: '✕',
+        onClose: () => console.log('Flotante cerrado')
+    });
+
+    actualizarEstadoConexion(navigator.onLine);
+
+    window.ChoiceField = new ChoiceContainerBuilder({
         selector: '.choice-container[data-choice_id]',
         choices: [
             {
@@ -364,11 +646,94 @@ window.addEventListener('load', function () {
         onlyEmpty: true,
         autoAttachEvents: true,
         debug: false,
+        onclick: (element, isChecked, meta) => {
+
+
+            if (['txt_retention_1percent', 'txt_retention_2percent'].includes(meta.choiceId)) {
+                // pushEvent('onclick', meta.choiceId, isChecked, meta.type_template);
+                //console.log(("getTotalAllColumn:", JSON.stringify(tabla.getTotalAllColumn())));
+                const paymentMethods = JSON.parse(window.ChoiceField.getAllChoicesJSON(undefined, { pretty: true }));
+                let txt_retention_1percent, txt_retention_2percent, txt_retention;
+                if (paymentMethods) {
+                    txt_retention = Object.fromEntries(paymentMethods.filter(choice => ['txt_retention_1percent', 'txt_retention_2percent'].includes(choice.choiceId)).map(chioce => {
+                        return {
+                            id: String(chioce.choiceId).replace('txt_retention', ''),
+                            checked: Boolean(chioce.checked)
+                        }
+                    }).map(({ id, checked }) => [id, checked])
+                    ) || null;
+
+                    if (txt_retention) {
+                        console.log("txt_retention", JSON.stringify(txt_retention));
+                        if (tabla.getTotalAllColumn()) {
+                            let total = (tabla.getTotalAllColumn()).__raw['Col4'] || 0;
+
+                            if (total === 0) return;
+                            tabla.removeRow('RETENCION');
+
+                            let code = '';
+                            let label = '';
+                            let mount = 0;
+                            if (txt_retention._1percent && !txt_retention._2percent) {
+                                code = 'RET_1';
+                                label = 'RETENCIÓN (1%): ';
+                                mount = -(total * (1 / 100));
+                            } else if (!txt_retention._1percent && txt_retention._2percent) {
+                                code = 'RET_2';
+                                label = 'RETENCIÓN (2%): ';
+                                mount = -(total * (2 / 100));
+                            } else if (txt_retention._1percent && txt_retention._2percent) {
+                                code = 'RET_1_2';
+                                label = 'RETENCIÓN (1% y 2%): ';
+                                mount = -(total * (3 / 100));
+                            }
+                            console.log('mount:', mount);
+                            if (mount < 0) {
+                                tabla.insertRow({
+                                    row: { Col1: code, Col2: label, Col3: '-', Col4: mount },
+                                    remove: false,
+                                    idRow: 'RETENCION'
+                                });
+                            }
+
+                        }
+                    }
+
+
+
+                }
+
+
+
+                /* if (meta.state === 'checked') {
+                     if (tabla.getTotalAllColumn()) {
+                         let total = (tabla.getTotalAllColumn()).__raw['Col4'];
+ 
+                         tabla.removeRow('ret_1');
+                         tabla.removeRow('ret_2');
+ 
+                         tabla.insertRow({
+                             row: { Col1: 'RET_1', Col2: 'RETENCIÓN (1%): ', Col3: '-', Col4: -(total * (1 / 100)) },
+                             remove: false,
+                             idRow: 'ret_1'
+                         });
+                     }
+                 } else {
+ 
+                 }*/
+            }
+
+
+            // console.log('[onclick]', JSON.stringify(meta.values), isChecked);
+        },
         // ---------- 👇 NUEVO: onchange ----------
         onchange: (element, values) => {
+
+            console.log('▶ onchange:', element.dataset.choice_id, values);
+            /* */
+            UpdatePrintBox();
             /*  // element = el .choice-container cuyo menú fue accedido
               // values  = arreglo con { rowIndex, rowLabel, name, id, label, type, value, prefix }
-              console.log('▶ onchange:', element.dataset.choice_id, values);
   
               // Render en el panel de la demo
               document.getElementById('onchange-el').textContent =
@@ -376,18 +741,95 @@ window.addEventListener('load', function () {
               document.getElementById('onchange-values').textContent =
                   'values = ' + JSON.stringify(values, null, 2);*/
         },
-        /*
-                onAccept: (accepted, container) => {
-                    console.log('▶ onAccept:', accepted.toJSON(), 'en', container.dataset.choice_id);
-                    printOutput();
-                }*/
+        onAccept: (accepted, container, ctx) => {
+            if (accepted.choiceId == 'txt_method_telepago') {
+                [
+                    'txt_method_cash',
+                    'txt_method_card',
+                    'txt_method_deposit',
+                    'txt_method_check',
+                    'txt_method_advance',
+                    'txt_retention_1percent',
+                    'txt_retention_2percent'
+                ].forEach(_selector => ctx.uncheck("[data-choice_id=" + _selector + "]"))
+
+                console.log(ctx);
+            } else {
+                ctx.uncheck('[data-choice_id="txt_method_telepago"]');
+            }
+
+            // console.log('▶ onAccept:', accepted.toJSON(), 'en', container.dataset.choice_id);
+
+            //printOutput();
+        }
     });
-    const total = ChoiceField.buildAll();
+    const total = window.ChoiceField.buildAll();
 
     _HELPERS_.LoadSession("#txt_session", window._SESIONES_);
 
     const tabla = new DynamicTable('#Dynacmic-table-eli', {
-        addItemButtonText: '[+] Click aquí para agregar otro producto'
+        addItemButtonText: '[+] Click aquí para agregar otro producto',
+        onChange: async (ctx) => {
+            _HELPERS_.InsertAmount({ data: ctx.getData() });
+            if (ctx.rowId !== 'RETENCION') {
+                ctx.silent(() => {
+                    ctx.removeRow('RETENCION');
+                });
+                const paymentMethods = JSON.parse(window.ChoiceField.getAllChoicesJSON(undefined, { pretty: true }));
+                let txt_retention_1percent, txt_retention_2percent, txt_retention;
+                if (paymentMethods) {
+                    txt_retention = Object.fromEntries(paymentMethods.filter(choice => ['txt_retention_1percent', 'txt_retention_2percent'].includes(choice.choiceId)).map(chioce => {
+                        return {
+                            id: String(chioce.choiceId).replace('txt_retention', ''),
+                            checked: Boolean(chioce.checked)
+                        }
+                    }).map(({ id, checked }) => [id, checked])
+                    ) || null;
+
+                    if (txt_retention) {
+
+                        if (ctx.getTotalAllColumn()) {
+                            let total = (ctx.getTotalAllColumn()).__raw['Col4'] || 0;
+
+                            if (total === 0) return;
+
+
+
+
+                            let code = '';
+                            let label = '';
+                            let mount = 0;
+                            if (txt_retention._1percent && !txt_retention._2percent) {
+                                code = 'RET_1';
+                                label = 'RETENCIÓN (1%): ';
+                                mount = -(total * (1 / 100));
+                            } else if (!txt_retention._1percent && txt_retention._2percent) {
+                                code = 'RET_2';
+                                label = 'RETENCIÓN (2%): ';
+                                mount = -(total * (2 / 100));
+                            } else if (txt_retention._1percent && txt_retention._2percent) {
+                                code = 'RET_1_2';
+                                label = 'RETENCIÓN (1% y 2%): ';
+                                mount = -(total * (3 / 100));
+                            }
+                            console.log('mount:', mount);
+                            if (mount < 0) {
+                                tabla.insertRow({
+                                    row: { Col1: code, Col2: label, Col3: '-', Col4: mount },
+                                    remove: false,
+                                    idRow: 'RETENCION'
+                                });
+                            }
+
+                        }
+                    }
+
+
+
+                }
+            }
+
+        }
     });
 
     tabla.setHeaders({
@@ -401,12 +843,15 @@ window.addEventListener('load', function () {
         Col1: {
             type: 'select',
             required: true,
-            insertLabel: 'Col2',
+            insertLabel: 'null',
+
+
             options: [
 
-                { value: 'LBR', label: 'COMPRA DE LIBRO', label_field: 'NOMBRE DEL LIBRO' },
-                { value: 'MORA', label: 'MORA POR INSCRIPCIÓN TARDÍA', label_field: 'DETALLE DE OTROS SERVICIOS', price: '700' },
-                { value: 'OTROS', label: 'OTROS SERVICIOS', label_field: 'DETALLE DE OTROS SERVICIOS' },
+                { value: 'LBR', idRow: 'LIBRO', label: 'COMPRA DE LIBRO', label_field: 'NOMBRE DEL LIBRO', idSlug: true, blockRow: false },
+                { value: 'MORA', label: 'MORA POR INSCRIPCIÓN TARDÍA', label_field: 'DETALLE DE OTROS SERVICIOS', price: '700', idSlug: true, blockRow: false },
+                { value: 'OTROS', label: 'OTROS SERVICIOS', label_field: 'DETALLE DE OTROS SERVICIOS', idSlug: false, blockRow: false },
+
                 {
                     group: {
                         label: "BECAS",
@@ -422,7 +867,10 @@ window.addEventListener('load', function () {
                                     cell: 'Col1',
                                     search: 'CLG'
                                 },
-                                label_field: 'CÓDIGO DE BECA'
+                                label_field: 'CÓDIGO DE BECA',
+
+                                idRow: 'DESCUENTO',
+                                blockRow: true
                             },
                             {
                                 value: '100-BC', label: '100% BECA COMPLETA',
@@ -434,7 +882,9 @@ window.addEventListener('load', function () {
                                     cell: 'Col1',
                                     search: 'CLG'
                                 },
-                                label_field: 'CÓDIGO DE BECA'
+                                label_field: 'CÓDIGO DE BECA',
+                                idRow: 'DESCUENTO',
+                                blockRow: true
                             },
                         ]
                     }
@@ -452,7 +902,9 @@ window.addEventListener('load', function () {
                                     cell: 'Col1',
                                     search: 'CLG'
                                 },
-                                label_field: 'NOMBRE DEL FAMILIAR'
+                                label_field: 'NOMBRE DEL FAMILIAR',
+                                idRow: 'DESCUENTO',
+                                blockRow: true
                             },
                             {
                                 value: '010-DE', label: '10% DESC. EMPRESA', discount: {
@@ -463,7 +915,9 @@ window.addEventListener('load', function () {
                                     cell: 'Col1',
                                     search: 'CLG'
                                 },
-                                label_field: 'NOMBRE DE LA EMPRESA'
+                                label_field: 'NOMBRE DE LA EMPRESA',
+                                idRow: 'DESCUENTO',
+                                blockRow: true
                             },
                             {
                                 value: '015-DC', label: '15% DESC. COLEGIO', discount: {
@@ -474,7 +928,9 @@ window.addEventListener('load', function () {
                                     cell: 'Col1',
                                     search: 'CLG'
                                 },
-                                label_field: 'NOMBRE DEL COLEGIO'
+                                label_field: 'NOMBRE DEL COLEGIO',
+                                idRow: 'DESCUENTO',
+                                blockRow: true
                             },
                         ]
                     }
@@ -488,39 +944,51 @@ window.addEventListener('load', function () {
                                 value: '005-DT', label: ' 5% TEMPORAL', discount: {
                                     type: 'percentage',
                                     value: '5'
-                                }
+                                },
+                                idRow: 'DESCUENTO',
+                                blockRow: true
                             },
                             {
                                 value: '010-DT', label: '10% TEMPORAL', discount: {
                                     type: 'percentage',
                                     value: '10'
                                 },
+                                idRow: 'DESCUENTO',
+                                blockRow: true
                             },
                             {
                                 value: '050-BTT', label: '50% DESC. TOTAL', discount: {
                                     type: 'percentage',
                                     value: '50'
                                 },
+                                idRow: 'DESCUENTO',
+                                blockRow: true
                             },
                             {
                                 value: '100-BTT', label: '100% DESC. TOTAL', discount: {
                                     type: 'percentage',
                                     value: '100'
                                 },
+                                idRow: 'DESCUENTO',
+                                blockRow: true
                             },
                             {
                                 value: '050-BT/201-RR', label: '50% RECONOCIMIENTO DE RECIBO', discount: {
                                     type: 'percentage',
                                     value: '50'
                                 },
-                                label_field: 'CÓDIGO DE RECONOCIMEMTO'
+                                label_field: 'CÓDIGO DE RECONOCIMEMTO',
+                                idRow: 'DESCUENTO',
+                                blockRow: true
                             },
                             {
                                 value: '100-BT/201-RR', label: '100% RECONOCIMIENTO DE RECIBO', discount: {
                                     type: 'percentage',
                                     value: '100'
                                 },
-                                label_field: 'CÓDIGO DE RECONOCIMEMTO'
+                                label_field: 'CÓDIGO DE RECONOCIMEMTO',
+                                idRow: 'DESCUENTO',
+                                blockRow: true
                             },
 
                         ]
@@ -530,12 +998,12 @@ window.addEventListener('load', function () {
                     group: {
                         label: "VARIOS",
                         options: [
+                            { value: 'ANT', label: 'ANTICIPO' },
+                            { value: 'CURSO-INT-ONLINE', label: 'ANTICIPO CURSO INTENSIVO' },
                             { value: 'BTL-PLAST', label: 'COMPRA DE BOTELLA PLÁSTICA' },
                             { value: 'CAN', label: 'CANCELACIÓN DE FACTURA' },
                             { value: 'ABONO', label: 'ABONO A LA CUENTA' },
-                            { value: 'CURSO-INT-ONLINE', label: 'ANTICIPO CURSO INTENSIVO' },
                             { value: 'CAM-GRAD', label: 'CAMISA PARA GRADUACIÓN', price: '600' },
-                            { value: 'ANT', label: 'REGISTRAR COMO ANTICIPO' },
                         ]
                     }
                 },
@@ -601,7 +1069,26 @@ window.addEventListener('load', function () {
                     'text-align': 'right'
                 }
             },
+            afterOpen: (field, ctx) => {
+                //console.log(field, ctx);
+                const opt = field.querySelectorAll('[label="BECAS"], [label*="DESCUENTOS"]') || full;
+                const _txt_receipt_type_ = $getEl('#txt_receipt_type');
+                if (opt) {
+                    if (_txt_receipt_type_) {
+                        if (_txt_receipt_type_.value === 'OTROS') {
+                            opt.forEach(op => {
+                                op.hidden = true;
+                            });
+                        } else {
+                            opt.forEach(op => {
+                                op.hidden = false;
+                            });
+                        }
 
+                    }
+
+                }
+            },
             onChange: (value, option, field, ctx) => {
 
                 if (_HELPERS_.existe(option)) {
@@ -769,6 +1256,8 @@ window.addEventListener('load', function () {
             type: 'text',
             class: ["one_of_one"],
             onBeforeSave: (cell_value = '', row = {}) => {
+
+                console.log("cell_value:", cell_value, "   row:", row);
                 let new_value;
                 let CurrentValue = String(cell_value).trim().toUpperCase();
                 const _CODE_ = row?.Col1 ?? '';
@@ -810,7 +1299,7 @@ window.addEventListener('load', function () {
                             new_value = "100% RECONOCIMIENTO DE RECIBO/" + CurrentValue;
                             break;
                         case '050-MB':
-                            new_value = CurrentValue + '/MEDIA BECA';
+                            new_value = '50% MEDIA BECA/' + CurrentValue;
                             break;
 
 
@@ -847,11 +1336,12 @@ window.addEventListener('load', function () {
     // ChoiceField.disableAll();
     _HELPERS_.DisableMaterialInputs();
 
-    console.groupCollapsed('books');
+
     window._BOOKS_.setInit({ selectorBookTitle: '[data-field_status="txt_book"]', selectorBookCover: "#book-cover" })
-    console.groupEnd();
+
 
     tabla.disableTable();
+    _HELPERS_.updateDateTime();
 
     const watcher = FormChangeWatcher.attach('#TheForm', {
         onChange: (payload, el, ev) => {
@@ -859,7 +1349,7 @@ window.addEventListener('load', function () {
             const _VALUE_ = String(payload.value || '').trim();
 
 
-
+            _HELPERS_.updateDateTime();
             let _DATA_LEVELS_, _sesion_, _sede_, _category_;
             if (['txt_receipt_type', "txt_session", 'txt_categories', 'txt_levels'].includes(_ID_)) {
                 tabla.clearBody();
@@ -868,18 +1358,22 @@ window.addEventListener('load', function () {
             switch (_ID_) {
                 case 'txt_receipt_type':
                     _HELPERS_.DisableMaterialInputs();
-                    ChoiceField.disableAll();
+                    window.ChoiceField.disableAll();
                     tabla.clearBody();
                     tabla.disableTable();
                     window._BOOKS_.clearBook();
                     //36436656 - 
                     switch (_VALUE_) {
                         case 'CLG':
+                        case 'CLG-REPITE': case 'OTROS':
                             _HELPERS_.EnableMaterialInputs('txt_name,txt_company,txt_session');
                             break;
                         case 'CLG-NUEVO':
                             _HELPERS_.EnableMaterialInputs('txt_name,txt_company,txt_session,txt_contact_info');
                             break;
+
+
+
 
                         default:
                             break;
@@ -888,7 +1382,7 @@ window.addEventListener('load', function () {
                 case "txt_session":
                     _HELPERS_.LoadSimpleSelect('#txt_levels', {});
                     _HELPERS_.LoadSimpleSelect('#txt_categories', {});
-                    ChoiceField.disableAll();
+                    window.ChoiceField.disableAll();
                     tabla.clearBody();
                     tabla.disableTable();
 
@@ -908,14 +1402,14 @@ window.addEventListener('load', function () {
                     }
                     break;
                 case 'txt_categories':
-                    ChoiceField.disableAll();
+                    window.ChoiceField.disableAll();
                     tabla.clearBody();
                     tabla.disableTable();
                     window._BOOKS_.clearBook();
                     _HELPERS_.DisableMaterialInputs('txt_levels,txt_notes');
 
                     if (_VALUE_ !== '') {
-                        _sesion_ = document.querySelector("#txt_session") || null;
+                        _sesion_ = $getEl("#txt_session");
                         _HELPERS_.LoadSimpleSelect('#txt_levels', {});
                         if (_sesion_ && String(_sesion_.value).trim() !== '') {
                             _sede_ = String(_sesion_.value).substring(4, 7);
@@ -937,31 +1431,48 @@ window.addEventListener('load', function () {
                     }
                     break;
                 case 'txt_levels':
-                    ChoiceField.disableAll();
-                    // tabla.enableTable();
+                    window.ChoiceField.disableAll();
+                    const _txt_receipt_type_ = $getEl("#txt_receipt_type");
+                    const DialogTable = $getEl('.dynamic-table-dialog');
+
+
+                    if (DialogTable && _txt_receipt_type_) {
+                        DialogTable.dataset.filter = _txt_receipt_type_;
+                    }
+
                     tabla.clearBody();
                     tabla.disableTable();
                     window._BOOKS_.clearBook();
                     _HELPERS_.EnableMaterialInputs('txt_notes');
                     _HELPERS_.DisableMaterialInputs('txt_book');
-                    _sesion_ = document.querySelector("#txt_session") || null;
+                    _sesion_ = $getEl("#txt_session");
+
+
 
                     _sede_ = (_sesion_) ? String(_sesion_.value).substring(4, 7) : null;
-                    _category_ = document.querySelector("#txt_categories") || false ? document.querySelector("#txt_categories").value : null;
+                    _category_ = $getEl("#txt_categories") ? $getEl("#txt_categories").value : null;
 
                     let _level_ = String(_VALUE_).trim() || null;
                     if (_sesion_ && _sede_ && _category_ && _level_) {
                         const _DATA_PRICES_ = window._DATA_ELI_?.[_sede_]?.[_category_] || null;
-                        ChoiceField.enableAll();
-                        if (_DATA_PRICES_) {
+                        tabla.enableTable();
+                        window.ChoiceField.enableAll();
+                        if (_DATA_PRICES_ && _txt_receipt_type_) {
+                            if (!['CLG', 'CLG-NUEVO', 'CLG-REPITE'].includes(_txt_receipt_type_.value)) return;
                             let _CLG_ = _DATA_PRICES_?.precios?.colegiatura || '0.00';
                             let _LBR_ = _DATA_PRICES_?.niveles?.[_level_]?.price || '0.00';
                             let _LBR_NAME_ = _DATA_PRICES_?.niveles?.[_level_]?.['title-book'] || '';
 
+                            if (_txt_receipt_type_.value === 'CLG-REPITE') {
+                                _LBR_NAME_ = '';
+                                _LBR_ = '0.00';
+                            }
 
-                            if (document.querySelector('[data-choice_id="txt_method_cash"] .menu')) {
-                                document.querySelector('[data-choice_id="txt_method_cash"] .menu').setAttribute('data-maxamount', parseFloat(_CLG_) + parseFloat(_LBR_));
-                                document.querySelector('[data-choice_id="txt_method_cash"] #details-cash_change').value = parseFloat(_CLG_) + parseFloat(_LBR_);
+
+
+                            if ($getEl('[data-choice_id="txt_method_cash"] .menu')) {
+                                $getEl('[data-choice_id="txt_method_cash"] .menu').setAttribute('data-maxamount', parseFloat(_CLG_) + parseFloat(_LBR_));
+                                $getEl('[data-choice_id="txt_method_cash"] #details-cash_change').value = parseFloat(_CLG_) + parseFloat(_LBR_);
 
                             }
                             tabla.insertRow({
@@ -975,7 +1486,7 @@ window.addEventListener('load', function () {
 
                                 console.log(_LBR_NAME_);
                                 tabla.insertRow({
-                                    row: { Col1: 'LBR', Col2: 'LIBRO: ' + _LBR_NAME_, Col3: '-', Col4: String(_LBR_) },
+                                    row: { Col1: 'LBR', Col2: 'LIBRO/' + _LBR_NAME_, Col3: '-', Col4: String(_LBR_) },
                                     remove: false
                                 });
 
@@ -1006,8 +1517,141 @@ window.addEventListener('load', function () {
                 default:
                     break;
             }
+
+            UpdatePrintBox();
         }
     });
 
+
+    window._HOUR_COUNTER_ = new CountdownBanner({
+        hourMax: window.hourmax_change_receipt_day,
+        minuteMax: 0,
+        prefix: window._SEDE_,
+        onFinish: () => {
+            console.log('Contador finalizado');
+        },
+        onDisable: () => {
+            console.log('Contador desactivado');
+            window._NEW_DATE_ = { status: false, day: '', month: '', year: '' };
+            localStorage.setItem(window._SEDE_ + "_new_date", JSON.stringify(window._NEW_DATE_));
+            _HELPERS_.updateDateTime();
+
+        }
+    });
+    window._HOUR_COUNTER_.start();
+
+    function isBeforeOrAt9AM() {
+        const now = new Date();
+        const hours = now.getHours();   // 0-23
+        const minutes = now.getMinutes(); // 0-59
+
+        // Verificar si la hora es menor a 9, o si es exactamente 9:00 AM
+        console.log(hours + '<' + window.hourmax_change_receipt_day);
+        return hours < window.hourmax_change_receipt_day || (hours === window.hourmax_change_receipt_day && minutes === 0);
+    }
+
+    const _ACTIONS_BUTTONS_ = document.querySelectorAll('footer .container-actionbuttons span[data-tooltip]');
+    if (_ACTIONS_BUTTONS_) {
+        _ACTIONS_BUTTONS_.forEach(_BTN_ => {
+            _BTN_.addEventListener('click', async function (e) {
+                const _action_ = this.id;
+
+                switch (_action_) {
+                    case 'btn_changeDateTime':
+                        if (!isBeforeOrAt9AM()) {
+
+                            await mdl_msgbox.warning({
+                                title: 'ADVERTENCIA',
+                                content: 'No está permitido hacer cambio de fecha después de las 9:00 AM, si es realmente necesario contactarse con el administrador del aplicativo.',
+                                acceptText: 'Entendido',
+                            });
+
+
+
+                            return;
+                        }
+
+                        const hoy = new Date();
+                        const tresDiasAtras = new Date(hoy);
+                        tresDiasAtras.setDate(hoy.getDate() - 4);
+
+                        const ayer = new Date(hoy);
+                        ayer.setDate(hoy.getDate() - 1);
+
+                        function formatearFecha(fecha) {
+                            const year = fecha.getFullYear();
+                            const month = String(fecha.getMonth() + 1).padStart(2, '0');
+                            const day = String(fecha.getDate()).padStart(2, '0');
+                            return `${year}-${month}-${day}`;
+                        }
+
+                        const {
+                            value: formValues
+                        } = await mdl_msgbox.open({
+                            type: 'question',
+                            title: 'CAMBIAR LA FECHA DEL RECIBO',
+                            content: (modal) => {
+                                const wrap = document.createElement('div');
+                                const p = document.createElement('p');
+                                p.textContent = 'Seleccione la nueva fecha (DÍA/MES/AÑO) en el recuadro de abajo. Tiene hasta tres días anterior a hoy para escoger.';
+                                const input = document.createElement('input');
+                                input.type = 'date';
+                                input.min = formatearFecha(tresDiasAtras);
+                                input.max = formatearFecha(ayer);
+                                input.value = formatearFecha(ayer);
+                                input.style.cssText = `appearance: none;outline: none;border: #959595 solid 1px;border-radius: 4px;padding: 7px;font-size: 1.5rem;`;
+                                wrap.append(p, input);
+                                return wrap;
+                            },
+                            onAccept: async (ctx, bodyEl) => {
+                                const input = bodyEl.querySelector('input');
+                                if (!input.value) {
+                                    await mdl_msgbox.error({
+                                        title: 'Error',
+                                        content: 'Debe seleccionar una fecha.',
+                                        acceptText: 'Entendido',
+                                    });
+                                    return false;
+                                }
+
+                                return { newDate: input.value };
+                            },
+                            acceptText: 'Aceptar',
+                            cancelText: 'Cancelar',
+                        });
+
+
+
+                        console.log('formValues:', JSON.stringify(formValues));
+                        if (formValues) {
+
+                            //console.log(formValues.NEW_DATE);
+                            const [year, month, day] = (formValues.newDate).split("-");
+                            window._NEW_DATE_.day = day;
+                            window._NEW_DATE_.month = month;
+                            window._NEW_DATE_.year = year;
+                            window._NEW_DATE_.status = true;
+
+
+
+                            localStorage.setItem(window._SEDE_ + "_new_date", JSON.stringify(window._NEW_DATE_));
+
+
+
+                            window._HOUR_COUNTER_.restart();
+
+                            _HELPERS_.updateDateTime();
+                            // $(".date").html(Current_date("html"));
+
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+
+            });
+        });
+    }
 
 });

@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CountdownBanner · Demo Vanilla JS</title>
+
+    <!-- ===================== STYLE (.scss) ===================== -->
+    <style>
+        /* En producción esto vive en un .scss y se compila. Aquí va embebido
+   como CSS plano equivalente al SCSS del bloque más abajo. */
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 2rem 1rem 6rem;
+        }
+
+        .demo-panel {
+            max-width: 920px;
+            margin: 0 auto;
+            display: grid;
+            gap: 1.25rem;
+        }
+
+        .demo-panel__title {
+            font-size: 1.5rem;
+            margin: 0 0 0.25rem;
+            color: #f1f5f9;
+        }
+
+        .demo-panel__subtitle {
+            margin: 0;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .demo-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            padding: 1rem 1.25rem;
+        }
+
+        .demo-card__title {
+            margin: 0 0 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #94a3b8;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.6rem;
+        }
+
+        .demo-btn {
+            appearance: none;
+            border: 1px solid #475569;
+            background: #334155;
+            color: #e2e8f0;
+            padding: 0.55rem 0.9rem;
+            border-radius: 0.5rem;
+            font: inherit;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s, transform 0.05s;
+        }
+
+        .demo-btn:hover {
+            background: #3f4d63;
+            border-color: #64748b;
+        }
+
+        .demo-btn:active {
+            transform: translateY(1px);
+        }
+
+        .demo-btn:focus-visible {
+            outline: 2px solid #60a5fa;
+            outline-offset: 2px;
+        }
+
+        .demo-btn--primary {
+            background: #2563eb;
+            border-color: #3b82f6;
+        }
+
+        .demo-btn--primary:hover {
+            background: #1d4ed8;
+        }
+
+        .demo-btn--danger {
+            background: #b91c1c;
+            border-color: #dc2626;
+        }
+
+        .demo-btn--danger:hover {
+            background: #991b1b;
+        }
+
+        .demo-field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .demo-field label {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .demo-field input,
+        .demo-field select {
+            background: #0f172a;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+            border-radius: 0.4rem;
+            padding: 0.45rem 0.6rem;
+            font: inherit;
+            font-size: 0.875rem;
+        }
+
+        .demo-field input:focus,
+        .demo-field select:focus {
+            outline: 2px solid #60a5fa;
+            outline-offset: 1px;
+        }
+
+        .demo-status {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 0.6rem;
+        }
+
+        .demo-status__row {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 0.6rem 0.75rem;
+        }
+
+        .demo-status__label {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .demo-status__value {
+            font-size: 1rem;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            color: #f1f5f9;
+            margin-top: 0.15rem;
+        }
+
+        .demo-status__value--on {
+            color: #4ade80;
+        }
+
+        .demo-status__value--off {
+            color: #f87171;
+        }
+
+        .demo-log {
+            background: #020617;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 0.6rem 0.75rem;
+            max-height: 260px;
+            overflow-y: auto;
+            font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+
+        .demo-log__line {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.1rem 0;
+            border-bottom: 1px dashed #1e293b;
+        }
+
+        .demo-log__line:last-child {
+            border-bottom: none;
+        }
+
+        .demo-log__time {
+            color: #64748b;
+            flex-shrink: 0;
+        }
+
+        .demo-log__msg {
+            color: #cbd5e1;
+            word-break: break-word;
+        }
+
+        .demo-log__msg--ok {
+            color: #4ade80;
+        }
+
+        .demo-log__msg--warn {
+            color: #fbbf24;
+        }
+
+        .demo-log__msg--err {
+            color: #f87171;
+        }
+
+        /* ============ Banner inyectado por CountdownBanner ============ */
+        .previous-receipt {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #1a1a1a;
+            font-size: 0.9rem;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.35);
+            animation: bannerSlideUp 0.28s ease-out;
+        }
+
+        .previous-receipt p {
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .previous-receipt p strong {
+            font-weight: 700;
+        }
+
+        .previous-receipt #tmp_previous_date_countdown {
+            display: inline-block;
+            min-width: 6.5ch;
+            padding: 0.1rem 0.4rem;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 0.25rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .previous-receipt .close {
+            appearance: none;
+            flex-shrink: 0;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            border: none;
+            background: rgba(0, 0, 0, 0.2);
+            color: #1a1a1a;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
+        }
+
+        .previous-receipt .close:hover {
+            background: rgba(0, 0, 0, 0.35);
+        }
+
+        .previous-receipt .close:active {
+            transform: scale(0.92);
+        }
+
+        .previous-receipt .close:focus-visible {
+            outline: 2px solid #1a1a1a;
+            outline-offset: 2px;
+        }
+
+        @keyframes bannerSlideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="demo-panel">
+        <header>
+            <h1 class="demo-panel__title">CountdownBanner · Demo</h1>
+            <p class="demo-panel__subtitle">
+                Todos los métodos públicos en vivo. Abre DevTools → Application → Local Storage para ver las claves con
+                prefijo.
+            </p>
+        </header>
+
+        <!-- ---- Configuración ---- -->
+        <section class="demo-card" aria-labelledby="cfg-title">
+            <h2 class="demo-card__title" id="cfg-title">Configuración</h2>
+            <div class="demo-grid">
+                <div class="demo-field">
+                    <label for="cfg-prefix">prefix</label>
+                    <input id="cfg-prefix" type="text" value="demo_" placeholder="ej: sede_norte_" />
+                </div>
+                <div class="demo-field">
+                    <label for="cfg-hour">hourMax (0-23)</label>
+                    <input id="cfg-hour" type="number" min="0" max="23" placeholder="vacío = sin límite" />
+                </div>
+                <div class="demo-field">
+                    <label for="cfg-minute">minuteMax (0-59)</label>
+                    <input id="cfg-minute" type="number" min="0" max="59" placeholder="vacío = sin límite" />
+                </div>
+                <div class="demo-field">
+                    <label for="cfg-duration">duration (ms)</label>
+                    <input id="cfg-duration" type="number" min="1" value="60000" />
+                </div>
+                <div class="demo-field">
+                    <label for="cfg-debug">debug</label>
+                    <select id="cfg-debug">
+                        <option value="true">true</option>
+                        <option value="false">false</option>
+                    </select>
+                </div>
+            </div>
+            <div class="demo-grid" style="margin-top:0.75rem">
+                <button class="demo-btn demo-btn--primary" id="btn-create">Crear instancia</button>
+                <button class="demo-btn demo-btn--danger" id="btn-destroy">destroy()</button>
+                <button class="demo-btn" id="btn-clear-log">Limpiar log</button>
+            </div>
+        </section>
+
+        <!-- ---- Métodos públicos ---- -->
+        <section class="demo-card" aria-labelledby="api-title">
+            <h2 class="demo-card__title" id="api-title">Métodos públicos</h2>
+            <div class="demo-grid">
+                <button class="demo-btn" id="btn-start">start()</button>
+                <button class="demo-btn" id="btn-enable">enable()</button>
+                <button class="demo-btn" id="btn-disable">disable()</button>
+                <button class="demo-btn" id="btn-stop">stop()</button>
+                <button class="demo-btn" id="btn-restart">restart()</button>
+                <button class="demo-btn" id="btn-remaining">getRemaining()</button>
+                <button class="demo-btn" id="btn-isactive">isActive()</button>
+            </div>
+        </section>
+
+        <!-- ---- Estado en vivo ---- -->
+        <section class="demo-card" aria-labelledby="state-title">
+            <h2 class="demo-card__title" id="state-title">Estado en vivo</h2>
+            <div class="demo-status">
+                <div class="demo-status__row">
+                    <div class="demo-status__label">isActive()</div>
+                    <div class="demo-status__value" id="st-active">—</div>
+                </div>
+                <div class="demo-status__row">
+                    <div class="demo-status__label">getRemaining()</div>
+                    <div class="demo-status__value" id="st-remaining">—</div>
+                </div>
+                <div class="demo-status__row">
+                    <div class="demo-status__label">hourMax</div>
+                    <div class="demo-status__value" id="st-hour">—</div>
+                </div>
+                <div class="demo-status__row">
+                    <div class="demo-status__label">minuteMax</div>
+                    <div class="demo-status__value" id="st-minute">—</div>
+                </div>
+                <div class="demo-status__row">
+                    <div class="demo-status__label">prefix</div>
+                    <div class="demo-status__value" id="st-prefix">—</div>
+                </div>
+                <div class="demo-status__row">
+                    <div class="demo-status__label">storage backend</div>
+                    <div class="demo-status__value" id="st-storage">—</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ---- Consola de eventos ---- -->
+        <section class="demo-card" aria-labelledby="log-title">
+            <h2 class="demo-card__title" id="log-title">Consola de eventos</h2>
+            <div class="demo-log" id="log" role="log" aria-live="polite" aria-atomic="false"></div>
+        </section>
+    </main>
+
+    <!-- ===================== JAVASCRIPT ===================== -->
+    <script type="module">
+        /* ============================================================
+         *  CountdownBanner — Vanilla JS (ES2022+)
+         *  Sin dependencias externas.
+         * ============================================================ */
+        class CountdownBanner {
+            #duration;
+            #hourMax;
+            #minuteMax;
+            #storageKey;
+            #disabledKey;
+            #bannerId;
+            #prefix;
+            #startTime;
+            #intervalId;
+            #isFinished;
+            #bannerElement;
+            #abortController;
+            #visibilityHandler;
+            #onFinish;
+            #onDisable;
+            #onCleanupDate;
+            #storage;
+            #debug;
+
+            static #storageAvailable() {
+                try {
+                    const k = '__cd_test__';
+                    localStorage.setItem(k, '1');
+                    localStorage.removeItem(k);
+                    return true;
+                } catch { return false; }
+            }
+
+            static #memoryStorage() {
+                const m = new Map();
+                return {
+                    getItem: (k) => (m.has(k) ? m.get(k) : null),
+                    setItem: (k, v) => m.set(k, String(v)),
+                    removeItem: (k) => m.delete(k),
+                };
+            }
+
+            static get storageBackend() {
+                return CountdownBanner.#storageAvailable() ? 'localStorage' : 'memory';
+            }
+
+            constructor(options = {}) {
+                this.#storage = CountdownBanner.#storageAvailable()
+                    ? localStorage
+                    : CountdownBanner.#memoryStorage();
+
+                this.#duration = Number.isFinite(options.duration) && options.duration > 0
+                    ? options.duration
+                    : 3_600_000;
+
+                this.#hourMax = this.#validateInt(options.hourMax, 0, 23, 'hourMax');
+                this.#minuteMax = this.#validateInt(options.minuteMax, 0, 59, 'minuteMax');
+
+                this.#prefix = String(options.prefix ?? '');
+                this.#storageKey = this.#prefix + String(options.storageKey ?? 'countdown_data');
+                this.#disabledKey = this.#prefix + String(options.disabledKey ?? 'countdown_disabled');
+                this.#bannerId = String(options.bannerId ?? 'previous-receipt-banner');
+
+                this.#onFinish = typeof options.onFinish === 'function' ? options.onFinish : null;
+                this.#onDisable = typeof options.onDisable === 'function' ? options.onDisable : null;
+                this.#onCleanupDate = typeof options.onCleanupDate === 'function' ? options.onCleanupDate : null;
+                this.#debug = options.debug === true;
+
+                this.#startTime = 0;
+                this.#intervalId = null;
+                this.#isFinished = false;
+                this.#bannerElement = null;
+                this.#abortController = null;
+                this.#visibilityHandler = null;
+            }
+
+            #validateInt(v, min, max, name) {
+                if (v === undefined || v === null || v === '') return null;
+                const n = Number(v);
+                if (!Number.isInteger(n) || n < min || n > max) {
+                    throw new RangeError(`${name} debe ser un entero entre ${min} y ${max}`);
+                }
+                return n;
+            }
+
+            #log(...args) { if (this.#debug) console.info('[CountdownBanner]', ...args); }
+
+            get isPastDay() { return this.isActive(); }
+            get hourMax() { return this.#hourMax; }
+            get minuteMax() { return this.#minuteMax; }
+            get prefix() { return this.#prefix; }
+
+            start() {
+                if (this.#storage.getItem(this.#disabledKey) === 'true') {
+                    this.#log('⏹️ Countdown desactivado (no se iniciará).');
+                    return this;
+                }
+                const data = this.#readState();
+
+                if (data?.active === true) {
+                    this.#startTime = Number.isFinite(data.startTime) ? data.startTime : Date.now();
+                    if (Number.isInteger(data.hourMax)) this.#hourMax = data.hourMax;
+                    if (Number.isInteger(data.minuteMax)) this.#minuteMax = data.minuteMax;
+
+                    if (this.#getRemainingMs() <= 0) {
+                        this.#finish();
+                    } else {
+                        this.#log(`⏳ Reanudando countdown (iniciado a las ${new Date(this.#startTime).toLocaleTimeString()})`);
+                        this.#startLoop();
+                    }
+                } else {
+                    this.#storage.setItem(this.#disabledKey, 'true');
+                    this.#log('⏸️ Primera visita: modo desactivado. Llama a .enable() para activarlo.');
+                    this.#isFinished = true;
+                }
+                return this;
+            }
+
+            enable() {
+                if (this.isActive()) {
+                    this.#log('ℹ️ Countdown ya está activo.');
+                    return this;
+                }
+                this.#storage.removeItem(this.#disabledKey);
+                this.#isFinished = false;
+
+                const data = this.#readState();
+                if (!data) {
+                    this.#startTime = Date.now();
+                    this.#saveState(true);
+                    this.#log('🔓 Modo activado (nuevo estado).');
+                    return this.start();
+                }
+                if (data.active === false) {
+                    data.active = true;
+                    this.#writeState(data);
+                }
+                this.#log('🔓 Modo activado. Iniciando countdown...');
+                return this.start();
+            }
+
+            disable() { this.#disableManually(); return this; }
+
+            stop() {
+                this.#clearInterval();
+                this.#detachVisibility();
+                this.#storage.removeItem(this.#storageKey);
+                this.#storage.removeItem(this.#disabledKey);
+                this.#cleanupDate();
+                this.#isFinished = true;
+                this.#removeBanner();
+                this.#log('⏹️ Countdown detenido manualmente.');
+                return this;
+            }
+
+            restart() {
+                this.#clearInterval();
+                this.#removeBanner();
+                this.#storage.removeItem(this.#storageKey);
+                this.#storage.removeItem(this.#disabledKey);
+                this.#isFinished = false;
+                this.#startTime = Date.now();
+                this.#saveState(true);
+                this.#log('🚀 Countdown reiniciado desde cero.');
+                this.#startLoop();
+                return this;
+            }
+
+            destroy() {
+                this.#clearInterval();
+                this.#detachVisibility();
+                this.#removeBanner();
+                this.#isFinished = true;
+                return this;
+            }
+
+            getRemaining() {
+                if (this.#isFinished) return 0;
+                return Math.max(0, this.#getRemainingMs());
+            }
+
+            isActive() {
+                return !this.#isFinished && this.#storage.getItem(this.#disabledKey) !== 'true';
+            }
+
+            #readState() {
+                const raw = this.#storage.getItem(this.#storageKey);
+                if (!raw) return null;
+                try {
+                    const parsed = JSON.parse(raw);
+                    return parsed && typeof parsed === 'object' ? parsed : null;
+                } catch (err) {
+                    if (this.#debug) console.warn('⚠️ Estado corrupto, limpiando.', err);
+                    this.#storage.removeItem(this.#storageKey);
+                    return null;
+                }
+            }
+
+            #writeState(state) {
+                try { this.#storage.setItem(this.#storageKey, JSON.stringify(state)); }
+                catch (err) { if (this.#debug) console.warn('⚠️ No se pudo guardar.', err); }
+            }
+
+            #saveState(active = true) {
+                const state = { startTime: this.#startTime, duration: this.#duration, active };
+                if (this.#hourMax !== null) state.hourMax = this.#hourMax;
+                if (this.#minuteMax !== null) state.minuteMax = this.#minuteMax;
+                this.#writeState(state);
+            }
+
+            #getTargetTime() {
+                if (this.#hourMax === null && this.#minuteMax === null) return null;
+                const target = new Date();
+                if (this.#hourMax !== null && this.#minuteMax !== null) {
+                    target.setHours(this.#hourMax, this.#minuteMax, 0, 0);
+                } else if (this.#hourMax !== null) {
+                    target.setHours(this.#hourMax, 0, 0, 0);
+                } else {
+                    target.setMinutes(this.#minuteMax, 0, 0);
+                }
+                return target;
+            }
+
+            #getRemainingMs() {
+                const target = this.#getTargetTime();
+                if (target) return Math.max(0, target.getTime() - Date.now());
+                return Math.max(0, this.#duration - (Date.now() - this.#startTime));
+            }
+
+            #startLoop() {
+                if (this.#intervalId) return;
+                const remaining = this.#getRemainingMs();
+                if (remaining <= 0) { this.#finish(); return; }
+
+                this.#createBanner(remaining);
+                this.#updateBannerTime(remaining);
+                this.#attachVisibility();
+
+                this.#intervalId = setInterval(() => {
+                    const r = this.#getRemainingMs();
+                    if (r <= 0) { this.#finish(); return; }
+                    this.#updateBannerTime(r);
+                }, 1000);
+            }
+
+            #clearInterval() {
+                if (this.#intervalId) { clearInterval(this.#intervalId); this.#intervalId = null; }
+            }
+
+            #finish() {
+                if (this.#isFinished) return;
+                this.#isFinished = true;
+                this.#clearInterval();
+                this.#detachVisibility();
+                this.#storage.removeItem(this.#storageKey);
+                this.#storage.setItem(this.#disabledKey, 'true');
+                this.#removeBanner();
+                this.#cleanupDate();
+                this.#log(`✅ FINALIZADO a las ${new Date().toLocaleTimeString()}`);
+                try { this.#onFinish?.(); } catch (e) { console.error(e); }
+            }
+
+            #disableManually() {
+                this.#clearInterval();
+                this.#detachVisibility();
+                this.#storage.removeItem(this.#storageKey);
+                this.#storage.setItem(this.#disabledKey, 'true');
+                this.#cleanupDate();
+                this.#isFinished = true;
+                this.#removeBanner();
+                this.#log('⏹️ Countdown desactivado manualmente.');
+                try { this.#onDisable?.(); } catch (e) { console.error(e); }
+            }
+
+            #cleanupDate() {
+                if (!this.#onCleanupDate) return;
+                try { this.#onCleanupDate(); } catch (e) { console.error(e); }
+            }
+
+            #removeBanner() {
+                if (this.#abortController) { this.#abortController.abort(); this.#abortController = null; }
+                document.getElementById(this.#bannerId)?.remove();
+                this.#bannerElement = null;
+            }
+
+            #createBanner(remainingMs) {
+                let banner = document.getElementById(this.#bannerId);
+                const targetTime = this.#getTargetTime();
+                const timeStr = targetTime ? this.#formatTime(targetTime) : '';
+
+                if (!banner) {
+                    banner = document.createElement('div');
+                    banner.id = this.#bannerId;
+                    banner.className = 'previous-receipt';
+                    banner.innerHTML = `
+        <p>
+          El modo de <strong>CAMBIO DE FECHA</strong> está habilitado
+          ${timeStr ? `hasta las <strong>${timeStr}</strong>` : ''}.
+          Tiempo Restante <strong id="tmp_previous_date_countdown"></strong>
+          Para salir de este modo haga click en la ✕ de la derecha de esta barra.
+        </p>
+        <button class="close" type="button" aria-label="Cerrar">✕</button>
+      `;
+                    document.body.appendChild(banner);
+                    this.#abortController = new AbortController();
+                    banner.querySelector('.close')?.addEventListener(
+                        'click',
+                        () => this.#disableManually(),
+                        { signal: this.#abortController.signal }
+                    );
+                }
+                this.#bannerElement = banner;
+                this.#updateBannerTime(remainingMs);
+                return banner;
+            }
+
+            #updateBannerTime(remainingMs) {
+                const span = this.#bannerElement?.querySelector('#tmp_previous_date_countdown');
+                if (!span) return;
+                if (remainingMs <= 0) { span.textContent = '00:00 min'; return; }
+
+                const totalSec = Math.floor(remainingMs / 1000);
+                const hours = Math.floor(totalSec / 3600);
+                const minutes = String(Math.floor((totalSec % 3600) / 60)).padStart(2, '0');
+                const seconds = String(totalSec % 60).padStart(2, '0');
+
+                span.textContent = hours > 0
+                    ? `${hours} h ${minutes} min ${seconds} s`
+                    : `${minutes} minutos y ${seconds} segundos`;
+            }
+
+            #formatTime(date) {
+                if (!date) return '';
+                let h = date.getHours();
+                const m = String(date.getMinutes()).padStart(2, '0');
+                const ampm = h >= 12 ? 'PM' : 'AM';
+                h = h % 12 || 12;
+                return `${h}:${m} ${ampm}`;
+            }
+
+            #attachVisibility() {
+                if (this.#visibilityHandler) return;
+                this.#visibilityHandler = () => {
+                    if (document.visibilityState !== 'visible') return;
+                    const r = this.#getRemainingMs();
+                    if (r <= 0) { this.#finish(); return; }
+                    this.#updateBannerTime(r);
+                };
+                document.addEventListener('visibilitychange', this.#visibilityHandler);
+            }
+
+            #detachVisibility() {
+                if (this.#visibilityHandler) {
+                    document.removeEventListener('visibilitychange', this.#visibilityHandler);
+                    this.#visibilityHandler = null;
+                }
+            }
+        }
+
+        /* ============================================================
+         *  DEMO · Wiring UI ↔ CountdownBanner
+         * ============================================================ */
+        (() => {
+            'use strict';
+
+            const $ = (id) => document.getElementById(id);
+            const logEl = $('log');
+            const stActive = $('st-active');
+            const stRemain = $('st-remaining');
+            const stHour = $('st-hour');
+            const stMinute = $('st-minute');
+            const stPrefix = $('st-prefix');
+            const stStorage = $('st-storage');
+
+            let instance = null;
+
+            // ---- Log ----
+            const log = (msg, kind = '') => {
+                const line = document.createElement('div');
+                line.className = 'demo-log__line';
+                const time = new Date().toLocaleTimeString();
+                line.innerHTML = `<span class="demo-log__time">${time}</span>
+                      <span class="demo-log__msg ${kind ? 'demo-log__msg--' + kind : ''}">${msg}</span>`;
+                logEl.appendChild(line);
+                logEl.scrollTop = logEl.scrollHeight;
+                while (logEl.children.length > 100) logEl.removeChild(logEl.firstChild);
+            };
+
+            const fmtMs = (ms) => {
+                if (ms <= 0) return '00:00';
+                const s = Math.floor(ms / 1000);
+                const h = Math.floor(s / 3600);
+                const m = Math.floor((s % 3600) / 60);
+                const ss = s % 60;
+                const pad = (n) => String(n).padStart(2, '0');
+                return h > 0 ? `${h}:${pad(m)}:${pad(ss)}` : `${pad(m)}:${pad(ss)}`;
+            };
+
+            // ---- Config → opciones ----
+            const readConfig = () => {
+                const num = (v) => (v === '' || v === null ? undefined : Number(v));
+                return {
+                    prefix: $('cfg-prefix').value,
+                    hourMax: num($('cfg-hour').value),
+                    minuteMax: num($('cfg-minute').value),
+                    duration: num($('cfg-duration').value),
+                    debug: $('cfg-debug').value === 'true',
+                    onFinish: () => log('🟢 onFinish() disparado', 'ok'),
+                    onDisable: () => log('🟠 onDisable() disparado', 'warn'),
+                    onCleanupDate: () => log('🧹 onCleanupDate() → limpiando fecha previa…'),
+                };
+            };
+
+            // ---- Crear / destruir instancia ----
+            const createInstance = () => {
+                if (instance) { instance.destroy(); log('♻️ Instancia anterior destruida', 'warn'); }
+                try {
+                    const cfg = readConfig();
+                    instance = new CountdownBanner(cfg);
+                    log(`🆕 CountdownBanner creado · prefix="${cfg.prefix}" · duration=${cfg.duration ?? 'default'}`);
+                    log(`📦 Claves usadas: "${cfg.prefix}countdown_data", "${cfg.prefix}countdown_disabled"`);
+                    refreshStatus();
+                } catch (err) {
+                    log(`❌ Error al crear: ${err.message}`, 'err');
+                    instance = null;
+                }
+            };
+
+            // ---- Refresco de estado (250ms, independiente del loop interno) ----
+            const refreshStatus = () => {
+                stStorage.textContent = CountdownBanner.storageBackend;
+                if (!instance) {
+                    stActive.textContent = '—';
+                    stActive.className = 'demo-status__value';
+                    stRemain.textContent = '—';
+                    stHour.textContent = '—';
+                    stMinute.textContent = '—';
+                    stPrefix.textContent = '—';
+                    return;
+                }
+                const active = instance.isActive();
+                stActive.textContent = active ? 'true' : 'false';
+                stActive.className = 'demo-status__value ' + (active ? 'demo-status__value--on' : 'demo-status__value--off');
+                stRemain.textContent = fmtMs(instance.getRemaining());
+                stHour.textContent = instance.hourMax ?? 'null';
+                stMinute.textContent = instance.minuteMax ?? 'null';
+                stPrefix.textContent = instance.prefix || '(vacío)';
+            };
+
+            setInterval(refreshStatus, 250);
+
+            // ---- Guard: exige instancia ----
+            const withInstance = (fn) => () => {
+                if (!instance) { log('⚠️ No hay instancia. Pulsa "Crear instancia" primero.', 'warn'); return; }
+                try { fn(instance); } catch (e) { log(`❌ ${e.message}`, 'err'); }
+                refreshStatus();
+            };
+
+            // ---- Botones ----
+            $('btn-create').addEventListener('click', createInstance);
+            $('btn-destroy').addEventListener('click', () => {
+                if (!instance) { log('⚠️ No hay instancia que destruir.', 'warn'); return; }
+                instance.destroy();
+                log('🗑️ destroy() ejecutado — listeners y banner liberados', 'warn');
+                refreshStatus();
+            });
+            $('btn-clear-log').addEventListener('click', () => { logEl.innerHTML = ''; log('🧼 Log limpiado'); });
+
+            $('btn-start').addEventListener('click', withInstance((i) => { i.start(); log('▶️ start()'); }));
+            $('btn-enable').addEventListener('click', withInstance((i) => { i.enable(); log('🔓 enable()'); }));
+            $('btn-disable').addEventListener('click', withInstance((i) => { i.disable(); log('🔒 disable()'); }));
+            $('btn-stop').addEventListener('click', withInstance((i) => { i.stop(); log('⏹️ stop()'); }));
+            $('btn-restart').addEventListener('click', withInstance((i) => { i.restart(); log('🔄 restart()'); }));
+            $('btn-remaining').addEventListener('click', withInstance((i) => { log(`⏱️ getRemaining() → ${i.getRemaining()} ms (${fmtMs(i.getRemaining())})`); }));
+            $('btn-isactive').addEventListener('click', withInstance((i) => { log(`📊 isActive() → ${i.isActive()}`); }));
+
+            // ---- Estado inicial ----
+            log('👋 Demo listo. Pulsa "Crear instancia" para empezar.');
+            refreshStatus();
+            createInstance();
+        })();
+    </script>
+
+</body>
+
+</html>

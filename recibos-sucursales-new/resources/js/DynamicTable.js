@@ -1,40 +1,36 @@
-/* ================================================================
-         * DYNAMIC TABLE
-    * ================================================================ */
+
+/* ============================================================
+ *  DynamicTable
+ *  insertPosition + idRow + idSlug + blockRow + afterOpen + onChange + silent
+ * ============================================================ */
 class DynamicTable {
-    // ─── Referencias del DOM ───────────────────────────────
     #container;
     #table = null;
     #thead = null;
     #tbody = null;
     #tfoot = null;
 
-    // ─── Estado interno ────────────────────────────────────
     #headers = {};
     #options = {};
     #debug = false;
     #lastTFootOptions = { sumAllColumn: {}, LabelTotal: {} };
     #fieldSchema = {};
+    #schemaAfterOpen = null;
+    #onChange = null;
+    #changeDepth = 0;
     #rowCounter = 0;
     #abortController = null;
     #tableDisabled = false;
 
-    /**
-     * [NUEVO] Recuerda el último `total_row` que se pasó a `createBody()`.
-     * - `null`  → nunca se ha llamado a createBody (clearBody usará 1 por defecto).
-     * - `0`     → el usuario pidió explícitamente 0 filas.
-     * - `N > 0` → el usuario pidió N filas.
-     */
     #lastTotalRow = null;
 
-    // ─── Dialog ────────────────────────────────────────────
     #dialog = null;
     #dialogFieldsContainer = null;
     #dialogErrorBox = null;
 
     #NUMERIC_TYPES = new Set(['number', 'currency', 'money', 'decimal', 'float', 'int', 'integer']);
     #DISABLED_CLASS = 'disableTable';
-    #DEFAULT_TOTAL_ROW = 1;   // [NUEVO] fallback para clearBody sin createBody previo
+    #DEFAULT_TOTAL_ROW = 1;
 
     constructor(container, options = {}) {
         this.#container = (typeof container === 'string')
@@ -44,6 +40,7 @@ class DynamicTable {
         if (!this.#container) throw new Error('DynamicTable: contenedor no encontrado.');
 
         this.#debug = options.debug ?? false;
+        this.#onChange = typeof options.onChange === 'function' ? options.onChange : null;
         this.#options = {
             tableClass: options.tableClass ?? 'dynamic-table',
             addItemRowClass: options.addItemRowClass ?? 'add-item-row',
@@ -51,7 +48,9 @@ class DynamicTable {
             addItemButtonText: options.addItemButtonText ?? '+ Agregar fila',
             removeButtonClass: options.removeButtonClass ?? 'remove-row',
             defaultRemovable: options.defaultRemovable ?? false,
-            disabledClass: options.disabledClass ?? this.#DISABLED_CLASS
+            disabledClass: options.disabledClass ?? this.#DISABLED_CLASS,
+            insertPosition: ['afterLastData', 'firstEmpty', 'beforeAdd']
+                .includes(options.insertPosition) ? options.insertPosition : 'afterLastData'
         };
 
         this.#table = document.createElement('table');
@@ -81,9 +80,7 @@ class DynamicTable {
         this.#buildDialog(signal);
     }
 
-    /* ============================================================
-     *  MÉTODOS PRIVADOS NUMÉRICOS
-     * ============================================================ */
+    /* ---------- Numéricos ---------- */
     #sanitizeNumeric(value) {
         let v = String(value ?? '');
         const trimmed = v.trimStart();
@@ -94,12 +91,8 @@ class DynamicTable {
         if (firstDot !== -1) {
             v = v.slice(0, firstDot + 1) + v.slice(firstDot + 1).replace(/\./g, '');
         }
-        if (!v.startsWith('0.')) {
-            v = v.replace(/^0+(?=\d)/, '');
-        }
-        if (isNegative && v !== '' && v !== '.') {
-            v = '-' + v;
-        }
+        if (!v.startsWith('0.')) v = v.replace(/^0+(?=\d)/, '');
+        if (isNegative && v !== '' && v !== '.') v = '-' + v;
         return v;
     }
 
@@ -121,9 +114,7 @@ class DynamicTable {
             decPart = v.slice(firstDot);
         }
         intPart = intPart.replace(/^0+(?=\d)/, '');
-        if (intPart) {
-            intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        }
+        if (intPart) intPart = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         return (isNegative ? '-' : '') + intPart + decPart;
     }
 
@@ -159,9 +150,18 @@ class DynamicTable {
         return isNaN(n) ? null : n;
     }
 
-    /* ============================================================
-     *  HELPERS DE TEXTO Y CELDAS
-     * ============================================================ */
+    /* ---------- Slug ---------- */
+    #slugify(str) {
+        return String(str ?? '')
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+    }
+
+    /* ---------- Texto / celdas ---------- */
     #setText(el, text) {
         if (!el) return;
         while (el.firstChild) el.removeChild(el.firstChild);
@@ -172,11 +172,8 @@ class DynamicTable {
         if (!el) return '';
         let out = '';
         const walk = (node) => {
-            if (node.nodeType === 3) {
-                out += node.nodeValue;
-            } else if (node.childNodes && node.childNodes.length) {
-                node.childNodes.forEach(walk);
-            }
+            if (node.nodeType === 3) out += node.nodeValue;
+            else if (node.childNodes && node.childNodes.length) node.childNodes.forEach(walk);
         };
         el.childNodes.forEach(walk);
         return out;
@@ -194,10 +191,7 @@ class DynamicTable {
     #setTdValue(td, value) {
         if (!td) return;
         let span = td.querySelector('span');
-        if (!span) {
-            span = document.createElement('span');
-            td.appendChild(span);
-        }
+        if (!span) { span = document.createElement('span'); td.appendChild(span); }
         while (span.firstChild) span.removeChild(span.firstChild);
         span.appendChild(document.createTextNode(value ?? ''));
     }
@@ -208,9 +202,7 @@ class DynamicTable {
         return this.#readText(span || td);
     }
 
-    /* ============================================================
-     *  HELPERS DE ESTILOS
-     * ============================================================ */
+    /* ---------- Estilos ---------- */
     #applyStyles(rootContainer, stylesMap) {
         if (!rootContainer || !stylesMap) return;
 
@@ -218,9 +210,8 @@ class DynamicTable {
             if (!cssProps || typeof cssProps !== 'object') return;
 
             let el = null;
-            try {
-                el = rootContainer.querySelector(`#${CSS.escape(targetKey)}`);
-            } catch (_) { el = null; }
+            try { el = rootContainer.querySelector(`#${CSS.escape(targetKey)}`); }
+            catch (_) { el = null; }
 
             if (!el) {
                 const wrapper = rootContainer.querySelector(`.dialog-field[data-col="${targetKey}"]`);
@@ -249,9 +240,7 @@ class DynamicTable {
         return all;
     }
 
-    /* ============================================================
-     *  HELPERS DE OPCIONES
-     * ============================================================ */
+    /* ---------- Opciones / selects ---------- */
     #isGroupItem(item) {
         return !!(item && typeof item === 'object' && item.group && typeof item.group === 'object');
     }
@@ -269,9 +258,7 @@ class DynamicTable {
             if (this.#isGroupItem(item)) {
                 const inner = this.#getGroupOptions(item.group);
                 inner.forEach(o => out.push(o));
-            } else {
-                out.push(item);
-            }
+            } else out.push(item);
         });
         return out;
     }
@@ -308,15 +295,11 @@ class DynamicTable {
                     optgroup.appendChild(this.#createOptionElement(opt));
                 });
                 select.appendChild(optgroup);
-            } else {
-                select.appendChild(this.#createOptionElement(item));
-            }
+            } else select.appendChild(this.#createOptionElement(item));
         });
     }
 
-    /* ============================================================
-     *  FILTRO NUMÉRICO
-     * ============================================================ */
+    /* ---------- Filtro numérico ---------- */
     #attachNumericFilter(input) {
         const self = this;
 
@@ -371,20 +354,15 @@ class DynamicTable {
         input.addEventListener('paste', () => { setTimeout(applyFilter, 0); });
     }
 
-    /* ============================================================
-     *  HELPERS DE LABEL DINÁMICO
-     * ============================================================ */
+    /* ---------- Label dinámico ---------- */
     #updateLabelText(labelEl, newText) {
         if (!labelEl) return;
         let textNode = null;
         for (const child of labelEl.childNodes) {
             if (child.nodeType === 3) { textNode = child; break; }
         }
-        if (textNode) {
-            textNode.nodeValue = newText ?? '';
-        } else {
-            labelEl.insertBefore(document.createTextNode(newText ?? ''), labelEl.firstChild);
-        }
+        if (textNode) textNode.nodeValue = newText ?? '';
+        else labelEl.insertBefore(document.createTextNode(newText ?? ''), labelEl.firstChild);
     }
 
     #applyLabelField(fieldConfig, option) {
@@ -402,9 +380,7 @@ class DynamicTable {
 
         if (option && typeof option.label_field === 'string' && option.label_field.trim() !== '') {
             const lf = option.label_field.trim();
-            newLabel = Object.prototype.hasOwnProperty.call(this.#headers, lf)
-                ? this.#headers[lf]
-                : lf;
+            newLabel = Object.prototype.hasOwnProperty.call(this.#headers, lf) ? this.#headers[lf] : lf;
         }
         this.#updateLabelText(targetLabel, newLabel);
     }
@@ -419,9 +395,7 @@ class DynamicTable {
         return label.textContent.trim();
     }
 
-    /* ============================================================
-     *  HEADERS / SCHEMA
-     * ============================================================ */
+    /* ---------- Headers / schema ---------- */
     setHeaders(headers = {}) {
         this.#headers = { ...headers };
         this.#thead.innerHTML = '';
@@ -444,26 +418,14 @@ class DynamicTable {
     }
 
     setFieldSchema(schema = {}) {
-        this.#fieldSchema = { ...schema };
+        const { __afterOpen, ...fields } = schema;
+        this.#fieldSchema = { ...fields };
+        this.#schemaAfterOpen = typeof __afterOpen === 'function' ? __afterOpen : null;
         return this;
     }
 
-    /* ============================================================
-     *  BODY
-     * ============================================================ */
-
-    /**
-     * Crea el cuerpo de la tabla con N filas vacías + la fila "Añadir".
-     *
-     * [NUEVO] Recuerda el `total_row` para que `clearBody()` pueda
-     * regenerar el body sin que tengas que volver a llamar a este método.
-     *
-     * @param {object} opts
-     * @param {number} opts.total_row  Nº de filas vacías iniciales.
-     */
+    /* ---------- Body ---------- */
     createBody({ total_row = 0 } = {}) {
-        // [NUEVO] Guardar el valor para clearBody().
-        // Guardamos incluso el 0 explícito (ver #lastTotalRow).
         this.#lastTotalRow = total_row;
 
         this.#tbody.innerHTML = '';
@@ -472,24 +434,61 @@ class DynamicTable {
         }
         this.#tbody.appendChild(this.#createAddItemRow());
 
-        // Reaplicar estado disabled tras reconstruir el DOM.
         this.#syncAddButtonState();
         return this;
+    }
+
+    #findLastDataRow() {
+        const rows = this.#tbody.querySelectorAll(`tr:not(.${this.#options.addItemRowClass})`);
+        let last = null;
+        for (const tr of rows) {
+            const cells = tr.querySelectorAll('td[data-col]');
+            const hasData = cells.length > 0 &&
+                Array.from(cells).some(td => this.#getTdValue(td).trim() !== '');
+            if (hasData) last = tr;
+        }
+        return last;
+    }
+
+    #findFirstEmptyRow() {
+        const rows = this.#tbody.querySelectorAll(`tr:not(.${this.#options.addItemRowClass})`);
+        for (const tr of rows) {
+            const cells = tr.querySelectorAll('td[data-col]');
+            const isEmpty = cells.length > 0 &&
+                Array.from(cells).every(td => this.#getTdValue(td).trim() === '');
+            if (isEmpty) return tr;
+        }
+        return null;
     }
 
     insertRow(options = {}) {
         const cols = Object.keys(this.#headers);
         if (cols.length === 0) return null;
 
-        let data, canRemove, insertAfterto;
+        let data, canRemove, insertAfterto, insertPosition, idRow;
         if (options && typeof options === 'object' && 'row' in options && typeof options.row === 'object') {
             data = options.row || {};
             canRemove = options.remove !== false;
             insertAfterto = options.insertAfterto || null;
+            insertPosition = options.insertPosition || this.#options.insertPosition;
+            idRow = (typeof options.idRow === 'string' && options.idRow.trim() !== '')
+                ? options.idRow.trim() : null;
         } else {
             data = options || {};
             canRemove = true;
             insertAfterto = null;
+            insertPosition = this.#options.insertPosition;
+            idRow = null;
+        }
+
+        if (idRow) {
+            const collision = this.#tbody.querySelector(`tr[data-row-id="${CSS.escape(idRow)}"]`);
+            if (collision) {
+                if (this.#debug) {
+                    console.warn(`DynamicTable: idRow "${idRow}" ya existe; se usará uno autogenerado.`);
+                }
+                idRow = null;
+            }
         }
 
         let target = null;
@@ -512,29 +511,46 @@ class DynamicTable {
                 }
 
                 if (matchRow) {
-                    target = this.#createEmptyRow(false);
+                    target = this.#createEmptyRow(false, idRow);
                     matchRow.parentNode.insertBefore(target, matchRow.nextSibling);
-                    if (this.#debug) console.log('DynamicTable: insertAfterto → fila insertada después de matchRow', matchRow);
                 }
             }
         }
 
         if (!target) {
-            const rows = this.#tbody.querySelectorAll(`tr:not(.${this.#options.addItemRowClass})`);
-            for (const tr of rows) {
-                const dataCells = tr.querySelectorAll('td[data-col]');
-                const isEmpty = dataCells.length > 0 &&
-                    Array.from(dataCells).every(td => this.#getTdValue(td).trim() === '');
-                if (isEmpty) { target = tr; break; }
+            if (insertPosition === 'firstEmpty') {
+                target = this.#findFirstEmptyRow();
+                if (target && idRow) {
+                    target.dataset.rowId = idRow;
+                    target.dataset.customId = 'true';
+                }
             }
 
             if (!target) {
-                target = this.#createEmptyRow(false);
+                target = this.#createEmptyRow(false, idRow);
                 const addRow = this.#tbody.querySelector(`.${this.#options.addItemRowClass}`);
-                if (addRow) this.#tbody.insertBefore(target, addRow);
-                else this.#tbody.appendChild(target);
+
+                if (insertPosition === 'beforeAdd') {
+                    if (addRow) this.#tbody.insertBefore(target, addRow);
+                    else this.#tbody.appendChild(target);
+                } else {
+                    const lastDataRow = this.#findLastDataRow();
+                    if (lastDataRow) {
+                        lastDataRow.parentNode.insertBefore(target, lastDataRow.nextSibling);
+                    } else {
+                        const firstRow = this.#tbody.querySelector(`tr:not(.${this.#options.addItemRowClass})`);
+                        if (firstRow) this.#tbody.insertBefore(target, firstRow);
+                        else if (addRow) this.#tbody.insertBefore(target, addRow);
+                        else this.#tbody.appendChild(target);
+                    }
+                }
             }
         }
+
+        if (idRow && target.dataset.rowId !== idRow) {
+            target.dataset.rowId = idRow;
+        }
+        if (idRow) target.dataset.customId = 'true';
 
         if (canRemove) this.#addDeleteButton(target);
         else this.#removeDeleteButton(target);
@@ -551,16 +567,116 @@ class DynamicTable {
         });
 
         this.#markRowEmptyState(target);
-
-        if (this.#debug) console.log('DynamicTable: fila insertada', { data, canRemove, insertAfterto, id: target.dataset.rowId });
-
         this._refreshTFoot();
+
+        this.#emitChange('insert', {
+            row: target,
+            rowId: target.dataset.rowId || null,
+            data: this.#snapshotRow(target)
+        });
+
         return target;
     }
 
-    /* ============================================================
-     *  TFOOT
-     * ============================================================ */
+    insertFromDialogValues(values = {}) {
+        const data = {};
+        const consumed = new Set();
+        let insertAfterto = null;
+        let derivedIdRow = null;
+        let blockRow = false;
+        let blockRowSource = null;
+
+        Object.entries(this.#headers).forEach(([key]) => {
+            if (consumed.has(key)) return;
+
+            const cfg = this.#fieldSchema[key] || {};
+            const rawValue = values[key];
+
+            if (cfg.type === 'select') {
+                const value = (rawValue === undefined || rawValue === null) ? '' : String(rawValue);
+                if (value === '') { data[key] = ''; return; }
+
+                const flat = this.#flattenOptions(cfg.options || []);
+                const optConfig = flat.find(o => String(o.value) === value);
+                const label = optConfig?.label ?? value;
+
+                if (optConfig) {
+                    if (!derivedIdRow
+                        && typeof optConfig.idRow === 'string'
+                        && optConfig.idRow.trim() !== '') {
+                        derivedIdRow = optConfig.idRow.trim();
+                    }
+                    if (!derivedIdRow && optConfig.idSlug === true) {
+                        const s = this.#slugify(optConfig.value);
+                        if (s) derivedIdRow = s;
+                    }
+                    if (optConfig.blockRow === true) {
+                        blockRow = true;
+                        blockRowSource = key;
+                    }
+                    if (optConfig.insertAfterto
+                        && typeof optConfig.insertAfterto === 'object'
+                        && !insertAfterto) {
+                        insertAfterto = optConfig.insertAfterto;
+                    }
+                }
+
+                if (cfg.insertLabel && typeof cfg.insertLabel === 'string') {
+                    data[key] = value;
+                    data[cfg.insertLabel] = label;
+                    consumed.add(cfg.insertLabel);
+                } else {
+                    data[key] = `${value}/${label}`;
+                }
+            } else if (this.#NUMERIC_TYPES.has(String(cfg.type || '').toLowerCase())) {
+                data[key] = this.#formatNumeric2Decimals(rawValue ?? '');
+            } else {
+                data[key] = String(rawValue ?? '').trim();
+            }
+        });
+
+        Object.entries(this.#fieldSchema).forEach(([colKey, cfg]) => {
+            if (!cfg || typeof cfg !== 'object') return;
+            if (typeof cfg.onBeforeSave !== 'function') return;
+            if (!(colKey in data)) return;
+            try {
+                const original = data[colKey];
+                const modified = cfg.onBeforeSave(original, data);
+                if (modified !== undefined && modified !== null) data[colKey] = modified;
+            } catch (err) {
+                console.error(`DynamicTable: error en onBeforeSave("${colKey}")`, err);
+            }
+        });
+
+        if (blockRow && derivedIdRow) {
+            const collision = this.#tbody.querySelector(`tr[data-row-id="${CSS.escape(derivedIdRow)}"]`);
+            if (collision) {
+                const fieldLabel = this.#headers[blockRowSource] ?? blockRowSource;
+                this.#showError(`Ya existe una fila con id "${derivedIdRow}" (derivado de "${fieldLabel}"). Elige otra opción.`);
+                if (this.#debug) {
+                    console.warn(`DynamicTable: insertRow bloqueado por blockRow:true · idRow="${derivedIdRow}" ya existe.`);
+                }
+                return null;
+            }
+        }
+
+        const tr = this.insertRow({
+            row: data,
+            remove: true,
+            insertAfterto,
+            ...(derivedIdRow ? { idRow: derivedIdRow } : {})
+        });
+
+        if (this.#debug) {
+            console.log('DynamicTable: insertFromDialogValues', {
+                derivedIdRow, blockRow, blockRowSource, id: tr?.dataset.rowId
+            });
+        }
+
+        return tr;
+    }
+
+    /* ---------- Tfoot ---------- */
     updateTFoot({ sumAllColumn = {}, LabelTotal = {} } = {}) {
         this.#lastTFootOptions = {
             sumAllColumn: { ...sumAllColumn },
@@ -578,11 +694,8 @@ class DynamicTable {
 
         cols.forEach(key => {
             let value = '';
-            if (sumAllColumn[key] === true) {
-                value = this.#formatNumber(this.#sumColumn(key));
-            } else if (LabelTotal[key]) {
-                value = (LabelTotal[key] === true) ? 'TOTAL' : LabelTotal[key];
-            }
+            if (sumAllColumn[key] === true) value = this.#formatNumber(this.#sumColumn(key));
+            else if (LabelTotal[key]) value = (LabelTotal[key] === true) ? 'TOTAL' : LabelTotal[key];
             tr.appendChild(this.#createTd(key, value));
         });
 
@@ -590,9 +703,7 @@ class DynamicTable {
         return this;
     }
 
-    /* ============================================================
-     *  DIALOG
-     * ============================================================ */
+    /* ---------- Dialog ---------- */
     openInsertDialog() {
         if (!this.#dialog) return;
         if (this.#tableDisabled) {
@@ -722,22 +833,42 @@ class DynamicTable {
 
         this.#applyStyles(this.#dialogFieldsContainer, collectedStyles);
 
-        const firstField = this.#dialogFieldsContainer.querySelector('input, select, textarea');
-        if (firstField) setTimeout(() => firstField.focus(), 50);
-
         this.#dialog.showModal();
+
+        Object.entries(this.#headers).forEach(([key]) => {
+            const cfg = this.#fieldSchema[key];
+            if (!cfg || typeof cfg.afterOpen !== 'function') return;
+            const wrapper = this.#dialogFieldsContainer.querySelector(`.dialog-field[data-col="${key}"]`);
+            const field = wrapper?.querySelector('input, select, textarea');
+            if (!field) return;
+            const ctx = this.#buildFieldContext(key);
+            try { cfg.afterOpen(field, ctx); }
+            catch (err) { console.error(`DynamicTable: error en afterOpen("${key}")`, err); }
+        });
+
+        if (this.#schemaAfterOpen) {
+            const ctx = this.#buildFieldContext(null);
+            try { this.#schemaAfterOpen(ctx); }
+            catch (err) { console.error('DynamicTable: error en __afterOpen', err); }
+        }
+
+        setTimeout(() => {
+            const active = document.activeElement;
+            if (active && this.#dialog && this.#dialog.contains(active)) return;
+            const firstField = this.#dialogFieldsContainer.querySelector('input, select, textarea');
+            if (firstField) firstField.focus();
+        }, 50);
     }
 
     closeInsertDialog() {
         if (this.#dialog) this.#dialog.close();
     }
 
-    /* ============================================================
-     *  CONTEXTO PARA onChange
-     * ============================================================ */
+    /* ---------- Contexto ---------- */
     #buildFieldContext(currentCol) {
         const container = this.#dialogFieldsContainer;
         const schema = this.#fieldSchema;
+        const self = this;
 
         const getWrapper = (colKey) => {
             if (!colKey) return null;
@@ -755,10 +886,34 @@ class DynamicTable {
             f.dispatchEvent(new Event(evName, { bubbles: true }));
         };
 
-        const self = this;
-
         return {
             currentCol,
+            dialog: self.#dialog,
+            fieldsContainer: container,
+
+            getAllValues() {
+                const out = {};
+                Object.keys(self.#headers).forEach(k => {
+                    const f = getInnerField(k);
+                    if (f) out[k] = f.value;
+                });
+                return out;
+            },
+
+            setValues(map, { trigger = false } = {}) {
+                if (!map || typeof map !== 'object') return false;
+                Object.entries(map).forEach(([k, v]) => {
+                    const f = getInnerField(k);
+                    if (!f) return;
+                    f.value = v ?? '';
+                    if (trigger) dispatch(f);
+                });
+                return true;
+            },
+
+            showError(msg) { self.#showError(msg); return true; },
+            hideError() { self.#hideError(); return true; },
+            close() { self.closeInsertDialog(); return true; },
 
             getWrapper(colKey) { return getWrapper(colKey); },
             getField(colKey) { return getInnerField(colKey); },
@@ -831,16 +986,13 @@ class DynamicTable {
             getTotalAllColumn() {
                 return self.getTotalAllColumn();
             },
-
             disableTable() { return self.disableTable(); },
             enableTable() { return self.enableTable(); },
             isTableDisabled() { return self.isTableDisabled; }
         };
     }
 
-    /* ============================================================
-     *  VALIDACIÓN
-     * ============================================================ */
+    /* ---------- Validación ---------- */
     #validateRequired() {
         const invalidFields = [];
         let firstInvalidField = null;
@@ -860,9 +1012,7 @@ class DynamicTable {
                 if (!labelText) labelText = this.#headers[key] || key;
                 invalidFields.push(labelText);
                 if (!firstInvalidField) firstInvalidField = field;
-            } else {
-                wrapper.classList.remove('is-invalid');
-            }
+            } else wrapper.classList.remove('is-invalid');
         });
 
         if (invalidFields.length > 0) {
@@ -894,16 +1044,14 @@ class DynamicTable {
         this.#dialogErrorBox.classList.remove('is-visible');
     }
 
-    /* ============================================================
-     *  HELPERS DE FILA
-     * ============================================================ */
+    /* ---------- Filas ---------- */
     #nextRowId() {
         return `row-${++this.#rowCounter}`;
     }
 
-    #createEmptyRow(withDeleteButton = false) {
+    #createEmptyRow(withDeleteButton = false, customId = null) {
         const tr = document.createElement('tr');
-        tr.dataset.rowId = this.#nextRowId();
+        tr.dataset.rowId = customId || this.#nextRowId();
         tr.dataset.empty = 'true';
 
         const tdActions = document.createElement('td');
@@ -943,8 +1091,7 @@ class DynamicTable {
         removeBtn.title = 'Eliminar fila';
 
         removeBtn.addEventListener('click', () => {
-            tr.remove();
-            this._refreshTFoot();
+            this.removeRow(tr);
         });
 
         tdActions.appendChild(removeBtn);
@@ -1036,80 +1183,25 @@ class DynamicTable {
         document.body.appendChild(this.#dialog);
     }
 
-    /* ============================================================
-     *  SUBMIT
-     * ============================================================ */
+    /* ---------- Submit ---------- */
     #handleInsertSubmit() {
         if (!this.#validateRequired()) return;
 
-        const data = {};
-        let insertAfterto = null;
-        const consumed = new Set();
-
+        const values = {};
         const fields = this.#dialogFieldsContainer.querySelectorAll(
             'input[data-col], select[data-col], textarea[data-col]'
         );
-
         fields.forEach(field => {
             const key = field.dataset.col;
-            if (consumed.has(key)) return;
-
-            const fieldType = field.dataset.fieldType;
-            const config = this.#fieldSchema[key] || {};
-
-            if (fieldType === 'select') {
-                const selected = field.options[field.selectedIndex];
-                if (!selected || !field.value) { data[key] = ''; return; }
-                const value = field.value;
-                const label = selected.dataset.label || this.#readText(selected);
-
-                const flat = this.#flattenOptions(config.options || []);
-                const optConfig = flat.find(o => String(o.value) === String(value));
-
-                if (optConfig
-                    && optConfig.insertAfterto
-                    && typeof optConfig.insertAfterto === 'object'
-                    && !insertAfterto) {
-                    insertAfterto = optConfig.insertAfterto;
-                }
-
-                if (config.insertLabel && typeof config.insertLabel === 'string') {
-                    data[key] = value;
-                    data[config.insertLabel] = label;
-                    consumed.add(config.insertLabel);
-                } else {
-                    data[key] = `${value}/${label}`;
-                }
-            } else if (fieldType === 'number') {
-                data[key] = this.#formatNumeric2Decimals(field.value);
-            } else {
-                data[key] = field.value.trim();
-            }
+            if (key in values) return;
+            values[key] = field.value;
         });
 
-        Object.entries(this.#fieldSchema).forEach(([colKey, cfg]) => {
-            if (!cfg || typeof cfg !== 'object') return;
-            if (typeof cfg.onBeforeSave !== 'function') return;
-            if (!(colKey in data)) return;
-
-            try {
-                const original = data[colKey];
-                const modified = cfg.onBeforeSave(original, data);
-                if (modified !== undefined && modified !== null) {
-                    data[colKey] = modified;
-                }
-            } catch (err) {
-                console.error(`DynamicTable: error en onBeforeSave("${colKey}")`, err);
-            }
-        });
-
-        this.insertRow({ row: data, remove: true, insertAfterto });
-        this.closeInsertDialog();
+        const tr = this.insertFromDialogValues(values);
+        if (tr) this.closeInsertDialog();
     }
 
-    /* ============================================================
-     *  CÁLCULOS
-     * ============================================================ */
+    /* ---------- Cálculos ---------- */
     #sumColumn(colKey) {
         let total = 0;
         const rows = this.#tbody.querySelectorAll(`tr:not(.${this.#options.addItemRowClass})`);
@@ -1141,25 +1233,69 @@ class DynamicTable {
         }
     }
 
-    /* ============================================================
-     *  GETTERS PÚBLICOS
-     * ============================================================ */
+    /* ---------- onChange + silent ---------- */
+    #snapshotRow(tr) {
+        const out = {};
+        if (!tr) return out;
+        Object.keys(this.#headers).forEach(key => {
+            const td = tr.querySelector(`td[data-col="${key}"]`);
+            out[key] = td ? this.#getTdValue(td) : '';
+        });
+        return out;
+    }
+
+    #silent(fn) {
+        if (typeof fn !== 'function') return undefined;
+        this.#changeDepth++;
+        try { return fn(); }
+        finally { this.#changeDepth--; }
+    }
+
+    #emitChange(action, detail = {}) {
+        if (this.#changeDepth > 0) return;
+        if (typeof this.#onChange !== 'function') return;
+
+        const self = this;
+        const ctx = {
+            action,
+            table: this,
+
+            // ─── Modo silencioso ───
+            silent: (fn) => self.#silent(fn),
+
+            // ─── Lecturas ───
+            getData: (opts) => self.getData(opts),
+            getTotalAllColumn: () => self.getTotalAllColumn(),
+            getCellValue: (c, s, r) => self.getCellValue(c, s, r),
+            getRowsByCellValue: (c, s) => self.getRowsByCellValue(c, s),
+
+            // ─── Mutaciones ───
+            insertRow: (opts) => self.insertRow(opts),
+            removeRow: (r) => self.removeRow(r),
+            updateRow: (r, row) => self.updateRow(r, row),
+            updateCellValue: (r, col, val) => self.updateCellValue(r, col, val),
+
+            clearBody: () => self.clearBody(),
+            disableTable: () => self.disableTable(),
+            enableTable: () => self.enableTable(),
+
+            ...detail
+        };
+
+        try { this.#onChange.call(this, ctx); }
+        catch (err) { console.error('DynamicTable: error en onChange', err); }
+    }
+
+    /* ---------- Getters ---------- */
     get table() { return this.#table; }
     get thead() { return this.#thead; }
     get tbody() { return this.#tbody; }
     get tfoot() { return this.#tfoot; }
     get headers() { return { ...this.#headers }; }
     get isTableDisabled() { return this.#tableDisabled; }
-
-    /**
-     * [NUEVO] Devuelve el último `total_row` configurado en createBody().
-     * Devuelve `null` si nunca se llamó a createBody().
-     */
     get lastTotalRow() { return this.#lastTotalRow; }
 
-    /* ============================================================
-     *  API PÚBLICA DE CONSULTA
-     * ============================================================ */
+    /* ---------- Consulta ---------- */
     getCellValue(searchCol, search, returnCol = null) {
         const results = [];
         if (!searchCol || typeof searchCol !== 'string') return results;
@@ -1240,6 +1376,7 @@ class DynamicTable {
             if (hasData || includeEmpty) {
                 obj.__removable = !!tr.querySelector(`.${this.#options.removeButtonClass}`);
                 obj.__rowId = tr.dataset.rowId || null;
+                obj.__customId = tr.dataset.customId === 'true';
                 obj.__empty = !hasData;
                 obj.__raw = raw;
                 rows.push(obj);
@@ -1264,13 +1401,11 @@ class DynamicTable {
         return { rows, tfoot, summarized, totals: this.getTotalAllColumn() };
     }
 
-    /* ============================================================
-     *  API PÚBLICA DE MANIPULACIÓN
-     * ============================================================ */
+    /* ---------- Manipulación ---------- */
     #resolveRow(rowIdOrTr) {
         if (!rowIdOrTr) return null;
         if (typeof rowIdOrTr === 'string') {
-            return this.#tbody.querySelector(`tr[data-row-id="${rowIdOrTr}"]`);
+            return this.#tbody.querySelector(`tr[data-row-id="${CSS.escape(rowIdOrTr)}"]`);
         }
         if (rowIdOrTr instanceof HTMLTableRowElement) return rowIdOrTr;
         return null;
@@ -1289,6 +1424,13 @@ class DynamicTable {
 
         this.#markRowEmptyState(tr);
         this._refreshTFoot();
+
+        this.#emitChange('update', {
+            row: tr,
+            rowId: tr.dataset.rowId || null,
+            data: { ...row }
+        });
+
         return true;
     }
 
@@ -1304,6 +1446,15 @@ class DynamicTable {
 
         this.#markRowEmptyState(tr);
         this._refreshTFoot();
+
+        this.#emitChange('updateCell', {
+            row: tr,
+            rowId: tr.dataset.rowId || null,
+            colKey,
+            value: finalValue,
+            data: this.#snapshotRow(tr)
+        });
+
         return true;
     }
 
@@ -1311,25 +1462,49 @@ class DynamicTable {
         const tr = this.#resolveRow(rowIdOrTr);
         if (!tr) return false;
         if (tr.classList.contains(this.#options.addItemRowClass)) return false;
+
+        const rowId = tr.dataset.rowId || null;
+        const snapshot = this.#snapshotRow(tr);
+
         tr.remove();
         this._refreshTFoot();
+
+        this.#emitChange('remove', {
+            row: null,
+            rowId,
+            data: snapshot
+        });
+
         return true;
     }
 
-    /* ============================================================
-     *  DESHABILITAR / HABILITAR TABLA
-     * ============================================================ */
+    /* ---------- Suspend / Resume público ---------- */
+    /**
+     * Suspende la emisión de onChange hasta resumeOnChange().
+     * Anidable por contador. Ideal para envolver varias mutaciones
+     * (incluido casos async con await).
+     */
+    suspendOnChange() {
+        this.#changeDepth++;
+        return this;
+    }
+
+    /**
+     * Reanuda la emisión de onChange. No baja de 0.
+     */
+    resumeOnChange() {
+        if (this.#changeDepth > 0) this.#changeDepth--;
+        return this;
+    }
+
+    /* ---------- Disable / Enable ---------- */
     disableTable() {
-        this.clearBody();     // ← ahora regenera filas según #lastTotalRow
+        this.clearBody();
         this.#tableDisabled = true;
         this.#syncAddButtonState();
 
-        if (this.#container) {
-            this.#container.classList.add(this.#options.disabledClass);
-        }
-        if (this.#dialog && this.#dialog.open) {
-            this.closeInsertDialog();
-        }
+        if (this.#container) this.#container.classList.add(this.#options.disabledClass);
+        if (this.#dialog && this.#dialog.open) this.closeInsertDialog();
 
         if (this.#debug) console.log('DynamicTable: tabla deshabilitada');
         return this;
@@ -1338,40 +1513,19 @@ class DynamicTable {
     enableTable() {
         this.#tableDisabled = false;
         this.#syncAddButtonState();
-
-        if (this.#container) {
-            this.#container.classList.remove(this.#options.disabledClass);
-        }
-
+        if (this.#container) this.#container.classList.remove(this.#options.disabledClass);
         if (this.#debug) console.log('DynamicTable: tabla habilitada');
         return this;
     }
 
-    /* ============================================================
-     *  LIMPIEZA Y DESTRUCCIÓN
-     * ============================================================ */
-
-    /**
-     * Limpia el cuerpo y lo reconstruye usando el `total_row` recordado.
-     *
-     * [NUEVO] Ya no hace falta llamar a createBody() después:
-     *   - Si hiciste createBody({ total_row: 5 }) alguna vez → 5 filas vacías.
-     *   - Si nunca lo llamaste                                → 1 fila vacía (default).
-     *   - Si pasaste createBody({ total_row: 0 })             → 0 filas (respeta el 0).
-     *
-     * @returns {this}
-     */
+    /* ---------- Limpieza ---------- */
     clearBody() {
         const totalRow = (this.#lastTotalRow === null)
             ? this.#DEFAULT_TOTAL_ROW
             : this.#lastTotalRow;
 
-        // createBody ya hace innerHTML='', añade las filas y sincroniza el botón.
         this.createBody({ total_row: totalRow });
-
-        // refrescar tfoot (createBody no lo toca).
         this._refreshTFoot();
-
         if (this.#debug) console.log(`DynamicTable: clearBody() → ${totalRow} fila(s) vacía(s)`);
         return this;
     }

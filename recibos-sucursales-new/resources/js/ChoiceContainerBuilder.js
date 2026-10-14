@@ -1,6 +1,6 @@
 /* ================================================================
-   AcceptedResult
-   ================================================================ */
+          AcceptedResult
+          ================================================================ */
 class AcceptedResult {
     constructor(data = {}) {
         this.choiceId = data.choiceId ?? null;
@@ -38,7 +38,7 @@ class ChoiceContainerBuilder {
     #clickHandler = null; #listenerAttached = false; #clickDebug = false;
     #usedIds = new Set();
     #lastAcceptedValues = null;
-    #onAccept = null; #onChange = null;
+    #onAccept = null; #onChange = null; #onClick = null;
     #choicesMap = new Map();
 
     static DEFAULT_DENOMINATIONS = [1000, 500, 200, 100, 50, 20, 10, 5, 1];
@@ -56,18 +56,14 @@ class ChoiceContainerBuilder {
         this.#clickDebug = this.#options.debug;
         this.#onAccept = options.onAccept || null;
         this.#onChange = options.onchange || options.onChange || null;
+        this.#onClick = options.onclick || options.onClick || null;
 
-        if (Array.isArray(options.choices)) {
-            options.choices.forEach(c => this.#registerChoiceConfig(c));
-        }
-
+        if (Array.isArray(options.choices)) options.choices.forEach(c => this.#registerChoiceConfig(c));
         this.#ensureGroupIds();
         if (this.#options.autoAttachEvents) this.attachEvents();
     }
 
-    // ============================================================
-    //  API DE CONFIGURACIÓN
-    // ============================================================
+    // === API de configuración ===
     #registerChoiceConfig(choice) {
         if (!choice || choice.id == null) return;
         const id = String(choice.id);
@@ -78,9 +74,7 @@ class ChoiceContainerBuilder {
             type_element: choice.type_element ?? choice.typeElement ?? null
         });
     }
-    getChoices() {
-        return Array.from(this.#choicesMap.entries()).map(([id, v]) => ({ id, ...v }));
-    }
+    getChoices() { return Array.from(this.#choicesMap.entries()).map(([id, v]) => ({ id, ...v })); }
     getChoice(id) { return this.#choicesMap.get(String(id)) || null; }
     setChoice(id, config = {}) { this.#registerChoiceConfig({ id, ...config }); return this; }
     removeChoice(id) { this.#choicesMap.delete(String(id)); return this; }
@@ -93,15 +87,12 @@ class ChoiceContainerBuilder {
         return Array.from(c).every(x => x.querySelector('.choice-buttons')?.hasAttribute('data-choice-disabled') ?? false);
     }
 
-    // ============================================================
-    //  CONSTRUCCIÓN
-    // ============================================================
+    // === Construcción ===
     buildAll() {
         this.#ensureGroupIds();
         const c = this.#context.querySelectorAll(this.#selector);
         let n = 0; c.forEach(x => { if (this.build(x)) n++; }); return n;
     }
-
     build(containerOrSelector) {
         const c = this.#resolveContainer(containerOrSelector);
         if (!c) { console.warn('build: no encontrado →', containerOrSelector); return false; }
@@ -109,9 +100,7 @@ class ChoiceContainerBuilder {
 
         const id = c.dataset.choice_id || '';
         if (!id) { console.warn('build: falta data-choice_id'); return false; }
-
         const cfg = this.#choicesMap.get(id) || null;
-
         if (cfg?.type_element && !c.dataset.type_element) c.dataset.type_element = cfg.type_element;
         if (cfg?.label && !c.dataset.choice_label) c.dataset.choice_label = cfg.label;
 
@@ -119,7 +108,6 @@ class ChoiceContainerBuilder {
         if (!c.dataset.type_element) c.dataset.type_element = type;
 
         const label = c.dataset.choice_label || '';
-
         const structure = this.#createStructure({ typeElement: type, id, label });
         c.insertBefore(structure, c.firstChild);
 
@@ -132,7 +120,6 @@ class ChoiceContainerBuilder {
 
         let menuSpan = c.querySelector('span.menu');
         const cfgHasTemplate = !!(cfg && cfg.template);
-
         if (!menuSpan && cfgHasTemplate) {
             menuSpan = document.createElement('span');
             menuSpan.classList.add('menu');
@@ -147,7 +134,6 @@ class ChoiceContainerBuilder {
             menuSpan.addEventListener('input', () => this.#emitChange(c));
             menuSpan.addEventListener('change', () => this.#emitChange(c));
         }
-
         if (!this.#options.preserveAttributes) {
             delete c.dataset.type_element;
             delete c.dataset.choice_id;
@@ -162,11 +148,110 @@ class ChoiceContainerBuilder {
     }
     resetUsedIds() { this.#usedIds.clear(); return this; }
     getUsedIds() { return [...this.#usedIds]; }
-
     disableAll() { const c = this.#context.querySelectorAll(this.#selector); c.forEach(x => this.#setDisabled(x, true)); return this; }
     enableAll() { const c = this.#context.querySelectorAll(this.#selector); c.forEach(x => this.#setDisabled(x, false)); return this; }
 
-    // TIPO
+    // === Uncheck ===
+    uncheck(choiceOrSelector) {
+        const container = this.#resolveContainer(choiceOrSelector);
+        console.clear();
+        console.log(container);
+        if (!container) { console.warn('uncheck: no encontrado →', choiceOrSelector); return false; }
+        if (!container.querySelector('.choice-buttons')) { console.warn('uncheck: no construido'); return false; }
+        this.#deselectContainer(container);
+        this.#emitClick(container, false);
+        this.#emitChange(container);
+        const detail = this.#buildMeta(container, false);
+        container.dispatchEvent(new CustomEvent('choice:unchecked', { bubbles: true, detail }));
+        return true;
+    }
+    uncheckAll(target) {
+        let containers = [];
+        if (!target) containers = Array.from(this.#context.querySelectorAll(this.#selector));
+        else {
+            const one = this.#resolveContainer(target);
+            if (one) containers = [one];
+            else {
+                const grp = this.#resolveGrouped(target);
+                if (grp) containers = Array.from(grp.querySelectorAll(this.#selector));
+                else if (target instanceof Element) containers = Array.from(target.querySelectorAll(this.#selector));
+                else if (typeof target === 'string') {
+                    const q = this.#context.querySelector(target);
+                    if (q) containers = Array.from(q.querySelectorAll(this.#selector));
+                }
+            }
+        }
+        let n = 0;
+        containers.forEach(c => { if (this.uncheck(c)) n++; });
+        return n;
+    }
+
+    // === Tabla dinámica ===
+    #nextTableRowId(table) {
+        const used = new Set(); let max = 0;
+        table.querySelectorAll('tr[data-row-id]').forEach(tr => {
+            const v = tr.getAttribute('data-row-id') || '';
+            used.add(v);
+            const n = parseInt(v, 10);
+            if (!isNaN(n) && n > max) max = n;
+        });
+        let n = max + 1; while (used.has(String(n))) n++;
+        return String(n);
+    }
+    insertRow(choiceOrSelector, rowData = {}) {
+        const container = this.#resolveContainer(choiceOrSelector); if (!container) return null;
+        const menu = container.querySelector('.menu'); if (!menu) return null;
+        const table = menu.querySelector('table.choice-table'); if (!table) return null;
+        const tbody = table.querySelector('tbody'); if (!tbody) return null;
+        const hasCustom = rowData.idRow != null && String(rowData.idRow).trim() !== '';
+        const rowId = hasCustom ? String(rowData.idRow).trim() : this.#nextTableRowId(table);
+        const tr = document.createElement('tr');
+        tr.classList.add('menu-row');
+        tr.setAttribute('data-row-id', rowId);
+        (Array.isArray(rowData.fields) ? rowData.fields : []).forEach(f => {
+            const td = document.createElement('td'); td.appendChild(this.#renderField(f)); tr.appendChild(td);
+        });
+        if (rowData.beforeRowId != null) {
+            const ref = tbody.querySelector(`tr[data-row-id="${CSS.escape(String(rowData.beforeRowId))}"]`);
+            if (ref) tbody.insertBefore(tr, ref); else tbody.appendChild(tr);
+        } else tbody.appendChild(tr);
+        this.#wireNumberInputs(tr); this.#wireIntegerInputs(tr);
+        this.#updateAutosum(menu); this.#emitChange(container);
+        return tr;
+    }
+    removeRow(choiceOrSelector, rowId) {
+        const container = this.#resolveContainer(choiceOrSelector); if (!container) return false;
+        const table = container.querySelector('table.choice-table'); if (!table) return false;
+        const tr = table.querySelector(`tr[data-row-id="${CSS.escape(String(rowId))}"]`); if (!tr) return false;
+        tr.remove();
+        this.#updateAutosum(container.querySelector('.menu'));
+        this.#emitChange(container);
+        return true;
+    }
+    getRows(choiceOrSelector) {
+        const container = this.#resolveContainer(choiceOrSelector); if (!container) return [];
+        const table = container.querySelector('table.choice-table'); if (!table) return [];
+        return Array.from(table.querySelectorAll('tbody tr[data-row-id]'))
+            .map(tr => ({ idRow: tr.getAttribute('data-row-id'), element: tr }));
+    }
+    getRow(choiceOrSelector, rowId) {
+        const container = this.#resolveContainer(choiceOrSelector); if (!container) return null;
+        const table = container.querySelector('table.choice-table'); if (!table) return null;
+        return table.querySelector(`tr[data-row-id="${CSS.escape(String(rowId))}"]`);
+    }
+    getTable(choiceOrSelector) {
+        const container = this.#resolveContainer(choiceOrSelector); if (!container) return null;
+        const self = this;
+        return {
+            element: container,
+            insertRow: (rowData = {}) => self.insertRow(container, rowData),
+            removeRow: (rowId) => self.removeRow(container, rowId),
+            getRows: () => self.getRows(container),
+            getRow: (rowId) => self.getRow(container, rowId)
+        };
+    }
+
+    // === Tipo ===
     getGroupType(input) {
         let container = null;
         if (input instanceof Element && input.classList.contains('choice-container')) container = input;
@@ -199,7 +284,7 @@ class ChoiceContainerBuilder {
             .map(g => ({ id: g.id, type: this.getGroupType(g), element: g }));
     }
 
-    // LECTURA
+    // === Lectura ===
     getContainerAccepted(c) {
         const el = this.#resolveContainer(c); if (!el) return null;
         const i = el.querySelector('input.choice_accepted'); if (!i || !i.value) return null;
@@ -230,7 +315,7 @@ class ChoiceContainerBuilder {
         return this.#collectValues(m);
     }
 
-    // SNAPSHOT
+    // === Snapshot ===
     getAllChoices(target) {
         let root = this.#context;
         if (target) {
@@ -258,6 +343,17 @@ class ChoiceContainerBuilder {
         const menu = container.querySelector('.menu');
         const cfg = this.#choicesMap.get(container.dataset.choice_id || '') || null;
 
+        let type_template = 'default';
+        if (cfg?.template?.type) type_template = String(cfg.template.type).toLowerCase();
+        else if (menu) {
+            const raw = menu.getAttribute('data-template');
+            if (raw) {
+                try {
+                    const parsed = this.#parseTemplate(raw);
+                    if (parsed && parsed.type) type_template = String(parsed.type).toLowerCase();
+                } catch (_) { }
+            }
+        }
         let acceptedData = null;
         if (acceptedInput?.value) {
             try {
@@ -274,10 +370,12 @@ class ChoiceContainerBuilder {
             menuData = { rows: live.rows, flat: this.#restructureFlat(live.rows), prefixes: live.prefixes };
         }
         const autosum = menu ? this.#computeAutosum(menu) : 0;
+
         return {
             choiceId: container.dataset.choice_id || null,
             label: container.dataset.choice_label || '',
             type: this.getGroupType(container),
+            type_template,
             checked: choiceValue?.value === 'checked',
             accepted: !!acceptedData,
             disabled: labelEl?.hasAttribute('data-choice-disabled') ?? false,
@@ -308,7 +406,7 @@ class ChoiceContainerBuilder {
         return { row: rowArr, ...extras };
     }
 
-    // EVENTOS
+    // === Eventos ===
     attachEvents() {
         if (this.#listenerAttached && this.#clickHandler) return this;
         this.#clickHandler = (e) => this.#handleClick(e);
@@ -326,12 +424,40 @@ class ChoiceContainerBuilder {
     setDebug(b = true) { this.#clickDebug = b; return this; }
     setOnAccept(cb) { this.#onAccept = cb || null; return this; }
     setOnChange(cb) { this.#onChange = cb || null; return this; }
+    setOnClick(cb) { this.#onClick = cb || null; return this; }
 
     #emitChange(container) {
         if (typeof this.#onChange !== 'function' || !container) return;
         const menu = container.querySelector('.menu');
         const values = this.#buildValuesArray(menu);
-        try { this.#onChange(container, values); } catch (e) { console.error(e); }
+        try { this.#onChange(container, values, this); } catch (e) { console.error(e); }
+    }
+    #emitClick(container, isChecked) {
+        if (typeof this.#onClick !== 'function' || !container) return;
+        const meta = this.#buildMeta(container, isChecked);
+        try { this.#onClick(container, isChecked, meta, this); } catch (e) { console.error(e); }
+    }
+    #buildMeta(container, isChecked) {
+        const labelEl = container.querySelector('.choice-buttons');
+        const cfg = this.#choicesMap.get(container.dataset.choice_id || '') || null;
+        let type_template = 'default';
+        if (cfg?.template?.type) type_template = String(cfg.template.type).toLowerCase();
+        else {
+            const menu = container.querySelector('.menu');
+            if (menu?.getAttribute('data-template')) {
+                try {
+                    const parsed = this.#parseTemplate(menu.getAttribute('data-template'));
+                    if (parsed?.type) type_template = String(parsed.type).toLowerCase();
+                } catch (_) { }
+            }
+        }
+        return {
+            choiceId: container.dataset.choice_id || null,
+            label: labelEl?.querySelector('.label')?.textContent?.trim() || '',
+            type: this.getGroupType(container),
+            type_template,
+            state: isChecked ? 'checked' : 'unchecked'
+        };
     }
     #buildValuesArray(menu) {
         if (!menu) return [];
@@ -353,7 +479,7 @@ class ChoiceContainerBuilder {
         return out;
     }
 
-    // HELPERS NUMÉRICOS
+    // === Helpers numéricos ===
     #formatNumber(v) {
         const n = (typeof v === 'number') ? v : parseFloat(String(v ?? '').replace(/,/g, ''));
         if (!isFinite(n)) return '';
@@ -391,7 +517,6 @@ class ChoiceContainerBuilder {
         if (c === '') return null;
         const n = parseFloat(c); return isFinite(n) ? n : null;
     }
-
     #wireNumberInputs(root) {
         root.querySelectorAll('input[data-type="number"]:not(.autosum-value):not(.cash-change)').forEach(input => {
             if (input.dataset.numberWired === '1') return;
@@ -441,7 +566,6 @@ class ChoiceContainerBuilder {
             if (t.classList.contains('cash-subtotal')) return;
             if (t.classList.contains('cash-total')) return;
             if (t.classList.contains('cash-change')) return;
-
             const inputs = Array.from(menu.querySelectorAll('input'))
                 .filter(i => i.type !== 'hidden' && i.type !== 'checkbox' && i.type !== 'radio'
                     && !i.readOnly
@@ -464,7 +588,7 @@ class ChoiceContainerBuilder {
         });
     }
 
-    // RENDER
+    // === Render ===
     #renderTableBlock(tableDef) {
         const block = document.createElement('div'); block.classList.add('table-block');
         if (tableDef?.label) block.appendChild(this.#renderBlockLabel(tableDef.label));
@@ -477,17 +601,18 @@ class ChoiceContainerBuilder {
             thead.appendChild(trh); table.appendChild(thead);
         }
         const tbody = document.createElement('tbody');
+        let autoId = 0;
         (Array.isArray(tableDef?.fields) ? tableDef.fields : []).forEach(rowFields => {
             const cols = Array.isArray(rowFields) ? rowFields : [rowFields];
-            const tr = document.createElement('tr'); tr.classList.add('menu-row');
+            const tr = document.createElement('tr');
+            tr.classList.add('menu-row');
+            tr.setAttribute('data-row-id', String(++autoId));
             cols.forEach(f => { const td = document.createElement('td'); td.appendChild(this.#renderField(f)); tr.appendChild(td); });
             tbody.appendChild(tr);
         });
         table.appendChild(tbody); block.appendChild(table);
         return block;
     }
-
-    /** ✅ NUEVO: helper que arma el bloque .full-line + .details-label */
     #renderBlockLabel(text) {
         const lc = document.createElement('div');
         lc.classList.add('full-line');
@@ -497,7 +622,6 @@ class ChoiceContainerBuilder {
         lc.appendChild(ls);
         return lc;
     }
-
     #renderAutosumRow() {
         const row = document.createElement('div'); row.classList.add('menu-row', 'autosum-row');
         const lc = document.createElement('div'); lc.classList.add('full-line');
@@ -580,6 +704,7 @@ class ChoiceContainerBuilder {
             ci.type = 'text'; ci.id = `details-${this.#resolveUniqueId('cash_change')}`; ci.name = ci.id;
             ci.setAttribute('data-type', 'number'); ci.readOnly = true; ci.tabIndex = -1;
             ci.classList.add('cash-change'); ci.value = 'C$ 0.00';
+            ci.setAttribute('data-sign', 'positive');
             c3.appendChild(ci);
             cr.append(c1, c2, c3); w.appendChild(cr);
         }
@@ -616,6 +741,7 @@ class ChoiceContainerBuilder {
         const max = this.#parseMaxAmount(menu.getAttribute('data-maxAmount'));
         if (max == null) return;
         const diff = gt - max;
+        cEl.setAttribute('data-sign', diff >= 0 ? 'positive' : 'negative');
         cEl.value = 'C$ ' + this.#formatNumber(Math.abs(diff));
         cRow.classList.remove('cash-change-positive', 'cash-change-negative');
         cRow.classList.add(diff >= 0 ? 'cash-change-positive' : 'cash-change-negative');
@@ -623,7 +749,7 @@ class ChoiceContainerBuilder {
         if (lbl) lbl.textContent = diff >= 0 ? 'Vuelto:' : 'Falta:';
     }
 
-    // PRIVADOS
+    // === Privados ===
     #setDisabled(c, disabled) {
         if (!c) return;
         const l = c.querySelector('.choice-buttons');
@@ -678,17 +804,13 @@ class ChoiceContainerBuilder {
         const l = document.createElement('label');
         l.classList.add('choice-buttons', 'calltoaction-click-choice');
         l.setAttribute('for', id);
-
         const i = document.createElement('input');
         i.classList.add('choice_value'); i.type = 'hidden';
         i.value = 'unchecked';
         i.name = id; i.id = id;
-
         const ic = document.createElement('span'); ic.classList.add('icon');
         ic.appendChild(document.createElement('i'));
-
         const ls = document.createElement('span'); ls.classList.add('label'); ls.textContent = label;
-
         l.append(i, ic, ls);
         return l;
     }
@@ -701,7 +823,6 @@ class ChoiceContainerBuilder {
             catch (e) { console.error('error data-template', e); return; }
         }
         if (!tpl || typeof tpl !== 'object') return;
-
         menuSpan.innerHTML = '';
         menuSpan.appendChild(this.#renderTemplate(tpl, menuSpan));
         const type = (tpl.type || 'default').toLowerCase();
@@ -723,16 +844,12 @@ class ChoiceContainerBuilder {
             return new Function('return (' + n + ')')();
         }
     }
-
-    /** ✅ MODIFICADO: ahora renderiza el label del cash_calculator si lo trae */
     #renderTemplate(tpl, menuEl) {
         const f = document.createDocumentFragment();
         f.appendChild(this.#renderMenuCloseButton());
         const type = (tpl.type || 'default').toLowerCase();
-
         if (type === 'cash_calculator') {
             const max = this.#parseMaxAmount(menuEl?.getAttribute('data-maxAmount'));
-            // 👇 NUEVO: si el template trae `label`, se pinta encima de la calculadora
             if (typeof tpl.label === 'string' && tpl.label.trim() !== '') {
                 f.appendChild(this.#renderBlockLabel(tpl.label));
             }
@@ -745,7 +862,6 @@ class ChoiceContainerBuilder {
         f.appendChild(this.#renderButtons());
         return f;
     }
-
     #renderMenuCloseButton() {
         const w = document.createElement('div'); w.classList.add('menu-close-wrapper');
         const b = document.createElement('button');
@@ -783,7 +899,7 @@ class ChoiceContainerBuilder {
             if (type) el.setAttribute('data-type', type);
             if (!hasLabel) el.placeholder = field.placeholder ?? (type === 'number' ? '0.00' : '');
         }
-        if (pv) el.setAttribute('data-prefix_value', pv);
+        if (pv) el.setAttribute('data-prefix-value', pv);
         if (hasLabel) {
             const w = document.createElement('div'); w.classList.add('field-with-label');
             const lb = document.createElement('label'); lb.setAttribute('for', id); lb.textContent = field.label;
@@ -834,11 +950,16 @@ class ChoiceContainerBuilder {
                     const n = parseInt(this.#sanitizeIntegerInput(f.value) || '0', 10);
                     v = isNaN(n) ? 0 : n;
                 } else if (dt === 'number') {
-                    const n = this.#parseFormattedNumber(f.value.replace(/^C\$\s*/, ''));
+                    let n = this.#parseFormattedNumber(f.value.replace(/^C\$\s*/, ''));
+                    if (!isNaN(n)) {
+                        const sign = f.getAttribute('data-sign');
+                        if (sign === 'negative') n = -Math.abs(n);
+                        else if (sign === 'positive') n = Math.abs(n);
+                    }
                     v = isNaN(n) ? '' : n;
                 } else v = f.value;
                 vals[name] = v; flat[name] = v;
-                const p = f.getAttribute('data-prefix_value'); if (p) prefixes[name] = p;
+                const p = f.getAttribute('data-prefix-value'); if (p) prefixes[name] = p;
             });
             rows.push({ index: idx, label, classes: Array.from(row.classList), values: vals });
         });
@@ -862,7 +983,7 @@ class ChoiceContainerBuilder {
             if (el.classList.contains('autosum-value')) return;
             if (el.classList.contains('cash-subtotal')) return;
             if (el.classList.contains('cash-total')) return;
-            if (el.classList.contains('cash-change')) return;
+            if (el.classList.contains('cash-change')) { el.setAttribute('data-sign', 'positive'); return; }
             if (el.type === 'checkbox' || el.type === 'radio') el.checked = false;
             else if (el.tagName === 'SELECT' && el.multiple) Array.from(el.options).forEach(o => o.selected = false);
             else el.value = '';
@@ -925,12 +1046,13 @@ class ChoiceContainerBuilder {
                     groupContainers.forEach(o => { if (o !== container) this.#deselectContainer(o); });
                     if (menu) labelEl.classList.add('showmenu');
                     cv.value = 'checked';
+                    this.#emitClick(container, true);
                     if (menu) this.#emitChange(container);
                 } else {
                     const hasMenu = !!menu;
                     const acc = this.#isContainerAccepted(container);
                     if (cv.value === 'checked') {
-                        if (hasMenu && acc) { labelEl.classList.add('showmenu'); this.#emitChange(container); return; }
+                        if (hasMenu && acc) { labelEl.classList.add('showmenu'); this.#emitClick(container, true); this.#emitChange(container); return; }
                         labelEl.classList.remove('showmenu', 'not-empty', 'hover-menu');
                         cv.value = 'unchecked';
                         const a = container?.querySelector('input.choice_accepted');
@@ -940,6 +1062,7 @@ class ChoiceContainerBuilder {
                             if (ol && !ol.classList.contains('showmenu')) ol.classList.remove('disabled');
                         });
                         if (menu) this.#clearMenuInputs(menu);
+                        this.#emitClick(container, false);
                     } else {
                         if (menu) labelEl.classList.add('showmenu');
                         cv.value = 'checked';
@@ -950,6 +1073,7 @@ class ChoiceContainerBuilder {
                                 if (ol && !ol.classList.contains('showmenu')) ol.classList.add('disabled');
                             });
                         }
+                        this.#emitClick(container, true);
                         if (menu) this.#emitChange(container);
                     }
                 }
@@ -981,9 +1105,11 @@ class ChoiceContainerBuilder {
                     }
                     a.value = JSON.stringify(data);
                     container.dispatchEvent(new CustomEvent('choice:accepted', { bubbles: true, detail: this.#lastAcceptedValues }));
+                    this.#emitClick(container, true);
                     this.#emitChange(container);
                     if (typeof this.#onAccept === 'function') {
-                        try { this.#onAccept(this.#lastAcceptedValues, container); } catch (e) { console.error(e); }
+                        try { this.#onAccept(this.#lastAcceptedValues, container, this); }
+                        catch (err) { console.error('error en onAccept', err); }
                     }
                 }
                 break;
@@ -1000,6 +1126,7 @@ class ChoiceContainerBuilder {
                     const ol = o.querySelector('.choice-buttons');
                     if (ol && !ol.classList.contains('showmenu')) ol.classList.remove('disabled');
                 });
+                this.#emitClick(container, false);
                 this.#emitChange(container);
                 break;
             }
