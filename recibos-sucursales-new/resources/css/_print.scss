@@ -1,14 +1,361 @@
  @use "mixin" as *;
+
  /* =============================================
        🖨️ ESTILOS DE IMPRESIÓN
        ============================================= */
- @media print {
 
-     /* --- 1. Configuración de la hoja --- */
-     @page {
-         size: letter portrait;
-         margin: 0;
+ body {
+     .hide-receipt {
+         .print-receipt {
+             display: none;
+             display: none !important;
+         }
      }
+
+     .hide-report {
+         .print-report {
+             display: none;
+             display: none !important;
+         }
+     }
+ }
+
+ .half-page {
+     //  background-color: #ddd;
+     height: calc(10.98in / 2);
+     width: 100%;
+     padding: 5mm 13mm 20mm 8mm;
+
+     .print-area {
+         //outline: red 1px dashed;
+         height: 100%;
+         width: 100%;
+         //  padding: 0 15px;
+
+         ._h1_,
+         ._h2_,
+         ._h3_ {
+             font-family: "Oswald", sans-serif;
+             font-optical-sizing: auto;
+             font-weight: 600;
+             font-style: normal;
+             margin: 0 !important;
+
+         }
+
+         ._h1_ {
+             text-align: right;
+             font-size: 1.2em;
+         }
+
+         ._h2_ {
+             text-align: center;
+             font-size: .7em;
+             line-height: 1.2;
+         }
+
+         ._h3_ {
+             font-size: .7em;
+             line-height: 1em;
+             padding-top: 2mm;
+             padding-bottom: 1mm;
+
+             display: block;
+         }
+
+
+
+         .container-header {
+             height: 30mm;
+
+
+             .container-date {
+                 width: 145px;
+                 display: flex;
+                 flex-wrap: wrap;
+                 justify-content: center;
+                 justify-self: end;
+                 float: right;
+
+             }
+
+             p {
+                 position: relative;
+
+                 &::before {
+                     position: absolute;
+                     top: 0;
+                     left: 0;
+                     right: 0;
+                     bottom: 0;
+                     opacity: 0;
+                     display: block;
+                     transition: opacity 0.3s ease-in-out;
+                     content: '';
+                     width: 100%;
+                     height: 100%;
+                     //outline: green 1px dashed;
+                     z-index: 999;
+                 }
+
+                 &:hover::before {
+                     opacity: 1;
+                 }
+             }
+
+
+             .container-address {
+                 & {
+                     width: 220px;
+                     float: right;
+                     justify-self: end;
+                 }
+
+
+             }
+
+             .date {
+                 display: flex;
+                 flex-wrap: wrap;
+                 width: 140px;
+                 border: 2px solid #000;
+                 overflow: hidden;
+                 border-radius: 10px;
+
+
+                 [class*="box-"] {
+                     flex: 1 0 auto;
+                     width: calc(100% / 3);
+
+                     span {
+                         display: block;
+                         width: 100%;
+                         text-align: center;
+
+                         &:first-child {
+                             background-color: #000;
+                             color: #fff;
+                             font-size: 0.7em;
+                         }
+
+                         &:last-child {
+                             font-size: 0.8em;
+                             font-weight: 500;
+
+                         }
+
+                     }
+
+                     &:nth-child(2) {
+                         border-left: 2px solid #000;
+                         border-right: 2px solid #000;
+                     }
+
+                 }
+             }
+         }
+
+         .container-detail {
+             //outline: green 1px solid;
+             height: 74.6mm;
+             padding-top: 1.5mm;
+
+             .max-height-55mm {
+                 // //outline: purple 1px solid;
+                 height: 50mm;
+             }
+
+             .box_concepts {
+                 min-width: 60mm;
+             }
+
+             .container-amounts {
+                 span {
+                     font-size: 0.67em;
+
+                     &.amount {
+                         min-width: 90px;
+                     }
+                 }
+             }
+
+             .border-box {
+                 border: #000 solid 1px;
+                 border-radius: 5px;
+                 min-height: 9mm;
+                 max-height: 47mm;
+                 height: auto;
+             }
+
+             .payment-method {
+                 font-size: 0.67rem;
+
+                 * {
+                     white-space: pre-line;
+                 }
+
+                 .col:not(:nth-child(1)):not(:nth-child(2)) {
+                     border-left: 1px solid #000;
+                 }
+             }
+
+             .max-width-90px {
+                 max-width: 90px;
+             }
+
+             .max-width-300px {
+                 max-width: 300px;
+             }
+
+
+             .max-width-50percent {
+                 max-width: 50%;
+             }
+
+
+             .box-border-solid {
+
+                 border: 1px solid #000;
+                 margin: 15px 0 0 0;
+                 padding: 0 0px 7px 6px;
+                 height: 53mm;
+                 overflow: hidden;
+             }
+
+             .box-row {
+
+                 display: flex;
+                 flex-wrap: wrap;
+                 min-height: 20px;
+                 // align-content: center;
+                 align-items: end;
+
+                 span {
+                     font-size: 0.67em;
+                     line-height: 1em;
+
+                     &:first-child {
+                         word-break: break-all;
+                         font-weight: 700;
+                         text-align: right;
+                     }
+
+                     &:last-child {
+                         flex: 1;
+                         border-bottom: 1px solid #000;
+                         padding: 0 7px;
+                         text-transform: uppercase;
+                         margin-left: 6px;
+                     }
+                 }
+             }
+
+             [data-idfield="txt_numToText"] {
+                 font-size: 0.6rem;
+                 text-align: right;
+                 text-transform: uppercase;
+             }
+
+             [data-idfield="txt_name"] {
+
+                 .label,
+                 .value {
+                     height: 25px;
+                     white-space: pre-line;
+                     line-height: 0.7rem;
+                     display: flex;
+                     align-content: end;
+                     flex-wrap: wrap;
+                 }
+             }
+
+             [data-idfield="txt_notes"] {
+                 * {
+                     text-transform: uppercase;
+                 }
+
+                 .value {
+                     font-size: .58rem;
+                     white-space: pre-line;
+                     line-height: 0.6rem;
+                     padding: 5px;
+                     overflow: hidden;
+
+                     &>span {
+
+
+                         padding-left: 0;
+
+                         span {
+                             display: block;
+                             width: 100%;
+                             padding: 0;
+                         }
+
+                         ul {
+                             margin: 0;
+                             padding-left: 14px;
+
+
+                         }
+                     }
+                 }
+             }
+         }
+
+         .container-signatures {
+             //outline: green 1px solid;
+
+             .signature {
+                 display: flex;
+                 flex-wrap: nowrap;
+                 justify-content: space-between;
+                 margin-top: 25px;
+
+                 span {
+                     font-size: 8px;
+                     font-weight: bold;
+                     border-top: 1px solid #000;
+                     margin-top: 1px;
+                     padding: 3px 0 0 0;
+                     width: 40mm;
+                     text-align: center;
+                 }
+             }
+         }
+     }
+ }
+
+ // ----------------------- Variables --------------------------
+ $letter-margin: 0mm;
+ $color-adjust: exact;
+
+ // ------------------- Páginas nombradas ----------------------
+ // OJO: las reglas @page no se pueden condicionar con selectores.
+ // Por eso definimos páginas "nombradas" y las asignamos desde
+ // la clase del body usando la propiedad `page`.
+ // (Soporte: Chromium, Safari y Firefox 110+)
+
+ // Default (sin clase) → Carta vertical
+ @page {
+     size: letter portrait;
+     margin: $letter-margin;
+     padding: 0;
+ }
+
+ @page letter-portrait {
+     size: letter portrait;
+     margin: $letter-margin;
+     padding: 0;
+ }
+
+ @page letter-landscape {
+     size: letter landscape;
+     margin: $letter-margin;
+     padding: 0;
+ }
+
+ @media print {
 
      /* --- 2. Reset del documento --- */
      html,
@@ -18,13 +365,152 @@
          width: 100%;
          height: auto;
          background: #fff !important;
-
-
      }
+
+     // ----------------------------------------------------------
+     // 1) Orientación según la clase del <body>
+     //    Aplicamos `page` al body y a TODOS sus descendientes
+     //    para garantizar que todas las páginas generadas usen
+     //    el mismo nombre (si un hijo tuviera otro `page`, CSS
+     //    forzaría saltos de página entre ellos).
+     // ----------------------------------------------------------
+     body.print-vertical,
+     body.print-vertical * {
+         page: letter-portrait;
+     }
+
+     body.print-horizontal,
+     body.print-horizontal * {
+         page: letter-landscape;
+     }
+
 
      body {
          font-size: 15px;
      }
+
+     html,
+     body {
+         margin: 0 !important;
+         padding: 0 !important;
+         height: auto !important;
+         min-height: 0 !important;
+         max-height: none !important;
+         overflow: visible !important;
+         background: #fff !important;
+         -webkit-print-color-adjust: $color-adjust;
+         print-color-adjust: $color-adjust;
+         color-adjust: $color-adjust;
+         -webkit-font-smoothing: antialiased;
+         -moz-osx-font-smoothing: grayscale;
+         text-rendering: optimizeLegibility;
+     }
+
+
+     h1,
+     h2,
+     h3,
+     h4,
+     h5,
+     h6 {
+         page-break-after: avoid;
+         break-after: avoid;
+         page-break-inside: avoid;
+         break-inside: avoid;
+     }
+
+     p,
+     li,
+     blockquote,
+     h1,
+     h2,
+     h3,
+     h4,
+     h5,
+     h6 {
+         orphans: 3;
+         widows: 3;
+     }
+
+     img,
+     figure,
+     pre,
+     tr,
+     table {
+         page-break-inside: avoid;
+         break-inside: avoid;
+     }
+
+     thead {
+         display: table-header-group;
+     }
+
+     tfoot {
+         display: table-footer-group;
+     }
+
+     /* ---  Eliminar sombras (los fondos se mantienen) --- */
+     * {
+         box-shadow: none !important;
+         text-shadow: none !important;
+     }
+
+
+     // ----------------------------------------------------------
+     // 3) SIN página huérfana al inicio
+     // ----------------------------------------------------------
+     body>*:first-child {
+         page-break-before: avoid !important;
+         break-before: avoid !important;
+     }
+
+     // Elementos vacíos al inicio/fin no generan contenido → ocultar
+     body>*:empty {
+         display: none !important;
+     }
+
+     // ----------------------------------------------------------
+     // 4) SIN página en blanco al final
+     // ----------------------------------------------------------
+     body>*:last-child {
+         page-break-after: auto !important;
+         break-after: auto !important;
+         margin-bottom: 0 !important;
+         padding-bottom: 0 !important;
+     }
+
+     // ----------------------------------------------------------
+     // 5) SIN páginas en blanco intermedias
+     //    - Un salto forzado como último hijo no debe crear hoja
+     // ----------------------------------------------------------
+     .page-break:last-child,
+     .page-break-before:last-child,
+     .page-break-after:last-child {
+         display: none !important;
+     }
+
+     // Clases utilitarias para forzar saltos de página
+     .page-break,
+     .page-break-before {
+         page-break-before: always;
+         break-before: page;
+     }
+
+     .page-break-after {
+         page-break-after: always;
+         break-after: page;
+     }
+
+ }
+
+ @media print {
+
+     .wf-close-btn {
+         display: none;
+     }
+
+     /* --- 1. Configuración de la hoja --- */
+
 
      .form-receipt {
          display: none;
@@ -40,113 +526,58 @@
          }
 
 
+
+         /* ---  Cada .page = una hoja Carta exacta --- */
+         .page {
+             width: 8.5in;
+             height: 10.98in;
+             /* 10.98in para evitar página extra por redondeo */
+             margin: 0;
+             box-shadow: none;
+             border: none;
+             border-radius: 0;
+             overflow: hidden;
+             position: relative;
+             page-break-inside: avoid;
+             break-inside: avoid;
+
+             /* Reforzamos las imágenes de fondo en impresión */
+             background-repeat: no-repeat !important;
+             background-size: cover !important;
+             background-position: center !important;
+
+
+         }
+
+         /* Mantener el patrón SVG específico de la página 1 */
+         .page-1 {
+             background-repeat: repeat, no-repeat !important;
+             background-size: 60px 60px, cover !important;
+             background-position: top left, center !important;
+         }
+
+         /* Mantener el overlay + imagen de la página 2 */
+         .page-2 {
+             background-repeat: no-repeat, no-repeat !important;
+             background-size: cover, cover !important;
+             background-position: center, center !important;
+         }
+
+         /* --- 6. Salto de página entre .page --- */
+         .page+.page {
+             page-break-before: always;
+             break-before: page;
+         }
+
+         .page:last-of-type {
+             page-break-after: avoid;
+             break-after: avoid;
+         }
+
+
+
      }
 
-
-     /* --- 4. 🔥 FORZAR IMPRESIÓN DE IMÁGENES DE FONDO Y COLORES --- */
-     /* Aplica a TODOS los elementos (fondos, gradientes, imágenes, patrones) */
-     *,
-     *::before,
-     *::after {
-         -webkit-print-color-adjust: exact !important;
-         -webkit-print-color-adjust: economy;
-         /* fallback */
-         print-color-adjust: exact !important;
-         color-adjust: exact !important;
-
-
-
-
-         -webkit-font-smoothing: antialiased;
-         -moz-osx-font-smoothing: grayscale;
-         text-rendering: optimizeLegibility;
-     }
-
-     /* --- 5. Cada .page = una hoja Carta exacta --- */
-     .page {
-         width: 8.5in;
-         height: 10.98in;
-         /* 10.98in para evitar página extra por redondeo */
-         margin: 0;
-         box-shadow: none;
-         border: none;
-         border-radius: 0;
-         overflow: hidden;
-         position: relative;
-         page-break-inside: avoid;
-         break-inside: avoid;
-
-         /* Reforzamos las imágenes de fondo en impresión */
-         background-repeat: no-repeat !important;
-         background-size: cover !important;
-         background-position: center !important;
-
-
-     }
-
-     /* Mantener el patrón SVG específico de la página 1 */
-     .page-1 {
-         background-repeat: repeat, no-repeat !important;
-         background-size: 60px 60px, cover !important;
-         background-position: top left, center !important;
-     }
-
-     /* Mantener el overlay + imagen de la página 2 */
-     .page-2 {
-         background-repeat: no-repeat, no-repeat !important;
-         background-size: cover, cover !important;
-         background-position: center, center !important;
-     }
-
-     /* --- 6. Salto de página entre .page --- */
-     .page+.page {
-         page-break-before: always;
-         break-before: page;
-     }
-
-     .page:last-of-type {
-         page-break-after: avoid;
-         break-after: avoid;
-     }
-
-     /* --- 7. Evitar huérfanas y viudas --- */
-     h1,
-     h2,
-     h3,
-     h4,
-     h5,
-     h6 {
-         page-break-after: avoid;
-         break-after: avoid;
-         page-break-inside: avoid;
-         break-inside: avoid;
-     }
-
-     p,
-     li,
-     blockquote {
-         orphans: 3;
-         widows: 3;
-     }
-
-     img,
-     table,
-     figure {
-         page-break-inside: avoid;
-         break-inside: avoid;
-     }
-
-     /* --- 8. Evitar página extra por márgenes residuales --- */
-     .page>*:last-child {
-         // margin-bottom: 0 !important;
-         // padding-bottom: 0 !important;
-     }
-
-     /* --- 9. Eliminar sombras (los fondos se mantienen) --- */
-     * {
-         box-shadow: none !important;
-         text-shadow: none !important;
-     }
 
 
 
@@ -154,7 +585,7 @@
  }
 
  @media screen {
-     .print-receipt:not(.is-visible) {
+     [id*="preview-"]:not(.is-visible) {
          display: none;
          //  scale: 1;
      }
@@ -162,12 +593,8 @@
      @media (min-width:768px) {
 
 
-
-
-
-
-
          .print-receipt {
+             position: fixed;
 
              .page:nth-child(1) {
                  scale: 0;
@@ -189,7 +616,7 @@
 
 
                  *:not(.wf-close-btn) {
-                     pointer-events: none;
+                     // pointer-events: none;
                  }
 
                  .wf-close-btn {
@@ -232,7 +659,7 @@
                      }
 
                      .container-detail {
-                         .bow-row {
+                         .box-row {
                              span {
                                  &:nth-child(2) {
                                      font-size: .56em;
@@ -243,7 +670,7 @@
 
                      .container-amounts {
                          span {
-                             font-size: .63em !important;
+                             font-size: .63rem !important;
                          }
                      }
                  }
@@ -268,274 +695,5 @@
              }
          }
      }
-
- }
-
- @media screen,
- print {
-     body {
-         font-family: "Roboto", sans-serif !important;
-
-         *,
-         *::before,
-         *::after {
-             box-sizing: border-box;
-         }
-     }
-
-     .max-width-80mm {
-         max-width: 80mm;
-         //  //outline: green 1px dashed;
-     }
-
-     .half-page {
-         //  background-color: #ddd;
-         height: calc(10.98in / 2);
-         width: 100%;
-         padding: 5mm 13mm 20mm 8mm;
-
-         .print-area {
-             //outline: red 1px dashed;
-             height: 100%;
-             width: 100%;
-             //  padding: 0 15px;
-
-             ._h1_,
-             ._h2_,
-             ._h3_ {
-                 font-family: "Oswald", sans-serif;
-                 font-optical-sizing: auto;
-                 font-weight: 600;
-                 font-style: normal;
-                 margin: 0 !important;
-
-             }
-
-             ._h1_ {
-                 text-align: right;
-                 font-size: 1.2em;
-             }
-
-             ._h2_ {
-                 text-align: center;
-                 font-size: .7em;
-                 line-height: 1.2;
-             }
-
-             ._h3_ {
-                 font-size: .7em;
-                 line-height: 1em;
-                 padding-top: 2mm;
-                 padding-bottom: 1mm;
-
-                 display: block;
-             }
-
-
-
-             .container-header {
-                 height: 28mm;
-
-
-                 .container-date {
-                     width: 145px;
-                     display: flex;
-                     flex-wrap: wrap;
-                     justify-content: center;
-                     justify-self: end;
-                     float: right;
-
-                 }
-
-                 p {
-                     position: relative;
-
-                     &::before {
-                         position: absolute;
-                         top: 0;
-                         left: 0;
-                         right: 0;
-                         bottom: 0;
-                         opacity: 0;
-                         display: block;
-                         transition: opacity 0.3s ease-in-out;
-                         content: '';
-                         width: 100%;
-                         height: 100%;
-                         //outline: green 1px dashed;
-                         z-index: 999;
-                     }
-
-                     &:hover::before {
-                         opacity: 1;
-                     }
-                 }
-
-
-                 .container-address {
-                     & {
-                         width: 220px;
-                         float: right;
-                         justify-self: end;
-                     }
-
-
-                 }
-
-                 .date {
-                     display: flex;
-                     flex-wrap: wrap;
-                     width: 140px;
-                     border: 2px solid #000;
-                     overflow: hidden;
-                     border-radius: 10px;
-
-
-                     [class*="box-"] {
-                         flex: 1 0 auto;
-                         width: calc(100% / 3);
-
-                         span {
-                             display: block;
-                             width: 100%;
-                             text-align: center;
-
-                             &:first-child {
-                                 background-color: #000;
-                                 color: #fff;
-                                 font-size: 0.7em;
-                             }
-
-                             &:last-child {
-                                 font-size: 0.8em;
-                                 font-weight: 500;
-
-                             }
-
-                         }
-
-                         &:nth-child(2) {
-                             border-left: 2px solid #000;
-                             border-right: 2px solid #000;
-                         }
-
-                     }
-                 }
-             }
-
-             .container-detail {
-                 //outline: green 1px solid;
-                 height: 74.6mm;
-                 padding-top: 1.5mm;
-
-                 .max-height-55mm {
-                     // //outline: purple 1px solid;
-                     height: 55mm;
-                 }
-
-                 .container-amounts {
-                     span {
-                         font-size: 0.67em;
-
-                         &.amount {
-                             min-width: 90px;
-                         }
-                     }
-                 }
-
-                 .border-box {
-                     border: #000 solid 1px;
-                     border-radius: 5px;
-                     min-height: 10mm;
-                 }
-
-                 .max-width-90px {
-                     max-width: 90px;
-                 }
-
-                 .max-width-300px {
-                     max-width: 300px;
-                 }
-
-
-                 .max-width-50percent {
-                     max-width: 50%;
-                 }
-
-
-                 .bow-row {
-
-                     display: flex;
-                     flex-wrap: wrap;
-                     min-height: 20px;
-                     // align-content: center;
-                     align-items: end;
-
-                     span {
-                         font-size: 0.67em;
-                         line-height: 1em;
-
-                         &:first-child {
-                             word-break: break-all;
-                             font-weight: 700;
-                             text-align: right;
-                         }
-
-                         &:last-child {
-                             flex: 1;
-                             border-bottom: 1px solid #000;
-                             padding: 0 7px;
-                             text-transform: uppercase;
-                             margin-left: 6px;
-                         }
-                     }
-                 }
-
-                 [data-idfield="txt_name"] {
-
-                     .label,
-                     .value {
-                         height: 25px;
-                         white-space: pre-line;
-                         line-height: 0.7rem;
-                         display: flex;
-                         align-content: end;
-                         flex-wrap: wrap;
-                     }
-                 }
-
-                 [data-idfield="txt_notes"] {
-                     .value {
-                         font-size: .65rem;
-                         white-space: pre-line;
-                         line-height: 0.7rem;
-                         padding: 5px;
-                     }
-                 }
-             }
-
-             .container-signatures {
-                 //outline: green 1px solid;
-
-                 .signature {
-                     display: flex;
-                     flex-wrap: nowrap;
-                     justify-content: space-between;
-                     margin-top: 25px;
-
-                     span {
-                         font-size: 8px;
-                         font-weight: bold;
-                         border-top: 1px solid #000;
-                         margin-top: 1px;
-                         padding: 3px 0 0 0;
-                         width: 40mm;
-                         text-align: center;
-                     }
-                 }
-             }
-         }
-     }
-
 
  }

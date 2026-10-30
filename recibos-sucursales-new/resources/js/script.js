@@ -1,6 +1,286 @@
 const _HELPERS_ = {
+    Current_Long_Date() {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        var hora = today.getHours();
+        var min = today.getMinutes();
+
+        /*if (_NEW_DATE_.status) {
+            dd = _NEW_DATE_.day;
+            mm = _NEW_DATE_.month;
+            yyyy = _NEW_DATE_.year;
+            hora = 21;
+        }*/
+
+        const esAM = hora < 12 ? 'AM' : 'PM';
+
+        return {
+            dia: dd,
+            mes: mm,
+            anio: yyyy,
+            hora: (hora > 12 ? hora - 12 : hora) + ":" + min + " " + esAM
+        };
+    },
+    IncrementarSerie() {
+        var _serie_ = $getEl("#txt_receipt_number");
+        if (!_serie_._exist()) return;
+
+        const [SERIE = '', ROC = '0'] = (String(_serie_.value).replace('SERIE ', '')).split('#')
+
+        var _NewROC_ = parseInt(ROC) + 1;
+
+        const NumROC = String(((String(SERIE).toUpperCase() === "G") ? String(_NewROC_).padStart(7, '0') : _NewROC_)).trim();
+
+        _serie_.value = ("SERIE " + SERIE.toUpperCase() + " #" + NumROC);
+
+        localStorage.setItem("serial_number_" + window._SEDE_, String(SERIE).toUpperCase().trim() + "|" + NumROC);
+        window._SERIAL_NUMBER_ = String(SERIE).toUpperCase().trim() + "|" + NumROC;
+    },
+    getHora12(fecha = new Date()) {
+        return new Intl.DateTimeFormat('es-NI', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+        }).format(fecha);
+    },
+    getFechaHora(fecha = new Date()) {
+        return new Intl.DateTimeFormat('es-NI', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+        }).format(fecha);
+    },
+    ResteDate(date) {
+        const nameMonths = {
+            'ENE': '01',
+            'FEB': '02',
+            'MAR': '03',
+            'ABR': '04',
+            'MAY': '05',
+            'JUN': '06',
+            'JUL': '07',
+            'AGO': '08',
+            'SEP': '09',
+            'OCT': '10',
+            'NOV': '11',
+            'DIC': '12'
+        }
+        const [day, month, year] = String(date).split('/');
+        return `${day}/${nameMonths[month.toUpperCase()]}/${year}`;
+    },
+    UnitedStatesDateFormat(date) {
+        const nameMonths = {
+            'ENE': '01',
+            'FEB': '02',
+            'MAR': '03',
+            'ABR': '04',
+            'MAY': '05',
+            'JUN': '06',
+            'JUL': '07',
+            'AGO': '08',
+            'SEP': '09',
+            'OCT': '10',
+            'NOV': '11',
+            'DIC': '12'
+        }
+        const [day, month, year] = String(date).split('/');
+        return `${month}/${day}/${year}`;
+    },
+    GetAmounts(_data_) {
+        const allDiscounts = [
+            '010-DF',
+            '010-DC',
+            '015-DC',
+            '005-DT',
+            '010-DT',
+            '010-DTT',
+            '050-BTT',
+            '100-BTT',
+            '050-BT/201-RR',
+            '100-BT/201-RR',
+            '050-MB',
+            '100-BC'
+        ]
+        const others = [
+
+        ]
+        const sanitizeSTR = (str) => {
+            return parseFloat(String(str).trim().replaceAll(',', ''));
+        }
+
+        let Colegiatura = 0;
+        let Libro = 0;
+        let Descuento = 0;
+        let Otros = 0;
+        let Retencion = 0;
+        _data_.forEach(row => {
+            const _amount_ = sanitizeSTR(row.AMOUNT);
+            if (row.CODE.includes('CLG')) {
+                Colegiatura += _amount_;
+            } else if (row.CODE.includes('LBR')) {
+                Libro += _amount_;
+            } else if (allDiscounts.includes(row.CODE)) {
+                Descuento += _amount_;
+            } else if (['RET_1', 'RET_2', 'RET_1_2'].includes(row.CODE)) {
+                Retencion += _amount_;
+            } else {
+                Otros += _amount_;
+            }
+
+        })
+
+        return {
+            IMPORTE_COLEGIATURA: Colegiatura,
+            IMPORTE_LIBRO: Libro,
+            IMPORTE_DESCUENTO: Descuento,
+            IMPORTE_RETENCION: Retencion,
+            IMPORTE_OTROS: Otros
+        };
+
+    },
+    SetObservations({ notes = '', receiptType = '', prefix = null, isPrint = false } = {}) {
+        let othersServices = String(((window.tabla.getData()).rows).filter(row => (!['CLG', 'LBR', 'CAN'].includes(String(row.Col1).trim().toUpperCase()))).map(row => {
+
+            let CODE = ((row.Col1).includes('005-') ||
+                (row.Col1).includes('010-') ||
+                (row.Col1).includes('015-') ||
+                (row.Col1).includes('020-') ||
+                (row.Col1).includes('050-') ||
+                (row.Col1).includes('100-') ||
+                (row.Col1).includes('801-') ||
+                (row.Col1).includes('802-')
+            ) ? row.Col1 + '/' : null;
+            let DITAIL = String(row.Col2).trim() + " " + String(row.Col3).trim() + " " + String(row.Col4).trim();
+
+            let PRICE = '';
+
+            if (isPrint) {
+                PRICE = null;
+            } else {
+                PRICE = (row?.Col5 || null) ? " C$" + row?.Col5 : null;
+            }
+
+
+            (['OTROS', 'ANT', 'BTL-PLAST', 'CAM-GRAD']) ? ((row?.Col5 || null) ? " C$" + row?.Col5 : null) : null;
+            return [CODE, DITAIL, PRICE].join('.');
+
+        }).join("/")).trim().toUpperCase() || '';
+
+
+
+
+        // 1) Agregar notas con separador si corresponde
+        if (notes !== '') {
+            const separator = othersServices !== '' ? '/' : '';
+            othersServices += separator + notes;
+        }
+
+        // 2) Prefijo según el tipo de recibo
+        let ExtraBook = '';
+
+        if (receiptType === 'CLG-REPITE') {
+            const hasExtraBook = othersServices.includes('LIBRO (EXTRA)');
+            ExtraBook = hasExtraBook
+                ? '201-RP/REPITENTE Y PAGÓ '
+                : '200-RP/REPITENTE NO LLEVA LIBRO/';
+        }
+
+        const normalized = (str) => {
+            let s = String(str);
+            let prev;
+            do {
+                prev = s;
+                s = (s
+                    .replaceAll('/.', '/')
+                    .replaceAll('./', '/')
+                    .replaceAll(' .', '.')
+                    .replaceAll(':  -', '')
+                    .replaceAll(' /', '/')).replace(/\/+$/, '');
+            } while (s !== prev);
+            return s;
+        };
+        return [prefix, normalized(ExtraBook + othersServices)].map(r => String(r ?? '').trim()).filter(Boolean).join('/');
+    },
+    CreateDialogField({
+        label = '', tag = 'input', id = '', className = '', value = '', options = []
+    } = {}) {
+        const contenDialogfield = document.createElement('div');
+        contenDialogfield.classList.add('dialog-field', 'one_of_one');
+        if (typeof className === 'string' && className != '') {
+
+            (className.split(' ')).forEach(item => {
+                contenDialogfield.classList.add(item);
+            })
+        }
+        const _label_ = document.createElement('label');
+        _label_.appendChild(document.createTextNode(label));
+        _label_.setAttribute('for', id + '_field');
+        const _element_ = document.createElement(tag);
+        if (tag === 'select' && options.length > 0) {
+            options.forEach(op => {
+                const _option_ = document.createElement('option');
+                if (op?.value) _option_.value = op.value;
+                if (op?.label) _option_.text = op.label;
+                _element_.appendChild(_option_);
+            })
+        } else {
+            _element_.value = value;
+        }
+
+
+        if (id != '') {
+            contenDialogfield.id = id
+            _element_.id = id + '_field';
+            _element_.name = id + '_field'
+        };
+
+        contenDialogfield.appendChild(_label_);
+        contenDialogfield.appendChild(_element_);
+        return contenDialogfield;
+    },
+    hideOthersComments({ hide = true, ctx = null, showComment = false, placeholder = '' } = {}) {
+
+        const col3 = 'Col3';
+        const col4 = 'Col4';
+
+
+
+        const _input_COL3_ = $getEl('.dynamic-table-dialog div[data-col="' + col3 + '"]');
+        const _input_COL4_ = $getEl('.dynamic-table-dialog div[data-col="' + col4 + '"]');
+
+
+        if (hide) {
+            if (_input_COL3_) _input_COL3_._removeClass('dialog-field--hidden');
+            if (_input_COL4_) _input_COL4_._addClass('dialog-field--hidden');
+
+        } else {
+            if (_input_COL3_) _input_COL3_._addClass('dialog-field--hidden');
+            if (_input_COL4_) _input_COL4_._removeClass('dialog-field--hidden');
+        }
+
+        if (showComment) {
+            _input_COL4_._removeClass('dialog-field--hidden');
+        }
+        if (ctx) {
+            if (hide) {
+
+
+                ctx.setValue({ colKey: col3, val: '', readOnly: false, disabled: false, placeholder: String(placeholder).trim() });
+
+            } else {
+                ctx.setValue({ colKey: col3, val: '-', readOnly: true, disabled: true });
+            }
+            ctx.setValue({ colKey: col4, val: '', readOnly: false, disabled: false });
+        }
+
+    },
     InsertAmount({ data = {} } = null) {
-        //console.log(JSON.stringify(data));
+
         if (!data) return;
         const CreateAmountBox = ({ data = {}, isTotal = false } = {}) => {
             if (!data && !data?.label && !data?.amount) return;
@@ -14,7 +294,7 @@ const _HELPERS_ = {
 
             const label = document.createElement('span');
             label.classList.add('label');
-            label.textContent = data.label;
+            label.textContent = String(data.label).replace(' SÉBACO', '').replace(' SAN ISIDRO', '').replace(' LA TRINIDAD', '');
 
             const amount = document.createElement('span');
             amount.classList.add('amount');
@@ -38,16 +318,16 @@ const _HELPERS_ = {
                 }
                 return {
                     label: String(_label_[0]).trim().toUpperCase() + ' (C$)',
-                    amount: _row_?.Col4
+                    amount: _row_?.Col5
                 }
             }),
             total: [{
-                label: 'TOTAL:', amount: data.totals.Col4
+                label: 'TOTAL:', amount: data.totals.Col5
             }]
         }
 
 
-        if (_box_concepts_) {
+        if (_box_concepts_._exist()) {
             _box_concepts_.forEach(el => {
                 el.replaceChildren();
                 (amount.productos || []).forEach(item => {
@@ -73,10 +353,10 @@ const _HELPERS_ = {
         if ((_new_date_localStorage_?.status || false) == true) {
             _current_date_ = _new_date_localStorage_.day + "/" + this.loadMonthName({ month: _new_date_localStorage_.month }) + "/" + _new_date_localStorage_.year;
         } else {
-            _new_date_localStorage_ = { status: true, day: day, month: this.loadMonthName({ month: month }), year: year };
+            _new_date_localStorage_ = { status: true, day: day, month: month, year: year };
         }
 
-        const dateScreen = document.getElementById('txt-fecha');
+        const dateScreen = document.getElementById('txt_date');
         if (dateScreen) {
             dateScreen.value = _current_date_;
         }
@@ -144,6 +424,7 @@ const _HELPERS_ = {
             return false;
         }
 
+        value = String(value).replace(',', '').trim();
         // Si es tipo number y no es NaN
         if (typeof value === 'number') {
             return !Number.isNaN(value);
@@ -344,50 +625,36 @@ const _HELPERS_ = {
 
 
 function UpdatePrintBox() {
-    const _ELEMENT_ = document.querySelectorAll("#preview-print .page") || null;
 
-    if (!_ELEMENT_) return false;
+    const _ELEMENT_ = $getEl("#preview-print .page");
 
-    const _DATA_RECEIPT_TYPE_ = document.querySelector("#txt_receipt_type") || null;
-    const _DATA_NAME_ = document.querySelector("#txt_name") || null;
-    const _DATA_COMPANY_ = document.querySelector("#txt_company") || null;
-    const _DATA_SESSION_ = document.querySelector("#txt_session") || null;
-    const _DATA_CATEGORIES_ = document.querySelector("#txt_categories") || null;
-    const _DATA_LEVELS_ = document.querySelector("#txt_levels") || null;
-    const _DATA_BOOK_ = document.querySelector("#txt_book") || null;
-    const _DATA_NOTES_ = document.querySelector("#txt_notes") || null;
+    if (!_ELEMENT_._exist()) return false;
 
-    if (_DATA_RECEIPT_TYPE_ !== null && _DATA_NAME_ !== null && _DATA_COMPANY_ !== null && _DATA_SESSION_ !== null && _DATA_CATEGORIES_ !== null && _DATA_LEVELS_ !== null && _DATA_BOOK_ !== null && _DATA_NOTES_ !== null) {
+    const _DATA_ = window._RECEIPT_DETAILS;
 
-        //2026LEOSAB06
-        const _session_number_ = _DATA_SESSION_.value.trim().slice(-2);
-        const _name_company_ = String(_DATA_COMPANY_.value || "").trim();
-        const _name_ = String(_DATA_NAME_.value).trim();
-        const _book_name_ = String(_DATA_BOOK_.value || "").trim()
-        const _level_category_ = String(String(_DATA_LEVELS_.value || '').trim() + " - " + String(_DATA_CATEGORIES_.value || '').trim()).trim();
+
+
+
+    if (_DATA_) {
+
+
+
+
+
+
+
 
         const paymentMethods = JSON.parse(window.ChoiceField.getAllChoicesJSON(undefined, { pretty: true }));
-
-
-        console.clear();
-        console.groupCollapsed("paymentMethods");
-
-        console.log(JSON.stringify(paymentMethods));
-        console.groupEnd();
         const paymentMethods_Values = paymentMethods.filter(field => (field.checked === true && field.accepted === true)).map(field => {
-
-
             const flat = field.menu.flat;
-
             _value_ = flat?.["details-cash_total"] || (flat?.["details-autosum"] || 0);
-
             let _details_ = '';
             if (field.type_template == "autosum") {
                 _details_ = flat.row.map(obj => Object.values(obj)) // [["sdfsd", 7848], ["454", 457], ["", ""]]
                     .filter(([ref, amount]) => !(ref === '' && amount === '')) // quita los que tienen ambos vacíos
-                    .map(([ref, amount], i) => ((String(ref).trim() !== "") ? ` [REF#${i + 1}:${ref} ` : `[`) + `C$${amount}]`);
+                    .map(([ref, amount], i) => ((String(ref).trim() !== "") ? ` [REF#${i + 1}:${ref} ` : `[`) + `MONTO:C$${amount}]`);
             } else {
-                _details_ = ["C$" + _value_ + (flat?.["details-cash_total"] && flat?.["details-cash_change"] ? ((flat?.["details-cash_change"] || 0) > 0 ? " | VUELTO -> C$:" + flat["details-cash_change"] : "") : "")];
+                _details_ = [" MONTO: C$" + _value_ + (flat?.["details-cash_total"] && flat?.["details-cash_change"] ? ((flat?.["details-cash_change"] || 0) > 0 ? " ~ VUELTO: C$:" + flat["details-cash_change"] : "") : "")];
             }
             return {
                 key: field.label,
@@ -395,31 +662,46 @@ function UpdatePrintBox() {
                 print: _details_
             }
         }) || [];
-        console.groupCollapsed("paymentMethods_Values");
-        console.log(JSON.stringify(paymentMethods_Values));
-        console.groupEnd();
+
 
         let _notes_ = '';
         if (paymentMethods_Values.length > 0) {
 
             const resultado = paymentMethods_Values
-                .map(({ key, print = [] }) => `  🞂 EN ${key}:${print.join(',')}`)
-                .join('.~\n');
-            _notes_ = 'MÉTODO DE PAGO:\n' + resultado + '.~';
+                .map(({ key, print = [] }) => ` EN ${key}:${print.join(',')}`)
+                .join('.|');
+            _notes_ = resultado + '.';
         }
+
+
+
+        othersServices = _HELPERS_.SetObservations({
+            notes: _DATA_.NOTES_().value,
+            receiptType: _DATA_.RECEIPT_TYPE().value,
+            isPrint: true,
+        });
+
+
+
 
         const UpdateValue = {
-            "txt_name": (_name_company_ !== '' ? `${_name_company_}\n${_name_}` : _name_),
-            "txt_session": _session_number_,
-            "txt_level_category": _level_category_.replace('_', ''),
-            "txt_book_name": _book_name_,
-            "txt_notes": _notes_
-
-
+            "txt_numToText": window.NumeroALetras.convertir(tabla.getTotalAllColumn().Col5),
+            "txt_name": _DATA_.NAME_COMPANY().value,
+            "txt_session": _DATA_.COURSE_NUMBER().value,
+            "txt_level_category": _DATA_.LEVELS_CATEGORIES().value,
+            "txt_book_name": _DATA_.BOOK_TITLE().value,
+            "txt_notes": _notes_,
+            "txt_other_notes": ((othersServices !== '') ? othersServices : null)
         }
-        console.groupCollapsed("UpdateValue:");
-        console.log(JSON.stringify(UpdateValue));
-        console.groupEnd();
+
+
+        window._RECEIPT_DETAILS.add('OBSERVATIONS', othersServices);
+
+
+
+
+
+
 
 
         _ELEMENT_.forEach(page => {
@@ -429,9 +711,6 @@ function UpdatePrintBox() {
 
                 _ContainerFields_.forEach(_field_ => {
                     const _dataset_idField_ = String(_field_.dataset.idfield || '').trim();
-
-
-
 
                     if (Object.keys(UpdateValue).includes(_dataset_idField_)) {
                         const _value_ = UpdateValue[_dataset_idField_] || '';
@@ -443,15 +722,48 @@ function UpdatePrintBox() {
                             SpanValue.replaceChildren();
                             _field_.classList.remove('hide');
 
-                            if (_dataset_idField_ === "txt_name") {
+                            if (_dataset_idField_ === "txt_notes") {
+                                if (UpdateValue.txt_other_notes) {
+                                    SpanValue.appendChild(document.createTextNode(UpdateValue.txt_other_notes));
+                                }
+                                const _methods_ = $CreateTag({
+                                    tag: 'span',
+                                    className: '_methods_'
+
+
+                                });
+                                const _methods_title_ = $CreateTag({
+                                    tag: 'span',
+
+                                    textContent: 'MÉTODO DE PAGO:',
+
+                                });
+                                const _methods_containerList_ = $CreateTag({
+                                    tag: 'ul',
+
+                                });
+                                (_value_.split('|')).forEach(method => {
+                                    const _method_ = $CreateTag({
+                                        tag: 'li',
+                                        textContent: method
+                                    });
+                                    _methods_containerList_.appendChild(_method_);
+                                })
+                                _methods_.appendChild(_methods_title_);
+                                _methods_.appendChild(_methods_containerList_);
+
+                                SpanValue.appendChild(_methods_);
+
+
+                            } else if (_dataset_idField_ === "txt_name") {
                                 SpanLabel.replaceChildren();
-                                if (_name_company_ !== '') {
+                                if (_DATA_.COMPANY().value !== '') {
                                     SpanLabel.appendChild(document.createTextNode('RECIBIMOS DE:\nEN REPRESENTACIÓN DE:'));
                                 } else {
                                     SpanLabel.appendChild(document.createTextNode('RECIBIMOS DE:'));
                                 }
-                            }
-                            if (_dataset_idField_ === "txt_book_name" && _value_ === "") {
+                                SpanValue.appendChild(document.createTextNode(_value_));
+                            } else if (_dataset_idField_ === "txt_book_name" && _value_ === "") {
                                 _field_.classList.add('hide');
                             } else {
 
@@ -460,13 +772,17 @@ function UpdatePrintBox() {
                         }
                     }
 
-                })
+                });
+
+
+
             }
         });
+        _HELPERS_.InsertAmount({ data: window.tabla.getData() });
     }
 }
 const actualizarEstadoConexion = (online) => {
-    console.log(online ? '🟢 Conexión restaurada' : '🔴 Conexión perdida');
+    // console.log(online ? '🟢 Conexión restaurada' : '🔴 Conexión perdida');
 
     const status_connection = document.querySelector('.type-conection');
     if (!status_connection) return;
@@ -489,6 +805,236 @@ window.addEventListener('offline', () => actualizarEstadoConexion(false));
 
 
 window.addEventListener('load', function () {
+    if (typeof (Storage) !== "undefined") {
+
+
+        /*
+         window._NEW_DATE_ = { status: false, day: "", month: "", year: "" };
+        window._SEDE_ = 'LEO';
+        */
+
+        window._SERIAL_NUMBER_ = localStorage.getItem("serial_number_" + window._SEDE_);
+
+        if (window._SERIAL_NUMBER_ === null) {
+            localStorage.setItem("serial_number_" + window._SEDE_, "A|00000");
+            window._SERIAL_NUMBER_ = "A|00000";
+        }
+        try {
+            window._NEW_DATE_ = JSON.parse(localStorage.getItem("new_date_" + window._SEDE_));
+
+        } catch (error) {
+            window._NEW_DATE_ = null;
+        }
+
+        if (window._NEW_DATE_ === null) {
+            localStorage.setItem("new_date_" + window._SEDE_, JSON.stringify({ status: false, day: "", month: "", year: "" }));
+            window._NEW_DATE_ = JSON.parse(localStorage.getItem("new_date_" + window._SEDE_));
+
+        } else {
+
+
+        }
+    } else {
+        // { status: false, day: "", month: "", year: "" }
+        window._NEW_DATE_ = { status: false, day: "", month: "", year: "" };
+        window._SERIAL_NUMBER_ = "A|00000";
+
+    }
+
+    var _serie_and_number_ = window._SERIAL_NUMBER_.split("|") || ["A", "000001"];
+    const num_recibo_el = $getEl("#txt_receipt_number");
+
+    if (num_recibo_el) {
+
+
+        num_recibo_el.value = (String("SERIE " + _serie_and_number_[0] + " #" + _serie_and_number_[1]).trim());
+    }
+    window._RECEIPT_DETAILS = (() => {
+        // ---------- helpers (encerrados, no expuestos) ----------
+        const getEl = (selector) => document.querySelector(selector);
+
+        const read = (selector) => {
+            const el = getEl(selector);
+            return el ? String(el.value ?? '').trim() : '';
+        };
+
+        const upper = (selector) => read(selector).toUpperCase();
+
+        const write = (selector, value) => {
+            const el = getEl(selector);
+            if (el) el.value = String(value ?? '');
+        };
+
+        const capitalize = (str) =>
+            String(str ?? '')
+                .toLowerCase()
+                .replace(/\p{L}[\p{L}\p{N}]*/gu, (w) => w.charAt(0).toUpperCase() + w.slice(1));
+
+        // ---------- campos simples (generados) ----------
+        const simpleFields = {
+            RECEIPT_NUMBER: '#txt_receipt_number',
+            RECEIPT_TYPE: '#txt_receipt_type',
+            DATE: '#txt_date',
+            NAME: '#txt_name',
+            COMPANY: '#txt_company',
+            CONTAC_NAME: '#txt_contact_name',
+            PHONE: '#txt_phone',
+            EMAIL: '#txt_email',
+            BIRTHDATE: '#txt_birthdate',
+            SESSION: '#txt_session',
+            CATEGORIES: '#txt_categories',
+            LEVELS: '#txt_levels',
+            BOOK_TITLE: '#txt_book',
+            NOTES_: '#txt_notes',
+        };
+
+        const api = {};
+
+        for (const [key, selector] of Object.entries(simpleFields)) {
+            api[key] = () => ({
+                value: upper(selector),
+                update: (v) => { write(selector, v) },
+            });
+        }
+
+        // ---------- campos compuestos ----------
+        api.NAME_COMPANY = () => ({
+            value: (() => {
+                const company = read('#txt_company');
+                const name = read('#txt_name');
+                const v = company ? `${company}\n${name}` : name;
+                return v.trim().toUpperCase();
+            })(),
+            // "COMPANY\nNAME" → escribe en #txt_company y #txt_name
+            update: (v) => {
+                const [company = '', ...rest] = String(v ?? '').split('\n');
+                write('#txt_company', company);
+                write('#txt_name', rest.join('\n'));
+            },
+        });
+
+        api.LEVELS_CATEGORIES = () => ({
+            value: (() => {
+                const cat = read('#txt_categories');
+                const lev = read('#txt_levels');
+                return String(lev ? `${lev} - ${cat}` : cat).trim().replace('_', '');
+            })(),
+            // "LEVELS - CATEGORIES" (o solo "CATEGORIES") → escribe en cada input
+            update: (v) => {
+                const raw = String(v ?? '').trim();
+                const sepIdx = raw.indexOf(' - ');
+                if (sepIdx === -1) {
+                    write('#txt_levels', '');
+                    write('#txt_categories', raw);
+                } else {
+                    write('#txt_levels', raw.slice(0, sepIdx).trim());
+                    write('#txt_categories', raw.slice(sepIdx + 3).trim());
+                }
+            },
+        });
+
+        api.COURSE_NUMBER = () => ({
+            value: read('#txt_session').slice(-2),
+            // reemplaza los últimos 2 caracteres del session
+            update: (v) => {
+                const session = read('#txt_session');
+                const tail = String(v ?? '').slice(-2);
+                write('#txt_session', session.slice(0, -2) + tail);
+            },
+        });
+
+        // ---------- lista dinámica de claves ----------
+        const valueKeys = [
+            ...Object.keys(simpleFields),
+            'COURSE_NUMBER',
+            'NAME_COMPANY',
+            'LEVELS_CATEGORIES',
+        ];
+
+        // ---------- utilidades públicas ----------
+        api.capitalize = capitalize;
+        api.getEl = getEl;
+
+        /**
+         * Agrega o REEMPLAZA una propiedad dinámica.
+         *
+         *   add('CONCEPT_', 'Pago mensual')
+         *   add('INVOICE_', { selector: '#txt_invoice' })
+         *   add('TOTAL_',  () => 'calculado')
+         */
+        api.add = (name, value) => {
+            const key = String(name ?? '').trim();
+            if (!key) throw new Error('add(): el nombre es requerido');
+
+            const protectedKeys = ['add', 'remove', 'getAll', 'update', 'getEl', 'capitalize'];
+            if (protectedKeys.includes(key)) {
+                throw new Error(`add(): "${key}" es un método reservado`);
+            }
+
+            let getter;
+
+            if (typeof value === 'function') {
+                // getter dinámico con override opcional
+                let override;
+                getter = () => ({
+                    value: override !== undefined ? String(override) : String(value() ?? ''),
+                    update: (v) => { override = String(v ?? ''); },
+                });
+            } else if (value && typeof value === 'object' && 'selector' in value) {
+                getter = () => ({
+                    value: upper(value.selector),
+                    update: (v) => write(value.selector, v),
+                });
+            } else {
+                let stored = String(value ?? '');
+                getter = () => ({
+                    value: stored,
+                    update: (v) => { stored = String(v ?? ''); },
+                });
+            }
+
+            const exists = Object.prototype.hasOwnProperty.call(api, key);
+            api[key] = getter;
+
+            if (!valueKeys.includes(key)) valueKeys.push(key);
+            return api;
+        };
+
+        /**
+         * Elimina una propiedad dinámica previamente agregada.
+         */
+        api.remove = (name) => {
+            const key = String(name ?? '').trim();
+            const idx = valueKeys.indexOf(key);
+            if (idx === -1) return api;
+            valueKeys.splice(idx, 1);
+            delete api[key];
+            return api;
+        };
+
+        /**
+         * Atajo: _RECEIPT_DETAILS.update('NAME_', 'PEDRO')
+         */
+        api.update = (name, value) => {
+            const key = String(name ?? '').trim();
+            const fn = api[key];
+            if (typeof fn !== 'function') return api;
+            const obj = fn();
+            if (obj && typeof obj.update === 'function') obj.update(value);
+            return api;
+        };
+
+        api.getAll = () => {
+            const out = {};
+            for (const key of valueKeys) {
+                const fn = api[key];
+                if (typeof fn === 'function') out[key] = fn().value;
+            }
+            return out;
+        };
+
+        return api;
+    })();
 
     const floating = new WheelFloating({
         element: '#preview-print',
@@ -597,7 +1143,7 @@ window.addEventListener('load', function () {
                 id: 'txt_method_check',
                 label: 'Cheque',
                 type_element: 'checkbox',
-                maxAmount: 7894.50,
+
                 template: {
                     type: 'autosum',
                     table: [{
@@ -620,25 +1166,6 @@ window.addEventListener('load', function () {
                     }]
                 }
             },
-            {
-                id: 'txt_method_advance',
-                label: 'Anticipo',
-                type_element: 'checkbox',
-
-                template: {
-                    type: 'autosum',
-                    table: [{
-                        label: 'Datos de Cheques:',
-                        headers: ['N° Recibo', 'Monto'],
-                        fields: [
-                            [
-                                { type: 'text', prefix_value: 'REF: ', id: 'reference-chk-1' },
-                                { type: 'number', prefix_value: 'C$ ', id: 'amount-chk-1' }
-                            ]
-                        ]
-                    }]
-                }
-            }
 
         ],
         context: document,
@@ -650,8 +1177,7 @@ window.addEventListener('load', function () {
 
 
             if (['txt_retention_1percent', 'txt_retention_2percent'].includes(meta.choiceId)) {
-                // pushEvent('onclick', meta.choiceId, isChecked, meta.type_template);
-                //console.log(("getTotalAllColumn:", JSON.stringify(tabla.getTotalAllColumn())));
+
                 const paymentMethods = JSON.parse(window.ChoiceField.getAllChoicesJSON(undefined, { pretty: true }));
                 let txt_retention_1percent, txt_retention_2percent, txt_retention;
                 if (paymentMethods) {
@@ -664,9 +1190,9 @@ window.addEventListener('load', function () {
                     ) || null;
 
                     if (txt_retention) {
-                        console.log("txt_retention", JSON.stringify(txt_retention));
+
                         if (tabla.getTotalAllColumn()) {
-                            let total = (tabla.getTotalAllColumn()).__raw['Col4'] || 0;
+                            let total = (tabla.getTotalAllColumn()).__raw['Col5'] || 0;
 
                             if (total === 0) return;
                             tabla.removeRow('RETENCION');
@@ -687,10 +1213,10 @@ window.addEventListener('load', function () {
                                 label = 'RETENCIÓN (1% y 2%): ';
                                 mount = -(total * (3 / 100));
                             }
-                            console.log('mount:', mount);
+
                             if (mount < 0) {
                                 tabla.insertRow({
-                                    row: { Col1: code, Col2: label, Col3: '-', Col4: mount },
+                                    row: { Col1: code, Col2: label, Col4: '-', Col5: mount },
                                     remove: false,
                                     idRow: 'RETENCION'
                                 });
@@ -704,44 +1230,20 @@ window.addEventListener('load', function () {
                 }
 
 
-
-                /* if (meta.state === 'checked') {
-                     if (tabla.getTotalAllColumn()) {
-                         let total = (tabla.getTotalAllColumn()).__raw['Col4'];
- 
-                         tabla.removeRow('ret_1');
-                         tabla.removeRow('ret_2');
- 
-                         tabla.insertRow({
-                             row: { Col1: 'RET_1', Col2: 'RETENCIÓN (1%): ', Col3: '-', Col4: -(total * (1 / 100)) },
-                             remove: false,
-                             idRow: 'ret_1'
-                         });
-                     }
-                 } else {
- 
-                 }*/
             }
 
 
-            // console.log('[onclick]', JSON.stringify(meta.values), isChecked);
+
         },
         // ---------- 👇 NUEVO: onchange ----------
         onchange: (element, values) => {
 
-            console.log('▶ onchange:', element.dataset.choice_id, values);
-            /* */
+
             UpdatePrintBox();
-            /*  // element = el .choice-container cuyo menú fue accedido
-              // values  = arreglo con { rowIndex, rowLabel, name, id, label, type, value, prefix }
-  
-              // Render en el panel de la demo
-              document.getElementById('onchange-el').textContent =
-                  `<div class="choice-container" data-choice_id="${element.dataset.choice_id}">`;
-              document.getElementById('onchange-values').textContent =
-                  'values = ' + JSON.stringify(values, null, 2);*/
+
         },
         onAccept: (accepted, container, ctx) => {
+            $getEl("footer .container-actionbuttons>span, #Dynacmic-table-eli, #txt_notes")._enable();
             if (accepted.choiceId == 'txt_method_telepago') {
                 [
                     'txt_method_cash',
@@ -753,24 +1255,53 @@ window.addEventListener('load', function () {
                     'txt_retention_2percent'
                 ].forEach(_selector => ctx.uncheck("[data-choice_id=" + _selector + "]"))
 
-                console.log(ctx);
+
             } else {
                 ctx.uncheck('[data-choice_id="txt_method_telepago"]');
             }
 
-            // console.log('▶ onAccept:', accepted.toJSON(), 'en', container.dataset.choice_id);
 
-            //printOutput();
-        }
+        },
+        onOpen(container, meta, b) {
+            $getEl("footer .container-actionbuttons>span, #Dynacmic-table-eli, #txt_notes")._disable();
+            const AllChoicesJSON = (JSON.parse(window.ChoiceField.getAllChoicesJSON(undefined, { pretty: true })) || []).filter(choice => !['txt_method_cash', 'txt_retention_1percent', 'txt_retention_2percent'].includes(choice.choiceId || ''));
+            console.log(JSON.stringify(AllChoicesJSON, null, 2));
+
+            TotalRecibido = (AllChoicesJSON.map(choice => {
+                return choice.autosum;
+            }) || [0, 0]).reduce((acc, n) => acc + n, 0);
+
+
+            const v = parseFloat((tabla.getTotalAllColumn()).__raw['Col5'] || 0) - TotalRecibido;
+            window.ChoiceField.setMaxAmount('txt_method_cash', v === '' ? null : Number(v));
+
+            console.log('open', `▲ open → ${meta.choiceId} (${meta.reason})`, ` RECIBIDO C$ ${v}`);
+            //refresh();
+        },
+        onClose(container, reason, meta, b) {
+            $getEl("footer .container-actionbuttons>span, #Dynacmic-table-eli, #txt_notes")._enable();
+            console.log('close', `▼ close → ${meta.choiceId} (${reason})`);
+            //refresh();
+        },
+
     });
     const total = window.ChoiceField.buildAll();
 
     _HELPERS_.LoadSession("#txt_session", window._SESIONES_);
 
-    const tabla = new DynamicTable('#Dynacmic-table-eli', {
+
+    window.tabla = new DynamicTable('#Dynacmic-table-eli', {
         addItemButtonText: '[+] Click aquí para agregar otro producto',
+        Styles: {
+            Col5: {
+
+                '[data-field-type]': {
+                    'text-align': 'right'
+                }
+            }
+        },
         onChange: async (ctx) => {
-            _HELPERS_.InsertAmount({ data: ctx.getData() });
+
             if (ctx.rowId !== 'RETENCION') {
                 ctx.silent(() => {
                     ctx.removeRow('RETENCION');
@@ -789,7 +1320,7 @@ window.addEventListener('load', function () {
                     if (txt_retention) {
 
                         if (ctx.getTotalAllColumn()) {
-                            let total = (ctx.getTotalAllColumn()).__raw['Col4'] || 0;
+                            let total = (ctx.getTotalAllColumn()).__raw['Col5'] || 0;
 
                             if (total === 0) return;
 
@@ -812,10 +1343,10 @@ window.addEventListener('load', function () {
                                 label = 'RETENCIÓN (1% y 2%): ';
                                 mount = -(total * (3 / 100));
                             }
-                            console.log('mount:', mount);
+
                             if (mount < 0) {
                                 tabla.insertRow({
-                                    row: { Col1: code, Col2: label, Col3: '-', Col4: mount },
+                                    row: { Col1: code, Col2: label, Col4: '-', Col5: mount },
                                     remove: false,
                                     idRow: 'RETENCION'
                                 });
@@ -828,29 +1359,29 @@ window.addEventListener('load', function () {
 
                 }
             }
-
+            UpdatePrintBox();
         }
     });
 
     tabla.setHeaders({
         Col1: 'SERVICIOS',
-        Col2: 'DETALLE SERVICIO/PRODUCTO',
-        Col3: 'COMENTARIO',
-        Col4: 'MONTO'
+        Col2: 'DEFINICIÓN DEL SERVICIO',
+        Col3: 'DETALLES DEL SERVICIO',
+        Col4: 'OTROS COMENTARIOS',
+        Col5: 'MONTO'
     });
 
     tabla.setFieldSchema({
         Col1: {
             type: 'select',
             required: true,
-            insertLabel: 'null',
-
-
+            visible: true,
             options: [
 
-                { value: 'LBR', idRow: 'LIBRO', label: 'COMPRA DE LIBRO', label_field: 'NOMBRE DEL LIBRO', idSlug: true, blockRow: false },
-                { value: 'MORA', label: 'MORA POR INSCRIPCIÓN TARDÍA', label_field: 'DETALLE DE OTROS SERVICIOS', price: '700', idSlug: true, blockRow: false },
-                { value: 'OTROS', label: 'OTROS SERVICIOS', label_field: 'DETALLE DE OTROS SERVICIOS', idSlug: false, blockRow: false },
+                { value: 'LBR-EXTRA', idRow: 'LIBRO', label: 'COMPRA DE LIBRO', idSlug: true, blockRow: true },
+                { value: 'MORA', label: 'MORA POR INSCRIPCIÓN TARDÍA', price: '700', idSlug: true, blockRow: true },
+                { value: 'OTROS', label: 'OTROS SERVICIOS', idSlug: false, blockRow: false },
+
 
                 {
                     group: {
@@ -867,7 +1398,7 @@ window.addEventListener('load', function () {
                                     cell: 'Col1',
                                     search: 'CLG'
                                 },
-                                label_field: 'CÓDIGO DE BECA',
+
 
                                 idRow: 'DESCUENTO',
                                 blockRow: true
@@ -882,7 +1413,7 @@ window.addEventListener('load', function () {
                                     cell: 'Col1',
                                     search: 'CLG'
                                 },
-                                label_field: 'CÓDIGO DE BECA',
+
                                 idRow: 'DESCUENTO',
                                 blockRow: true
                             },
@@ -902,7 +1433,7 @@ window.addEventListener('load', function () {
                                     cell: 'Col1',
                                     search: 'CLG'
                                 },
-                                label_field: 'NOMBRE DEL FAMILIAR',
+
                                 idRow: 'DESCUENTO',
                                 blockRow: true
                             },
@@ -915,7 +1446,20 @@ window.addEventListener('load', function () {
                                     cell: 'Col1',
                                     search: 'CLG'
                                 },
-                                label_field: 'NOMBRE DE LA EMPRESA',
+
+                                idRow: 'DESCUENTO',
+                                blockRow: true
+                            },
+                            {
+                                value: '010-DTT', label: '10% DESC. TRANSPORTISTA', discount: {
+                                    type: 'percentage',
+                                    value: '10'
+                                },
+                                insertAfterto: {
+                                    cell: 'Col1',
+                                    search: 'CLG'
+                                },
+
                                 idRow: 'DESCUENTO',
                                 blockRow: true
                             },
@@ -928,7 +1472,7 @@ window.addEventListener('load', function () {
                                     cell: 'Col1',
                                     search: 'CLG'
                                 },
-                                label_field: 'NOMBRE DEL COLEGIO',
+
                                 idRow: 'DESCUENTO',
                                 blockRow: true
                             },
@@ -939,7 +1483,6 @@ window.addEventListener('load', function () {
                     group: {
                         label: "DESCUENTOS TEMPORALES AUTORIZADOS",
                         options: [
-
                             {
                                 value: '005-DT', label: ' 5% TEMPORAL', discount: {
                                     type: 'percentage',
@@ -956,28 +1499,13 @@ window.addEventListener('load', function () {
                                 idRow: 'DESCUENTO',
                                 blockRow: true
                             },
-                            {
-                                value: '050-BTT', label: '50% DESC. TOTAL', discount: {
-                                    type: 'percentage',
-                                    value: '50'
-                                },
-                                idRow: 'DESCUENTO',
-                                blockRow: true
-                            },
-                            {
-                                value: '100-BTT', label: '100% DESC. TOTAL', discount: {
-                                    type: 'percentage',
-                                    value: '100'
-                                },
-                                idRow: 'DESCUENTO',
-                                blockRow: true
-                            },
+
                             {
                                 value: '050-BT/201-RR', label: '50% RECONOCIMIENTO DE RECIBO', discount: {
                                     type: 'percentage',
                                     value: '50'
                                 },
-                                label_field: 'CÓDIGO DE RECONOCIMEMTO',
+
                                 idRow: 'DESCUENTO',
                                 blockRow: true
                             },
@@ -986,11 +1514,34 @@ window.addEventListener('load', function () {
                                     type: 'percentage',
                                     value: '100'
                                 },
-                                label_field: 'CÓDIGO DE RECONOCIMEMTO',
+
+                                idRow: 'DESCUENTO',
+                                blockRow: true
+                            }
+
+                        ]
+                    }
+                },
+                {
+                    group: {
+                        label: "DESCUENTOS ESPECIALES SOBRE EL TOTAL",
+                        options: [
+                            {
+                                value: '050-BTT', label: '50% DESC. SOBRE EL TOTAL', discount: {
+                                    type: 'percentage',
+                                    value: '50'
+                                },
                                 idRow: 'DESCUENTO',
                                 blockRow: true
                             },
-
+                            {
+                                value: '100-BTT', label: '100% DESC. SOBRE EL TOTAL', discount: {
+                                    type: 'percentage',
+                                    value: '100'
+                                },
+                                idRow: 'DESCUENTO',
+                                blockRow: true
+                            }
                         ]
                     }
                 },
@@ -999,11 +1550,13 @@ window.addEventListener('load', function () {
                         label: "VARIOS",
                         options: [
                             { value: 'ANT', label: 'ANTICIPO' },
+                            { value: 'DESC-ANT', label: 'DESCARGA ANTICIPO' },
                             { value: 'CURSO-INT-ONLINE', label: 'ANTICIPO CURSO INTENSIVO' },
                             { value: 'BTL-PLAST', label: 'COMPRA DE BOTELLA PLÁSTICA' },
-                            { value: 'CAN', label: 'CANCELACIÓN DE FACTURA' },
-                            { value: 'ABONO', label: 'ABONO A LA CUENTA' },
+
+
                             { value: 'CAM-GRAD', label: 'CAMISA PARA GRADUACIÓN', price: '600' },
+
                         ]
                     }
                 },
@@ -1011,9 +1564,9 @@ window.addEventListener('load', function () {
                     group: {
                         label: "TRANSPORTE",
                         options: [
-                            { value: 'TRANSP-SEBACO', label: 'SÉBACO', price: '600.00' },
-                            { value: 'TRANSP-SAN_ISIDRO', label: 'SAN ISIDRO', price: '600.00' },
-                            { value: 'TRANSP-TRINIDAD', label: 'LA TRINIDAD', price: '600.00' },
+                            { value: 'TRANSP-SEBACO', label: 'PAGO DE TRANSPORTE SÉBACO', price: '1,650.00' },
+                            { value: 'TRANSP-SAN_ISIDRO', label: 'PAGO DE TRANSPORTE SAN ISIDRO', price: '1,470.00' },
+                            { value: 'TRANSP-TRINIDAD', label: 'PAGO DE TRANSPORTE LA TRINIDAD', price: '1,100.00' },
 
                         ]
                     }
@@ -1023,10 +1576,10 @@ window.addEventListener('load', function () {
                         label: "EXAMENES",
                         options: [
                             { value: 'UBICA-EXAM', label: 'EXAMEN DE UBICACIÓN ALUMNO NUEVO', price: '200' },
-                            { value: 'REUBICA-EXAM', label: 'EXAMEN DE REUBICACIÓN ALUMNO ACTIVO', price: '400' },
-                            { value: 'REP-EXAM', label: 'REPOSICIÓN DE EXAMEN', price: '600.00' },
-                            { value: 'REP-MORA', label: 'REPOSICIÓN DE EXAMEN CON MULTA', price: '600.00' },
-                            { value: 'REP-MORA-FT', label: 'REPOSICIÓN DE EXAMEN FUERA DE TIEMPO', price: '600.00' },
+                            { value: 'REUBICA-EXAM', label: 'EXAMEN DE REUBICACIÓN ALUMNO ACTIVO', price: '750' },
+                            { value: 'REP-EXAM', label: 'REPROGRAMACIÓN DE EXAMEN', price: '370.00' },
+                            { value: 'REP-MORA', label: 'REPROGRAMACIÓN DE EXAMEN CON MULTA', price: '740.00' },
+                            { value: 'REP-MORA-FT', label: 'REPROGRAMACIÓN DE EXAMEN FUERA DE TIEMPO', price: '1,110.00' },
                         ]
                     }
                 },
@@ -1035,8 +1588,10 @@ window.addEventListener('load', function () {
                     group: {
                         label: "CONSTANCIAS",
                         options: [
-                            { value: 'CONST-ACTIV', label: 'CONSTANCIA DE ALUMNO ACTIVO', price: '600.00' },
-                            { value: 'CONST-INACTIV', label: 'CONSTANCIA DE ALUMNO INACTIVO', price: '600.00' },
+                            { value: 'CONST-ACTIV', label: 'CONSTANCIA DE ALUMNO ACTIVO', price: '370.00' },
+                            { value: 'CONST-INACTIV', label: 'CONSTANCIA DE ALUMNO INACTIVO', price: '740.00' },
+                            { value: 'HIST', label: 'CONSTANCIA DE ALUMNO INACTIVO', price: '1,470.00' },
+
                         ]
                     }
                 },
@@ -1044,8 +1599,7 @@ window.addEventListener('load', function () {
                     group: {
                         label: "REPOSICIONES",
                         opt: [
-                            { value: 'REPOSICION-DIPLO', label: 'REPOSICIÓN DE DIPLOMA', price: '600.00' },
-                            { value: 'REPOSICION-CERTI', label: 'REPOSICIÓN DE CERTIFICADO', price: '600.00' },
+                            { value: 'REPOSICION-DIPLO', label: 'REPOSICIÓN DE DIPLOMA Y CERTIFICADO', price: '600.00' },
                         ]
                     }
                 }
@@ -1054,28 +1608,14 @@ window.addEventListener('load', function () {
             ],
             /* AQUI CONTINUAR CON LA OPRIÖN DE COLUMNAS EN EL POPUP */
             class: ["one_of_one"],
-            styles: {
-                'field-Col1': {
-                    'text-align': 'left'
-                },
-                'field-Col2': {
-                    'text-align': 'left'
-                },
-                'field-Col3': {
-                    'text-align': 'left'
-                }
-                ,
-                'field-Col4': {
-                    'text-align': 'right'
-                }
-            },
+
             afterOpen: (field, ctx) => {
-                //console.log(field, ctx);
+
                 const opt = field.querySelectorAll('[label="BECAS"], [label*="DESCUENTOS"]') || full;
-                const _txt_receipt_type_ = $getEl('#txt_receipt_type');
+                const _txt_RECEIPT_TYPE = $getEl('#txt_receipt_type');
                 if (opt) {
-                    if (_txt_receipt_type_) {
-                        if (_txt_receipt_type_.value === 'OTROS') {
+                    if (_txt_RECEIPT_TYPE) {
+                        if (_txt_RECEIPT_TYPE.value === 'OTROS') {
                             opt.forEach(op => {
                                 op.hidden = true;
                             });
@@ -1088,117 +1628,123 @@ window.addEventListener('load', function () {
                     }
 
                 }
+
+                _HELPERS_.hideOthersComments({ hide: true, ctx: ctx });
             },
             onChange: (value, option, field, ctx) => {
 
+
+                const _Field_Ditails_ = 'Col2';
+                const _Field_amount = 'Col5';
+
+                const _field_2_ = document.querySelectorAll('.dynamic-table-dialog div[data-col="Col3"]')[0];
+
+                _HELPERS_.hideOthersComments({ hide: false, ctx: ctx });
+
+
+                let _Categories_level_box_ = $getEl('._row_selected_book');
+
+                if (!_Categories_level_box_) {
+                    if (_field_2_) {
+
+                        if (!_Categories_level_box_) {
+                            const contenSelectorBooks = $CreateTag({ tag: 'div', className: 'dialog-field _row_selected_book one_of_one' });
+
+
+                            const _label_ = $CreateTag({ tag: 'label', textContent: 'CATEGORÍA / NIVEL' });
+                            const _levels_ = $CreateTag({ tag: 'select', id: 'txt_dialog_lavels' });
+                            const _Categories_ = $CreateTag({
+                                tag: 'select', id: 'txt_dialog_categories'
+                            });
+
+                            ["", "EARLY SUCCESS", "CHILDREN PROGRAM", "ADOLESCENTE", "ADULTO"].forEach(val => {
+                                const opt = $CreateTag({ tag: 'option' });
+                                opt.value = String(val || '').trim().replace(/ /g, '-');
+                                opt.textContent = val || '-- Selecciona --';
+                                _Categories_.appendChild(opt);
+                            });
+                            _Categories_.addEventListener('change', (e) => {
+                                const _this_ = e.target;
+                                const CurrentValue = String(_this_?.value || '');
+                                const _sede_ = ($getEl('#txt_session') ? ($getEl('#txt_session').value).substring(4, 7) : '0000000000') || window._SEDE_;
+                                const _LEVELS_WITH_BOOKS = (window._DATA_ELI_[_sede_][CurrentValue] || { niveles: null });
+                                const __SelectLevels__ = $getEl('#txt_dialog_lavels');
+                                __SelectLevels__.replaceChildren();
+                                ctx.setValue({ colKey: 'Col3', val: '', readOnly: true, disabled: true, });
+                                ctx.setValue({ colKey: _Field_amount, val: '', readOnly: true, disabled: true });
+
+                                if (__SelectLevels__ && (_LEVELS_WITH_BOOKS?.niveles || null)) {
+                                    ([...[""], ...Object.keys(_LEVELS_WITH_BOOKS?.niveles).filter(k => _LEVELS_WITH_BOOKS?.niveles[k].price !== 0)]).forEach(item => {
+                                        const opt = document.createElement('option');
+
+                                        const _value_ = String(item).replace('_', '');
+                                        if (_value_ === "") {
+                                            opt.value = "-Categoría-";
+                                            opt.selected = true;
+                                        }
+
+                                        opt.value = item
+
+
+
+                                        if (item === "") {
+                                            opt.appendChild(document.createTextNode("-Nivel-"));
+                                            opt.selected = true;
+                                        } else {
+                                            opt.appendChild(document.createTextNode(_value_))
+                                        }
+                                        __SelectLevels__.appendChild(opt);
+                                    })
+                                }
+                            });
+
+                            _levels_.addEventListener('change', (e) => {
+                                const _this_ = e.target;
+                                const _categories_ = document.querySelector('#txt_dialog_categories');
+                                if (!_this_ || !_categories_) return;
+                                const _sede_ = ($getEl('#txt_session') ? ($getEl('#txt_session').value).substring(4, 7) : '0000000000') || window._SEDE_;
+
+                                const _DATA_BOOK_ = (window._DATA_ELI_[_sede_][_categories_.value] || { niveles: null })
+                                const _LEVELS_ = (_DATA_BOOK_.niveles[_this_.value] || null);
+                                if (_LEVELS_) {
+                                    ctx.setValue({ colKey: 'Col3', val: _LEVELS_["title-book"], readonly: true, disabled: true });
+                                    ctx.setValue({ colKey: _Field_amount, val: _LEVELS_["price"], readonly: true, disabled: true });
+
+                                } else {
+                                    ctx.setValue({ colKey: 'Col3', val: '', readonly: true, disabled: true });
+                                    ctx.setValue({ colKey: _Field_amount, val: '', readonly: true, disabled: true });
+
+                                }
+                            });
+                            contenSelectorBooks.append(_label_, _Categories_, _levels_);
+
+
+                            _field_2_.before(contenSelectorBooks);
+                        }
+                        _Categories_level_box_ = $getEl('._row_selected_book')
+                    }
+                }
+                _Categories_level_box_.classList.add('hide');
                 if (_HELPERS_.existe(option)) {
 
-                    const _Field_Ditails_ = 'Col2';
-                    const _Field_amount = 'Col4';
 
                     const discount = {
                         type: String(option?.discount?.type ?? 'percentage').toLowerCase(),
                         value: parseFloat(Number(String((option?.discount?.value || '0%').replace('%', ''))))
                     }
-                    const _Categories_level_box_ = document.querySelector('._row_selected_book');
 
-                    if (_Categories_level_box_) {
-                        _Categories_level_box_.classList.add('hide');
-                    }
 
-                    ctx.setValue({ colKey: _Field_Ditails_, val: '', readOnly: true, disabled: true });
+
+                    ctx.setValue({ colKey: _Field_Ditails_, val: '', readOnly: false, disabled: false });
                     ctx.setValue({ colKey: _Field_amount, val: '', readOnly: true, disabled: true });
 
-                    const _Ditails_ = document.querySelector('.dialog-field[data-col="' + _Field_Ditails_ + '"]');
 
-                    if (_Ditails_) {
-                        _Ditails_.style.display = 'none';
-                    }
+                    if (option.value === 'LBR-EXTRA') {
+                        _HELPERS_.hideOthersComments({ hide: true, ctx: ctx, showComment: true, placeholder: 'Selecciones el Nombre del libro' });
 
-                    if (option.value === 'LBR') {
 
                         if (_Categories_level_box_) {
                             _Categories_level_box_.classList.remove('hide');
-                        }
-                        const _field_2_ = document.querySelectorAll('.dynamic-table-dialog div[data-col="Col2"]')[0];
-                        if (_field_2_) {
-
-                            if (!_Categories_level_box_) {
-                                const contenSelectorBooks = document.createElement('div');
-                                contenSelectorBooks.classList.add('dialog-field', '_row_selected_book', 'one_of_one');
-                                const _label_ = document.createElement('label');
-                                _label_.appendChild(document.createTextNode('CATEGORÍA / NIVEL'));
-                                const _levels_ = document.createElement('select');
-                                _levels_.id = 'txt_dialog_lavels';
-
-
-                                const _Categories_ = document.createElement('select');
-                                _Categories_.id = 'txt_dialog_categories';
-                                ["", "EARLY SUCCESS", "CHILDREN PROGRAM", "ADOLESCENTE", "ADULTO"].forEach(item => {
-                                    const opt = document.createElement('option');
-                                    opt.value = item.replace(' ', '-')
-                                    if (item === "") {
-                                        opt.appendChild(document.createTextNode("-PROGRAMAS-"));
-                                        opt.selected = true;
-                                    } else {
-                                        opt.appendChild(document.createTextNode(item))
-                                    }
-                                    _Categories_.appendChild(opt);
-                                });
-                                _Categories_.addEventListener('change', (e) => {
-                                    const _this_ = e.target;
-                                    const _LEVELS_WITH_BOOKS = (window._DATA_ELI_[window._SEDE_][_this_.value] || { niveles: null });
-                                    const __levels__ = document.querySelector('#txt_dialog_lavels');
-                                    _levels_.replaceChildren();
-                                    ctx.setValue({ colKey: _Field_Ditails_, val: '', readOnly: true, disabled: true });
-                                    ctx.setValue({ colKey: _Field_amount, val: '', readOnly: true, disabled: true });
-
-                                    if (_levels_ && (_LEVELS_WITH_BOOKS?.niveles || null)) {
-                                        ([...[""], ...Object.keys(_LEVELS_WITH_BOOKS?.niveles).filter(k => _LEVELS_WITH_BOOKS?.niveles[k].price !== 0)]).forEach(item => {
-                                            const opt = document.createElement('option');
-
-                                            const _value_ = String(item).replace('_', '');
-                                            if (_value_ === "") {
-                                                opt.value = "-Categoría-";
-                                                opt.selected = true;
-                                            }
-
-                                            opt.value = item
-
-
-
-                                            if (item === "") {
-                                                opt.appendChild(document.createTextNode("-Nivel-"));
-                                                opt.selected = true;
-                                            } else {
-                                                opt.appendChild(document.createTextNode(_value_))
-                                            }
-                                            __levels__.appendChild(opt);
-                                        })
-                                    }
-                                });
-
-                                _levels_.addEventListener('change', (e) => {
-                                    const _this_ = e.target;
-                                    const _categories_ = document.querySelector('#txt_dialog_categories');
-                                    if (!_this_ || !_categories_) return;
-                                    const _DATA_BOOK_ = (window._DATA_ELI_[window._SEDE_][_categories_.value] || { niveles: null })
-                                    const _DATA_ = (_DATA_BOOK_.niveles[_this_.value] || null);
-                                    if (_DATA_) {
-                                        ctx.setValue({ colKey: _Field_Ditails_, val: _DATA_["title-book"], readonly: true, disabled: true });
-                                        ctx.setValue({ colKey: _Field_amount, val: _DATA_["price"], readonly: true, disabled: true });
-
-                                    } else {
-                                        ctx.setValue({ colKey: _Field_Ditails_, val: '', readonly: true, disabled: true });
-                                        ctx.setValue({ colKey: _Field_amount, val: '', readonly: true, disabled: true });
-
-                                    }
-                                });
-                                contenSelectorBooks.append(_label_, _Categories_, _levels_);
-
-
-                                _field_2_.before(contenSelectorBooks);
-                            }
                         }
 
                         ctx.setValue({ colKey: _Field_Ditails_, val: '', readOnly: true, disabled: true });
@@ -1206,47 +1752,72 @@ window.addEventListener('load', function () {
 
                     }
                     else if (['050-BTT', '100-BTT', '050-BT/201-RR', '100-BT/201-RR'].includes(option.value)) {
-                        if (_Ditails_) {
-                            _Ditails_.style.display = 'unset';
+
+                        if (['050-BTT', '100-BTT'].includes(option.value)) {
+                            _HELPERS_.hideOthersComments({ hide: true, ctx: ctx, placeholder: 'Escriba la justificación del Descuento' });
+                        } else {
+                            _HELPERS_.hideOthersComments({ hide: true, ctx: ctx, placeholder: 'Escriba el # del Recibo al que se refiere' });
                         }
-                        ctx.setValue({ colKey: _Field_Ditails_, val: '' });
+                        ctx.setValue({ colKey: _Field_Ditails_, val: option.label, readonly: false, disabled: false });
                         ctx.setValue({ colKey: _Field_amount, val: (((ctx.getTotalAllColumn()).__raw[_Field_amount] * (discount.value / 100)) * (-1)), readOnly: true, disabled: true });
                     }
+                    else if (option.value === 'OTROS') {
+                        _HELPERS_.hideOthersComments({ hide: true, ctx: ctx });
+                        ctx.setValue({ colKey: _Field_Ditails_, val: option.label, readonly: false, disabled: false });
+                        ctx.setValue({ colKey: _Field_amount, val: '', readOnly: false, disabled: false });
 
-                    else {
+                    } else {
+
+
+
                         if (_HELPERS_.existe(option.discount)) {
 
-                            if (_Ditails_) {
-                                _Ditails_.style.display = 'unset';
-                            }
-
-
-                            ctx.setValue({ colKey: _Field_Ditails_, val: '', readOnly: false, disabled: false });
+                            _HELPERS_.hideOthersComments({ hide: true, ctx: ctx });
+                            ctx.setValue({ colKey: _Field_Ditails_, val: option.label, readonly: true, disabled: true });
                             if (discount.type === 'percentage') {
-                                const referenceValue = ((_HELPERS_.sumNumericValues(ctx.getCellValue("Col1", "CLG", "Col4"))) * (discount.value / 100)) * -1;
 
+                                const referenceValue = ((_HELPERS_.sumNumericValues(ctx.getCellValue("Col1", "CLG", "Col5"))) * (discount.value / 100)) * -1;
                                 ctx.setValue({ colKey: _Field_amount, val: referenceValue, readOnly: true, disabled: true });
+                            }
+                            switch (option.value) {
+                                case '050-MB':
+                                case '100-BC':
+                                    _HELPERS_.hideOthersComments({ hide: true, ctx: ctx, placeholder: 'Escriba el código de beca' });
+                                    break;
+                                case '010-DF':
+                                    _HELPERS_.hideOthersComments({ hide: true, ctx: ctx, placeholder: 'Escriba el nombre del familiar' });
+
+                                    break;
+                                case '010-DE':
+                                    _HELPERS_.hideOthersComments({ hide: true, ctx: ctx, placeholder: 'Escriba el nonbre de la empresa' });
+
+                                    break;
+                                case '015-DC':
+                                    _HELPERS_.hideOthersComments({ hide: true, ctx: ctx, placeholder: 'Escriba el nombre del colegio' });
+                                    break;
+                                default:
+                                    break;
                             }
 
 
                         } else if (_HELPERS_.existe(option.price)) {
                             if (_HELPERS_.esNumerico(option.price)) {
 
+                                _HELPERS_.hideOthersComments({ hide: false, ctx: ctx });
                                 ctx.setValue({ colKey: _Field_Ditails_, val: option ? option.label : '', readOnly: true, disabled: true });
-                                ctx.setValue({ colKey: _Field_amount, val: option.price, readOnly: true, disabled: true });
+                                ctx.setValue({ colKey: _Field_amount, val: (option.price), readOnly: true, disabled: true });
                             }
                         } else {
-
-                            console.clear();
 
                             ctx.setValue({ colKey: _Field_Ditails_, val: option ? option.label : '', readOnly: true, disabled: true });
                             ctx.setValue({ colKey: _Field_amount, val: '' });
 
                         }
-
-
-
                     }
+
+
+
+
 
                 }
             }
@@ -1255,71 +1826,63 @@ window.addEventListener('load', function () {
             required: true,
             type: 'text',
             class: ["one_of_one"],
+            visible: false,
             onBeforeSave: (cell_value = '', row = {}) => {
 
-                console.log("cell_value:", cell_value, "   row:", row);
-                let new_value;
+
+
+
+
                 let CurrentValue = String(cell_value).trim().toUpperCase();
                 const _CODE_ = row?.Col1 ?? '';
 
 
-                if (['LBR', '050-MB', '100-BC', '010-DF', '010-DC', '015-DC', '005-DT', '010-DT', '050-BT/201-RR', '100-BT/201-RR', '100-BTT', '050-BTT'].includes(_CODE_)) {
+
+
+                if (['LBR', 'LBR-EXTRA', '050-MB', '100-BC', '010-DF', '010-DC', '015-DC', '005-DT', '010-DT', '010-DTT', '050-BT/201-RR', '100-BT/201-RR', '100-BTT', '050-BTT'].includes(_CODE_)) {
                     switch (_CODE_) {
-                        case 'LBR':
-                            new_value = 'LIBRO: ' + CurrentValue;
+
+                        case 'LBR-EXTRA':
+
+                            CurrentValue = ((['CLG-NUEVO', 'CLG-REPITE'].includes(window._RECEIPT_DETAILS.RECEIPT_TYPE().value)) ? 'LIBRO: ' : 'LIBRO (EXTRA): ') + CurrentValue;
                             break;
                         case '010-DF':
-                            new_value = "DESC 10%. FAMILIAR/" + CurrentValue;
-                            break;
-
                         case '010-DC':
-                            new_value = "DESC 10%. COLEGIO/" + CurrentValue;
-                            break;
                         case '015-DC':
-                            new_value = "DESC 10%. EMPRESA/" + CurrentValue;
-                            break;
                         case '005-DT':
-                            new_value = "DESC 5%. TEMPORAL/" + CurrentValue;
-                            break;
                         case '010-DT':
-                            new_value = "DESC 10%. TEMPORAL/" + CurrentValue;
-                            break;
+                        case '010-DTT':
                         case '050-BTT':
-                            new_value = "50% DESC. TERMPORAL/" + CurrentValue;
-                            break;
-
-
                         case '100-BTT':
-                            new_value = "100% DESC. TOTAL TEMPORAL/" + CurrentValue;
-                            break;
                         case '050-BT/201-RR':
-                            new_value = "50% RECONOCIMIENTO DE RECIBO/" + CurrentValue;
-                            break;
                         case '100-BT/201-RR':
-                            new_value = "100% RECONOCIMIENTO DE RECIBO/" + CurrentValue;
-                            break;
                         case '050-MB':
-                            new_value = '50% MEDIA BECA/' + CurrentValue;
+                        case '100-BC':
+                            CurrentValue = 'DESC. ' + CurrentValue;
                             break;
-
-
                         default:
-                            new_value = CurrentValue;
+                            CurrentValue = CurrentValue;
                             break;
                     }
                 }
-                return new_value;
+                return String(CurrentValue).trim().toUpperCase();
             },
         },
         Col3: {
-            required:
-                false,
+            required: true,
             type: 'text',
+            visible: true,
             class: ["one_of_one"]
         },
         Col4: {
-            required:
-                true,
+            required: false,
+            type: 'text',
+            visible: true,
+            class: ["one_of_one"]
+        },
+        Col5: {
+            required: true,
+            visible: true,
             type: 'number',
             class: ["one_of_three", "align-right"]
         }
@@ -1329,11 +1892,11 @@ window.addEventListener('load', function () {
 
 
     tabla.updateTFoot({
-        sumAllColumn: { Col4: true },
-        LabelTotal: { Col3: true }
+        sumAllColumn: { Col5: true },
+        LabelTotal: { Col4: true }
     });
 
-    // ChoiceField.disableAll();
+    ChoiceField.disableAll();
     _HELPERS_.DisableMaterialInputs();
 
 
@@ -1342,6 +1905,10 @@ window.addEventListener('load', function () {
 
     tabla.disableTable();
     _HELPERS_.updateDateTime();
+
+
+
+
 
     const watcher = FormChangeWatcher.attach('#TheForm', {
         onChange: (payload, el, ev) => {
@@ -1365,15 +1932,15 @@ window.addEventListener('load', function () {
                     //36436656 - 
                     switch (_VALUE_) {
                         case 'CLG':
-                        case 'CLG-REPITE': case 'OTROS':
+                        case 'CLG-REPITE':
+                        case 'CAN':
+                        case 'ABONO':
+                        case 'OTROS':
                             _HELPERS_.EnableMaterialInputs('txt_name,txt_company,txt_session');
                             break;
                         case 'CLG-NUEVO':
-                            _HELPERS_.EnableMaterialInputs('txt_name,txt_company,txt_session,txt_contact_info');
+                            _HELPERS_.EnableMaterialInputs('txt_name,txt_company,txt_session,txt_contact_name,txt_email,txt_phone,txt_birthdate');
                             break;
-
-
-
 
                         default:
                             break;
@@ -1432,12 +1999,12 @@ window.addEventListener('load', function () {
                     break;
                 case 'txt_levels':
                     window.ChoiceField.disableAll();
-                    const _txt_receipt_type_ = $getEl("#txt_receipt_type");
+                    const _txt_RECEIPT_TYPE = $getEl("#txt_receipt_type");
                     const DialogTable = $getEl('.dynamic-table-dialog');
 
 
-                    if (DialogTable && _txt_receipt_type_) {
-                        DialogTable.dataset.filter = _txt_receipt_type_;
+                    if (DialogTable && _txt_RECEIPT_TYPE) {
+                        DialogTable.dataset.filter = _txt_RECEIPT_TYPE;
                     }
 
                     tabla.clearBody();
@@ -1457,40 +2024,46 @@ window.addEventListener('load', function () {
                         const _DATA_PRICES_ = window._DATA_ELI_?.[_sede_]?.[_category_] || null;
                         tabla.enableTable();
                         window.ChoiceField.enableAll();
-                        if (_DATA_PRICES_ && _txt_receipt_type_) {
-                            if (!['CLG', 'CLG-NUEVO', 'CLG-REPITE'].includes(_txt_receipt_type_.value)) return;
+                        if (_DATA_PRICES_ && _txt_RECEIPT_TYPE) {
+                            if (!['CLG', 'CLG-NUEVO', 'CLG-REPITE', 'CAN'].includes(_txt_RECEIPT_TYPE.value)) return;
                             let _CLG_ = _DATA_PRICES_?.precios?.colegiatura || '0.00';
                             let _LBR_ = _DATA_PRICES_?.niveles?.[_level_]?.price || '0.00';
                             let _LBR_NAME_ = _DATA_PRICES_?.niveles?.[_level_]?.['title-book'] || '';
 
-                            if (_txt_receipt_type_.value === 'CLG-REPITE') {
+                            if (_txt_RECEIPT_TYPE.value === 'CLG-REPITE') {
                                 _LBR_NAME_ = '';
                                 _LBR_ = '0.00';
                             }
 
 
 
-                            if ($getEl('[data-choice_id="txt_method_cash"] .menu')) {
+                            /*if ($getEl('[data-choice_id="txt_method_cash"] .menu')) {
                                 $getEl('[data-choice_id="txt_method_cash"] .menu').setAttribute('data-maxamount', parseFloat(_CLG_) + parseFloat(_LBR_));
                                 $getEl('[data-choice_id="txt_method_cash"] #details-cash_change').value = parseFloat(_CLG_) + parseFloat(_LBR_);
 
-                            }
+                            }*/
                             tabla.insertRow({
-                                row: { Col1: 'CLG', Col2: 'COLEGIATURA', Col3: '-', Col4: String(_CLG_) },
+                                row: { Col1: 'CLG', Col2: 'COLEGIATURA', Col4: '-', Col5: String(_CLG_) },
                                 remove: false
                             });
-                            if (_LBR_ && _LBR_ !== '0.00') {
+                            if (_LBR_ && _LBR_ !== '0.00' && _level_ !== '_14') {
 
                                 _HELPERS_.EnableMaterialInputs('txt_book');
                                 window._BOOKS_.loadBook({ sede: _sede_, category: _category_, level: _level_, bookTitle: _LBR_NAME_ })
 
-                                console.log(_LBR_NAME_);
+
                                 tabla.insertRow({
-                                    row: { Col1: 'LBR', Col2: 'LIBRO/' + _LBR_NAME_, Col3: '-', Col4: String(_LBR_) },
+                                    row: { Col1: 'LBR', Col2: 'LIBRO/' + _LBR_NAME_, Col4: '-', Col5: String(_LBR_) },
                                     remove: false
                                 });
 
 
+                            }
+                            if (_level_ === '_14') {
+                                tabla.insertRow({
+                                    row: { Col1: 'CAM-GRAD', Col2: 'CAMISA PARA GRADUACIÓN', Col4: '-', Col5: String(_LBR_) },
+                                    remove: false
+                                });
                             }
 
 
@@ -1499,15 +2072,15 @@ window.addEventListener('load', function () {
                     }
                     /*
                     
-
+     
                        
-
+     
                           
                            
-
+     
                            
-
-
+     
+     
                            
                         
                     
@@ -1546,17 +2119,483 @@ window.addEventListener('load', function () {
         const minutes = now.getMinutes(); // 0-59
 
         // Verificar si la hora es menor a 9, o si es exactamente 9:00 AM
-        console.log(hours + '<' + window.hourmax_change_receipt_day);
         return hours < window.hourmax_change_receipt_day || (hours === window.hourmax_change_receipt_day && minutes === 0);
     }
 
-    const _ACTIONS_BUTTONS_ = document.querySelectorAll('footer .container-actionbuttons span[data-tooltip]');
+    const _ACTIONS_BUTTONS_ = document.querySelectorAll('footer .container-actionbuttons span[id*="btn_"]');
     if (_ACTIONS_BUTTONS_) {
         _ACTIONS_BUTTONS_.forEach(_BTN_ => {
             _BTN_.addEventListener('click', async function (e) {
                 const _action_ = this.id;
+                const elBody = $getEl('body');
+                $getEl('body')._removeClass("print-horizontal", "print-vertical", "hide-receipt", "hide-report");
 
                 switch (_action_) {
+                    case 'btn_changeNumberReceipt':
+                        const {
+                            value: ReceiptNumberString
+                        } = await mdl_msgbox.open({
+                            type: 'question',
+                            title: 'CAMBIAR NÚMERO DE RECIBO',
+                            content: (modal) => {
+
+                                const _RECIBO_ = $getEl("#txt_receipt_number");
+
+                                if (!_RECIBO_) return;
+
+                                if (String(_RECIBO_.value || '').trim() === '') return;
+
+                                let receipt_number = ((String(_RECIBO_.value || '').trim().toUpperCase()).replace("SERIE ", '')).split('#')
+
+                                const wrap = document.createElement('div');
+                                wrap.className = 'row';
+                                const p = document.createElement('p');
+
+                                const div_row = document.createElement('div');
+                                div_row.classList.add('row');
+                                const div_col1 = document.createElement('div');
+                                const div_col2 = document.createElement('div');
+
+                                div_col1.className = 'col-3 ';
+                                div_col2.className = 'col-9 ';
+
+                                p.textContent = 'Escriba la letra y número del recibo en físico que se encuentra en bandeja de la impresora.';
+                                const input = document.createElement('input');
+                                input.id = "txt_letter"
+                                input.type = 'text';
+                                input.value = String(receipt_number[0] || '').trim();
+                                input.style.cssText = `width: 100%;appearance: none;outline: none;border: #959595 solid 1px;border-radius: 4px;padding: 7px;font-size: 1.5rem;`;
+
+                                const input2 = document.createElement('input');
+                                input2.id = "txt_number"
+                                input2.type = 'text';
+                                input2.value = String(receipt_number[1] || '').trim();
+                                input2.style.cssText = `width: 100%;appearance: none;outline: none;border: #959595 solid 1px;border-radius: 4px;padding: 7px;font-size: 1.5rem;`;
+
+                                div_col1.append(document.createTextNode('LETRA'), input);
+
+                                div_col2.append(document.createTextNode('#. RECIBO'), input2);
+                                div_row.append(div_col1, div_col2);
+
+                                wrap.append(p, div_row);
+
+
+                                return wrap;
+                            },
+                            onAccept: async (ctx, bodyEl) => {
+                                const inputLetter = bodyEl.querySelector('#txt_letter') || null;
+                                const inputNumber = bodyEl.querySelector('#txt_number') || null;
+                                if ((!inputLetter || !inputNumber) || (inputLetter.value === '' || inputNumber.value === '')) {
+                                    await mdl_msgbox.error({
+                                        title: 'Lo sentimos pero ocurrió un fallo',
+                                        content: 'Debe Escribir la letra y el número de recibo.',
+                                        acceptText: 'Entendido',
+                                    });
+                                    return false;
+                                }
+                                if (!/^[0-9]+$/.test(inputNumber.value)) {
+                                    await mdl_msgbox.error({
+                                        title: 'Lo sentimos pero ocurrió un fallo',
+                                        content: 'Debe Escribir solo números en el campo del "#. RECIBO".',
+                                        acceptText: 'Entendido',
+                                    });
+                                    return false;
+                                }
+                                if (!(/^\p{L}+$/u.test(inputLetter.value))) {
+                                    await mdl_msgbox.error({
+                                        title: 'Lo sentimos pero ocurrió un fallo',
+                                        content: 'Debe Escribir solo letras en el campo de la "LETRA".',
+                                        acceptText: 'Entendido',
+                                    });
+                                    return false;
+                                }
+
+                                return {
+                                    SERIE: String(inputLetter.value).toUpperCase().trim(),
+                                    ROC: inputNumber.value
+                                };
+                                // return { value: inputLetter.value + " #" + inputNumber.value };
+                            },
+                            acceptText: 'Aceptar',
+                            cancelText: 'Cancelar',
+                        });
+
+
+
+
+                        if (ReceiptNumberString) {
+
+
+                            const NumROC = ReceiptNumberString.SERIE + " #" + (((ReceiptNumberString?.SERIE).toUpperCase() === "G") ? String(ReceiptNumberString.ROC).padStart(7, '0') : ReceiptNumberString.ROC);
+
+
+                            const confirmReceiptNumber = await mdl_msgbox.question({
+                                title: '¡EXCELENTE...!',
+
+                                content: (modal) => {
+                                    const wrap = document.createElement('div');
+                                    wrap.className = 'row';
+                                    const p = document.createElement('p');
+                                    const span = document.createElement('span');
+
+                                    const div_row = document.createElement('div');
+                                    div_row.classList.add('row');
+
+
+
+                                    p.textContent = '¿Es correcto en número de recibo?';
+                                    span.appendChild(document.createTextNode('SERIE ' + NumROC));
+                                    span.style.cssText = 'font-size: 28px;font-weight: bold;'
+                                    wrap.append(p, span);
+
+
+                                    return wrap;
+                                },
+                                acceptText: 'SÍ, ES CORRETO',
+                                cancelText: 'NO',
+                            });
+
+                            if (confirmReceiptNumber) {
+
+                                if ($getEl("#txt_receipt_number")) {
+                                    $getEl("#txt_receipt_number").value = (String("SERIE " + ReceiptNumberString.SERIE + " #" + ReceiptNumberString.ROC).trim());
+
+                                }
+                                localStorage.setItem("serial_number_" + window._SEDE_, ReceiptNumberString.SERIE + "|" + ReceiptNumberString.ROC);
+
+                                window._SERIAL_NUMBER_ = ReceiptNumberString.SERIE + "|" + ReceiptNumberString.ROC;
+                            }
+
+
+                        }
+                        break;
+                    case 'btn_print_receipt':
+                        elBody._addClass("print-vertical", "hide-report");
+
+
+                        const { grandTotal, detail } = window.ChoiceField.getGrandTotalDetail();
+
+                        const _amopunt_Method_ = detail.filter(item => item.accepted === true && !['txt_method_advance', 'txt_retention_1percent', 'txt_retention_2percent'].includes(item.choiceId));
+
+                        if (_amopunt_Method_.length === 0) {
+                            mdl_msgbox.warning({
+                                title: '¡NO SE PUEDE IMPRIMIR!',
+
+                                content: (modal) => {
+                                    const wrap = document.createElement('div');
+                                    wrap.className = 'row';
+                                    const p = document.createElement('p');
+
+
+                                    p.textContent = 'No ha seleccionado un método de pago';
+
+                                    wrap.append(p);
+
+
+                                    return wrap;
+                                },
+                                acceptText: 'ENTIENDO',
+
+                            });
+                            return;
+                        }
+                        //console.log('detail:', detail);
+
+                        const AllChoicesJSON = JSON.parse(window.ChoiceField.getAllChoicesJSON(undefined, { pretty: true }));
+                        TotalRecibido = (AllChoicesJSON.map(choice => {
+                            return choice.autosum;
+                        }) || [0, 0]).reduce((acc, n) => acc + n, 0);
+
+
+                        let _stop_ = false;
+                        _amopunt_Method_.forEach(choice => {
+                            if (choice.subtotal === 0 && _stop_ === false) {
+                                _stop_ = true;
+                                mdl_msgbox.warning({
+                                    title: '¡NO SE PUEDE IMPRIMIR!',
+
+                                    content: (modal) => {
+                                        const wrap = document.createElement('div');
+                                        wrap.className = 'row';
+                                        const p = document.createElement('p');
+
+
+                                        p.textContent = 'Seleccionó el método de pago ' + choice.label + ' pero no ha detallado el monto recibido';
+
+                                        wrap.append(p);
+
+
+                                        return wrap;
+                                    },
+                                    acceptText: 'ENTIENDO',
+
+                                });
+                            }
+                        });
+
+                        if (_stop_) return;
+
+                        let total = parseFloat((tabla.getTotalAllColumn()).__raw['Col5'] || 0);
+
+                        console.log('TotalRecibido:', TotalRecibido);
+                        console.log('grandTotal:', grandTotal);
+                        console.log(grandTotal, " < ", total);
+                        console.groupCollapsed('AllChoicesJSON');
+                        console.log(JSON.stringify(AllChoicesJSON, null, 2));
+                        console.groupEnd();
+
+                        if (TotalRecibido < total) {
+                            mdl_msgbox.warning({
+                                title: '¡ADVERTENCIA...!',
+
+                                content: (modal) => {
+                                    const wrap = document.createElement('div');
+                                    wrap.className = 'row';
+                                    const p = document.createElement('p');
+
+
+                                    p.textContent = 'El monto ingresado en los MÉTODOS DE PAGO (C$' + TotalRecibido + ') es menor al TOTAL (C$' + total + '). Por favor, verifique los importes e intente nuevamente.';
+
+                                    wrap.append(p);
+
+
+                                    return wrap;
+                                },
+                                acceptText: 'ENTIENDO',
+
+                            });
+                            return;
+                        }
+
+                        if (TotalRecibido > total) {
+                            const confirmAnticipo = await mdl_msgbox.question({
+                                title: '¡UN MOMENTO POR FAVOR!',
+                                content: 'El monto registrado en los MÉTODOS DE PAGO es superior al TOTAL.\n¿Desea registrar C$ ' + (TotalRecibido - total) + ' como anticipo?',
+                                acceptText: 'SÍ',
+                                cancelText: 'NO',
+                            });
+
+
+                            if (confirmAnticipo.value) {
+                                mdl_msgbox.success({
+                                    title: '¡PERFECTO!',
+
+                                    content: 'Nuevo anticipo registrado. Intente la impresión nuevamente',
+                                    acceptText: 'ENTENDIDO',
+
+                                });
+                                return;
+                            } else {
+                                return;
+                            }
+                        }
+
+                        let DataSend = structuredClone(window._RECEIPT_DETAILS.getAll());
+
+                        DataSend.OBSERVATIONS = _HELPERS_.SetObservations({
+                            notes: DataSend.NOTES_,
+                            receiptType: DataSend.RECEIPT_TYPE,
+                            prefix: DataSend.RECEIPT_NUMBER + (DataSend.RECEIPT_TYPE === 'CLG-NUEVO' ? '/[NUEVO-INGRESO]' : '')
+                        });
+
+                        const Desuentos = {
+                            '010-DF': 'DESC-10%',
+                            '010-DC': 'DESC-10%',
+                            '015-DC': 'DESC-15%',
+                            '005-DT': 'DESC-5%',
+                            '010-DT': 'DESC-10%',
+                            '010-DTT': 'DESC-10% TRASNPORTISTA',
+                            '050-BTT': 'DESC-50% SOBRE EL TOTAL',
+                            '100-BTT': 'DESC-100% SOBRE EL TOTAL',
+                            '050-BT/201-RR': 'RECONOC-50%',
+                            '100-BT/201-RR': 'RECONOC-100%',
+                            '050-MB': 'BECA-50%',
+                            '100-BC': 'BECA-100%',
+                            'UBICA-EXAM': 'EXAM-UBICA',
+                            'REUBICA-EXAM': 'EXAM-REUBICA'
+                        };
+
+                        const rows = (window.tabla.getData('Col1') || []);
+
+
+                        rows.forEach((r, index) => {
+                            const code = String(r ?? '').trim().toUpperCase();
+                            if (code && (Desuentos[code] || false)) {
+                                rows[index] = Desuentos[code];
+                            }
+                        })
+
+
+
+
+
+                        const clean = rows.map(r => String(r ?? '').trim()).filter(Boolean);
+
+                        const first = clean.filter(x => x === 'CLG') || null;
+                        const second = clean.filter(x => x === 'LBR') || null;
+                        const rest = clean.filter(x => x !== 'CLG' && x !== 'LBR') || null;
+
+
+
+                        const Type = [...first, ...second, ...rest].map(r => String(r ?? '').trim()).filter(Boolean).join(' ');
+
+                        DataSend.RECEIPT_TYPE = Type.replace('CLG LBR', 'CLG-LBR');
+
+
+                        //    DataSend.OBSERVATIONS = ([DataSend.RECEIPT_NUMBER || null, DataSend.OBSERVATION || null, DataSend.NOTES_ || null].filter(v => v !== null)).join('/');
+
+                        delete DataSend.NOTES_;
+                        delete DataSend.LEVELS_CATEGORIES;
+                        delete DataSend.COURSE_NUMBER;
+
+
+                        if (window._isPastDay) {
+
+                            DataSend.isPastDay = window._isPastDay;
+                        } else {
+                            DataSend.isPastDay = false;
+                        }
+
+                        const ChoicesData = (JSON.parse(window.ChoiceField.getAllChoicesJSON()) || []);
+                        DataSend['JSON_PAYMENT_METHOD'] = (JSON.stringify(ChoicesData.map(choice => {
+
+
+                            return {
+                                label: choice.label,
+                                total: choice.autosum,
+                                ditail: (choice.acceptedData) ? choice.acceptedData.rows.map(values => { return { label: values.label, values: values.values } }) : []
+                            }
+                        }
+
+
+                        )));
+
+                        dataTable = window.tabla.getData() || [];
+
+                        DataSend['JSON_TABLESERVICES'] = JSON.stringify(dataTable.rows.map(tbl => {
+                            return {
+                                Cell1: tbl.Col1,
+                                Cell2: tbl.Col2,
+                                Cell3: tbl.Col3 || '-',
+                                Cell4: tbl.Col4 || '-',
+                                Cell5: tbl.Col5,
+                            }
+                        }));
+
+
+                        const paymentMethods = (JSON.parse(window.ChoiceField.getAllChoicesJSON(undefined, { pretty: true })) || []).filter(choice => !['txt_retention_1percent', 'txt_retention_2percent'].includes(choice.choiceId)).map(choice => {
+
+                            let reference = null;
+
+                            if (choice.type_template.autosum !== 0 && (['txt_method_deposit', 'txt_method_telepago', 'txt_method_check']).includes(choice.choiceId)) {
+                                reference = (choice?.menu?.flat?.row || [])
+                                    .flatMap(obj => Object.entries(obj))
+                                    .filter(([key, val]) => key.startsWith('details-reference-') && String(val ?? '').trim() !== '')
+                                    .map(([, val]) => String(val).trim())
+                                    .join(', ');
+                            }
+
+
+
+
+                            return {
+                                id: choice.choiceId,
+                                checked: Boolean(choice.checked),
+                                label: choice.label,
+                                value: choice.autosum,
+                                reference: reference ? reference + '-' + (String(choice.label).trim()).substring(0, 3) : ''
+                            }
+                        });
+
+
+
+
+
+                        (paymentMethods || []).forEach(Methods => {
+                            if (Methods.id !== 'txt_method_advance') {
+                                if (String(Methods.value).trim() !== '0' && String(Methods.value).trim() !== '0.00') {
+                                    DataSend[((Methods.id).replace('txt_method_', 'check_')).toUpperCase()] = true;
+
+                                } else {
+                                    DataSend[((Methods.id).replace('txt_method_', 'check_')).toUpperCase()] = false;
+                                }
+                                if (['txt_method_deposit', 'txt_method_check', 'txt_method_telepago'].includes(Methods.id)) {
+                                    DataSend['REF_' + ((Methods.id).replace('txt_method_', '')).toUpperCase()] = Methods.reference;
+                                }
+                            }
+
+                        });
+
+
+                        (paymentMethods || []).forEach(Methods => {
+                            DataSend[((Methods.id).replace('txt_method_', 'Method_Detail_')).toUpperCase()] = Methods.value
+                        });
+
+
+                        const AMOUNT = _HELPERS_.GetAmounts((window.tabla.getData().rows || []).map(row => {
+                            return {
+                                CODE: row.Col1,
+                                LABEL: row.Col2,
+                                AMOUNT: row.Col5
+                            }
+                        }));
+
+                        for (const [key, value] of Object.entries(AMOUNT)) {
+                            DataSend['AMOUNT_', key] = value;
+                        }
+
+                        DataSend.LEVELS = DataSend.LEVELS.replace('_', '');
+                        DataSend.DATE = _HELPERS_.ResteDate(DataSend.DATE);
+                        DataSend.HOUR = _HELPERS_.getHora12();
+                        DataSend.REAL_DATETIME = _HELPERS_.getFechaHora();
+                        DataSend.RECEIPT_NUMBER = DataSend.RECEIPT_NUMBER.replace('SERIE ', '');
+
+                        DataSend.IMPORTE_TOTAL = total;
+
+                        const date = _HELPERS_.Current_Long_Date();
+                        DataSend.DAY_CURRENT = date.dia;
+                        DataSend.MONTH_CURRENT = date.mes;
+                        DataSend.YEAR_CURRENT = date.anio;
+                        DataSend.HOUR_CURRENT = date.hora;
+
+                        const [month, day, year] = _HELPERS_.UnitedStatesDateFormat(DataSend.DATE).split('/');
+                        //  "REAL_DATETIME": "23/10/2026, 09:22 a. m.",
+                        const hour = DataSend.REAL_DATETIME.split(', ')[1];
+                        DataSend.DAY_CURRENT = day;
+                        DataSend.MONTH_CURRENT = month;
+                        DataSend.YEAR_CURRENT = year;
+                        DataSend.HOUR_CURRENT = hour
+
+
+
+                        console.groupCollapsed('DataSend');
+                        console.table(DataSend);
+                        console.groupEnd();
+
+                        let allowPrinting = true;
+
+                        window.print();
+                        _HELPERS_.IncrementarSerie();
+                        if ($getEl('#txt_receipt_type')._exist()) {
+                            $getEl('#txt_receipt_type')._value('');
+                            _HELPERS_.DisableMaterialInputs();
+                            window.ChoiceField.disableAll();
+                            tabla.clearBody();
+                            tabla.disableTable();
+                            window._BOOKS_.clearBook();
+                        }
+
+                        if (typeof SendData === 'function') {
+                            SendData(DataSend);
+                        }
+                        break;
+
+                    case 'btn_report':
+                        elBody._addClass("print-horizontal", "hide-receipt");
+                        $getEl('#preview-report')._addClass('is-visible');
+
+
+                        break;
                     case 'btn_changeDateTime':
                         if (!isBeforeOrAt9AM()) {
 
@@ -1622,10 +2661,8 @@ window.addEventListener('load', function () {
 
 
 
-                        console.log('formValues:', JSON.stringify(formValues));
                         if (formValues) {
 
-                            //console.log(formValues.NEW_DATE);
                             const [year, month, day] = (formValues.newDate).split("-");
                             window._NEW_DATE_.day = day;
                             window._NEW_DATE_.month = month;

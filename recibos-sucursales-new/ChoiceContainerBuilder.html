@@ -3,930 +3,628 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>ChoiceContainerBuilder – Todos los métodos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChoiceContainerBuilder — Demo</title>
     <style>
-        :root {
-            --border: #dcdcdc;
-            --border-soft: #e6e6e6;
-            --border-input: #bbb;
-            --border-input-2: #cfcfcf;
-            --bg-card: #fff;
-            --bg-soft: #fafafa;
-            --bg-softer: #f6f8fa;
-            --bg-hover: #f0f0f0;
-            --primary: #2a7;
-            --primary-dark: #248c63;
-            --primary-ink: #fff;
-            --danger: #c22;
-            --info: #0a4cd0;
-            --focus-shadow: 0 0 0 3px rgba(42, 167, 120, .35);
-            --menu-shadow: 0 12px 32px rgba(0, 0, 0, .14);
-        }
-
         * {
-            box-sizing: border-box
+            box-sizing: border-box;
         }
 
         body {
-            font-family: system-ui, sans-serif;
-            padding: 1.5rem;
-            background: #f7f7f9;
-            color: #222;
-            margin: 0
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f6f8;
+            color: #1f2328;
+            margin: 0;
+            padding: 24px;
+            font-size: 14px;
         }
 
         h1 {
-            margin: 0 0 1rem;
-            font-size: 1.25rem
+            font-size: 20px;
+            margin: 0 0 6px;
         }
 
         h2 {
-            margin: 0 0 .5rem;
-            font-size: .85rem;
+            font-size: 13px;
+            margin: 0 0 12px;
+            color: #57606a;
             text-transform: uppercase;
-            letter-spacing: .05em;
-            color: #666
+            letter-spacing: 0.5px;
         }
 
-        /* ============================================================
-   ChoiceContainerBuilder
-   ============================================================ */
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 880px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+            margin-bottom: 16px;
+        }
+
+        .muted {
+            color: #57606a;
+            font-size: 12px;
+        }
+
+        /* === Choice containers === */
         .choice-container {
             position: relative;
-            display: inline-block;
-            margin: .4rem .8rem .4rem 0;
-            vertical-align: top
-        }
-
-        .choice-container[data-type_element="radio"] .choice-buttons .icon i {
-            border-radius: 50%
-        }
-
-        .choice-container[data-type_element="checkbox"] .choice-buttons .icon i {
-            border-radius: 4px
-        }
-
-        .choice-container[data-type_element="radio"] .choice_value[value="checked"]~.icon i {
-            background-color: #2a7;
-            border-color: #2a7;
-            background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22448%22%20height%3D%22448%22%20viewBox%3D%220%200%20448%20448%22%3E%3Ccircle%20cx%3D%22224%22%20cy%3D%22828.362%22%20r%3D%22192%22%20transform%3D%22translate(0%20-604.362)%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fsvg%3E');
-        }
-
-        .choice-container[data-type_element="checkbox"] .choice_value[value="checked"]~.icon i {
-            background-color: #2a7;
-            border-color: #2a7;
-            background-image: url('data:image/svg+xml,%3Csvg%20width%3D%22800%22%20height%3D%22800%22%20viewBox%3D%220%20-4%2030%2030%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Ctitle%3Echeck%3C%2Ftitle%3E%3Cpath%20d%3D%22M29.443.627c.743.795.743%202.06%200%202.855L12.747%2021.373a1.94%201.94%200%200%201-1.65.614%201.94%201.94%200%200%201-1.496-.624L.557%2011.671a2.11%202.11%200%200%201%200-2.855%201.94%201.94%200%200%201%202.854%200l7.768%208.324L26.589.627a1.94%201.94%200%200%201%202.854%200%22%20fill%3D%22%23FFF%22%2F%3E%3C%2Fsvg%3E');
+            margin-bottom: 10px;
         }
 
         .choice-buttons {
             display: inline-flex;
             align-items: center;
-            gap: .5rem;
-            padding: .5rem .9rem;
-            border: 1px solid var(--border-input);
-            border-radius: 6px;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid #d0d7de;
+            border-radius: 8px;
             cursor: pointer;
             user-select: none;
-            background: var(--bg-soft);
-            transition: background .15s, border-color .15s
+            background: #fff;
+            transition: border-color .15s, background .15s, box-shadow .15s;
+            width: 100%;
+        }
+
+        .choice-buttons:hover {
+            background: #f6f8fa;
+            border-color: #afb8c1;
         }
 
         .choice-buttons.showmenu {
-            border-color: var(--primary);
-            background: #eefaf3
+            border-color: #0969da;
+            box-shadow: 0 0 0 3px rgba(9, 105, 218, .12);
         }
 
         .choice-buttons.not-empty {
-            background: #e6f7ef;
-            border-color: var(--primary)
+            background: #ddf4e4;
+            border-color: #1a7f37;
         }
 
-        .choice-buttons.hover-menu {
-            box-shadow: 0 0 0 2px rgba(42, 167, 120, .25)
+        .choice-buttons.not-empty .icon {
+            background: #1a7f37;
         }
 
-        .choice-buttons.disabled,
-        .choice-buttons[data-choice-disabled="true"] {
-            opacity: .4;
-            pointer-events: none
+        .choice-buttons.not-empty .icon i::before {
+            content: '✓';
+            color: #fff;
+            font-style: normal;
+            font-weight: 700;
         }
 
-        .choice-buttons .label {
-            line-height: 1
+        .choice-buttons.disabled {
+            opacity: .45;
+            cursor: not-allowed;
+            background: #f6f8fa;
         }
 
         .choice-buttons .icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #d0d7de;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 20px;
-            height: 20px;
-            flex: 0 0 20px
+            flex: 0 0 20px;
+            background: #fff;
+            font-size: 12px;
+            line-height: 1;
         }
 
-        .choice-buttons .icon i {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;
-            background-color: #fff;
-            border: 2px solid #666;
-            border-radius: 50%;
-            box-sizing: border-box;
-            transition: background-color .15s, border-color .15s
+        .choice-buttons.showmenu .icon,
+        .choice-buttons.not-empty .icon {
+            border-color: #1a7f37;
         }
 
+        .choice-buttons.showmenu.not-empty .icon {
+            background: #1a7f37;
+        }
+
+        .choice-buttons .label {
+            font-weight: 500;
+        }
+
+        /* Simple toggle choice (checkbox sin menú) */
+        .choice-container[data-choice_id="simple-checkbox"] .choice-buttons.showmenu {
+            border-color: #d0d7de;
+            box-shadow: none;
+            background: #f6f8fa;
+        }
+
+        /* === Menu === */
         .menu {
             display: none;
-            position: absolute;
-            z-index: 10;
-            top: 100%;
-            left: 0;
-            background: var(--bg-card);
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 1rem;
-            min-width: 440px;
-            box-shadow: var(--menu-shadow)
+            margin-top: 8px;
+            padding: 16px;
+            background: #fff;
+            border: 1px solid #d0d7de;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
         }
 
         .choice-buttons.showmenu~.menu {
-            display: block
+            display: block;
         }
 
         .menu-close-wrapper {
-            text-align: right
+            display: flex;
+            justify-content: flex-end;
+            margin: -8px -8px 8px 0;
         }
 
         .menu-close-button {
-            background: none;
+            background: transparent;
             border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 1.1rem
+            color: #57606a;
+            font-size: 14px;
+            transition: background .15s, color .15s;
         }
 
-        .menu>.full-line {
-            font-weight: 600;
-            margin-bottom: .55rem;
-            font-size: .9rem;
-            color: #333
-        }
-
-        .menu>.full-line .details-label {
-            color: var(--primary)
+        .menu-close-button:hover {
+            background: #f6f8fa;
+            color: #cf222e;
         }
 
         .menu-row {
-            margin-bottom: .8rem
+            margin-bottom: 10px;
         }
 
-        .menu-row .full-line {
+        .full-line {
+            margin-bottom: 6px;
+        }
+
+        .details-label {
+            font-size: 12px;
             font-weight: 600;
-            margin-bottom: .35rem;
-            font-size: .9rem;
-            color: #333
+            color: #57606a;
+            text-transform: uppercase;
+            letter-spacing: .3px;
         }
 
-        .menu-row input,
-        .menu-row select {
+        .column {
+            margin-bottom: 6px;
+        }
+
+        .column>input,
+        .column>select,
+        .column>textarea {
             width: 100%;
-            padding: .5rem .55rem;
-            border: 1px solid var(--border-input);
-            border-radius: 4px;
-            font-size: 1rem;
-            font-variant-numeric: tabular-nums
+            padding: 8px 10px;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: inherit;
+            background: #fff;
         }
 
-        .menu-row input:focus,
-        .menu-row select:focus {
+        .column>input:focus,
+        .column>select:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: var(--focus-shadow)
-        }
-
-        .menu-row input[data-type="number"] {
-            text-align: right
+            border-color: #0969da;
+            box-shadow: 0 0 0 3px rgba(9, 105, 218, .12);
         }
 
         .field-with-label {
             display: flex;
             flex-direction: column;
-            gap: .22rem
+            gap: 4px;
         }
 
-        .field-with-label>label {
-            font-size: .78rem;
-            font-weight: 600;
-            color: #555;
-            letter-spacing: .01em;
-            line-height: 1.1
+        .field-with-label label {
+            font-size: 12px;
+            color: #57606a;
+            font-weight: 500;
         }
 
-        .field-with-label>input,
-        .field-with-label>select {
-            width: 100%
+        .row.callback-menu-check {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #eaeef2;
         }
 
+        .btn {
+            padding: 9px 14px;
+            border-radius: 6px;
+            border: 1px solid #d0d7de;
+            background: #f6f8fa;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background .15s, border-color .15s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: #eaeef2;
+        }
+
+        .btn-primary {
+            background: #1f883d;
+            border-color: #1a7f37;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #1a7f37;
+        }
+
+        .btn-secondary {
+            color: #cf222e;
+        }
+
+        .btn-secondary:hover {
+            background: #ffebe9;
+            border-color: #ff7b72;
+        }
+
+        /* === Tables === */
         .table-block {
-            margin-bottom: .85rem
-        }
-
-        .table-block .full-line {
-            font-weight: 600;
-            margin-bottom: .35rem;
-            font-size: .9rem;
-            color: #333
+            margin: 10px 0;
         }
 
         table.choice-table {
             width: 100%;
             border-collapse: collapse;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            overflow: hidden
+            font-size: 13px;
         }
 
-        table.choice-table thead th {
-            background: var(--bg-softer);
-            color: #555;
-            font-size: .72rem;
-            font-weight: 600;
+        table.choice-table th {
             text-align: left;
+            font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: .04em;
-            padding: .4rem .55rem;
-            border-bottom: 1px solid var(--border)
+            color: #57606a;
+            padding: 6px 8px;
+            border-bottom: 1px solid #d0d7de;
         }
 
-        table.choice-table thead th+th {
-            border-left: 1px solid var(--border-soft)
+        table.choice-table td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #eaeef2;
         }
 
-        table.choice-table tr.menu-row {
-            margin-bottom: 0
-        }
-
-        table.choice-table tbody td {
-            padding: .35rem .5rem;
-            vertical-align: top;
-            border-bottom: 1px solid #eee
-        }
-
-        table.choice-table tbody td+td {
-            border-left: 1px solid #f0f0f0
-        }
-
-        table.choice-table tbody tr:last-child td {
-            border-bottom: none
-        }
-
-        table.choice-table input,
-        table.choice-table select {
+        table.choice-table td input {
             width: 100%;
-            padding: .4rem .5rem;
-            border: 1px solid var(--border-input-2);
-            border-radius: 4px;
-            font-size: .95rem
-        }
-
-        table.choice-table input[data-type="number"] {
-            text-align: right
-        }
-
-        table.choice-table input:focus,
-        table.choice-table select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: var(--focus-shadow)
-        }
-
-        table.choice-table .field-with-label>label {
-            font-size: .7rem;
-            color: #666
-        }
-
-        .autosum-row {
-            margin-top: .7rem;
-            padding-top: .7rem;
-            border-top: 1px dashed #ccc
-        }
-
-        .autosum-row .details-label {
-            color: var(--primary)
-        }
-
-        .autosum-row input.autosum-value {
-            background: #f2fbf6;
-            font-weight: 700;
-            color: #0a5;
-            border-color: #9c9
-        }
-
-        .cash-calculator {
-            border: 1px solid var(--border);
+            padding: 6px 8px;
+            border: 1px solid #d0d7de;
             border-radius: 6px;
-            overflow: hidden;
-            background: #fff;
-            margin-bottom: .7rem
+            font-size: 13px;
         }
 
-        .cash-calculator .cash-calc-row,
-        .cash-calculator .cash-calc-total-row,
-        .cash-calculator .cash-calc-change-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1.4fr;
+        /* === Autosum === */
+        .autosum-row {
+            display: flex;
             align-items: center;
-            gap: .5rem;
-            padding: .3rem .55rem
+            gap: 10px;
+            padding-top: 12px;
+            border-top: 1px solid #eaeef2;
         }
 
-        .cash-calculator .cash-calc-row {
-            border-bottom: 1px solid var(--border-soft)
+        .autosum-row .full-line {
+            flex: 1;
+            margin: 0;
         }
 
-        .cash-calculator .cash-calc-total-row {
-            background: var(--bg-softer);
-            font-weight: 700;
-            border-top: 2px solid var(--border-input-2)
+        .autosum-row .column {
+            width: 160px;
+            margin: 0;
         }
 
-        .cash-calculator .cash-calc-change-row {
-            background: #fbfbfb;
-            border-top: 1px solid var(--border-input-2);
-            padding: .45rem .55rem
-        }
-
-        .cash-col-denom {
-            text-align: left;
-            font-weight: 700;
-            color: #333;
-            padding-left: .4rem
-        }
-
-        .cash-col-qty {
-            text-align: center
-        }
-
-        .cash-col-sub {
+        .autosum-value {
             text-align: right;
-            padding-right: .4rem
+            font-weight: 700;
+            font-size: 15px;
+            color: #1f2328;
+            background: #f6f8fa;
+            cursor: default;
+        }
+
+        /* === Cash calculator === */
+        .cash-calculator {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .cash-calc-row,
+        .cash-calc-total-row,
+        .cash-calc-change-row {
+            display: grid;
+            grid-template-columns: 90px 1fr 140px;
+            align-items: center;
+            gap: 10px;
+            padding: 4px 0;
+        }
+
+        .cash-denom {
+            font-weight: 600;
+            color: #1f2328;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
         }
 
         .cash-col-qty input {
             width: 100%;
-            max-width: 110px;
-            margin: 0 auto;
-            display: block;
-            text-align: center;
-            padding: .35rem .4rem;
-            border: 1px solid var(--border-input-2);
-            border-radius: 4px;
-            font-size: 1rem;
-            color: var(--danger);
-            font-weight: 700
-        }
-
-        .cash-col-qty input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: var(--focus-shadow)
-        }
-
-        .cash-col-sub input,
-        .cash-calc-total-row input {
-            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            font-size: 13px;
             text-align: right;
-            background: transparent;
-            border: none;
-            padding: .35rem 0;
-            font-size: 1rem;
+        }
+
+        .cash-col-sub input {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            font-size: 13px;
+            text-align: right;
+            background: #f6f8fa;
+            color: #57606a;
+        }
+
+        .cash-calc-total-row {
+            margin-top: 8px;
+            padding-top: 10px;
+            border-top: 1px solid #d0d7de;
+        }
+
+        .cash-total {
             font-weight: 700;
-            color: #111;
-            pointer-events: none
+            color: #0969da;
+            background: #ddf4ff !important;
         }
 
-        .cash-calc-total-row input {
-            color: #0a5;
-            background: #fff;
-            border: 1px solid #9c9;
-            border-radius: 4px;
-            padding: .35rem .5rem;
-            pointer-events: auto
-        }
-
-        .cash-change-label {
-            font-weight: 700
+        .cash-calc-change-row {
+            border-top: 1px dashed #d0d7de;
+            margin-top: 4px;
+            padding-top: 8px;
         }
 
         .cash-change {
+            font-weight: 600;
+        }
+
+        .cash-calc-change-row.cash-change-positive .cash-change {
+            background: #ddf4e4 !important;
+            color: #1a7f37 !important;
+        }
+
+        .cash-calc-change-row.cash-change-negative .cash-change {
+            background: #ffebe9 !important;
+            color: #cf222e !important;
+        }
+
+        .cash-calc-change-row.cash-change-positive .cash-change-label {
+            color: #1a7f37;
+        }
+
+        .cash-calc-change-row.cash-change-negative .cash-change-label {
+            color: #cf222e;
+        }
+
+        /* === Controls === */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .controls label {
+            font-size: 12px;
+            color: #57606a;
+            font-weight: 500;
+        }
+
+        .controls input[type=number],
+        .controls input[type=text] {
             width: 100%;
-            text-align: right;
-            padding: .35rem .5rem;
-            font-weight: 700;
-            background: #fff;
-            border: 1px solid var(--border-input-2);
-            border-radius: 4px;
-            pointer-events: none
-        }
-
-        .cash-change-positive .cash-change-label {
-            color: var(--info)
-        }
-
-        .cash-change-positive .cash-change {
-            color: var(--info);
-            background: #eef4ff;
-            border-color: #9bbff5
-        }
-
-        .cash-change-negative .cash-change-label {
-            color: var(--danger)
-        }
-
-        .cash-change-negative .cash-change {
-            color: var(--danger);
-            background: #fff0f0;
-            border-color: #f4a9a9
-        }
-
-        .callback-menu-check {
-            display: flex;
-            gap: .5rem;
-            justify-content: flex-end;
-            margin-top: .7rem
-        }
-
-        .callback-menu-check .btn {
-            padding: .45rem .85rem;
+            padding: 8px 10px;
+            border: 1px solid #d0d7de;
             border-radius: 6px;
-            border: 1px solid #888;
-            cursor: pointer;
-            background: #fff;
-            font: inherit
+            font-size: 13px;
         }
 
-        .callback-menu-check .btn:hover {
-            background: var(--bg-hover)
-        }
-
-        .callback-menu-check .btn:focus {
-            outline: none;
-            box-shadow: var(--focus-shadow)
-        }
-
-        .callback-menu-check .btn-primary {
-            background: var(--primary);
-            color: var(--primary-ink);
-            border-color: var(--primary)
-        }
-
-        .callback-menu-check .btn-primary:hover {
-            background: var(--primary-dark)
-        }
-
-        .callback-menu-check .btn-secondary {
-            background: #eee
-        }
-
-        /* ============================================================
-   Layout demo
-   ============================================================ */
-        .layout {
-            display: grid;
-            grid-template-columns: minmax(480px, 1fr) minmax(360px, 1fr);
-            gap: 1.25rem;
-            align-items: start
-        }
-
-        @media (max-width:1100px) {
-            .layout {
-                grid-template-columns: 1fr
-            }
-        }
-
-        .choice-grouped {
-            margin-bottom: 1rem;
-            padding: .75rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: #fbfbfc
-        }
-
-        .choice-grouped h3 {
-            margin: 0 0 .5rem;
-            font-size: .95rem;
-            color: #333
-        }
-
-        .panel {
-            background: #fff;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 1rem
-        }
-
-        .panel+.panel {
-            margin-top: 1rem
-        }
-
-        .toolbar {
+        .controls-row {
             display: flex;
-            flex-wrap: wrap;
-            gap: .35rem;
-            margin-bottom: .5rem
+            gap: 8px;
         }
 
-        .toolbar button {
-            padding: .4rem .7rem;
-            border: 1px solid #888;
-            border-radius: 6px;
-            background: #fff;
-            cursor: pointer;
-            font-size: .8rem;
-            font-family: ui-monospace, Menlo, monospace
+        .controls-row .btn {
+            width: auto;
+            flex: 1;
         }
 
-        .toolbar button:hover {
-            background: #f0f0f0
-        }
-
-        .toolbar button.primary {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary)
-        }
-
-        .toolbar button.primary:hover {
-            background: var(--primary-dark)
-        }
-
-        .toolbar button.danger {
-            background: var(--danger);
-            color: #fff;
-            border-color: var(--danger)
-        }
-
-        .toolbar button.danger:hover {
-            background: #a51a1a
-        }
-
-        .toolbar-group {
-            border: 1px dashed var(--border);
+        /* === Log === */
+        .log {
+            font-family: ui-monospace, 'SF Mono', Consolas, monospace;
+            font-size: 12px;
+            background: #0d1117;
+            color: #c9d1d9;
             border-radius: 8px;
-            padding: .55rem;
-            margin-bottom: .55rem
+            padding: 12px;
+            max-height: 320px;
+            overflow-y: auto;
         }
 
-        .toolbar-group h4 {
-            margin: 0 0 .4rem;
-            font-size: .7rem;
-            text-transform: uppercase;
-            letter-spacing: .06em;
-            color: #777;
-            font-family: ui-monospace, Menlo, monospace
+        .log .t {
+            color: #8b949e;
         }
 
-        #out {
-            margin: 0;
-            padding: .8rem;
-            background: #0e1116;
-            color: #8ef7a8;
-            font-family: ui-monospace, Menlo, monospace;
-            white-space: pre-wrap;
+        .log .open {
+            color: #58a6ff;
+        }
+
+        .log .close {
+            color: #f85149;
+        }
+
+        .log .info {
+            color: #7ee787;
+        }
+
+        .log .line {
+            padding: 2px 0;
+            border-bottom: 1px solid #21262d;
+        }
+
+        .log .line:last-child {
+            border: none;
+        }
+
+        .result-box {
+            background: #f6f8fa;
+            border: 1px solid #d0d7de;
             border-radius: 8px;
-            font-size: .75rem;
-            max-height: 400px;
-            overflow: auto;
-            min-height: 220px
-        }
-
-        .state-row {
-            display: flex;
-            gap: .4rem;
-            flex-wrap: wrap;
-            margin-top: .5rem;
-            font-size: .75rem
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: .3rem;
-            padding: .15rem .5rem;
-            border-radius: 999px;
-            background: #eef2f7;
-            color: #333;
-            border: 1px solid var(--border);
-            font-family: ui-monospace, monospace
-        }
-
-        .badge.on {
-            background: #e6f7ef;
-            border-color: #9ad9b8;
-            color: #0a5
-        }
-
-        .badge.off {
-            background: #fff0f0;
-            border-color: #f4a9a9;
-            color: var(--danger)
-        }
-
-        .logs {
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: #0e1116;
-            color: #cfe9ff;
+            padding: 12px;
             font-family: ui-monospace, monospace;
-            font-size: .7rem;
-            max-height: 180px;
-            overflow: auto;
-            padding: .55rem
-        }
-
-        .logs .ln {
+            font-size: 12px;
             white-space: pre-wrap;
-            padding: .05rem 0
+            word-break: break-word;
+            max-height: 200px;
+            overflow-y: auto;
         }
 
-        .logs .ts {
-            color: #7c8c9c
-        }
-
-        .logs .kind {
-            color: #f7d774;
-            font-weight: 600
-        }
-
-        .logs .empty {
-            color: #666;
-            font-style: italic
+        .grand-total {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1a7f37;
+            font-variant-numeric: tabular-nums;
         }
     </style>
 </head>
 
 <body>
 
-    <h1>ChoiceContainerBuilder – Todos los métodos públicos</h1>
-
     <div class="layout">
-
-        <!-- ================================================== -->
-        <!-- COLUMNA IZQUIERDA: choices + botones               -->
-        <!-- ================================================== -->
         <div>
-            <section class="choice-grouped" id="grupo-pagos">
-                <h3>Formas de pago (checkbox)</h3>
-                <div class="choice-container" data-choice_id="txt_method_cash" data-type_element="checkbox"></div>
-                <div class="choice-container" data-choice_id="pago_cheques" data-type_element="checkbox"></div>
-                <div class="choice-container" data-choice_id="pago_transferencia" data-type_element="checkbox"></div>
-                <div class="choice-container" data-choice_id="pago_otro" data-type_element="checkbox"></div>
-            </section>
-
-            <section class="choice-grouped" id="grupo-turno">
-                <h3>Turno (radio)</h3>
-                <div class="choice-container" data-choice_id="turno_dia" data-type_element="radio"></div>
-                <div class="choice-container" data-choice_id="turno_noche" data-type_element="radio"></div>
-                <div class="choice-container" data-choice_id="turno_madrugada" data-type_element="radio"></div>
-            </section>
-
-            <!-- ====== PANEL: BUILD / RESET ====== -->
             <div class="panel">
-                <h2>Build / Reset</h2>
-                <div class="toolbar-group">
-                    <h4>Construcción</h4>
-                    <div class="toolbar">
-                        <button class="primary" data-api="buildAll">buildAll()</button>
-                        <button data-api="build-one">build(el)</button>
-                        <button data-api="createFragment">createFragment({…})</button>
-                        <button data-api="appendFragment">append fragment al DOM</button>
-                        <button data-api="resetUsedIds">resetUsedIds()</button>
-                        <button data-api="getUsedIds">getUsedIds()</button>
+                <h1>ChoiceContainerBuilder — Demo</h1>
+                <p class="muted">Cash calculator con <code>maxAmount</code> público, autosum capped, y callbacks
+                    <code>onOpen</code>/<code>onClose</code>.
+                </p>
+            </div>
+
+            <div class="panel">
+                <h2>Grupo (checkbox)</h2>
+                <div class="choice-grouped choice-grouped-checkbox" id="grupo-checkbox">
+                    <div class="choice-container" data-choice_id="pago-efectivo" data-choice_label="Pago en efectivo">
                     </div>
+                    <div class="choice-container" data-choice_id="gastos" data-choice_label="Gastos adicionales"></div>
+                    <div class="choice-container" data-choice_id="extra-checkbox" data-choice_label="Extra"></div>
+                    <div class="choice-container" data-choice_id="simple-checkbox"
+                        data-choice_label="Simple (sin menú)"></div>
                 </div>
             </div>
 
-            <!-- ====== PANEL: CONFIG ====== -->
             <div class="panel">
-                <h2>Configuración de choices</h2>
-                <div class="toolbar-group">
-                    <h4>Lectura / escritura</h4>
-                    <div class="toolbar">
-                        <button data-api="getChoices">getChoices()</button>
-                        <button data-api="getChoice">getChoice(txt_method_cash)</button>
-                        <button data-api="setChoice">setChoice(pago_otro, …)</button>
-                        <button class="danger" data-api="removeChoice">removeChoice(pago_otro)</button>
-                        <button data-api="hasChoice">hasChoice(txt_method_cash)</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ====== PANEL: ENABLE / DISABLE ====== -->
-            <div class="panel">
-                <h2>Enable / Disable</h2>
-                <div class="toolbar-group">
-                    <div class="toolbar">
-                        <button class="danger" data-api="disableAll">disableAll()</button>
-                        <button class="primary" data-api="enableAll">enableAll()</button>
-                        <button data-api="areAllDisabled">areAllDisabled ?</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ====== PANEL: UNCHECK ====== -->
-            <div class="panel">
-                <h2>Uncheck</h2>
-                <div class="toolbar-group">
-                    <h4>Uno solo</h4>
-                    <div class="toolbar">
-                        <button class="danger" data-api="uncheck-cash">uncheck(txt_method_cash)</button>
-                        <button class="danger" data-api="uncheck-chq">uncheck(pago_cheques)</button>
-                        <button class="danger" data-api="uncheck-radio">uncheck(turno_dia)</button>
-                    </div>
-                </div>
-                <div class="toolbar-group">
-                    <h4>Por grupo / contexto</h4>
-                    <div class="toolbar">
-                        <button class="danger" data-api="uncheck-group-pagos">uncheckAll(#grupo-pagos)</button>
-                        <button class="danger" data-api="uncheck-group-turno">uncheckAll(#grupo-turno)</button>
-                        <button class="danger" data-api="uncheck-all">uncheckAll()</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ====== PANEL: GRUPOS ====== -->
-            <div class="panel">
-                <h2>Grupos</h2>
-                <div class="toolbar-group">
-                    <div class="toolbar">
-                        <button data-api="listGroups">listGroups()</button>
-                        <button data-api="getGroupType">getGroupType(#grupo-pagos)</button>
-                        <button data-api="getGroupId">getGroupId(#grupo-turno)</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ====== PANEL: LECTURA ====== -->
-            <div class="panel">
-                <h2>Lectura de valores</h2>
-                <div class="toolbar-group">
-                    <div class="toolbar">
-                        <button data-api="getContainerAccepted">getContainerAccepted(txt_method_cash)</button>
-                        <button data-api="getGroupedValues">getGroupedValues(#grupo-pagos)</button>
-                        <button data-api="getGroupedString">getGroupedString(#grupo-pagos)</button>
-                        <button data-api="getGroupedFlat">getGroupedFlat(#grupo-pagos)</button>
-                        <button data-api="getMenuValues">getMenuValues(pago_cheques)</button>
-                        <button data-api="lastAccepted">lastAcceptedValues</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ====== PANEL: SNAPSHOT / JSON ====== -->
-            <div class="panel">
-                <h2>Snapshots / JSON</h2>
-                <div class="toolbar-group">
-                    <div class="toolbar">
-                        <button data-api="getAllChoices">getAllChoices()</button>
-                        <button class="primary" data-api="getAllChoicesJSON">getAllChoicesJSON()</button>
-                        <button data-api="getAllChoicesJSONGrp">getAllChoicesJSON(#grupo-pagos)</button>
-                        <button data-api="getAllChoicesJSONOne">getAllChoicesJSON(txt_method_cash)</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ====== PANEL: TABLA (filas dinámicas) ====== -->
-            <div class="panel">
-                <h2>Tabla – Filas dinámicas (pago_cheques)</h2>
-                <div class="toolbar-group">
-                    <h4>insertRow</h4>
-                    <div class="toolbar">
-                        <button class="primary" data-api="insertRow-auto">insertRow({fields}) [auto]</button>
-                        <button data-api="insertRow-nuevoID">insertRow({idRow:"nuevoID"})</button>
-                        <button data-api="insertRow-cheque-abc">insertRow({idRow:"cheque-abc"})</button>
-                    </div>
-                </div>
-                <div class="toolbar-group">
-                    <h4>removeRow / getRows / getRow / getTable</h4>
-                    <div class="toolbar">
-                        <button class="danger" data-api="removeRow-last">removeRow(última)</button>
-                        <button class="danger" data-api="removeRow-nuevoID">removeRow("nuevoID")</button>
-                        <button data-api="getRows">getRows(pago_cheques)</button>
-                        <button data-api="getRow">getRow(pago_cheques, "1")</button>
-                        <button data-api="getTable">getTable(pago_cheques).getRows()</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ====== PANEL: EVENTOS / LISTENERS / CALLBACKS ====== -->
-            <div class="panel">
-                <h2>Eventos · Listeners · Callbacks</h2>
-                <div class="toolbar-group">
-                    <h4>Listeners</h4>
-                    <div class="toolbar">
-                        <button data-api="attachEvents">attachEvents()</button>
-                        <button data-api="detachEvents">detachEvents()</button>
-                        <button data-api="isListening">isListening()</button>
-                    </div>
-                </div>
-                <div class="toolbar-group">
-                    <h4>Debug</h4>
-                    <div class="toolbar">
-                        <button data-api="setDebugTrue">setDebug(true)</button>
-                        <button data-api="setDebugFalse">setDebug(false)</button>
-                    </div>
-                </div>
-                <div class="toolbar-group">
-                    <h4>Callbacks</h4>
-                    <div class="toolbar">
-                        <button data-api="setOnAccept">setOnAccept(logger)</button>
-                        <button data-api="clearOnAccept">setOnAccept(null)</button>
-                        <button data-api="setOnChange">setOnChange(logger)</button>
-                        <button data-api="clearOnChange">setOnChange(null)</button>
-                        <button data-api="setOnClick">setOnClick(logger)</button>
-                        <button data-api="clearOnClick">setOnClick(null)</button>
-                    </div>
+                <h2>Grupo (radio)</h2>
+                <div class="choice-grouped choice-grouped-radio" id="grupo-radio">
+                    <div class="choice-container" data-choice_id="opcion-a" data-choice_label="Opción A"></div>
+                    <div class="choice-container" data-choice_id="opcion-b" data-choice_label="Opción B"></div>
                 </div>
             </div>
         </div>
 
-        <!-- ================================================== -->
-        <!-- COLUMNA DERECHA: output + logs + estado            -->
-        <!-- ================================================== -->
         <div>
             <div class="panel">
-                <h2>Estado actual</h2>
-                <div class="state-row">
-                    <span class="badge" id="st-listening">isListening: —</span>
-                    <span class="badge" id="st-disabled">areAllDisabled: —</span>
-                    <span class="badge" id="st-debug">debug: —</span>
-                    <span class="badge" id="st-onclick">onClick: —</span>
-                    <span class="badge" id="st-onchange">onchange: —</span>
-                    <span class="badge" id="st-onaccept">onAccept: —</span>
-                    <span class="badge" id="st-choices">getChoices().length: —</span>
+                <h2>Total general</h2>
+                <div class="grand-total" id="grand-total">C$ 0.00</div>
+                <div class="controls-row" style="margin-top:12px">
+                    <button class="btn" id="btn-refresh">Actualizar</button>
+                    <button class="btn" id="btn-detail">Detalle</button>
+                </div>
+                <div class="result-box" id="detail-box" style="margin-top:10px; display:none;"></div>
+            </div>
+
+            <div class="panel">
+                <h2>maxAmount — Pago en efectivo</h2>
+                <div class="controls">
+                    <label for="input-max">Monto máximo (C$)</label>
+                    <input type="number" id="input-max" value="350" step="1" min="0">
+                    <div class="controls-row">
+                        <button class="btn btn-primary" id="btn-apply-max">Aplicar</button>
+                        <button class="btn" id="btn-clear-max">Quitar</button>
+                    </div>
+                    <div class="muted">Cambia el valor y presiona Aplicar. Si el menú está abierto, se recalcula al
+                        instante. Si no, al abrirlo también.</div>
                 </div>
             </div>
 
             <div class="panel">
-                <h2>Output</h2>
-                <pre id="out">(pulsa cualquier botón)</pre>
-            </div>
-
-            <div class="panel">
-                <h2>Logs (onclick · onchange · onAccept · choice:accepted · choice:unchecked)</h2>
-                <div class="logs" id="logs">
-                    <div class="empty">(todavía sin eventos)</div>
-                </div>
-                <div class="toolbar" style="margin-top:.5rem">
-                    <button data-api="clearLogs">Limpiar logs</button>
+                <h2>Eventos</h2>
+                <div class="log" id="log"></div>
+                <div class="controls-row" style="margin-top:10px">
+                    <button class="btn" id="btn-clear-log">Limpiar log</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        /* ================================================================
+        /* ============================================================
            AcceptedResult
-           ================================================================ */
+           ============================================================ */
         class AcceptedResult {
             constructor(data = {}) {
                 this.choiceId = data.choiceId ?? null;
                 this.label = data.label ?? '';
                 this.rows = Array.isArray(data.rows) ? data.rows : [];
-                this.flat = data.flat && typeof data.flat === 'object' ? data.flat : {};
-                this.prefixes = data.prefixes && typeof data.prefixes === 'object' ? data.prefixes : {};
+                this.flat = data.flat ?? {};
+                this.prefixes = data.prefixes ?? {};
             }
             returnString(options = {}) {
-                const { rowSeparator = ' | ', valueSeparator = ' - ', wrap = ['(', ')'],
-                    skipEmptyRows = true, skipEmptyValues = false, includePrefix = true } = options;
-                const [open, close] = wrap; const parts = [];
-                this.rows.forEach(row => {
-                    const entries = Object.entries(row.values || {});
-                    const filtered = skipEmptyValues ? entries.filter(([, v]) => v !== '' && v !== null && v !== undefined) : entries;
-                    if (skipEmptyRows && filtered.length === 0) return;
-                    const fv = filtered.map(([k, v]) => {
+                const { separator = ' | ', includePrefix = true } = options;
+                const out = [];
+                (this.rows || []).forEach(row => {
+                    const values = row.values || {};
+                    const entries = Object.entries(values);
+                    entries.forEach(([k, v]) => {
                         const p = includePrefix ? (this.prefixes[k] || '') : '';
-                        return `${open}${p}${v ?? ''}${close}`;
-                    }).join(valueSeparator);
-                    parts.push(`${this.label}: ${fv}`);
+                        out.push(`${p}${v}`);
+                    });
                 });
-                return parts.join(rowSeparator);
+                return out.join(separator);
             }
-            toJSON() { return { choiceId: this.choiceId, label: this.label, rows: this.rows, flat: this.flat, prefixes: this.prefixes }; }
-            getFlat() { return { ...this.flat }; }
-            getPrefixes() { return { ...this.prefixes }; }
+            toJSON() {
+                return {
+                    choiceId: this.choiceId, label: this.label, rows: this.rows,
+                    flat: this.flat, prefixes: this.prefixes
+                };
+            }
         }
 
-        /* ================================================================
+        /* ============================================================
            ChoiceContainerBuilder
-           ================================================================ */
+           ============================================================ */
         class ChoiceContainerBuilder {
             #selector; #context; #options;
             #clickHandler = null; #listenerAttached = false; #clickDebug = false;
             #usedIds = new Set();
             #lastAcceptedValues = null;
             #onAccept = null; #onChange = null; #onClick = null;
+            #onOpen = null; #onClose = null;
             #choicesMap = new Map();
 
             static DEFAULT_DENOMINATIONS = [1000, 500, 200, 100, 50, 20, 10, 5, 1];
@@ -945,6 +643,8 @@
                 this.#onAccept = options.onAccept || null;
                 this.#onChange = options.onchange || options.onChange || null;
                 this.#onClick = options.onclick || options.onClick || null;
+                this.#onOpen = options.onOpen || options.onopen || null;
+                this.#onClose = options.onClose || options.onclose || null;
 
                 if (Array.isArray(options.choices)) options.choices.forEach(c => this.#registerChoiceConfig(c));
                 this.#ensureGroupIds();
@@ -957,7 +657,7 @@
                 const id = String(choice.id);
                 this.#choicesMap.set(id, {
                     template: choice.template ?? null,
-                    maxAmount: choice.maxAmount ?? null,
+                    maxAmount: this.#parseMaxAmount(choice.maxAmount),
                     label: choice.label ?? null,
                     type_element: choice.type_element ?? choice.typeElement ?? null
                 });
@@ -967,6 +667,45 @@
             setChoice(id, config = {}) { this.#registerChoiceConfig({ id, ...config }); return this; }
             removeChoice(id) { this.#choicesMap.delete(String(id)); return this; }
             hasChoice(id) { return this.#choicesMap.has(String(id)); }
+
+            // === API pública maxAmount ===
+            #choiceIdOf(input) {
+                if (input == null) return null;
+                if (input instanceof Element) {
+                    return input.dataset?.choice_id || input.getAttribute('data-choice_id') || null;
+                }
+                if (typeof input === 'string') {
+                    if (/^[#.\[\]:*]/.test(input)) {
+                        const el = this.#context.querySelector(input);
+                        return el?.dataset?.choice_id || el?.getAttribute('data-choice_id') || null;
+                    }
+                    return input;
+                }
+                return null;
+            }
+            getMaxAmount(choiceOrSelector) {
+                const id = this.#choiceIdOf(choiceOrSelector);
+                if (id == null) return null;
+                return this.#choicesMap.get(String(id))?.maxAmount ?? null;
+            }
+            setMaxAmount(choiceOrSelector, value) {
+                const id = this.#choiceIdOf(choiceOrSelector);
+                if (id == null) return this;
+                const key = String(id);
+                let cfg = this.#choicesMap.get(key);
+                if (!cfg) {
+                    cfg = { template: null, maxAmount: null, label: null, type_element: null };
+                    this.#choicesMap.set(key, cfg);
+                }
+                cfg.maxAmount = this.#parseMaxAmount(value);
+                this.#context.querySelectorAll(this.#selector).forEach(c => {
+                    if (c.dataset.choice_id === key) {
+                        const menu = c.querySelector('.menu');
+                        if (menu) this.#updateCashCalculator(menu);
+                    }
+                });
+                return this;
+            }
 
             get lastAcceptedValues() { return this.#lastAcceptedValues; }
             get areAllDisabled() {
@@ -1011,10 +750,7 @@
                 if (!menuSpan && cfgHasTemplate) {
                     menuSpan = document.createElement('span');
                     menuSpan.classList.add('menu');
-                    if (cfg.maxAmount != null) menuSpan.setAttribute('data-maxAmount', String(cfg.maxAmount));
                     c.appendChild(menuSpan);
-                } else if (menuSpan && cfg?.maxAmount != null && !menuSpan.hasAttribute('data-maxAmount')) {
-                    menuSpan.setAttribute('data-maxAmount', String(cfg.maxAmount));
                 }
 
                 if (menuSpan) {
@@ -1044,7 +780,7 @@
                 const container = this.#resolveContainer(choiceOrSelector);
                 if (!container) { console.warn('uncheck: no encontrado →', choiceOrSelector); return false; }
                 if (!container.querySelector('.choice-buttons')) { console.warn('uncheck: no construido'); return false; }
-                this.#deselectContainer(container);
+                this.#deselectContainer(container, 'uncheck');
                 this.#emitClick(container, false);
                 this.#emitChange(container);
                 const detail = this.#buildMeta(container, false);
@@ -1269,8 +1005,41 @@
                     autosum, acceptedData, menu: menuData
                 };
             }
+
+            // === Helpers de cálculo ===
+            #computeCashSubtotal(menu) {
+                if (!menu) return 0;
+                let subtotal = 0;
+                menu.querySelectorAll('.cash-calc-row').forEach(row => {
+                    const denom = parseFloat(row.getAttribute('data-denomination') || '0');
+                    if (!isFinite(denom)) return;
+                    const qtyInput = row.querySelector('input[data-type="integer"]');
+                    if (!qtyInput) return;
+                    const qty = parseInt(this.#sanitizeIntegerInput(qtyInput.value) || '0', 10) || 0;
+                    subtotal += denom * qty;
+                });
+                return Math.round(subtotal * 100) / 100;
+            }
+
             #computeAutosum(menu) {
                 if (!menu) return 0;
+
+                const cashRows = menu.querySelectorAll('.cash-calc-row');
+                if (cashRows.length > 0) {
+                    const subtotal = this.#computeCashSubtotal(menu);
+                    const container = menu.closest('.choice-container');
+                    const choiceId = container?.dataset?.choice_id || '';
+                    const cfg = choiceId ? this.#choicesMap.get(choiceId) : null;
+                    const max = cfg?.maxAmount ?? null;
+
+                    // Regla: SUBTOTAL > maxAmount → autosum = maxAmount (equivale a SUBTOTAL - Vuelto)
+                    //        SUBTOTAL ≤ maxAmount → autosum = SUBTOTAL
+                    if (max != null && isFinite(max) && subtotal > max) {
+                        return Math.round(max * 100) / 100;
+                    }
+                    return subtotal;
+                }
+
                 let sum = 0;
                 menu.querySelectorAll('input[data-type="number"]').forEach(inp => {
                     if (inp.readOnly) return;
@@ -1280,6 +1049,89 @@
                 });
                 return Math.round(sum * 100) / 100;
             }
+
+            // === Total general ===
+            getGrandTotal(target = null, options = {}) {
+                const { onlyAccepted = false, onlyChecked = false } = options;
+                let root = this.#context;
+                if (target) {
+                    if (target instanceof Element) root = target;
+                    else if (typeof target === 'string') {
+                        const one = this.#resolveContainer(target);
+                        if (one) root = one;
+                        else {
+                            const grp = this.#resolveGrouped(target);
+                            if (grp) root = grp;
+                            else { const q = this.#context.querySelector(target); if (q) root = q; }
+                        }
+                    }
+                }
+                const containers = (root instanceof Element && root.classList.contains('choice-container'))
+                    ? [root] : Array.from(root.querySelectorAll(this.#selector));
+                let total = 0;
+                containers.forEach(c => {
+                    if (onlyAccepted && !this.#isContainerAccepted(c)) return;
+                    if (onlyChecked) {
+                        const v = c.querySelector("[class*='choice_value']");
+                        if (!v || v.value !== 'checked') return;
+                    }
+                    const menu = c.querySelector('.menu');
+                    if (!menu) return;
+                    total += this.#computeAutosum(menu);
+                });
+                return Math.round(total * 100) / 100;
+            }
+
+            getGrandTotalDetail(target = null, options = {}) {
+                const { onlyAccepted = false, onlyChecked = false } = options;
+                let root = this.#context;
+                if (target) {
+                    if (target instanceof Element) root = target;
+                    else if (typeof target === 'string') {
+                        const one = this.#resolveContainer(target);
+                        if (one) root = one;
+                        else {
+                            const grp = this.#resolveGrouped(target);
+                            if (grp) root = grp;
+                            else { const q = this.#context.querySelector(target); if (q) root = q; }
+                        }
+                    }
+                }
+                const containers = (root instanceof Element && root.classList.contains('choice-container'))
+                    ? [root] : Array.from(root.querySelectorAll(this.#selector));
+
+                const detail = containers.map(c => {
+                    const accepted = this.#isContainerAccepted(c);
+                    const checked = c.querySelector("[class*='choice_value']")?.value === 'checked';
+                    const menu = c.querySelector('.menu');
+                    const subtotal = menu ? this.#computeAutosum(menu) : 0;
+
+                    let changeApplied = 0;
+                    if (menu && menu.querySelector('.cash-calc-row')) {
+                        const choiceId = c.dataset.choice_id || '';
+                        const cfg = choiceId ? this.#choicesMap.get(choiceId) : null;
+                        const max = cfg?.maxAmount ?? null;
+                        if (max != null && isFinite(max)) {
+                            const raw = this.#computeCashSubtotal(menu);
+                            if (raw > max) changeApplied = Math.round((raw - max) * 100) / 100;
+                        }
+                    }
+
+                    return {
+                        choiceId: c.dataset.choice_id || null,
+                        label: c.dataset.choice_label || '',
+                        checked, accepted, subtotal, changeApplied
+                    };
+                }).filter(r => {
+                    if (onlyAccepted && !r.accepted) return false;
+                    if (onlyChecked && !r.checked) return false;
+                    return true;
+                });
+
+                const grandTotal = Math.round(detail.reduce((s, r) => s + r.subtotal, 0) * 100) / 100;
+                return { grandTotal, detail };
+            }
+
             #restructureFlat(rows) {
                 const SUMMARY = ChoiceContainerBuilder.SUMMARY_ROW_CLASSES;
                 const rowArr = []; const extras = {};
@@ -1311,6 +1163,8 @@
             setOnAccept(cb) { this.#onAccept = cb || null; return this; }
             setOnChange(cb) { this.#onChange = cb || null; return this; }
             setOnClick(cb) { this.#onClick = cb || null; return this; }
+            setOnOpen(cb) { this.#onOpen = cb || null; return this; }
+            setOnClose(cb) { this.#onClose = cb || null; return this; }
 
             #emitChange(container) {
                 if (typeof this.#onChange !== 'function' || !container) return;
@@ -1323,6 +1177,24 @@
                 const meta = this.#buildMeta(container, isChecked);
                 try { this.#onClick(container, isChecked, meta, this); } catch (e) { console.error(e); }
             }
+            #emitOpen(container, reason = 'click') {
+                if (!container) return;
+                const menu = container.querySelector('.menu');
+                if (menu && menu.querySelector('.cash-calculator')) {
+                    this.#updateCashCalculator(menu);
+                }
+                if (typeof this.#onOpen !== 'function') return;
+                const meta = this.#buildMeta(container, true);
+                meta.reason = reason;
+                try { this.#onOpen(container, meta, this); } catch (e) { console.error(e); }
+            }
+            #emitClose(container, reason = 'close') {
+                if (!container || typeof this.#onClose !== 'function') return;
+                const meta = this.#buildMeta(container, false);
+                meta.reason = reason;
+                try { this.#onClose(container, reason, meta, this); } catch (e) { console.error(e); }
+            }
+
             #buildMeta(container, isChecked) {
                 const labelEl = container.querySelector('.choice-buttons');
                 const cfg = this.#choicesMap.get(container.dataset.choice_id || '') || null;
@@ -1579,21 +1451,26 @@
                 ti.classList.add('cash-total'); ti.value = 'C$ 0.00';
                 ct.appendChild(ti);
                 tr.append(cl, ce, ct); w.appendChild(tr);
-                if (maxAmount != null && isFinite(maxAmount)) {
-                    const cr = document.createElement('div'); cr.classList.add('menu-row', 'cash-calc-change-row');
-                    const c1 = document.createElement('div'); c1.classList.add('column', 'cash-col-denom');
-                    const s2 = document.createElement('span'); s2.classList.add('cash-denom', 'cash-change-label'); s2.textContent = 'Vuelto:';
-                    c1.appendChild(s2);
-                    const c2 = document.createElement('div'); c2.classList.add('column', 'cash-col-qty');
-                    const c3 = document.createElement('div'); c3.classList.add('column', 'cash-col-sub');
-                    const ci = document.createElement('input');
-                    ci.type = 'text'; ci.id = `details-${this.#resolveUniqueId('cash_change')}`; ci.name = ci.id;
-                    ci.setAttribute('data-type', 'number'); ci.readOnly = true; ci.tabIndex = -1;
-                    ci.classList.add('cash-change'); ci.value = 'C$ 0.00';
-                    ci.setAttribute('data-sign', 'positive');
-                    c3.appendChild(ci);
-                    cr.append(c1, c2, c3); w.appendChild(cr);
-                }
+
+                // Fila de cambio: SIEMPRE renderizada; oculta si no hay maxAmount
+                const cr = document.createElement('div'); cr.classList.add('menu-row', 'cash-calc-change-row');
+                const c1 = document.createElement('div'); c1.classList.add('column', 'cash-col-denom');
+                const s2 = document.createElement('span'); s2.classList.add('cash-denom', 'cash-change-label');
+                s2.textContent = 'Vuelto:';
+                c1.appendChild(s2);
+                const c2 = document.createElement('div'); c2.classList.add('column', 'cash-col-qty');
+                const c3 = document.createElement('div'); c3.classList.add('column', 'cash-col-sub');
+                const ci = document.createElement('input');
+                ci.type = 'text';
+                ci.id = `details-${this.#resolveUniqueId('cash_change')}`;
+                ci.name = ci.id;
+                ci.setAttribute('data-type', 'number'); ci.readOnly = true; ci.tabIndex = -1;
+                ci.classList.add('cash-change'); ci.value = 'C$ 0.00';
+                ci.setAttribute('data-sign', 'positive');
+                c3.appendChild(ci);
+                cr.append(c1, c2, c3);
+                if (maxAmount == null || !isFinite(maxAmount)) cr.hidden = true;
+                w.appendChild(cr);
                 return w;
             }
             #wireCashCalculator(menu) {
@@ -1621,11 +1498,19 @@
                     gt += st;
                 });
                 tEl.value = 'C$ ' + this.#formatNumber(gt);
+
                 const cRow = menu.querySelector('.cash-calc-change-row');
                 if (!cRow) return;
+
+                const container = menu.closest('.choice-container');
+                const choiceId = container?.dataset?.choice_id || '';
+                const cfg = choiceId ? this.#choicesMap.get(choiceId) : null;
+                const max = cfg?.maxAmount ?? null;
+
+                if (max == null || !isFinite(max)) { cRow.hidden = true; return; }
+                cRow.hidden = false;
+
                 const cEl = cRow.querySelector('.cash-change');
-                const max = this.#parseMaxAmount(menu.getAttribute('data-maxAmount'));
-                if (max == null) return;
                 const diff = gt - max;
                 cEl.setAttribute('data-sign', diff >= 0 ? 'positive' : 'negative');
                 cEl.value = 'C$ ' + this.#formatNumber(Math.abs(diff));
@@ -1643,10 +1528,12 @@
                 const a = c.querySelector('input.choice_accepted');
                 const v = l?.querySelector("[class*='choice_value']");
                 if (disabled) {
+                    const wasOpen = l?.classList.contains('showmenu') ?? false;
                     if (l) { l.classList.add('disabled'); l.setAttribute('data-choice-disabled', 'true'); l.classList.remove('showmenu', 'not-empty', 'hover-menu'); }
                     if (m) this.#clearMenuInputs(m);
                     if (a) a.value = '';
                     if (v) v.value = 'unchecked';
+                    if (wasOpen) this.#emitClose(c, 'disabled');
                 } else {
                     if (l) { l.removeAttribute('data-choice-disabled'); l.classList.remove('disabled'); }
                 }
@@ -1735,7 +1622,11 @@
                 f.appendChild(this.#renderMenuCloseButton());
                 const type = (tpl.type || 'default').toLowerCase();
                 if (type === 'cash_calculator') {
-                    const max = this.#parseMaxAmount(menuEl?.getAttribute('data-maxAmount'));
+                    const container = menuEl?.closest?.('.choice-container');
+                    const choiceId = container?.dataset?.choice_id || '';
+                    const cfg = choiceId ? this.#choicesMap.get(choiceId) : null;
+                    const max = this.#parseMaxAmount(cfg?.maxAmount);
+
                     if (typeof tpl.label === 'string' && tpl.label.trim() !== '') {
                         f.appendChild(this.#renderBlockLabel(tpl.label));
                     }
@@ -1852,9 +1743,21 @@
                 return { rows, flat, prefixes };
             }
             #getGroupContainers(g) { return g ? Array.from(g.querySelectorAll('.choice-container')) : []; }
-            #deselectContainer(c) {
+
+            // Helper: deshabilitar los "otros" del grupo mientras se abre un menú
+            #disableOtherContainers(grouped, current) {
+                if (!grouped || !current) return;
+                this.#getGroupContainers(grouped).forEach(o => {
+                    if (o === current) return;
+                    const ol = o.querySelector('.choice-buttons');
+                    if (ol && !ol.classList.contains('showmenu')) ol.classList.add('disabled');
+                });
+            }
+
+            #deselectContainer(c, reason = null) {
                 if (!c) return;
                 const l = c.querySelector('.choice-buttons');
+                const wasOpen = l?.classList.contains('showmenu') ?? false;
                 const v = l?.querySelector("[class*='choice_value']");
                 const m = c.querySelector('.menu');
                 const a = c.querySelector('input.choice_accepted');
@@ -1862,6 +1765,7 @@
                 l?.classList.remove('showmenu', 'not-empty', 'hover-menu', 'disabled');
                 if (m) this.#clearMenuInputs(m);
                 if (a) a.value = '';
+                if (wasOpen && reason) this.#emitClose(c, reason);
             }
             #clearMenuInputs(menu) {
                 if (!menu) return;
@@ -1881,9 +1785,10 @@
                 const a = c?.querySelector('input.choice_accepted');
                 return !!(a && a.value && a.value.trim() !== '');
             }
-            #closeMenu(container) {
+            #closeMenu(container, reason = 'close-button') {
                 if (!container) return;
                 const l = container.querySelector('.choice-buttons');
+                const wasOpen = l?.classList.contains('showmenu') ?? false;
                 const v = l?.querySelector("[class*='choice_value']");
                 const m = container.querySelector('.menu');
                 const a = container.querySelector('input.choice_accepted');
@@ -1901,13 +1806,14 @@
                     if (m) this.#clearMenuInputs(m);
                     if (a) a.value = '';
                 }
+                if (wasOpen) this.#emitClose(container, reason);
             }
             #handleClick(e) {
                 const closeBtn = e.target.closest('.menu-close-button');
                 if (closeBtn) {
                     e.stopPropagation(); e.preventDefault();
                     const c = closeBtn.closest('.choice-container');
-                    if (c) this.#closeMenu(c);
+                    if (c) this.#closeMenu(c, 'close-button');
                     return;
                 }
                 const calltoaction = this.#getClassByPrefix(e.target, 'calltoaction-');
@@ -1929,17 +1835,34 @@
                     case 'click-choice': {
                         if (groupType === 'radio') {
                             if (cv.value === 'checked') return;
-                            groupContainers.forEach(o => { if (o !== container) this.#deselectContainer(o); });
-                            if (menu) labelEl.classList.add('showmenu');
+                            groupContainers.forEach(o => { if (o !== container) this.#deselectContainer(o, 'radio-switch'); });
+                            if (menu) {
+                                const wasOpen = labelEl.classList.contains('showmenu');
+                                labelEl.classList.add('showmenu');
+                                if (!wasOpen) this.#emitOpen(container, 'radio-select');
+                            }
                             cv.value = 'checked';
+                            // ← EXCEPCIÓN: solo deshabilitar al resto si este choice tiene menú
+                            if (menu) this.#disableOtherContainers(grouped, container);
                             this.#emitClick(container, true);
                             if (menu) this.#emitChange(container);
                         } else {
                             const hasMenu = !!menu;
                             const acc = this.#isContainerAccepted(container);
                             if (cv.value === 'checked') {
-                                if (hasMenu && acc) { labelEl.classList.add('showmenu'); this.#emitClick(container, true); this.#emitChange(container); return; }
+                                if (hasMenu && acc) {
+                                    // Reabrir tras Aceptar → sí deshabilitar (tiene menú)
+                                    const wasOpen = labelEl.classList.contains('showmenu');
+                                    labelEl.classList.add('showmenu');
+                                    if (!wasOpen) this.#emitOpen(container, 'reopen');
+                                    this.#disableOtherContainers(grouped, container);
+                                    this.#emitClick(container, true);
+                                    this.#emitChange(container);
+                                    return;
+                                }
+                                const wasOpen = labelEl.classList.contains('showmenu');
                                 labelEl.classList.remove('showmenu', 'not-empty', 'hover-menu');
+                                if (wasOpen) this.#emitClose(container, 'toggle');
                                 cv.value = 'unchecked';
                                 const a = container?.querySelector('input.choice_accepted');
                                 if (a) a.value = '';
@@ -1950,15 +1873,14 @@
                                 if (menu) this.#clearMenuInputs(menu);
                                 this.#emitClick(container, false);
                             } else {
-                                if (menu) labelEl.classList.add('showmenu');
-                                cv.value = 'checked';
-                                if (menu && grouped) {
-                                    groupContainers.forEach(o => {
-                                        if (o === container) return;
-                                        const ol = o.querySelector('.choice-buttons');
-                                        if (ol && !ol.classList.contains('showmenu')) ol.classList.add('disabled');
-                                    });
+                                if (menu) {
+                                    const wasOpen = labelEl.classList.contains('showmenu');
+                                    labelEl.classList.add('showmenu');
+                                    if (!wasOpen) this.#emitOpen(container, 'click');
                                 }
+                                cv.value = 'checked';
+                                // ← EXCEPCIÓN: solo deshabilitar al resto si este choice tiene menú
+                                if (hasMenu) this.#disableOtherContainers(grouped, container);
                                 this.#emitClick(container, true);
                                 if (menu) this.#emitChange(container);
                             }
@@ -1966,6 +1888,7 @@
                         break;
                     }
                     case 'accept-checkbox': {
+                        const wasOpen = labelEl.classList.contains('showmenu');
                         labelEl.classList.remove('showmenu');
                         labelEl.classList.add('not-empty', 'hover-menu');
                         if (menu && grouped) {
@@ -1998,9 +1921,11 @@
                                 catch (err) { console.error('error en onAccept', err); }
                             }
                         }
+                        if (wasOpen) this.#emitClose(container, 'accept');
                         break;
                     }
                     case 'clear-checkbox': {
+                        const wasOpen = labelEl.classList.contains('showmenu');
                         if (menu) this.#clearMenuInputs(menu);
                         cv.value = 'unchecked';
                         if (container) {
@@ -2014,6 +1939,7 @@
                         });
                         this.#emitClick(container, false);
                         this.#emitChange(container);
+                        if (wasOpen) this.#emitClose(container, 'clear');
                         break;
                     }
                 }
@@ -2029,300 +1955,149 @@
             }
         }
 
-        if (typeof window !== 'undefined') {
-            window.ChoiceContainerBuilder = ChoiceContainerBuilder;
-            window.AcceptedResult = AcceptedResult;
-        }
+        /* ============================================================
+           Demo
+           ============================================================ */
+        const fmt = n => 'C$ ' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const logEl = document.getElementById('log');
+        const gtEl = document.getElementById('grand-total');
+        const detailBox = document.getElementById('detail-box');
 
-        /* ================================================================
-           DEMO + WIRING DE TODOS LOS BOTONES
-           ================================================================ */
-        const out = document.getElementById('out');
-        const logs = document.getElementById('logs');
-
-        function print(title, data) {
-            const s = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
-            out.textContent = `// ${title}\n${s}`;
+        function log(kind, msg) {
+            const t = new Date().toLocaleTimeString();
+            const line = document.createElement('div');
+            line.classList.add('line');
+            line.innerHTML = `<span class="t">[${t}]</span> <span class="${kind}">${msg}</span>`;
+            logEl.appendChild(line);
+            logEl.scrollTop = logEl.scrollHeight;
         }
-        function log(kind, ...args) {
-            if (logs.querySelector('.empty')) logs.innerHTML = '';
-            const ts = new Date().toLocaleTimeString();
-            const body = args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ');
-            const ln = document.createElement('div');
-            ln.className = 'ln';
-            ln.innerHTML = `<span class="ts">[${ts}]</span> <span class="kind">${kind}</span> ${body}`;
-            logs.appendChild(ln);
-            logs.scrollTop = logs.scrollHeight;
-            while (logs.children.length > 40) logs.removeChild(logs.firstChild);
-        }
-        function badge(id, text, on) {
-            const el = document.getElementById(id);
-            el.textContent = text;
-            el.className = 'badge ' + (on === undefined ? '' : (on ? 'on' : 'off'));
-        }
-        function refreshState() {
-            badge('st-listening', `isListening: ${builder.isListening()}`, builder.isListening());
-            badge('st-disabled', `areAllDisabled: ${builder.areAllDisabled}`, builder.areAllDisabled ? false : true);
-            badge('st-debug', `debug: ${debugFlag}`, debugFlag);
-            badge('st-onclick', `onClick: ${currentOnClick ? 'set' : 'null'}`);
-            badge('st-onchange', `onchange: ${currentOnChange ? 'set' : 'null'}`);
-            badge('st-onaccept', `onAccept: ${currentOnAccept ? 'set' : 'null'}`);
-            badge('st-choices', `getChoices().length: ${builder.getChoices().length}`);
-        }
-
-        let debugFlag = false;
-        let currentOnClick = null;
-        let currentOnChange = null;
-        let currentOnAccept = null;
-
-        const defaultOnClick = (el, isChecked, meta, ctx) => log('onclick', meta.choiceId, isChecked ? 'CHECKED' : 'UNCHECKED', `(${meta.type_template})`);
-        const defaultOnChange = (el, values, ctx) => log('onchange', el.dataset.choice_id, values.length, 'campos');
-        const defaultOnAccept = (accepted, container, ctx) => {
-            log('onAccept', container.dataset.choice_id, '→', accepted.getFlat());
-            refreshState();
-        };
-
-        currentOnClick = defaultOnClick;
-        currentOnChange = defaultOnChange;
-        currentOnAccept = defaultOnAccept;
 
         const builder = new ChoiceContainerBuilder({
-            selector: '.choice-container[data-choice_id]',
-            context: document,
-            preserveAttributes: true,
-            onlyEmpty: true,
             autoAttachEvents: true,
-            debug: false,
-            onclick: currentOnClick,
-            onchange: currentOnChange,
-            onAccept: currentOnAccept,
             choices: [
                 {
-                    id: 'txt_method_cash',
-                    label: 'EFECTIVO',
+                    id: 'pago-efectivo',
+                    label: 'Pago en efectivo',
                     type_element: 'checkbox',
-                    maxAmount: 7894.50,
+                    maxAmount: 350,
                     template: {
                         type: 'cash_calculator',
-                        label: 'Detalle el pago recibido en efectivo:',
-                        denominations: [500, 100, 20, 5, 1]
+                        label: 'Desglose de billetes y monedas',
+                        denominations: [1000, 500, 200, 100, 50, 20, 10, 5, 1]
                     }
                 },
                 {
-                    id: 'pago_cheques',
-                    label: 'Cheques',
+                    id: 'gastos',
+                    label: 'Gastos adicionales',
                     type_element: 'checkbox',
                     template: {
                         type: 'autosum',
-                        table: [{
-                            label: 'Datos de Cheques:',
-                            headers: ['Referencia', 'Monto'],
-                            fields: [
-                                [{ type: 'text', prefix_value: 'REF: ', id: 'reference-chk-1' },
-                                { type: 'number', prefix_value: 'C$ ', id: 'amount-chk-1' }],
-                                [{ type: 'text', prefix_value: 'REF: ', id: 'reference-chk-2' },
-                                { type: 'number', prefix_value: 'C$ ', id: 'amount-chk-2' }]
-                            ]
-                        }]
+                        row: [
+                            { label: 'Transporte', fields: [{ id: 'transporte', type: 'number', label: 'Monto' }] },
+                            { label: 'Comida', fields: [{ id: 'comida', type: 'number', label: 'Monto' }] }
+                        ]
                     }
                 },
                 {
-                    id: 'pago_transferencia',
-                    label: 'Transferencia',
+                    id: 'extra-checkbox',
+                    label: 'Extra',
                     type_element: 'checkbox',
                     template: {
                         type: 'default',
-                        row: [{
-                            label: 'Datos de transferencia:',
-                            fields: [
-                                { label: 'Banco', type: 'text', id: 'trf_bank' },
-                                { label: 'Cuenta', type: 'text', id: 'trf_account' },
-                                { label: 'Monto', type: 'number', id: 'trf_amount', prefix_value: 'C$ ' }
-                            ]
-                        }]
+                        row: [
+                            { label: 'Cantidad', fields: [{ id: 'cantidad', type: 'number', label: 'Cantidad' }] }
+                        ]
                     }
                 },
-                { id: 'pago_otro', label: 'Otro', type_element: 'checkbox' },
+                // ← SIN template → no tiene menú → no deshabilita a los demás
+                { id: 'simple-checkbox', label: 'Simple (sin menú)', type_element: 'checkbox' },
                 {
-                    id: 'turno_dia',
-                    label: 'Día',
-                    type_element: 'radio',
-                    template: { type: 'default', row: [{ fields: [{ label: 'Observación', type: 'text', id: 'turno_note' }] }] }
+                    id: 'opcion-a', label: 'Opción A', type_element: 'radio', template: {
+                        type: 'default',
+                        row: [
+                            { label: 'Detalle', fields: [{ id: 'detalle-a', type: 'number', label: 'Monto' }] }
+                        ]
+                    }
                 },
-                { id: 'turno_noche', label: 'Noche', type_element: 'radio' },
-                { id: 'turno_madrugada', label: 'Madrugada', type_element: 'radio' }
-            ]
+                {
+                    id: 'opcion-b', label: 'Opción B', type_element: 'radio', template: {
+                        type: 'default',
+                        row: [
+                            { label: 'Detalle', fields: [{ id: 'detalle-b', type: 'number', label: 'Monto' }] }
+                        ]
+                    }
+                }
+            ],
+            onOpen(container, meta, b) {
+                log('open', `▲ open → ${meta.choiceId} (${meta.reason})`);
+                refresh();
+            },
+            onClose(container, reason, meta, b) {
+                log('close', `▼ close → ${meta.choiceId} (${reason})`);
+                refresh();
+            },
+            onChange(container, values, b) {
+                refresh();
+            }
         });
+
+        function refresh() {
+            const total = builder.getGrandTotal();
+            gtEl.textContent = fmt(total);
+        }
+
+        function refreshDetail() {
+            const { grandTotal, detail } = builder.getGrandTotalDetail();
+            const lines = [
+                `GRAN TOTAL: ${fmt(grandTotal)}`,
+                '',
+                ...detail.map(r => {
+                    const tags = [
+                        r.checked ? '✓' : '·',
+                        r.accepted ? 'A' : '·',
+                    ].join('');
+                    const chg = r.changeApplied > 0 ? `  (−vuelto ${fmt(r.changeApplied)})` : '';
+                    return `${tags}  ${r.choiceId.padEnd(16)} subtotal=${fmt(r.subtotal)}${chg}`;
+                })
+            ];
+            detailBox.textContent = lines.join('\n');
+            detailBox.style.display = 'block';
+        }
 
         builder.buildAll();
-        refreshState();
-        print('init', { creados: builder.buildAll(), ids: builder.getUsedIds() });
+        refresh();
 
-        document.addEventListener('choice:accepted', e => log('choice:accepted', e.detail.choiceId, '→', e.detail.getFlat()));
-        document.addEventListener('choice:unchecked', e => log('choice:unchecked', e.detail.choiceId));
-
-        /* ================================================================
-           WIRING: cada botón ejecuta su método
-           ================================================================ */
-        const handlers = {
-            // --- Build / Reset ---
-            buildAll: () => {
-                const n = builder.buildAll();
-                print('buildAll()', { creados: n, ids: builder.getUsedIds() });
-                refreshState();
-            },
-            'build-one': () => {
-                const host = document.getElementById('grupo-turno');
-                const c = document.createElement('div');
-                c.className = 'choice-container';
-                c.dataset.choice_id = 'turno_extra_' + Date.now();
-                c.dataset.choice_label = 'Extra';
-                c.dataset.type_element = 'radio';
-                host.appendChild(c);
-                const ok = builder.build(c);
-                print('build(el)', { ok, id: c.dataset.choice_id, usedIds: builder.getUsedIds() });
-            },
-            createFragment: () => {
-                const frag = builder.createFragment({ typeElement: 'checkbox', id: 'frag_demo', label: 'Fragment demo' });
-                window.__lastFragment = frag;
-                print('createFragment({…})', { nodos: frag.childNodes.length, ids: builder.getUsedIds() });
-            },
-            appendFragment: () => {
-                if (!window.__lastFragment) return print('append fragment', 'no hay fragment previo');
-                const wrap = document.createElement('div');
-                wrap.className = 'choice-container';
-                wrap.dataset.choice_id = 'frag_demo';
-                wrap.dataset.choice_label = 'Fragment';
-                wrap.dataset.type_element = 'checkbox';
-                wrap.appendChild(window.__lastFragment);
-                document.getElementById('grupo-turno').appendChild(wrap);
-                window.__lastFragment = null;
-                print('append fragment', 'ok');
-            },
-            resetUsedIds: () => { builder.resetUsedIds(); print('resetUsedIds()', { ids: builder.getUsedIds() }); },
-            getUsedIds: () => print('getUsedIds()', builder.getUsedIds()),
-
-            // --- Config ---
-            getChoices: () => print('getChoices()', builder.getChoices().map(c => ({ id: c.id, type_template: c.template?.type, maxAmount: c.maxAmount, type_element: c.type_element }))),
-            getChoice: () => print('getChoice("txt_method_cash")', builder.getChoice('txt_method_cash')),
-            setChoice: () => {
-                builder.setChoice('pago_otro', {
-                    template: { type: 'default', row: [{ fields: [{ label: 'Nota', type: 'text', id: 'otro_note' }] }] }
-                });
-                print('setChoice("pago_otro", …)', 'ok — pulsa buildAll para reconstruir');
-            },
-            removeChoice: () => { builder.removeChoice('pago_otro'); print('removeChoice("pago_otro")', { has: builder.hasChoice('pago_otro') }); },
-            hasChoice: () => print('hasChoice("txt_method_cash")', { value: builder.hasChoice('txt_method_cash') }),
-
-            // --- Enable / Disable ---
-            disableAll: () => { builder.disableAll(); print('disableAll()', { areAllDisabled: builder.areAllDisabled }); refreshState(); },
-            enableAll: () => { builder.enableAll(); print('enableAll()', { areAllDisabled: builder.areAllDisabled }); refreshState(); },
-            areAllDisabled: () => print('areAllDisabled', { value: builder.areAllDisabled }),
-
-            // --- Uncheck ---
-            'uncheck-cash': () => print('uncheck("txt_method_cash")', { ok: builder.uncheck('txt_method_cash') }),
-            'uncheck-chq': () => print('uncheck("pago_cheques")', { ok: builder.uncheck('pago_cheques') }),
-            'uncheck-radio': () => print('uncheck("turno_dia")', { ok: builder.uncheck('turno_dia') }),
-            'uncheck-group-pagos': () => print('uncheckAll("#grupo-pagos")', { total: builder.uncheckAll('#grupo-pagos') }),
-            'uncheck-group-turno': () => print('uncheckAll("#grupo-turno")', { total: builder.uncheckAll('#grupo-turno') }),
-            'uncheck-all': () => print('uncheckAll()', { total: builder.uncheckAll() }),
-
-            // --- Grupos ---
-            listGroups: () => print('listGroups()', builder.listGroups().map(g => ({ id: g.id, type: g.type }))),
-            getGroupType: () => print('getGroupType("#grupo-pagos")', { type: builder.getGroupType('#grupo-pagos') }),
-            getGroupId: () => print('getGroupId("#grupo-turno")', { id: builder.getGroupId('#grupo-turno') }),
-
-            // --- Lectura ---
-            getContainerAccepted: () => {
-                const r = builder.getContainerAccepted('txt_method_cash');
-                print('getContainerAccepted("txt_method_cash")', r ? r.toJSON() : 'null (no aceptado)');
-            },
-            getGroupedValues: () => print('getGroupedValues("#grupo-pagos")', builder.getGroupedValues('#grupo-pagos').map(x => x.toJSON())),
-            getGroupedString: () => print('getGroupedString("#grupo-pagos")', builder.getGroupedString('#grupo-pagos')),
-            getGroupedFlat: () => print('getGroupedFlat("#grupo-pagos")', builder.getGroupedFlat('#grupo-pagos')),
-            getMenuValues: () => print('getMenuValues("pago_cheques")', builder.getMenuValues('pago_cheques')),
-            lastAccepted: () => { const v = builder.lastAcceptedValues; print('lastAcceptedValues', v ? v.toJSON() : 'null'); },
-
-            // --- Snapshots ---
-            getAllChoices: () => print('getAllChoices()', builder.getAllChoices().map(c => ({
-                choiceId: c.choiceId, type: c.type, type_template: c.type_template,
-                checked: c.checked, accepted: c.accepted, autosum: c.autosum
-            }))),
-            getAllChoicesJSON: () => out.textContent = builder.getAllChoicesJSON(undefined, { pretty: true }),
-            getAllChoicesJSONGrp: () => out.textContent = builder.getAllChoicesJSON('#grupo-pagos', { pretty: true }),
-            getAllChoicesJSONOne: () => out.textContent = builder.getAllChoicesJSON('txt_method_cash', { pretty: true }),
-
-            // --- Tabla dinámica ---
-            'insertRow-auto': () => {
-                const tr = builder.insertRow('pago_cheques', {
-                    fields: [
-                        { type: 'text', prefix_value: 'REF: ', id: 'reference-nuevo' },
-                        { type: 'number', prefix_value: 'C$ ', id: 'amount-nuevo' }
-                    ]
-                });
-                print('insertRow("pago_cheques", {fields}) [auto]', { dataRowId: tr?.getAttribute('data-row-id') });
-            },
-            'insertRow-nuevoID': () => {
-                const tr = builder.insertRow('pago_cheques', {
-                    idRow: 'nuevoID',
-                    fields: [
-                        { type: 'text', prefix_value: 'REF: ', id: 'reference-nuevoID' },
-                        { type: 'number', prefix_value: 'C$ ', id: 'amount-nuevoID' }
-                    ]
-                });
-                print('insertRow("pago_cheques", {idRow:"nuevoID"})', { dataRowId: tr?.getAttribute('data-row-id') });
-            },
-            'insertRow-cheque-abc': () => {
-                const tr = builder.insertRow('pago_cheques', {
-                    idRow: 'cheque-abc',
-                    fields: [
-                        { type: 'text', prefix_value: 'REF: ', id: 'reference-abc' },
-                        { type: 'number', prefix_value: 'C$ ', id: 'amount-abc' }
-                    ]
-                });
-                print('insertRow("pago_cheques", {idRow:"cheque-abc"})', { dataRowId: tr?.getAttribute('data-row-id') });
-            },
-            'removeRow-last': () => {
-                const rows = builder.getRows('pago_cheques');
-                if (!rows.length) return print('removeRow', 'no hay filas');
-                const last = rows[rows.length - 1].idRow;
-                const ok = builder.removeRow('pago_cheques', last);
-                print(`removeRow("pago_cheques", "${last}")`, { ok });
-            },
-            'removeRow-nuevoID': () => print('removeRow("pago_cheques", "nuevoID")', { ok: builder.removeRow('pago_cheques', 'nuevoID') }),
-            getRows: () => print('getRows("pago_cheques")', builder.getRows('pago_cheques').map(r => r.idRow)),
-            getRow: () => print('getRow("pago_cheques", "1")', builder.getRow('pago_cheques', '1')?.getAttribute('data-row-id') || null),
-            getTable: () => {
-                const tbl = builder.getTable('pago_cheques');
-                print('getTable("pago_cheques").getRows()', tbl ? tbl.getRows().map(r => r.idRow) : null);
-            },
-
-            // --- Eventos / Listeners / Callbacks ---
-            attachEvents: () => { builder.attachEvents(); print('attachEvents()', { isListening: builder.isListening() }); refreshState(); },
-            detachEvents: () => { builder.detachEvents(); print('detachEvents()', { isListening: builder.isListening() }); refreshState(); },
-            isListening: () => print('isListening()', { value: builder.isListening() }),
-
-            setDebugTrue: () => { debugFlag = true; builder.setDebug(true); print('setDebug(true)', 'ok'); refreshState(); },
-            setDebugFalse: () => { debugFlag = false; builder.setDebug(false); print('setDebug(false)', 'ok'); refreshState(); },
-
-            setOnAccept: () => { currentOnAccept = defaultOnAccept; builder.setOnAccept(currentOnAccept); print('setOnAccept(fn)', 'ok'); refreshState(); },
-            clearOnAccept: () => { currentOnAccept = null; builder.setOnAccept(null); print('setOnAccept(null)', 'ok'); refreshState(); },
-            setOnChange: () => { currentOnChange = defaultOnChange; builder.setOnChange(currentOnChange); print('setOnChange(fn)', 'ok'); refreshState(); },
-            clearOnChange: () => { currentOnChange = null; builder.setOnChange(null); print('setOnChange(null)', 'ok'); refreshState(); },
-            setOnClick: () => { currentOnClick = defaultOnClick; builder.setOnClick(currentOnClick); print('setOnClick(fn)', 'ok'); refreshState(); },
-            clearOnClick: () => { currentOnClick = null; builder.setOnClick(null); print('setOnClick(null)', 'ok'); refreshState(); },
-
-            clearLogs: () => { logs.innerHTML = '<div class="empty">(todavía sin eventos)</div>'; },
-        };
-
-        document.querySelectorAll('[data-api]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const key = btn.dataset.api;
-                const h = handlers[key];
-                if (!h) return console.warn('sin handler para', key);
-                try { h(); } catch (e) { console.error('error en', key, e); }
-            });
+        /* === Controles === */
+        document.getElementById('btn-refresh').addEventListener('click', refresh);
+        document.getElementById('btn-detail').addEventListener('click', () => {
+            detailBox.style.display = detailBox.style.display === 'none' ? 'block' : 'none';
+            if (detailBox.style.display === 'block') refreshDetail();
         });
+        document.getElementById('btn-apply-max').addEventListener('click', () => {
+            const v = document.getElementById('input-max').value;
+            builder.setMaxAmount('pago-efectivo', v === '' ? null : Number(v));
+            log('info', `maxAmount aplicado → ${builder.getMaxAmount('pago-efectivo')}`);
+            refresh();
+        });
+        document.getElementById('btn-clear-max').addEventListener('click', () => {
+            builder.setMaxAmount('pago-efectivo', null);
+            log('info', 'maxAmount quitado (null)');
+            refresh();
+        });
+        document.getElementById('btn-clear-log').addEventListener('click', () => {
+            logEl.innerHTML = '';
+        });
+
+        // Eventos extra para depurar cambios
+        document.addEventListener('choice:accepted', e => {
+            log('info', `accept → ${e.detail.choiceId} rows=${e.detail.rows.length}`);
+        });
+        document.addEventListener('choice:unchecked', e => {
+            log('info', `uncheck → ${e.detail.choiceId}`);
+        });
+
+        // Recalcular gran total cuando cambia cualquier input
+        document.addEventListener('input', () => refresh());
     </script>
 </body>
 

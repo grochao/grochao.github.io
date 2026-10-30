@@ -1,8 +1,3 @@
-
-/* ============================================================
- *  DynamicTable
- *  insertPosition + idRow + idSlug + blockRow + afterOpen + onChange + silent
- * ============================================================ */
 class DynamicTable {
     #container;
     #table = null;
@@ -16,6 +11,7 @@ class DynamicTable {
     #lastTFootOptions = { sumAllColumn: {}, LabelTotal: {} };
     #fieldSchema = {};
     #schemaAfterOpen = null;
+    #fieldStyles = {};
     #onChange = null;
     #changeDepth = 0;
     #rowCounter = 0;
@@ -41,6 +37,11 @@ class DynamicTable {
 
         this.#debug = options.debug ?? false;
         this.#onChange = typeof options.onChange === 'function' ? options.onChange : null;
+        this.#fieldStyles = (options.Styles
+            && typeof options.Styles === 'object'
+            && !Array.isArray(options.Styles))
+            ? options.Styles
+            : {};
         this.#options = {
             tableClass: options.tableClass ?? 'dynamic-table',
             addItemRowClass: options.addItemRowClass ?? 'add-item-row',
@@ -202,42 +203,34 @@ class DynamicTable {
         return this.#readText(span || td);
     }
 
-    /* ---------- Estilos ---------- */
-    #applyStyles(rootContainer, stylesMap) {
-        if (!rootContainer || !stylesMap) return;
+    /* ---------- Estilos por columna (constructor) ---------- */
+    #applyColumnStyles(wrapper, colKey) {
+        if (!wrapper || !colKey) return;
+        const styleMap = this.#fieldStyles[colKey];
+        if (!styleMap || typeof styleMap !== 'object') return;
 
-        Object.entries(stylesMap).forEach(([targetKey, cssProps]) => {
+        Object.entries(styleMap).forEach(([selector, cssProps]) => {
             if (!cssProps || typeof cssProps !== 'object') return;
 
-            let el = null;
-            try { el = rootContainer.querySelector(`#${CSS.escape(targetKey)}`); }
-            catch (_) { el = null; }
-
-            if (!el) {
-                const wrapper = rootContainer.querySelector(`.dialog-field[data-col="${targetKey}"]`);
-                if (wrapper) el = wrapper.querySelector('input, select, textarea');
+            const matches = [];
+            try {
+                if (wrapper.matches(selector)) matches.push(wrapper);
+                wrapper.querySelectorAll(selector).forEach(el => matches.push(el));
+            } catch (err) {
+                if (this.#debug) {
+                    console.warn(`DynamicTable: selector inválido "${selector}" en Styles.${colKey}`, err);
+                }
+                return;
             }
-            if (!el) return;
 
-            Object.entries(cssProps).forEach(([prop, val]) => {
-                if (prop.includes('-')) el.style.setProperty(prop, val);
-                else el.style[prop] = val;
+            matches.forEach(el => {
+                Object.entries(cssProps).forEach(([prop, val]) => {
+                    if (val === null || val === undefined) return;
+                    if (prop.includes('-')) el.style.setProperty(prop, String(val));
+                    else el.style[prop] = val;
+                });
             });
         });
-    }
-
-    #collectSchemaStyles() {
-        const all = {};
-        Object.values(this.#fieldSchema).forEach(cfg => {
-            if (!cfg || typeof cfg !== 'object') return;
-            const st = cfg.styles;
-            if (!st || typeof st !== 'object') return;
-
-            Object.entries(st).forEach(([targetKey, cssProps]) => {
-                all[targetKey] = { ...(all[targetKey] || {}), ...cssProps };
-            });
-        });
-        return all;
     }
 
     /* ---------- Opciones / selects ---------- */
@@ -352,37 +345,6 @@ class DynamicTable {
 
         input.addEventListener('input', applyFilter);
         input.addEventListener('paste', () => { setTimeout(applyFilter, 0); });
-    }
-
-    /* ---------- Label dinámico ---------- */
-    #updateLabelText(labelEl, newText) {
-        if (!labelEl) return;
-        let textNode = null;
-        for (const child of labelEl.childNodes) {
-            if (child.nodeType === 3) { textNode = child; break; }
-        }
-        if (textNode) textNode.nodeValue = newText ?? '';
-        else labelEl.insertBefore(document.createTextNode(newText ?? ''), labelEl.firstChild);
-    }
-
-    #applyLabelField(fieldConfig, option) {
-        if (!fieldConfig || typeof fieldConfig !== 'object') return;
-        const targetCol = fieldConfig.insertLabel;
-        if (!targetCol) return;
-
-        const targetWrapper = this.#dialogFieldsContainer.querySelector(`.dialog-field[data-col="${targetCol}"]`);
-        if (!targetWrapper) return;
-
-        const targetLabel = targetWrapper.querySelector('label');
-        if (!targetLabel) return;
-
-        let newLabel = this.#headers[targetCol] ?? targetCol;
-
-        if (option && typeof option.label_field === 'string' && option.label_field.trim() !== '') {
-            const lf = option.label_field.trim();
-            newLabel = Object.prototype.hasOwnProperty.call(this.#headers, lf) ? this.#headers[lf] : lf;
-        }
-        this.#updateLabelText(targetLabel, newLabel);
     }
 
     #getFieldLabelText(wrapper) {
@@ -580,15 +542,12 @@ class DynamicTable {
 
     insertFromDialogValues(values = {}) {
         const data = {};
-        const consumed = new Set();
         let insertAfterto = null;
         let derivedIdRow = null;
         let blockRow = false;
         let blockRowSource = null;
 
         Object.entries(this.#headers).forEach(([key]) => {
-            if (consumed.has(key)) return;
-
             const cfg = this.#fieldSchema[key] || {};
             const rawValue = values[key];
 
@@ -598,7 +557,6 @@ class DynamicTable {
 
                 const flat = this.#flattenOptions(cfg.options || []);
                 const optConfig = flat.find(o => String(o.value) === value);
-                const label = optConfig?.label ?? value;
 
                 if (optConfig) {
                     if (!derivedIdRow
@@ -621,13 +579,7 @@ class DynamicTable {
                     }
                 }
 
-                if (cfg.insertLabel && typeof cfg.insertLabel === 'string') {
-                    data[key] = value;
-                    data[cfg.insertLabel] = label;
-                    consumed.add(cfg.insertLabel);
-                } else {
-                    data[key] = `${value}/${label}`;
-                }
+                data[key] = `${value}`;
             } else if (this.#NUMERIC_TYPES.has(String(cfg.type || '').toLowerCase())) {
                 data[key] = this.#formatNumeric2Decimals(rawValue ?? '');
             } else {
@@ -714,8 +666,6 @@ class DynamicTable {
         this.#dialogFieldsContainer.innerHTML = '';
         this.#hideError();
 
-        const collectedStyles = this.#collectSchemaStyles();
-
         Object.entries(this.#headers).forEach(([key, label]) => {
             const fieldConfig = this.#fieldSchema[key] || { type: 'text' };
             const isRequired = fieldConfig.required === true;
@@ -733,6 +683,10 @@ class DynamicTable {
                 fieldConfig.class.trim().split(/\s+/).forEach(cls => {
                     if (cls !== '') wrapper.classList.add(cls);
                 });
+            }
+
+            if (fieldConfig.visible === false) {
+                wrapper.classList.add('dialog-field--hidden');
             }
 
             const lbl = document.createElement('label');
@@ -768,7 +722,6 @@ class DynamicTable {
                         const optConfig = flat.find(o => String(o.value) === String(value)) || null;
                         const option = optConfig ? { ...optConfig } : null;
 
-                        this.#applyLabelField(fieldConfig, option);
                         this.#clearFieldError(wrapper);
                         const ctx = this.#buildFieldContext(key);
                         try { fieldConfig.onChange(value, option, field, ctx); }
@@ -829,9 +782,8 @@ class DynamicTable {
 
             wrapper.appendChild(field);
             this.#dialogFieldsContainer.appendChild(wrapper);
+            this.#applyColumnStyles(wrapper, key);
         });
-
-        this.#applyStyles(this.#dialogFieldsContainer, collectedStyles);
 
         this.#dialog.showModal();
 
@@ -867,7 +819,6 @@ class DynamicTable {
     /* ---------- Contexto ---------- */
     #buildFieldContext(currentCol) {
         const container = this.#dialogFieldsContainer;
-        const schema = this.#fieldSchema;
         const self = this;
 
         const getWrapper = (colKey) => {
@@ -923,7 +874,7 @@ class DynamicTable {
                 return f ? f.value : null;
             },
 
-            setValue({ colKey, val, trigger = true, readOnly = false, disabled = false }) {
+            setValue({ colKey, val, trigger = true, readOnly = false, disabled = false, placeholder = null }) {
                 const f = getInnerField(colKey);
                 if (!f) return false;
 
@@ -937,6 +888,11 @@ class DynamicTable {
                 f.value = finalVal;
                 f.readOnly = readOnly;
                 f.disabled = disabled;
+
+                if (placeholder !== null && placeholder !== undefined && 'placeholder' in f) {
+                    f.placeholder = String(placeholder);
+                }
+
                 if (trigger) dispatch(f);
                 return true;
             },
@@ -958,23 +914,9 @@ class DynamicTable {
                 return opt ? (opt.dataset.label || self.#readText(opt)) : null;
             },
 
-            target(overrideCol) {
-                const cfg = schema[currentCol] || {};
-                const colKey = overrideCol || cfg.insertLabel;
-                return getInnerField(colKey);
-            },
-
-            setLabel(label, overrideCol) {
-                const cfg = schema[currentCol] || {};
-                const colKey = overrideCol || cfg.insertLabel;
-                if (!colKey) return false;
-                const f = getInnerField(colKey);
-                if (!f) return false;
-                f.value = label ?? '';
-                f.readOnly = true;
-                f.disabled = true;
-                dispatch(f);
-                return true;
+            isVisible(colKey) {
+                const wrap = getWrapper(colKey);
+                return !!wrap && !wrap.classList.contains('dialog-field--hidden');
             },
 
             getCellValue(searchCol, search, returnCol = null) {
@@ -999,9 +941,11 @@ class DynamicTable {
 
         Object.entries(this.#fieldSchema).forEach(([key, config]) => {
             if (config.required !== true) return;
+            if (config.visible === false) return;
 
             const wrapper = this.#dialogFieldsContainer.querySelector(`.dialog-field[data-col="${key}"]`);
             if (!wrapper) return;
+            if (wrapper.classList.contains('dialog-field--hidden')) return;
             const field = wrapper.querySelector('input, select, textarea');
             if (!field) return;
 
@@ -1260,16 +1204,13 @@ class DynamicTable {
             action,
             table: this,
 
-            // ─── Modo silencioso ───
             silent: (fn) => self.#silent(fn),
 
-            // ─── Lecturas ───
             getData: (opts) => self.getData(opts),
             getTotalAllColumn: () => self.getTotalAllColumn(),
             getCellValue: (c, s, r) => self.getCellValue(c, s, r),
             getRowsByCellValue: (c, s) => self.getRowsByCellValue(c, s),
 
-            // ─── Mutaciones ───
             insertRow: (opts) => self.insertRow(opts),
             removeRow: (r) => self.removeRow(r),
             updateRow: (r, row) => self.updateRow(r, row),
@@ -1355,7 +1296,36 @@ class DynamicTable {
         return result;
     }
 
-    getData({ includeEmpty = false } = {}) {
+    /**
+     * Sin args → objeto completo { rows, tfoot, summarized, totals }.
+     * Con string → array plano con el valor de esa columna en cada fila con datos.
+     *   Columna inexistente → null.
+     */
+    getData(arg = {}) {
+        // ─── Modo COLUMNA: getData('colName') ───
+        if (typeof arg === 'string') {
+            const colKey = arg;
+            if (!Object.prototype.hasOwnProperty.call(this.#headers, colKey)) return null;
+
+            const values = [];
+            const rowsEls = this.#tbody.querySelectorAll(`tr:not(.${this.#options.addItemRowClass})`);
+            rowsEls.forEach(tr => {
+                const cells = tr.querySelectorAll('td[data-col]');
+                const hasData = cells.length > 0
+                    && Array.from(cells).some(td => this.#getTdValue(td).trim() !== '');
+                if (!hasData) return;
+
+                const td = tr.querySelector(`td[data-col="${colKey}"]`);
+                values.push(td ? this.#getTdValue(td).trim() : '');
+            });
+
+            return values;
+        }
+
+        // ─── Modo OBJETO (default): comportamiento actual ───
+        const opts = (arg && typeof arg === 'object' && !Array.isArray(arg)) ? arg : {};
+        const { includeEmpty = false } = opts;
+
         const cols = Object.keys(this.#headers);
         const rows = [];
 
@@ -1479,19 +1449,11 @@ class DynamicTable {
     }
 
     /* ---------- Suspend / Resume público ---------- */
-    /**
-     * Suspende la emisión de onChange hasta resumeOnChange().
-     * Anidable por contador. Ideal para envolver varias mutaciones
-     * (incluido casos async con await).
-     */
     suspendOnChange() {
         this.#changeDepth++;
         return this;
     }
 
-    /**
-     * Reanuda la emisión de onChange. No baja de 0.
-     */
     resumeOnChange() {
         if (this.#changeDepth > 0) this.#changeDepth--;
         return this;
@@ -1545,6 +1507,7 @@ class DynamicTable {
         this.#table = this.#thead = this.#tbody = this.#tfoot = null;
     }
 }
+
 
 
 // ============================================================

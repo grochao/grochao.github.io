@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DomExtension — métodos con prefijo _</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        h1 {
+            color: #38bdf8;
+            font-size: 1.4rem;
+        }
+
+        h2 {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .panel {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.25rem;
+            border: 1px solid #334155;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.15s, transform 0.1s;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        button:active {
+            transform: scale(0.97);
+        }
+
+        button.danger {
+            background: #ef4444;
+        }
+
+        button.danger:hover {
+            background: #dc2626;
+        }
+
+        button.warn {
+            background: #f59e0b;
+        }
+
+        button.warn:hover {
+            background: #d97706;
+        }
+
+        .log {
+            background: #020617;
+            color: #4ade80;
+            font-family: monospace;
+            font-size: 0.8rem;
+            padding: 1rem;
+            border-radius: 8px;
+            max-height: 240px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            border: 1px solid #1e293b;
+        }
+
+        #box {
+            background: #334155;
+            color: #f1f5f9;
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin-top: 0.75rem;
+            transition: background 0.25s, border 0.25s, box-shadow 0.25s;
+        }
+
+        .highlight {
+            background: #facc15;
+            color: #1e293b;
+        }
+
+        .border {
+            border: 3px solid #f43f5e;
+        }
+
+        .rounded {
+            border-radius: 40px;
+        }
+
+        .shadow {
+            box-shadow: 0 0 0 6px rgba(56, 189, 248, 0.35);
+        }
+
+        #nombre {
+            width: 100%;
+            padding: 0.6rem;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: #e2e8f0;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🧩 DomExtension — métodos con prefijo <code>_</code></h1>
+
+    <div class="panel">
+        <h2>Caja de prueba</h2>
+        <div id="box" title="tip-original" aria-label="caja">Esta caja reacciona a los métodos</div>
+    </div>
+
+    <div class="panel">
+        <h2>Clases (múltiples)</h2>
+        <div class="toolbar">
+            <button data-act="add-many">_addClass('highlight','border','shadow')</button>
+            <button data-act="rm-many">_removeClass('highlight','border','shadow')</button>
+            <button data-act="add-string">_addClass('rounded shadow')</button>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>Visual / data / eventos</h2>
+        <div class="toolbar">
+            <button data-act="hide">_hide()</button>
+            <button data-act="show">_show()</button>
+            <button data-act="disable">_disable()</button>
+            <button data-act="enable">_enable()</button>
+            <button data-act="setdata">_setdata('temp','23')</button>
+            <button data-act="getdata">_getdata('temp')</button>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>Contenido y atributos</h2>
+        <input id="nombre" type="text" placeholder="Escribe tu nombre..." />
+        <div class="toolbar" style="margin-top:.5rem">
+            <button data-act="text">_text('Hola mundo')</button>
+            <button data-act="html">_html('&lt;b&gt;Negrita&lt;/b&gt;')</button>
+            <button data-act="value-set">_value('Juan')</button>
+            <button data-act="value-get">_value()</button>
+            <button data-act="attr-set">_attr('title','tip')</button>
+            <button data-act="attr-get">_attr('title')</button>
+            <button class="danger" data-act="attr-rm">_removeAttr('title','aria-label')</button>
+            <button data-act="exist">_exist()</button>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>🧪 Casos límite (no rompen)</h2>
+        <div class="toolbar">
+            <button class="warn" data-act="bad-selector">selector inexistente</button>
+            <button class="warn" data-act="bad-class">_addClass('') / 'a b'</button>
+            <button class="warn" data-act="bad-attr">_attr('foo bar','x')</button>
+            <button class="warn" data-act="bad-remove-attr">_removeAttr('foo bar','<x>')</button>
+            <button class="warn" data-act="bad-on">_on('click', null)</button>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>Consola</h2>
+        <div class="log" id="log">> Listo...</div>
+    </div>
+
+    <script>
+        /* ============================================================
+           $getEl — NodeList vacío | Element | NodeList (NUNCA null)
+           ============================================================ */
+        const $getEl = (selector) => {
+            const els = document.querySelectorAll(selector);
+            if (els.length === 0) return els;
+            return els.length === 1 ? els[0] : els;
+        };
+
+        /* ============================================================
+           DomExtension — métodos con prefijo _
+           ============================================================ */
+        class DomExtension {
+            static #DISABLE_STORE = new WeakMap();
+            static #DISPLAY_STORE = new WeakMap();
+            static #silent = false;
+
+            static #DISABLE_STYLES = {
+                pointerEvents: 'none',
+                opacity: '0.5',
+                cursor: 'not-allowed',
+            };
+
+            /* ---------- logging interno ---------- */
+            static #warn(msg, ...args) {
+                if (!DomExtension.#silent) console.warn('[DomExtension]', msg, ...args);
+            }
+            static set silent(v) { DomExtension.#silent = !!v; }
+
+            /* ---------- helpers de tipo ---------- */
+            static #isCollection(ctx) {
+                return ctx instanceof NodeList || Array.isArray(ctx);
+            }
+            static #isElementLike(el) {
+                return el && typeof el === 'object' && 'style' in el;
+            }
+
+            /* ---------- ejecutores protegidos ---------- */
+            static #each(ctx, fn) {
+                if (!ctx) return;
+                const run = (el) => {
+                    if (!DomExtension.#isElementLike(el)) {
+                        DomExtension.#warn('elemento inválido', el);
+                        return;
+                    }
+                    try { fn(el); }
+                    catch (err) { DomExtension.#warn(err.message, el); }
+                };
+                if (DomExtension.#isCollection(ctx)) ctx.forEach(run);
+                else run(ctx);
+            }
+
+            static #getter(ctx, fn) {
+                if (!ctx) return null;
+                const run = (el) => {
+                    if (!DomExtension.#isElementLike(el)) return null;
+                    try { return fn(el); }
+                    catch (err) { DomExtension.#warn(err.message, el); return null; }
+                };
+                if (DomExtension.#isCollection(ctx)) return Array.from(ctx).map(run);
+                return run(ctx);
+            }
+
+            /* ---------- validadores ---------- */
+            static #classes(names) {
+                return names
+                    .flatMap((n) => String(n ?? '').trim().split(/\s+/))
+                    .filter(Boolean);
+            }
+            static #isValidAttr(name) {
+                return typeof name === 'string'
+                    && name.length > 0
+                    && !/[\s"'<>/=]/.test(name);
+            }
+            static #isValidDataKey(key) {
+                return typeof key === 'string' && key.length > 0 && !/\s/.test(key);
+            }
+
+            /* ---------- disable / enable ---------- */
+            static #applyDisable(el) {
+                if (!DomExtension.#DISABLE_STORE.has(el)) {
+                    DomExtension.#DISABLE_STORE.set(el, {
+                        pointerEvents: el.style.pointerEvents,
+                        opacity: el.style.opacity,
+                        cursor: el.style.cursor,
+                        disabled: 'disabled' in el ? el.disabled : null,
+                    });
+                }
+                Object.assign(el.style, DomExtension.#DISABLE_STYLES);
+                if ('disabled' in el) el.disabled = true;
+            }
+            static #applyEnable(el) {
+                const saved = DomExtension.#DISABLE_STORE.get(el);
+                if (saved) {
+                    el.style.pointerEvents = saved.pointerEvents;
+                    el.style.opacity = saved.opacity;
+                    el.style.cursor = saved.cursor;
+                    if (saved.disabled !== null) el.disabled = saved.disabled;
+                    DomExtension.#DISABLE_STORE.delete(el);
+                } else {
+                    el.style.pointerEvents = '';
+                    el.style.opacity = '';
+                    el.style.cursor = '';
+                    if ('disabled' in el) el.disabled = false;
+                }
+            }
+
+            /* ---------- hide / show ---------- */
+            static #applyHide(el) {
+                if (!DomExtension.#DISPLAY_STORE.has(el)) {
+                    DomExtension.#DISPLAY_STORE.set(el, el.style.display);
+                }
+                el.style.display = 'none';
+            }
+            static #applyShow(el) {
+                if (DomExtension.#DISPLAY_STORE.has(el)) {
+                    el.style.display = DomExtension.#DISPLAY_STORE.get(el);
+                    DomExtension.#DISPLAY_STORE.delete(el);
+                } else {
+                    el.style.display = '';
+                }
+            }
+
+            /* ============================================================
+               MÉTODOS INYECTADOS — prefijo _
+               ============================================================ */
+            static #METHODS = {
+
+                /* ---------- estado visual ---------- */
+                _disable() {
+                    DomExtension.#each(this, DomExtension.#applyDisable);
+                    return this;
+                },
+                _enable() {
+                    DomExtension.#each(this, DomExtension.#applyEnable);
+                    return this;
+                },
+                _hide() {
+                    DomExtension.#each(this, DomExtension.#applyHide);
+                    return this;
+                },
+                _show() {
+                    DomExtension.#each(this, DomExtension.#applyShow);
+                    return this;
+                },
+
+                /* ---------- data-* ---------- */
+                _getdata(key) {
+                    if (!DomExtension.#isValidDataKey(key)) {
+                        DomExtension.#warn(`_getdata: key inválida "${key}"`);
+                        return null;
+                    }
+                    return DomExtension.#getter(this, (el) =>
+                        el.dataset ? el.dataset[key] ?? null : null
+                    );
+                },
+                _setdata(key, value) {
+                    if (!DomExtension.#isValidDataKey(key)) {
+                        DomExtension.#warn(`_setdata: key inválida "${key}"`);
+                        return this;
+                    }
+                    DomExtension.#each(this, (el) => {
+                        if (el.dataset) el.dataset[key] = value;
+                    });
+                    return this;
+                },
+
+                /* ---------- eventos ---------- */
+                _on(event, handler) {
+                    if (typeof event !== 'string' || !event) {
+                        DomExtension.#warn(`_on: evento inválido "${event}"`);
+                        return this;
+                    }
+                    if (typeof handler !== 'function') {
+                        DomExtension.#warn('_on: handler no es función');
+                        return this;
+                    }
+                    DomExtension.#each(this, (el) => el.addEventListener(event, handler));
+                    return this;
+                },
+
+                /* ---------- clases (múltiples) ---------- */
+                _addClass(...names) {
+                    const list = DomExtension.#classes(names);
+                    if (!list.length) return this;
+                    DomExtension.#each(this, (el) => {
+                        if (el.classList) el.classList.add(...list);
+                        else DomExtension.#warn('elemento sin classList', el);
+                    });
+                    return this;
+                },
+                _removeClass(...names) {
+                    const list = DomExtension.#classes(names);
+                    if (!list.length) return this;
+                    DomExtension.#each(this, (el) => {
+                        if (el.classList) el.classList.remove(...list);
+                        else DomExtension.#warn('elemento sin classList', el);
+                    });
+                    return this;
+                },
+
+                /* ---------- atributos (get/set/remove) ---------- */
+                _attr(name, value) {
+                    if (!DomExtension.#isValidAttr(name)) {
+                        DomExtension.#warn(`_attr: nombre inválido "${name}"`);
+                        return arguments.length === 1 ? null : this;
+                    }
+                    if (arguments.length === 1) {
+                        return DomExtension.#getter(this, (el) => el.getAttribute(name));
+                    }
+                    DomExtension.#each(this, (el) => el.setAttribute(name, value));
+                    return this;
+                },
+                _removeAttr(...names) {
+                    const list = DomExtension.#classes(names).filter((n) => {
+                        if (DomExtension.#isValidAttr(n)) return true;
+                        DomExtension.#warn(`_removeAttr: nombre inválido "${n}"`);
+                        return false;
+                    });
+                    if (!list.length) return this;
+
+                    DomExtension.#each(this, (el) => {
+                        list.forEach((name) => el.removeAttribute(name));
+                    });
+                    return this;
+                },
+
+                /* ---------- text (get/set) ---------- */
+                _text(value) {
+                    if (arguments.length === 0) {
+                        return DomExtension.#getter(this, (el) => el.textContent);
+                    }
+                    DomExtension.#each(this, (el) => {
+                        try { el.textContent = value; }
+                        catch (err) { DomExtension.#warn(err.message); }
+                    });
+                    return this;
+                },
+
+                /* ---------- html (get/set) ---------- */
+                _html(value) {
+                    if (arguments.length === 0) {
+                        return DomExtension.#getter(this, (el) => el.innerHTML);
+                    }
+                    DomExtension.#each(this, (el) => {
+                        try { el.innerHTML = value; }
+                        catch (err) { DomExtension.#warn(err.message); }
+                    });
+                    return this;
+                },
+
+                /* ---------- value (get/set) ---------- */
+                _value(value) {
+                    if (arguments.length === 0) {
+                        return DomExtension.#getter(this, (el) =>
+                            'value' in el ? el.value : null
+                        );
+                    }
+                    DomExtension.#each(this, (el) => {
+                        if ('value' in el) el.value = value;
+                        else DomExtension.#warn('elemento sin .value', el);
+                    });
+                    return this;
+                },
+
+                /* ---------- existe? ---------- */
+                _exist() {
+                    if (DomExtension.#isCollection(this)) return this.length > 0;
+                    if (!this) return false;
+                    return true;
+                },
+            };
+
+            /* ---------- instalación ---------- */
+            static #extend(proto) {
+                for (const [name, fn] of Object.entries(DomExtension.#METHODS)) {
+                    try {
+                        Object.defineProperty(proto, name, {
+                            value: fn, writable: true, configurable: true,
+                        });
+                    } catch (err) {
+                        DomExtension.#warn(`no se pudo inyectar ${name}: ${err.message}`);
+                    }
+                }
+            }
+
+            static install() {
+                this.#extend(Element.prototype);
+                this.#extend(NodeList.prototype);
+                return this;
+            }
+        }
+
+        DomExtension.install();
+
+        /* ============================================================
+           DEMO
+           ============================================================ */
+        const logEl = $getEl('#log');
+        const log = (msg) => {
+            logEl.textContent += '\n> ' + msg;
+            logEl.scrollTop = logEl.scrollHeight;
+        };
+
+        const box = $getEl('#box');
+        const nombre = $getEl('#nombre');
+
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-act]');
+            if (!btn) return;
+
+            try {
+                switch (btn.dataset.act) {
+                    /* --- clases --- */
+                    case 'add-many':
+                        box._addClass('highlight', 'border', 'shadow');
+                        log("_addClass('highlight','border','shadow') ✅");
+                        break;
+                    case 'rm-many':
+                        box._removeClass('highlight', 'border', 'shadow');
+                        log("_removeClass('highlight','border','shadow') ✅");
+                        break;
+                    case 'add-string':
+                        box._addClass('rounded shadow');
+                        log("_addClass('rounded shadow') ✅");
+                        break;
+
+                    /* --- visual / data --- */
+                    case 'hide': box._hide(); log('_hide() ✅'); break;
+                    case 'show': box._show(); log('_show() ✅'); break;
+                    case 'disable': box._disable(); log('_disable() ✅'); break;
+                    case 'enable': box._enable(); log('_enable() ✅'); break;
+                    case 'setdata':
+                        box._setdata('temp', '23');
+                        log("_setdata('temp','23') ✅");
+                        break;
+                    case 'getdata':
+                        log("_getdata('temp') → " + JSON.stringify(box._getdata('temp')));
+                        break;
+
+                    /* --- contenido --- */
+                    case 'text':
+                        box._text('Hola mundo');
+                        log("_text('Hola mundo') ✅");
+                        break;
+                    case 'html':
+                        box._html('<b>Negrita</b>');
+                        log("_html('<b>Negrita</b>') ✅");
+                        break;
+                    case 'value-set':
+                        nombre._value('Juan');
+                        log("_value('Juan') ✅");
+                        break;
+                    case 'value-get':
+                        log("_value() → " + JSON.stringify(nombre._value()));
+                        break;
+                    case 'attr-set':
+                        box._attr('title', 'tip');
+                        log("_attr('title','tip') ✅");
+                        break;
+                    case 'attr-get':
+                        log("_attr('title') → " + JSON.stringify(box._attr('title')));
+                        break;
+                    case 'attr-rm':
+                        box._removeAttr('title', 'aria-label');
+                        log("_removeAttr('title','aria-label') ✅");
+                        break;
+                    case 'exist':
+                        log('_exist() → ' + box._exist());
+                        break;
+
+                    /* --- casos límite --- */
+                    case 'bad-selector':
+                        $getEl('#noexiste')._addClass('x', 'y')._hide()._setdata('a', 1);
+                        log('$getEl("#noexiste")._addClass(...) → no-op ✅');
+                        break;
+                    case 'bad-class':
+                        box._addClass('');
+                        box._addClass('a b');
+                        box._addClass(null, undefined, 42);
+                        log("_addClass('') / 'a b' / null → sin errores ✅");
+                        break;
+                    case 'bad-attr':
+                        box._attr('foo bar', 'x');
+                        box._attr('<script>', 'x');
+                        log("_attr('foo bar') / '<script>' → rechazados ✅");
+                        break;
+                    case 'bad-remove-attr':
+                        box._removeAttr('foo bar', '<x>', '');
+                        log("_removeAttr('foo bar','<x>','') → rechazados ✅");
+                        break;
+                    case 'bad-on':
+                        box._on('click', null);
+                        box._on('', () => { });
+                        log("_on('click', null) → rechazado ✅");
+                        break;
+                }
+            } catch (err) {
+                log('💥 Error capturado por try/catch del handler: ' + err.message);
+            }
+
+            log('   clases: ' + (box.className || '(ninguna)'));
+            log('   atributos: ' + Array.from(box.attributes).map(a => a.name).join(', ') || '(ninguno)');
+            log('   _exist(): ' + box._exist());
+        });
+
+        log('Demo lista. Métodos: _disable, _enable, _hide, _show, _getdata, _setdata, _on, _addClass, _removeClass, _attr, _removeAttr, _text, _html, _value, _exist.');
+    </script>
+</body>
+
+</html>

@@ -84,6 +84,9 @@ class CountdownBanner {
         if (this.#intervalId) return this;                // FIX #10
         if (this.#isDisabled()) {
             console.info('⏹️ Countdown desactivado (no se iniciará).');
+            if (window._isPastDay) {
+                window._isPastDay = false;
+            }
             this.#cleanupDate();
             return this;
         }
@@ -112,6 +115,9 @@ class CountdownBanner {
     enable() {
         if (!this.#isDisabled() && !this.#isFinished) {
             console.info('ℹ️ Countdown ya está activo.');
+            if (window._isPastDay) {
+                window._isPastDay = true;
+            }
             return this;
         }
 
@@ -123,11 +129,17 @@ class CountdownBanner {
             this.#startTime = Date.now();
             this.#saveState(true);
             console.info('🔓 Modo activado (nuevo estado).');
+            if (window._isPastDay) {
+                window._isPastDay = true;
+            }
             this.#startLoop();
             return this;
         }
         // FIX #2: se elimina rama muerta `data.active === false`.
         console.info('🔓 Modo activado. Reanudando countdown...');
+        if (window._isPastDay) {
+            window._isPastDay = true;
+        }
         return this.start();
     }
 
@@ -143,6 +155,9 @@ class CountdownBanner {
         this.#isFinished = true;
         this.#removeBanner();
         console.info('⏹️ Countdown detenido (reset total).');
+        if (window._isPastDay) {
+            window._isPastDay = false;
+        }
         return this;
     }
 
@@ -159,11 +174,17 @@ class CountdownBanner {
         // FIX #3: si el objetivo ya pasó, abortar limpiamente.
         if (this.#getRemainingMs() <= 0) {
             console.warn('⚠️ Restart abortado: el objetivo ya pasó.');
+            if (window._isPastDay) {
+                window._isPastDay = false;
+            }
             this.#finish();
             return this;
         }
         console.info('🚀 Countdown reiniciado desde cero.');
         this.#startLoop();
+        if (window._isPastDay) {
+            window._isPastDay = true;
+        }
         return this;
     }
 
@@ -257,6 +278,9 @@ class CountdownBanner {
         this.#removeBanner();
         this.#cleanupDate();
         console.info(`✅ FINALIZADO a las ${new Date().toLocaleTimeString()}`);
+        if (window._isPastDay) {
+            window._isPastDay = false;
+        }
         this.#onFinish?.();
     }
 
@@ -275,6 +299,9 @@ class CountdownBanner {
         this.#isFinished = true;
         this.#removeBanner();
         console.info('⏹️ Countdown desactivado manualmente.');
+        if (window._isPastDay) {
+            window._isPastDay = false;
+        }
         this.#onDisable?.();
     }
 

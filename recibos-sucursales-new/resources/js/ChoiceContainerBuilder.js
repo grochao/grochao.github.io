@@ -1,44 +1,45 @@
-/* ================================================================
-          AcceptedResult
-          ================================================================ */
+/* ============================================================
+      AcceptedResult
+      ============================================================ */
 class AcceptedResult {
     constructor(data = {}) {
         this.choiceId = data.choiceId ?? null;
         this.label = data.label ?? '';
         this.rows = Array.isArray(data.rows) ? data.rows : [];
-        this.flat = data.flat && typeof data.flat === 'object' ? data.flat : {};
-        this.prefixes = data.prefixes && typeof data.prefixes === 'object' ? data.prefixes : {};
+        this.flat = data.flat ?? {};
+        this.prefixes = data.prefixes ?? {};
     }
     returnString(options = {}) {
-        const { rowSeparator = ' | ', valueSeparator = ' - ', wrap = ['(', ')'],
-            skipEmptyRows = true, skipEmptyValues = false, includePrefix = true } = options;
-        const [open, close] = wrap; const parts = [];
-        this.rows.forEach(row => {
-            const entries = Object.entries(row.values || {});
-            const filtered = skipEmptyValues ? entries.filter(([, v]) => v !== '' && v !== null && v !== undefined) : entries;
-            if (skipEmptyRows && filtered.length === 0) return;
-            const fv = filtered.map(([k, v]) => {
+        const { separator = ' | ', includePrefix = true } = options;
+        const out = [];
+        (this.rows || []).forEach(row => {
+            const values = row.values || {};
+            const entries = Object.entries(values);
+            entries.forEach(([k, v]) => {
                 const p = includePrefix ? (this.prefixes[k] || '') : '';
-                return `${open}${p}${v ?? ''}${close}`;
-            }).join(valueSeparator);
-            parts.push(`${this.label}: ${fv}`);
+                out.push(`${p}${v}`);
+            });
         });
-        return parts.join(rowSeparator);
+        return out.join(separator);
     }
-    toJSON() { return { choiceId: this.choiceId, label: this.label, rows: this.rows, flat: this.flat, prefixes: this.prefixes }; }
-    getFlat() { return { ...this.flat }; }
-    getPrefixes() { return { ...this.prefixes }; }
+    toJSON() {
+        return {
+            choiceId: this.choiceId, label: this.label, rows: this.rows,
+            flat: this.flat, prefixes: this.prefixes
+        };
+    }
 }
 
-/* ================================================================
+/* ============================================================
    ChoiceContainerBuilder
-   ================================================================ */
+   ============================================================ */
 class ChoiceContainerBuilder {
     #selector; #context; #options;
     #clickHandler = null; #listenerAttached = false; #clickDebug = false;
     #usedIds = new Set();
     #lastAcceptedValues = null;
     #onAccept = null; #onChange = null; #onClick = null;
+    #onOpen = null; #onClose = null;
     #choicesMap = new Map();
 
     static DEFAULT_DENOMINATIONS = [1000, 500, 200, 100, 50, 20, 10, 5, 1];
@@ -57,6 +58,8 @@ class ChoiceContainerBuilder {
         this.#onAccept = options.onAccept || null;
         this.#onChange = options.onchange || options.onChange || null;
         this.#onClick = options.onclick || options.onClick || null;
+        this.#onOpen = options.onOpen || options.onopen || null;
+        this.#onClose = options.onClose || options.onclose || null;
 
         if (Array.isArray(options.choices)) options.choices.forEach(c => this.#registerChoiceConfig(c));
         this.#ensureGroupIds();
@@ -69,7 +72,7 @@ class ChoiceContainerBuilder {
         const id = String(choice.id);
         this.#choicesMap.set(id, {
             template: choice.template ?? null,
-            maxAmount: choice.maxAmount ?? null,
+            maxAmount: this.#parseMaxAmount(choice.maxAmount),
             label: choice.label ?? null,
             type_element: choice.type_element ?? choice.typeElement ?? null
         });
@@ -79,6 +82,45 @@ class ChoiceContainerBuilder {
     setChoice(id, config = {}) { this.#registerChoiceConfig({ id, ...config }); return this; }
     removeChoice(id) { this.#choicesMap.delete(String(id)); return this; }
     hasChoice(id) { return this.#choicesMap.has(String(id)); }
+
+    // === API pública maxAmount ===
+    #choiceIdOf(input) {
+        if (input == null) return null;
+        if (input instanceof Element) {
+            return input.dataset?.choice_id || input.getAttribute('data-choice_id') || null;
+        }
+        if (typeof input === 'string') {
+            if (/^[#.\[\]:*]/.test(input)) {
+                const el = this.#context.querySelector(input);
+                return el?.dataset?.choice_id || el?.getAttribute('data-choice_id') || null;
+            }
+            return input;
+        }
+        return null;
+    }
+    getMaxAmount(choiceOrSelector) {
+        const id = this.#choiceIdOf(choiceOrSelector);
+        if (id == null) return null;
+        return this.#choicesMap.get(String(id))?.maxAmount ?? null;
+    }
+    setMaxAmount(choiceOrSelector, value) {
+        const id = this.#choiceIdOf(choiceOrSelector);
+        if (id == null) return this;
+        const key = String(id);
+        let cfg = this.#choicesMap.get(key);
+        if (!cfg) {
+            cfg = { template: null, maxAmount: null, label: null, type_element: null };
+            this.#choicesMap.set(key, cfg);
+        }
+        cfg.maxAmount = this.#parseMaxAmount(value);
+        this.#context.querySelectorAll(this.#selector).forEach(c => {
+            if (c.dataset.choice_id === key) {
+                const menu = c.querySelector('.menu');
+                if (menu) this.#updateCashCalculator(menu);
+            }
+        });
+        return this;
+    }
 
     get lastAcceptedValues() { return this.#lastAcceptedValues; }
     get areAllDisabled() {
@@ -123,10 +165,7 @@ class ChoiceContainerBuilder {
         if (!menuSpan && cfgHasTemplate) {
             menuSpan = document.createElement('span');
             menuSpan.classList.add('menu');
-            if (cfg.maxAmount != null) menuSpan.setAttribute('data-maxAmount', String(cfg.maxAmount));
             c.appendChild(menuSpan);
-        } else if (menuSpan && cfg?.maxAmount != null && !menuSpan.hasAttribute('data-maxAmount')) {
-            menuSpan.setAttribute('data-maxAmount', String(cfg.maxAmount));
         }
 
         if (menuSpan) {
@@ -154,11 +193,9 @@ class ChoiceContainerBuilder {
     // === Uncheck ===
     uncheck(choiceOrSelector) {
         const container = this.#resolveContainer(choiceOrSelector);
-        console.clear();
-        console.log(container);
         if (!container) { console.warn('uncheck: no encontrado →', choiceOrSelector); return false; }
         if (!container.querySelector('.choice-buttons')) { console.warn('uncheck: no construido'); return false; }
-        this.#deselectContainer(container);
+        this.#deselectContainer(container, 'uncheck');
         this.#emitClick(container, false);
         this.#emitChange(container);
         const detail = this.#buildMeta(container, false);
@@ -383,8 +420,41 @@ class ChoiceContainerBuilder {
             autosum, acceptedData, menu: menuData
         };
     }
+
+    // === Helpers de cálculo ===
+    #computeCashSubtotal(menu) {
+        if (!menu) return 0;
+        let subtotal = 0;
+        menu.querySelectorAll('.cash-calc-row').forEach(row => {
+            const denom = parseFloat(row.getAttribute('data-denomination') || '0');
+            if (!isFinite(denom)) return;
+            const qtyInput = row.querySelector('input[data-type="integer"]');
+            if (!qtyInput) return;
+            const qty = parseInt(this.#sanitizeIntegerInput(qtyInput.value) || '0', 10) || 0;
+            subtotal += denom * qty;
+        });
+        return Math.round(subtotal * 100) / 100;
+    }
+
     #computeAutosum(menu) {
         if (!menu) return 0;
+
+        const cashRows = menu.querySelectorAll('.cash-calc-row');
+        if (cashRows.length > 0) {
+            const subtotal = this.#computeCashSubtotal(menu);
+            const container = menu.closest('.choice-container');
+            const choiceId = container?.dataset?.choice_id || '';
+            const cfg = choiceId ? this.#choicesMap.get(choiceId) : null;
+            const max = cfg?.maxAmount ?? null;
+
+            // Regla: SUBTOTAL > maxAmount → autosum = maxAmount (equivale a SUBTOTAL - Vuelto)
+            //        SUBTOTAL ≤ maxAmount → autosum = SUBTOTAL
+            if (max != null && isFinite(max) && subtotal > max) {
+                return Math.round(max * 100) / 100;
+            }
+            return subtotal;
+        }
+
         let sum = 0;
         menu.querySelectorAll('input[data-type="number"]').forEach(inp => {
             if (inp.readOnly) return;
@@ -394,6 +464,89 @@ class ChoiceContainerBuilder {
         });
         return Math.round(sum * 100) / 100;
     }
+
+    // === Total general ===
+    getGrandTotal(target = null, options = {}) {
+        const { onlyAccepted = false, onlyChecked = false } = options;
+        let root = this.#context;
+        if (target) {
+            if (target instanceof Element) root = target;
+            else if (typeof target === 'string') {
+                const one = this.#resolveContainer(target);
+                if (one) root = one;
+                else {
+                    const grp = this.#resolveGrouped(target);
+                    if (grp) root = grp;
+                    else { const q = this.#context.querySelector(target); if (q) root = q; }
+                }
+            }
+        }
+        const containers = (root instanceof Element && root.classList.contains('choice-container'))
+            ? [root] : Array.from(root.querySelectorAll(this.#selector));
+        let total = 0;
+        containers.forEach(c => {
+            if (onlyAccepted && !this.#isContainerAccepted(c)) return;
+            if (onlyChecked) {
+                const v = c.querySelector("[class*='choice_value']");
+                if (!v || v.value !== 'checked') return;
+            }
+            const menu = c.querySelector('.menu');
+            if (!menu) return;
+            total += this.#computeAutosum(menu);
+        });
+        return Math.round(total * 100) / 100;
+    }
+
+    getGrandTotalDetail(target = null, options = {}) {
+        const { onlyAccepted = false, onlyChecked = false } = options;
+        let root = this.#context;
+        if (target) {
+            if (target instanceof Element) root = target;
+            else if (typeof target === 'string') {
+                const one = this.#resolveContainer(target);
+                if (one) root = one;
+                else {
+                    const grp = this.#resolveGrouped(target);
+                    if (grp) root = grp;
+                    else { const q = this.#context.querySelector(target); if (q) root = q; }
+                }
+            }
+        }
+        const containers = (root instanceof Element && root.classList.contains('choice-container'))
+            ? [root] : Array.from(root.querySelectorAll(this.#selector));
+
+        const detail = containers.map(c => {
+            const accepted = this.#isContainerAccepted(c);
+            const checked = c.querySelector("[class*='choice_value']")?.value === 'checked';
+            const menu = c.querySelector('.menu');
+            const subtotal = menu ? this.#computeAutosum(menu) : 0;
+
+            let changeApplied = 0;
+            if (menu && menu.querySelector('.cash-calc-row')) {
+                const choiceId = c.dataset.choice_id || '';
+                const cfg = choiceId ? this.#choicesMap.get(choiceId) : null;
+                const max = cfg?.maxAmount ?? null;
+                if (max != null && isFinite(max)) {
+                    const raw = this.#computeCashSubtotal(menu);
+                    if (raw > max) changeApplied = Math.round((raw - max) * 100) / 100;
+                }
+            }
+
+            return {
+                choiceId: c.dataset.choice_id || null,
+                label: c.dataset.choice_label || '',
+                checked, accepted, subtotal, changeApplied
+            };
+        }).filter(r => {
+            if (onlyAccepted && !r.accepted) return false;
+            if (onlyChecked && !r.checked) return false;
+            return true;
+        });
+
+        const grandTotal = Math.round(detail.reduce((s, r) => s + r.subtotal, 0) * 100) / 100;
+        return { grandTotal, detail };
+    }
+
     #restructureFlat(rows) {
         const SUMMARY = ChoiceContainerBuilder.SUMMARY_ROW_CLASSES;
         const rowArr = []; const extras = {};
@@ -425,6 +578,8 @@ class ChoiceContainerBuilder {
     setOnAccept(cb) { this.#onAccept = cb || null; return this; }
     setOnChange(cb) { this.#onChange = cb || null; return this; }
     setOnClick(cb) { this.#onClick = cb || null; return this; }
+    setOnOpen(cb) { this.#onOpen = cb || null; return this; }
+    setOnClose(cb) { this.#onClose = cb || null; return this; }
 
     #emitChange(container) {
         if (typeof this.#onChange !== 'function' || !container) return;
@@ -437,6 +592,24 @@ class ChoiceContainerBuilder {
         const meta = this.#buildMeta(container, isChecked);
         try { this.#onClick(container, isChecked, meta, this); } catch (e) { console.error(e); }
     }
+    #emitOpen(container, reason = 'click') {
+        if (!container) return;
+        const menu = container.querySelector('.menu');
+        if (menu && menu.querySelector('.cash-calculator')) {
+            this.#updateCashCalculator(menu);
+        }
+        if (typeof this.#onOpen !== 'function') return;
+        const meta = this.#buildMeta(container, true);
+        meta.reason = reason;
+        try { this.#onOpen(container, meta, this); } catch (e) { console.error(e); }
+    }
+    #emitClose(container, reason = 'close') {
+        if (!container || typeof this.#onClose !== 'function') return;
+        const meta = this.#buildMeta(container, false);
+        meta.reason = reason;
+        try { this.#onClose(container, reason, meta, this); } catch (e) { console.error(e); }
+    }
+
     #buildMeta(container, isChecked) {
         const labelEl = container.querySelector('.choice-buttons');
         const cfg = this.#choicesMap.get(container.dataset.choice_id || '') || null;
@@ -693,21 +866,26 @@ class ChoiceContainerBuilder {
         ti.classList.add('cash-total'); ti.value = 'C$ 0.00';
         ct.appendChild(ti);
         tr.append(cl, ce, ct); w.appendChild(tr);
-        if (maxAmount != null && isFinite(maxAmount)) {
-            const cr = document.createElement('div'); cr.classList.add('menu-row', 'cash-calc-change-row');
-            const c1 = document.createElement('div'); c1.classList.add('column', 'cash-col-denom');
-            const s2 = document.createElement('span'); s2.classList.add('cash-denom', 'cash-change-label'); s2.textContent = 'Vuelto:';
-            c1.appendChild(s2);
-            const c2 = document.createElement('div'); c2.classList.add('column', 'cash-col-qty');
-            const c3 = document.createElement('div'); c3.classList.add('column', 'cash-col-sub');
-            const ci = document.createElement('input');
-            ci.type = 'text'; ci.id = `details-${this.#resolveUniqueId('cash_change')}`; ci.name = ci.id;
-            ci.setAttribute('data-type', 'number'); ci.readOnly = true; ci.tabIndex = -1;
-            ci.classList.add('cash-change'); ci.value = 'C$ 0.00';
-            ci.setAttribute('data-sign', 'positive');
-            c3.appendChild(ci);
-            cr.append(c1, c2, c3); w.appendChild(cr);
-        }
+
+        // Fila de cambio: SIEMPRE renderizada; oculta si no hay maxAmount
+        const cr = document.createElement('div'); cr.classList.add('menu-row', 'cash-calc-change-row');
+        const c1 = document.createElement('div'); c1.classList.add('column', 'cash-col-denom');
+        const s2 = document.createElement('span'); s2.classList.add('cash-denom', 'cash-change-label');
+        s2.textContent = 'Vuelto:';
+        c1.appendChild(s2);
+        const c2 = document.createElement('div'); c2.classList.add('column', 'cash-col-qty');
+        const c3 = document.createElement('div'); c3.classList.add('column', 'cash-col-sub');
+        const ci = document.createElement('input');
+        ci.type = 'text';
+        ci.id = `details-${this.#resolveUniqueId('cash_change')}`;
+        ci.name = ci.id;
+        ci.setAttribute('data-type', 'number'); ci.readOnly = true; ci.tabIndex = -1;
+        ci.classList.add('cash-change'); ci.value = 'C$ 0.00';
+        ci.setAttribute('data-sign', 'positive');
+        c3.appendChild(ci);
+        cr.append(c1, c2, c3);
+        if (maxAmount == null || !isFinite(maxAmount)) cr.hidden = true;
+        w.appendChild(cr);
         return w;
     }
     #wireCashCalculator(menu) {
@@ -735,11 +913,19 @@ class ChoiceContainerBuilder {
             gt += st;
         });
         tEl.value = 'C$ ' + this.#formatNumber(gt);
+
         const cRow = menu.querySelector('.cash-calc-change-row');
         if (!cRow) return;
+
+        const container = menu.closest('.choice-container');
+        const choiceId = container?.dataset?.choice_id || '';
+        const cfg = choiceId ? this.#choicesMap.get(choiceId) : null;
+        const max = cfg?.maxAmount ?? null;
+
+        if (max == null || !isFinite(max)) { cRow.hidden = true; return; }
+        cRow.hidden = false;
+
         const cEl = cRow.querySelector('.cash-change');
-        const max = this.#parseMaxAmount(menu.getAttribute('data-maxAmount'));
-        if (max == null) return;
         const diff = gt - max;
         cEl.setAttribute('data-sign', diff >= 0 ? 'positive' : 'negative');
         cEl.value = 'C$ ' + this.#formatNumber(Math.abs(diff));
@@ -757,10 +943,12 @@ class ChoiceContainerBuilder {
         const a = c.querySelector('input.choice_accepted');
         const v = l?.querySelector("[class*='choice_value']");
         if (disabled) {
+            const wasOpen = l?.classList.contains('showmenu') ?? false;
             if (l) { l.classList.add('disabled'); l.setAttribute('data-choice-disabled', 'true'); l.classList.remove('showmenu', 'not-empty', 'hover-menu'); }
             if (m) this.#clearMenuInputs(m);
             if (a) a.value = '';
             if (v) v.value = 'unchecked';
+            if (wasOpen) this.#emitClose(c, 'disabled');
         } else {
             if (l) { l.removeAttribute('data-choice-disabled'); l.classList.remove('disabled'); }
         }
@@ -849,7 +1037,11 @@ class ChoiceContainerBuilder {
         f.appendChild(this.#renderMenuCloseButton());
         const type = (tpl.type || 'default').toLowerCase();
         if (type === 'cash_calculator') {
-            const max = this.#parseMaxAmount(menuEl?.getAttribute('data-maxAmount'));
+            const container = menuEl?.closest?.('.choice-container');
+            const choiceId = container?.dataset?.choice_id || '';
+            const cfg = choiceId ? this.#choicesMap.get(choiceId) : null;
+            const max = this.#parseMaxAmount(cfg?.maxAmount);
+
             if (typeof tpl.label === 'string' && tpl.label.trim() !== '') {
                 f.appendChild(this.#renderBlockLabel(tpl.label));
             }
@@ -966,9 +1158,21 @@ class ChoiceContainerBuilder {
         return { rows, flat, prefixes };
     }
     #getGroupContainers(g) { return g ? Array.from(g.querySelectorAll('.choice-container')) : []; }
-    #deselectContainer(c) {
+
+    // Helper: deshabilitar los "otros" del grupo mientras se abre un menú
+    #disableOtherContainers(grouped, current) {
+        if (!grouped || !current) return;
+        this.#getGroupContainers(grouped).forEach(o => {
+            if (o === current) return;
+            const ol = o.querySelector('.choice-buttons');
+            if (ol && !ol.classList.contains('showmenu')) ol.classList.add('disabled');
+        });
+    }
+
+    #deselectContainer(c, reason = null) {
         if (!c) return;
         const l = c.querySelector('.choice-buttons');
+        const wasOpen = l?.classList.contains('showmenu') ?? false;
         const v = l?.querySelector("[class*='choice_value']");
         const m = c.querySelector('.menu');
         const a = c.querySelector('input.choice_accepted');
@@ -976,6 +1180,7 @@ class ChoiceContainerBuilder {
         l?.classList.remove('showmenu', 'not-empty', 'hover-menu', 'disabled');
         if (m) this.#clearMenuInputs(m);
         if (a) a.value = '';
+        if (wasOpen && reason) this.#emitClose(c, reason);
     }
     #clearMenuInputs(menu) {
         if (!menu) return;
@@ -995,9 +1200,10 @@ class ChoiceContainerBuilder {
         const a = c?.querySelector('input.choice_accepted');
         return !!(a && a.value && a.value.trim() !== '');
     }
-    #closeMenu(container) {
+    #closeMenu(container, reason = 'close-button') {
         if (!container) return;
         const l = container.querySelector('.choice-buttons');
+        const wasOpen = l?.classList.contains('showmenu') ?? false;
         const v = l?.querySelector("[class*='choice_value']");
         const m = container.querySelector('.menu');
         const a = container.querySelector('input.choice_accepted');
@@ -1015,13 +1221,14 @@ class ChoiceContainerBuilder {
             if (m) this.#clearMenuInputs(m);
             if (a) a.value = '';
         }
+        if (wasOpen) this.#emitClose(container, reason);
     }
     #handleClick(e) {
         const closeBtn = e.target.closest('.menu-close-button');
         if (closeBtn) {
             e.stopPropagation(); e.preventDefault();
             const c = closeBtn.closest('.choice-container');
-            if (c) this.#closeMenu(c);
+            if (c) this.#closeMenu(c, 'close-button');
             return;
         }
         const calltoaction = this.#getClassByPrefix(e.target, 'calltoaction-');
@@ -1043,17 +1250,34 @@ class ChoiceContainerBuilder {
             case 'click-choice': {
                 if (groupType === 'radio') {
                     if (cv.value === 'checked') return;
-                    groupContainers.forEach(o => { if (o !== container) this.#deselectContainer(o); });
-                    if (menu) labelEl.classList.add('showmenu');
+                    groupContainers.forEach(o => { if (o !== container) this.#deselectContainer(o, 'radio-switch'); });
+                    if (menu) {
+                        const wasOpen = labelEl.classList.contains('showmenu');
+                        labelEl.classList.add('showmenu');
+                        if (!wasOpen) this.#emitOpen(container, 'radio-select');
+                    }
                     cv.value = 'checked';
+                    // ← EXCEPCIÓN: solo deshabilitar al resto si este choice tiene menú
+                    if (menu) this.#disableOtherContainers(grouped, container);
                     this.#emitClick(container, true);
                     if (menu) this.#emitChange(container);
                 } else {
                     const hasMenu = !!menu;
                     const acc = this.#isContainerAccepted(container);
                     if (cv.value === 'checked') {
-                        if (hasMenu && acc) { labelEl.classList.add('showmenu'); this.#emitClick(container, true); this.#emitChange(container); return; }
+                        if (hasMenu && acc) {
+                            // Reabrir tras Aceptar → sí deshabilitar (tiene menú)
+                            const wasOpen = labelEl.classList.contains('showmenu');
+                            labelEl.classList.add('showmenu');
+                            if (!wasOpen) this.#emitOpen(container, 'reopen');
+                            this.#disableOtherContainers(grouped, container);
+                            this.#emitClick(container, true);
+                            this.#emitChange(container);
+                            return;
+                        }
+                        const wasOpen = labelEl.classList.contains('showmenu');
                         labelEl.classList.remove('showmenu', 'not-empty', 'hover-menu');
+                        if (wasOpen) this.#emitClose(container, 'toggle');
                         cv.value = 'unchecked';
                         const a = container?.querySelector('input.choice_accepted');
                         if (a) a.value = '';
@@ -1064,15 +1288,14 @@ class ChoiceContainerBuilder {
                         if (menu) this.#clearMenuInputs(menu);
                         this.#emitClick(container, false);
                     } else {
-                        if (menu) labelEl.classList.add('showmenu');
-                        cv.value = 'checked';
-                        if (menu && grouped) {
-                            groupContainers.forEach(o => {
-                                if (o === container) return;
-                                const ol = o.querySelector('.choice-buttons');
-                                if (ol && !ol.classList.contains('showmenu')) ol.classList.add('disabled');
-                            });
+                        if (menu) {
+                            const wasOpen = labelEl.classList.contains('showmenu');
+                            labelEl.classList.add('showmenu');
+                            if (!wasOpen) this.#emitOpen(container, 'click');
                         }
+                        cv.value = 'checked';
+                        // ← EXCEPCIÓN: solo deshabilitar al resto si este choice tiene menú
+                        if (hasMenu) this.#disableOtherContainers(grouped, container);
                         this.#emitClick(container, true);
                         if (menu) this.#emitChange(container);
                     }
@@ -1080,6 +1303,7 @@ class ChoiceContainerBuilder {
                 break;
             }
             case 'accept-checkbox': {
+                const wasOpen = labelEl.classList.contains('showmenu');
                 labelEl.classList.remove('showmenu');
                 labelEl.classList.add('not-empty', 'hover-menu');
                 if (menu && grouped) {
@@ -1112,9 +1336,11 @@ class ChoiceContainerBuilder {
                         catch (err) { console.error('error en onAccept', err); }
                     }
                 }
+                if (wasOpen) this.#emitClose(container, 'accept');
                 break;
             }
             case 'clear-checkbox': {
+                const wasOpen = labelEl.classList.contains('showmenu');
                 if (menu) this.#clearMenuInputs(menu);
                 cv.value = 'unchecked';
                 if (container) {
@@ -1128,6 +1354,7 @@ class ChoiceContainerBuilder {
                 });
                 this.#emitClick(container, false);
                 this.#emitChange(container);
+                if (wasOpen) this.#emitClose(container, 'clear');
                 break;
             }
         }
@@ -1142,6 +1369,7 @@ class ChoiceContainerBuilder {
         return null;
     }
 }
+
 
 // ============================================================
 //  EXPOSICIÓN GLOBAL

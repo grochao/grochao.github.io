@@ -142,6 +142,10 @@
             }
         }
 
+        * {
+            pointer-events: none;
+        }
+
         &[class*="type-conection"] {
             max-width: 117px;
 

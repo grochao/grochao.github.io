@@ -15,53 +15,49 @@
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap" rel="stylesheet">
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="resources/js/helpers.js"></script>
 
     <script>
+        window._RECEIPT_DETAILS = null;
+        window._SERIAL_NUMBER_ = '';
 
-        const $getEl = (selector) => {
-            const e = document.querySelectorAll(selector);
-            return (!e) ? null : (e.length > 1 ? e : e[0]);
-        };
 
-        window._NEW_DATE_ = { status: false, day: "", month: "", year: "" };
-        window._SEDE_ = 'LEO';
-        window._SESIONES_ = {
-            "sesion": {
-                "2026": {
-                    "SABATÍNO 2026": {
-                        "06": {
-                            "VALUE": "2026LEOSAB06",
-                            "LABEL": "SESIÓN 06"
-                        },
-                        "07": {
-                            "VALUE": "2026ESTSAB07",
-                            "LABEL": "SESIÓN 07"
-                        }
-                    },
-                    "ONLINE 2026": {
-                        "06": {
-                            "VALUE": "2026MAGREG06-ONLINE",
-                            "LABEL": "SESIÓN 06"
-                        }
-                    },
-                    "TALLER 2026": {
-                        "06": {
-                            "VALUE": "2026MAGREG06-TALLER",
-                            "LABEL": "SESIÓN 06"
-                        }
-                    }
-                },
-                "2027": {
-                    "SABATÍNO 2027": {
-                        "01": {
-                            "VALUE": "2027ESTSAB01",
-                            "LABEL": "SESIÓN 01"
-                        }
-                    }
+
+
+
+        const $CreateTag = ({
+            tag = 'div',
+            className = [],
+            dataset = {},
+            textContent = '',
+            appendChild = null,
+            id = null,
+
+        }) => {
+            let el = document.createElement(tag);
+            if (id != null) el.id = id;
+
+            if (className && typeof className == 'string') {
+                el.className = className;
+            }
+            else if (className && typeof className == 'object') {
+                className.forEach(cls => el.classList.add(cls));
+            }
+
+            if (dataset && typeof dataset == 'object') {
+                for (let key in dataset) {
+                    el.dataset[key] = dataset[key];
                 }
             }
-        };
+            if (textContent && typeof textContent == 'string') el.appendChild(document.createTextNode(textContent));
+            if (appendChild && typeof appendChild == 'object') el.appendChild(appendChild);
+            return el;
+        }
+
+        window._NEW_DATE_ = { status: false, day: "", month: "", year: "" };
+        window._SEDE_ = 'ESTELÍ';
+        window._SESIONES_ = JSON.parse('{\x22sesion\x22:{\x222026\x22:{\x22SABATÍNO 2026\x22:{\x2205\x22:{\x22VALUE\x22:\x222026ESTSAB05\x22,\x22LABEL\x22:\x22SESIÓN 05\x22},\x2206\x22:{\x22VALUE\x22:\x222026ESTSAB06\x22,\x22LABEL\x22:\x22SESIÓN 06\x22}}}}}') || {};
+        window._isPastDay = false;
 
         window._DATA_ELI_ = {
             "TALLER": {
@@ -1937,22 +1933,24 @@
                 }
             }
         };
+
+
     </script>
-    <script src="resources/js/MdlMsgBox.js"></script>
     <link rel="stylesheet" href="resources/css/style.css">
+    <script src="resources/js/MdlMsgBox.js"></script>
     <script src="resources/js/books.js"></script>
     <script src="resources/js/DynamicTable.js"></script>
     <script src="resources/js/FormChangeWatcher.js"></script>
     <script src="resources/js/ChoiceContainerBuilder.js"></script>
     <script src="resources/js/WheelFloating.js"></script>
     <script src="resources/js/CountDownBanner.js"></script>
-
+    <script src="resources/js/number_to_string.js"></script>
 
     <script src="resources/js/script.js"></script>
 
 </head>
 
-<body class="isDevMode sede-sjs">
+<body class="isDevMode sede-esteli">
     <div class="form-receipt">
         <div class="show-mobile">
             <svg class="header-svg" width="630.624" height="120" viewBox="0 0 630.624 120" xml:space="preserve"
@@ -2498,31 +2496,18 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="row align-items-center">
-                                        <div class="col-12 col-md-6">
-
-
-                                            <div class="row roc">
-                                                <div class="col-12 ">
-                                                    <textarea readonly class="" name="txt-recibo"
-                                                        id="txt-recibo">SERIE G #0003003</textarea>
-
-
-                                                </div>
-                                            </div>
-
-
-
+                                    <div class="row align-items-end justify-content-end">
+                                        <div class="col-12 col-md-4">
+                                            <input type="text" class="date" name="txt_date" id="txt_date"
+                                                value="28|AGO|2026" readonly>
 
                                         </div>
 
-                                        <div class="col-12 col-md-6">
-                                            <div class=" content-date-time">
-                                                <input type="text" class="" name="txt-fecha" id="txt-fecha"
-                                                    value="28|AGO|2026" readonly>
+                                        <div class="col-12 col-md-4">
+                                            <input type="text" readonly class="roc" name="txt_receipt_number"
+                                                id="txt_receipt_number" value="SERIE G #0003003">
 
 
-                                            </div>
                                             <div class="material-design">
                                                 <select name="txt_receipt_type" id="txt_receipt_type" required>
                                                     <option value=""></option>
@@ -2533,7 +2518,8 @@
 
                                                     </optgroup>
                                                     <option value="OTROS">OTROS SERVICIOS</option>
-
+                                                    <option value="CAN">CANCELACIÓN DE FACTURA</option>
+                                                    <option value="ABONO">ABONO A LA CUENTA</option>
                                                 </select>
                                                 <label for="txt_receipt_type">TIPO DE RECIBO:</label>
                                                 <span class="barra"></span>
@@ -2581,7 +2567,7 @@
                                 <div class="col-12">
                                     <div class="row justify-content-between ">
 
-                                        <div class="col-4 ">
+                                        <div class="col-12 col-md-4 ">
                                             <div class="material-design" data-field_status="txt_contact_name">
                                                 <input autocomplete="off" type="text" name="txt_contact_name"
                                                     id="txt_contact_name" placeholder="">
@@ -2589,7 +2575,7 @@
                                                 <span class="barra"></span>
                                             </div>
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-12 col-md-4">
                                             <div class="material-design" data-field_status="txt_email">
                                                 <input autocomplete="off" type="text" name="txt_email" id="txt_email"
                                                     placeholder="">
@@ -2597,7 +2583,7 @@
                                                 <span class="barra"></span>
                                             </div>
                                         </div>
-                                        <div class="col-2">
+                                        <div class="col-12 col-md-2">
                                             <div class="material-design" data-field_status="txt_phone">
                                                 <input autocomplete="off" type="text" name="txt_phone" id="txt_phone"
                                                     placeholder="">
@@ -2605,11 +2591,11 @@
                                                 <span class="barra"></span>
                                             </div>
                                         </div>
-                                        <div class="col-2">
-                                            <div class="material-design" data-field_status="txt_fecha_nacimiento">
-                                                <input autocomplete="off" type="text" name="txt_fecha_nacimiento"
-                                                    id="txt_fecha_nacimiento" placeholder="">
-                                                <label for="txt_fecha_nacimiento">FECHA DE NACIMIENTO</label>
+                                        <div class="col-12 col-md-2">
+                                            <div class="material-design" data-field_status="txt_birthdate">
+                                                <input autocomplete="off" type="text" name="txt_birthdate"
+                                                    id="txt_birthdate" placeholder="">
+                                                <label for="txt_birthdate">FECHA DE NACIMIENTO</label>
                                                 <span class="barra"></span>
                                             </div>
                                         </div>
@@ -2626,20 +2612,6 @@
 
                                                 <select autocomplete="off" name="txt_session" id="txt_session" class=""
                                                     required>
-                                                    <option value=""></option>
-                                                    <optgroup label="SABATINO 2026">
-                                                        <option value="2026ESTSAB06">SESIÓN 06</option>
-                                                        <option value="2026ESTSAB07">SESIÓN 07</option>
-                                                    </optgroup>
-                                                    <optgroup label="ONLINE 2026">
-                                                        <option value="2026MAGREG06-ONLINE">SESIÓN 06</option>
-                                                    </optgroup>
-                                                    <optgroup label="TALLER 2026">
-                                                        <option value="2026MAGREG06-TALLER">SESIÓN 06</option>
-                                                    </optgroup>
-                                                    <optgroup label="SABATINO 2027">
-                                                        <option value="2027ESTSAB01">SESIÓN 01</option>
-                                                    </optgroup>
 
                                                 </select>
                                                 <label for="txt_session">SESIÓN</label>
@@ -2719,12 +2691,7 @@
 
                                             </div>
                                         </div>
-                                        <div class="col-6 col-sm-4 col-md">
-                                            <div class="choice-container" data-field_status="txt_method_advance"
-                                                data-choice_id="txt_method_advance" data-choice_label="ANTICIPO">
-                                                <span class="menu position-botton" data-template=""></span>
-                                            </div>
-                                        </div>
+
                                     </div>
 
                                 </div>
@@ -2793,23 +2760,23 @@
                                 <i class="icon-calendar"></i>
 
                             </span>
-                            <span data-tooltip="Cambiar N° Recibo" data-direction="top">
+                            <span id="btn_changeNumberReceipt" data-tooltip="Cambiar N° Recibo" data-direction="top">
                                 <i class="icon-number"></i>
                             </span>
                             <span data-tooltip="Sincronizar Recibos" data-direction="top">
                                 <i class="icon-sync"></i>
-                                <i class="counter">13</i>
+                                <!--   <i class="counter">13</i> -->
                             </span>
-                            <span data-tooltip="Instructivo" data-direction="top">
+                            <!--span data-tooltip="Instructivo" data-direction="top">
                                 <i class="icon-help"></i>
-                            </span>
+                            </span-->
                             <span data-tooltip="Telepagos" data-direction="top">
                                 <i class="icon-telepago"></i>
                             </span>
-                            <span data-tooltip="Reporte" data-direction="top">
+                            <span id="btn_report" data-tooltip="Reporte" data-direction="top">
                                 <i class="icon-report"></i>
                             </span>
-                            <span class="type-button">
+                            <span id="btn_print_receipt" class="type-button callback">
                                 <i class="icon-printer"></i>Imprimir
                             </span>
 
@@ -2880,7 +2847,7 @@
                         <div class="row">
 
                             <div class="col">
-                                <div class="bow-row" data-idfield="txt_name">
+                                <div class="box-row" data-idfield="txt_name">
                                     <span class="label">A NOMBRE DE:</span>
                                     <span class="value"></span>
                                 </div>
@@ -2892,55 +2859,41 @@
                         <div class="row">
 
                             <div class="col max-width-90px">
-                                <div class="bow-row" data-idfield="txt_session">
+                                <div class="box-row" data-idfield="txt_session">
                                     <span class="label">SESIÓN</span>
                                     <span class="value text-align-center"></span>
                                 </div>
                             </div>
                             <div class="col max-width-300px" data-idfield="txt_level_category">
-                                <div class="bow-row">
+                                <div class="box-row">
                                     <span class="label">NIVEL - CATEGORÍA</span>
                                     <span class="value text-align-center"></span>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="bow-row" data-idfield="txt_book_name">
+                                <div class="box-row" data-idfield="txt_book_name">
                                     <span class="label">NOMBRE DEL LIBRO:</span>
                                     <span class="value text-align-center"></span>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row box-border-solid">
                             <div class="col" data-idfield="txt_notes">
                                 <span class="label _h3_">OBSERVACIONES/COMENTARIOS</span>
-                                <div class="value border-box max-height-55mm"></div>
+                                <div class="value row border-box max-height-55mm align-content-start"></div>
                             </div>
-                            <div class="col-auto align-content-end">
+                            <div class="col-auto align-content-start">
                                 <span class="_h3_">EN CONCEPTO DE</span>
                                 <div class="box_concepts border-box align-content-end ">
-                                    <div class="container-amounts">
-                                        <span class="label">COLEGIATURA:</span>
-                                        <span class="amount">4,578.75</span>
-                                    </div>
-                                    <div class="container-amounts">
-                                        <span class="label">DESCUENTO:</span>
-                                        <span class="amount">-470.00</span>
-                                    </div>
-                                    <div class="container-amounts">
-                                        <span class="label">LIBRO:</span>
-                                        <span class="amount">4,578.75</span>
-                                    </div>
-                                    <div class="container-amounts">
-                                        <span class="label">RETENCIÓN 2%:</span>
-                                        <span class="amount">-470.00</span>
-                                    </div>
 
-                                    <div class="container-amounts black">
-                                        <span class="label">TOTAL C$:</span>
-                                        <span class="amount">999,999,999.00</span>
-                                    </div>
                                 </div>
 
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-12" data-idfield="txt_numToText">
+                                <span class="label">EN LETRA:</span>
+                                <span class="value text-align-center"></span>
                             </div>
                         </div>
                     </div>
@@ -2962,6 +2915,7 @@
         <!-- PÁGINA 2 -->
         <!-- ============================================= -->
         <div class="page page-2">
+
             <div class="half-page">
                 <div class="print-area">
                     <div class="row container-header">
@@ -3011,7 +2965,7 @@
                         <div class="row">
 
                             <div class="col">
-                                <div class="bow-row" data-idfield="txt_name">
+                                <div class="box-row" data-idfield="txt_name">
                                     <span class="label">A NOMBRE DE:</span>
                                     <span class="value"></span>
                                 </div>
@@ -3023,55 +2977,41 @@
                         <div class="row">
 
                             <div class="col max-width-90px">
-                                <div class="bow-row" data-idfield="txt_session">
+                                <div class="box-row" data-idfield="txt_session">
                                     <span class="label">SESIÓN</span>
                                     <span class="value text-align-center"></span>
                                 </div>
                             </div>
                             <div class="col max-width-300px" data-idfield="txt_level_category">
-                                <div class="bow-row">
+                                <div class="box-row">
                                     <span class="label">NIVEL - CATEGORÍA</span>
                                     <span class="value text-align-center"></span>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="bow-row" data-idfield="txt_book_name">
+                                <div class="box-row" data-idfield="txt_book_name">
                                     <span class="label">NOMBRE DEL LIBRO:</span>
                                     <span class="value text-align-center"></span>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row box-border-solid">
                             <div class="col" data-idfield="txt_notes">
                                 <span class="label _h3_">OBSERVACIONES/COMENTARIOS</span>
-                                <div class="value border-box max-height-55mm"></div>
+                                <div class="value row border-box max-height-55mm align-content-start"></div>
                             </div>
-                            <div class="col-auto align-content-end">
+                            <div class="col-auto align-content-start">
                                 <span class="_h3_">EN CONCEPTO DE</span>
                                 <div class="box_concepts border-box align-content-end ">
-                                    <div class="container-amounts">
-                                        <span class="label">COLEGIATURA:</span>
-                                        <span class="amount">4,578.75</span>
-                                    </div>
-                                    <div class="container-amounts">
-                                        <span class="label">DESCUENTO:</span>
-                                        <span class="amount">-470.00</span>
-                                    </div>
-                                    <div class="container-amounts">
-                                        <span class="label">LIBRO:</span>
-                                        <span class="amount">4,578.75</span>
-                                    </div>
-                                    <div class="container-amounts">
-                                        <span class="label">RETENCIÓN 2%:</span>
-                                        <span class="amount">-470.00</span>
-                                    </div>
 
-                                    <div class="container-amounts black">
-                                        <span class="label">TOTAL C$:</span>
-                                        <span class="amount">999,999,999.00</span>
-                                    </div>
                                 </div>
 
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-12" data-idfield="txt_numToText">
+                                <span class="label">EN LETRA:</span>
+                                <span class="value text-align-center"></span>
                             </div>
                         </div>
                     </div>
@@ -3084,6 +3024,15 @@
                     </div>
                 </div>
             </div>
+
+
+
+        </div>
+    </div>
+
+    <div id="preview-report" class="print-report">
+        <div class="print-area">
+            ...reports...
         </div>
     </div>
 

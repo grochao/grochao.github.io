@@ -68,6 +68,18 @@ $menu-shadow: 0 12px 32px rgba(0, 0, 0, .14);
     &.showmenu {
         border-color: $primary;
         background: #eefaf3;
+
+        /*  &::before {
+            content: '';
+            background-color: rgba(0, 0, 0, 0.212);
+            top: 0;
+            left: 0;
+            z-index: 99999999;
+            width: 100lvw;
+            height: 100lvw;
+            position: fixed;
+            backdrop-filter: blur(4px);
+        }*/
     }
 
     &.not-empty {
@@ -191,6 +203,9 @@ $menu-shadow: 0 12px 32px rgba(0, 0, 0, .14);
         border-radius: 4px;
         font-size: 1rem;
         font-variant-numeric: tabular-nums;
+        appearance: none;
+
+        border: #ddd solid 1px;
 
         &:focus {
             outline: none;
@@ -201,6 +216,7 @@ $menu-shadow: 0 12px 32px rgba(0, 0, 0, .14);
 
     input[data-type="number"] {
         text-align: right;
+
     }
 }
 
@@ -396,9 +412,10 @@ table.choice-table {
         margin: 0 auto;
         display: block;
         text-align: center;
-        padding: .05rem .4rem;
+        padding: 0 7px;
         border: 1px solid $border-input-2;
-        border-radius: 4px;
+        border-radius: 0;
+
         font-size: 0.70rem;
         color: $danger;
         font-weight: 500;

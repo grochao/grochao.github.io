@@ -1,6 +1,8 @@
  @use "mixin" as *;
 
  dialog {
+
+
      & {
          padding: 10px 15px;
          margin: auto;
@@ -71,19 +73,7 @@
          resize: none;
      }
 
-     &.is-invalid input,
-     &.is-invalid select,
-     &.is-invalid textarea {
 
-         &,
-         &:focus,
-         &:active,
-         &:hover {
-             border-color: #e74c3c;
-             box-shadow: 0 0 0 2px rgba(231, 76, 60, .15);
-
-         }
-     }
 
 
  }
@@ -102,12 +92,29 @@
                  gap: 10px;
              }
 
+
              .dialog-field {
                  margin-bottom: 14px;
                  flex: 1 0 0%;
                  width: 100%;
 
+                 &.is-invalid input,
+                 &.is-invalid select,
+                 &.is-invalid textarea {
 
+                     &,
+                     &:focus,
+                     &:active,
+                     &:hover {
+                         border-color: #e74c3c;
+                         box-shadow: 0 0 0 2px rgba(231, 76, 60, .15);
+
+                     }
+                 }
+
+                 &--hidden {
+                     display: none;
+                 }
 
                  &.align-right {
                      margin: 0 0 0 auto;
@@ -223,6 +230,15 @@
          background: #fff;
          outline: none;
 
+     }
+
+     &.disableTable {
+         opacity: 0.5;
+         pointer-events: none;
+
+         * {
+             pointer-events: none;
+         }
      }
 
      .tabla-scroll {
@@ -355,8 +371,13 @@
                  }
 
                  &:nth-child(5) {
-                     text-align: right;
+                     text-align: left;
                      width: 160px;
+                 }
+
+                 &:nth-child(6) {
+                     text-align: right;
+                     width: 130px;
                  }
              }
          }

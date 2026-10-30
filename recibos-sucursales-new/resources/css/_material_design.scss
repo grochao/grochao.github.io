@@ -9,6 +9,7 @@
     input,
     textarea,
     select {
+
         background-color: #fff;
         @include css3-prefix('transition', "all 0.25s ease-in-out");
 
@@ -52,7 +53,7 @@
     /* --- SELECT --- */
     select {
         width: 100%;
-        padding: 13px 25px 0px 4px;
+        padding: 11px 25px 0px 4px;
         font-size: 0.76em;
         color: #333;
         border: none;

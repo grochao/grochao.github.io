@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DynamicTable · onChange + silent</title>
+    <title>DynamicTable · getData(column) + setValue(placeholder) + Styles + visible</title>
 
     <!-- ===================== STYLE ===================== -->
     <style>
@@ -390,6 +390,10 @@
             gap: 0.25rem;
         }
 
+        .dialog-field--hidden {
+            display: none;
+        }
+
         .dialog-field label {
             font-size: 0.75rem;
             color: #94a3b8;
@@ -487,10 +491,11 @@
 
     <main class="demo-panel">
         <header>
-            <h1 class="demo-panel__title">DynamicTable · onChange + silent</h1>
+            <h1 class="demo-panel__title">DynamicTable · getData(column)</h1>
             <p class="demo-panel__subtitle">
-                <code>ctx.silent(fn)</code> ejecuta mutaciones sin disparar <code>onChange</code>.
-                También disponible <code>table.suspendOnChange()</code> / <code>resumeOnChange()</code>.
+                <code>getData()</code> → objeto completo ·
+                <code>getData('codigo')</code> → array plano ·
+                <code>getData('nope')</code> → <code>null</code>.
             </p>
         </header>
 
@@ -569,17 +574,22 @@
             </div>
 
             <div class="demo-row">
-                <button class="demo-btn demo-btn--primary" id="btn-loop-insert">🔁 Insertar RETENCION (loop resuelto con
-                    silent)</button>
-                <button class="demo-btn demo-btn--primary" id="btn-loop-insert-bad">⚠️ Insertar RETENCION sin silent →
-                    loop</button>
+                <button class="demo-btn demo-btn--primary" id="btn-loop-insert">🔁 Insertar RETENCION (silent)</button>
+                <button class="demo-btn demo-btn--primary" id="btn-loop-insert-bad">⚠️ Insertar RETENCION sin
+                    silent</button>
             </div>
 
             <div class="demo-row">
-                <button class="demo-btn demo-btn--primary" id="btn-open-dialog">Abrir diálogo (afterOpen)</button>
-                <button class="demo-btn" id="btn-clear-body">clearBody() · sin onChange</button>
-                <button class="demo-btn" id="btn-disable">disableTable() · sin onChange</button>
+                <button class="demo-btn demo-btn--primary" id="btn-open-dialog">Abrir diálogo</button>
+                <button class="demo-btn" id="btn-clear-body">clearBody()</button>
+                <button class="demo-btn" id="btn-disable">disableTable()</button>
                 <button class="demo-btn" id="btn-enable">enableTable()</button>
+            </div>
+
+            <div class="demo-row">
+                <button class="demo-btn" id="btn-getdata-all">getData() → objeto</button>
+                <button class="demo-btn" id="btn-getdata-col">getData('codigo') → array</button>
+                <button class="demo-btn" id="btn-getdata-bad">getData('nope') → null</button>
             </div>
 
             <div class="demo-stats">
@@ -626,7 +636,9 @@
 
         /* ============================================================
          *  DynamicTable
-         *  insertPosition + idRow + idSlug + blockRow + afterOpen + onChange + silent
+         *  insertPosition + idRow + idSlug + blockRow + afterOpen + onChange
+         *  + silent + visible + Styles + setValue(placeholder)
+         *  + getData(column?) → array|null
          * ============================================================ */
         class DynamicTable {
             #container;
@@ -641,6 +653,7 @@
             #lastTFootOptions = { sumAllColumn: {}, LabelTotal: {} };
             #fieldSchema = {};
             #schemaAfterOpen = null;
+            #fieldStyles = {};
             #onChange = null;
             #changeDepth = 0;
             #rowCounter = 0;
@@ -666,6 +679,11 @@
 
                 this.#debug = options.debug ?? false;
                 this.#onChange = typeof options.onChange === 'function' ? options.onChange : null;
+                this.#fieldStyles = (options.Styles
+                    && typeof options.Styles === 'object'
+                    && !Array.isArray(options.Styles))
+                    ? options.Styles
+                    : {};
                 this.#options = {
                     tableClass: options.tableClass ?? 'dynamic-table',
                     addItemRowClass: options.addItemRowClass ?? 'add-item-row',
@@ -827,42 +845,34 @@
                 return this.#readText(span || td);
             }
 
-            /* ---------- Estilos ---------- */
-            #applyStyles(rootContainer, stylesMap) {
-                if (!rootContainer || !stylesMap) return;
+            /* ---------- Estilos por columna (constructor) ---------- */
+            #applyColumnStyles(wrapper, colKey) {
+                if (!wrapper || !colKey) return;
+                const styleMap = this.#fieldStyles[colKey];
+                if (!styleMap || typeof styleMap !== 'object') return;
 
-                Object.entries(stylesMap).forEach(([targetKey, cssProps]) => {
+                Object.entries(styleMap).forEach(([selector, cssProps]) => {
                     if (!cssProps || typeof cssProps !== 'object') return;
 
-                    let el = null;
-                    try { el = rootContainer.querySelector(`#${CSS.escape(targetKey)}`); }
-                    catch (_) { el = null; }
-
-                    if (!el) {
-                        const wrapper = rootContainer.querySelector(`.dialog-field[data-col="${targetKey}"]`);
-                        if (wrapper) el = wrapper.querySelector('input, select, textarea');
+                    const matches = [];
+                    try {
+                        if (wrapper.matches(selector)) matches.push(wrapper);
+                        wrapper.querySelectorAll(selector).forEach(el => matches.push(el));
+                    } catch (err) {
+                        if (this.#debug) {
+                            console.warn(`DynamicTable: selector inválido "${selector}" en Styles.${colKey}`, err);
+                        }
+                        return;
                     }
-                    if (!el) return;
 
-                    Object.entries(cssProps).forEach(([prop, val]) => {
-                        if (prop.includes('-')) el.style.setProperty(prop, val);
-                        else el.style[prop] = val;
+                    matches.forEach(el => {
+                        Object.entries(cssProps).forEach(([prop, val]) => {
+                            if (val === null || val === undefined) return;
+                            if (prop.includes('-')) el.style.setProperty(prop, String(val));
+                            else el.style[prop] = val;
+                        });
                     });
                 });
-            }
-
-            #collectSchemaStyles() {
-                const all = {};
-                Object.values(this.#fieldSchema).forEach(cfg => {
-                    if (!cfg || typeof cfg !== 'object') return;
-                    const st = cfg.styles;
-                    if (!st || typeof st !== 'object') return;
-
-                    Object.entries(st).forEach(([targetKey, cssProps]) => {
-                        all[targetKey] = { ...(all[targetKey] || {}), ...cssProps };
-                    });
-                });
-                return all;
             }
 
             /* ---------- Opciones / selects ---------- */
@@ -977,37 +987,6 @@
 
                 input.addEventListener('input', applyFilter);
                 input.addEventListener('paste', () => { setTimeout(applyFilter, 0); });
-            }
-
-            /* ---------- Label dinámico ---------- */
-            #updateLabelText(labelEl, newText) {
-                if (!labelEl) return;
-                let textNode = null;
-                for (const child of labelEl.childNodes) {
-                    if (child.nodeType === 3) { textNode = child; break; }
-                }
-                if (textNode) textNode.nodeValue = newText ?? '';
-                else labelEl.insertBefore(document.createTextNode(newText ?? ''), labelEl.firstChild);
-            }
-
-            #applyLabelField(fieldConfig, option) {
-                if (!fieldConfig || typeof fieldConfig !== 'object') return;
-                const targetCol = fieldConfig.insertLabel;
-                if (!targetCol) return;
-
-                const targetWrapper = this.#dialogFieldsContainer.querySelector(`.dialog-field[data-col="${targetCol}"]`);
-                if (!targetWrapper) return;
-
-                const targetLabel = targetWrapper.querySelector('label');
-                if (!targetLabel) return;
-
-                let newLabel = this.#headers[targetCol] ?? targetCol;
-
-                if (option && typeof option.label_field === 'string' && option.label_field.trim() !== '') {
-                    const lf = option.label_field.trim();
-                    newLabel = Object.prototype.hasOwnProperty.call(this.#headers, lf) ? this.#headers[lf] : lf;
-                }
-                this.#updateLabelText(targetLabel, newLabel);
             }
 
             #getFieldLabelText(wrapper) {
@@ -1205,15 +1184,12 @@
 
             insertFromDialogValues(values = {}) {
                 const data = {};
-                const consumed = new Set();
                 let insertAfterto = null;
                 let derivedIdRow = null;
                 let blockRow = false;
                 let blockRowSource = null;
 
                 Object.entries(this.#headers).forEach(([key]) => {
-                    if (consumed.has(key)) return;
-
                     const cfg = this.#fieldSchema[key] || {};
                     const rawValue = values[key];
 
@@ -1223,7 +1199,6 @@
 
                         const flat = this.#flattenOptions(cfg.options || []);
                         const optConfig = flat.find(o => String(o.value) === value);
-                        const label = optConfig?.label ?? value;
 
                         if (optConfig) {
                             if (!derivedIdRow
@@ -1246,12 +1221,6 @@
                             }
                         }
 
-                        /*if (cfg.insertLabel && typeof cfg.insertLabel === 'string') {
-                            data[key] = value;
-                            data[cfg.insertLabel] = label;
-                            consumed.add(cfg.insertLabel);
-                        } else {
-                        }*/
                         data[key] = `${value}`;
                     } else if (this.#NUMERIC_TYPES.has(String(cfg.type || '').toLowerCase())) {
                         data[key] = this.#formatNumeric2Decimals(rawValue ?? '');
@@ -1339,8 +1308,6 @@
                 this.#dialogFieldsContainer.innerHTML = '';
                 this.#hideError();
 
-                const collectedStyles = this.#collectSchemaStyles();
-
                 Object.entries(this.#headers).forEach(([key, label]) => {
                     const fieldConfig = this.#fieldSchema[key] || { type: 'text' };
                     const isRequired = fieldConfig.required === true;
@@ -1358,6 +1325,10 @@
                         fieldConfig.class.trim().split(/\s+/).forEach(cls => {
                             if (cls !== '') wrapper.classList.add(cls);
                         });
+                    }
+
+                    if (fieldConfig.visible === false) {
+                        wrapper.classList.add('dialog-field--hidden');
                     }
 
                     const lbl = document.createElement('label');
@@ -1393,7 +1364,6 @@
                                 const optConfig = flat.find(o => String(o.value) === String(value)) || null;
                                 const option = optConfig ? { ...optConfig } : null;
 
-                                this.#applyLabelField(fieldConfig, option);
                                 this.#clearFieldError(wrapper);
                                 const ctx = this.#buildFieldContext(key);
                                 try { fieldConfig.onChange(value, option, field, ctx); }
@@ -1454,9 +1424,8 @@
 
                     wrapper.appendChild(field);
                     this.#dialogFieldsContainer.appendChild(wrapper);
+                    this.#applyColumnStyles(wrapper, key);
                 });
-
-                this.#applyStyles(this.#dialogFieldsContainer, collectedStyles);
 
                 this.#dialog.showModal();
 
@@ -1492,7 +1461,6 @@
             /* ---------- Contexto ---------- */
             #buildFieldContext(currentCol) {
                 const container = this.#dialogFieldsContainer;
-                const schema = this.#fieldSchema;
                 const self = this;
 
                 const getWrapper = (colKey) => {
@@ -1548,7 +1516,7 @@
                         return f ? f.value : null;
                     },
 
-                    setValue({ colKey, val, trigger = true, readOnly = false, disabled = false }) {
+                    setValue({ colKey, val, trigger = true, readOnly = false, disabled = false, placeholder = null }) {
                         const f = getInnerField(colKey);
                         if (!f) return false;
 
@@ -1562,6 +1530,11 @@
                         f.value = finalVal;
                         f.readOnly = readOnly;
                         f.disabled = disabled;
+
+                        if (placeholder !== null && placeholder !== undefined && 'placeholder' in f) {
+                            f.placeholder = String(placeholder);
+                        }
+
                         if (trigger) dispatch(f);
                         return true;
                     },
@@ -1583,23 +1556,9 @@
                         return opt ? (opt.dataset.label || self.#readText(opt)) : null;
                     },
 
-                    target(overrideCol) {
-                        const cfg = schema[currentCol] || {};
-                        const colKey = overrideCol || cfg.insertLabel;
-                        return getInnerField(colKey);
-                    },
-
-                    setLabel(label, overrideCol) {
-                        const cfg = schema[currentCol] || {};
-                        const colKey = overrideCol || cfg.insertLabel;
-                        if (!colKey) return false;
-                        const f = getInnerField(colKey);
-                        if (!f) return false;
-                        f.value = label ?? '';
-                        f.readOnly = true;
-                        f.disabled = true;
-                        dispatch(f);
-                        return true;
+                    isVisible(colKey) {
+                        const wrap = getWrapper(colKey);
+                        return !!wrap && !wrap.classList.contains('dialog-field--hidden');
                     },
 
                     getCellValue(searchCol, search, returnCol = null) {
@@ -1624,9 +1583,11 @@
 
                 Object.entries(this.#fieldSchema).forEach(([key, config]) => {
                     if (config.required !== true) return;
+                    if (config.visible === false) return;
 
                     const wrapper = this.#dialogFieldsContainer.querySelector(`.dialog-field[data-col="${key}"]`);
                     if (!wrapper) return;
+                    if (wrapper.classList.contains('dialog-field--hidden')) return;
                     const field = wrapper.querySelector('input, select, textarea');
                     if (!field) return;
 
@@ -1885,16 +1846,13 @@
                     action,
                     table: this,
 
-                    // ─── Modo silencioso ───
                     silent: (fn) => self.#silent(fn),
 
-                    // ─── Lecturas ───
                     getData: (opts) => self.getData(opts),
                     getTotalAllColumn: () => self.getTotalAllColumn(),
                     getCellValue: (c, s, r) => self.getCellValue(c, s, r),
                     getRowsByCellValue: (c, s) => self.getRowsByCellValue(c, s),
 
-                    // ─── Mutaciones ───
                     insertRow: (opts) => self.insertRow(opts),
                     removeRow: (r) => self.removeRow(r),
                     updateRow: (r, row) => self.updateRow(r, row),
@@ -1980,7 +1938,36 @@
                 return result;
             }
 
-            getData({ includeEmpty = false } = {}) {
+            /**
+             * Sin args → objeto completo { rows, tfoot, summarized, totals }.
+             * Con string → array plano con el valor de esa columna en cada fila con datos.
+             *   Columna inexistente → null.
+             */
+            getData(arg = {}) {
+                // ─── Modo COLUMNA: getData('colName') ───
+                if (typeof arg === 'string') {
+                    const colKey = arg;
+                    if (!Object.prototype.hasOwnProperty.call(this.#headers, colKey)) return null;
+
+                    const values = [];
+                    const rowsEls = this.#tbody.querySelectorAll(`tr:not(.${this.#options.addItemRowClass})`);
+                    rowsEls.forEach(tr => {
+                        const cells = tr.querySelectorAll('td[data-col]');
+                        const hasData = cells.length > 0
+                            && Array.from(cells).some(td => this.#getTdValue(td).trim() !== '');
+                        if (!hasData) return;
+
+                        const td = tr.querySelector(`td[data-col="${colKey}"]`);
+                        values.push(td ? this.#getTdValue(td).trim() : '');
+                    });
+
+                    return values;
+                }
+
+                // ─── Modo OBJETO (default): comportamiento actual ───
+                const opts = (arg && typeof arg === 'object' && !Array.isArray(arg)) ? arg : {};
+                const { includeEmpty = false } = opts;
+
                 const cols = Object.keys(this.#headers);
                 const rows = [];
 
@@ -2104,19 +2091,11 @@
             }
 
             /* ---------- Suspend / Resume público ---------- */
-            /**
-             * Suspende la emisión de onChange hasta resumeOnChange().
-             * Anidable por contador. Ideal para envolver varias mutaciones
-             * (incluido casos async con await).
-             */
             suspendOnChange() {
                 this.#changeDepth++;
                 return this;
             }
 
-            /**
-             * Reanuda la emisión de onChange. No baja de 0.
-             */
             resumeOnChange() {
                 if (this.#changeDepth > 0) this.#changeDepth--;
                 return this;
@@ -2186,7 +2165,9 @@
 
             let table = null;
             let eventCount = 0;
-            let loopGuardEnabled = true; // si false, simulamos el bug (sin silent)
+            let loopGuardEnabled = true;
+
+            window.tabla = null; // conveniencia: acceder desde consola como window.tabla
 
             const log = (msg, kind = '') => {
                 const line = document.createElement('div');
@@ -2205,25 +2186,51 @@
                 total: 'Total'
             };
 
+            const buildStyles = () => ({
+                tipo: {
+                    '.dialog-field': {
+                        'background-color': '#0b2545',
+                        'padding': '10px',
+                        'border-radius': '6px',
+                        'border-left': '3px solid #60a5fa'
+                    },
+                    'label': { 'color': '#93c5fd' },
+                    '[data-field-type="select"]': {
+                        'font-weight': '600',
+                        'letter-spacing': '0.02em',
+                        'border-color': '#60a5fa'
+                    }
+                },
+                codigo: {
+                    'label': { 'color': '#4ade80' },
+                    '[data-field-type="text"]': {
+                        'font-family': 'ui-monospace, SF Mono, Menlo, Consolas, monospace',
+                        'letter-spacing': '0.05em'
+                    }
+                },
+                nombre: {
+                    'label': { 'color': '#fbbf24' }
+                },
+                total: {
+                    'label': { 'color': '#f472b6' },
+                    '[data-field-type="number"]': {
+                        'text-align': 'right',
+                        'font-variant-numeric': 'tabular-nums'
+                    }
+                }
+            });
+
             const buildSchema = () => {
                 const afterOpenEnabled = $('cfg-afteropen').value === 'on';
 
                 const schema = {
-                    codigo: {
-                        type: 'text',
-                        required: true
-                    },
-                    nombre: {
-                        type: 'text',
-                        required: true
-                    },
-                    total: {
-                        type: 'number',
-                        required: false
-                    },
+                    codigo: { type: 'text', required: true, visible: true },
+                    nombre: { type: 'text', required: true, visible: true },
+                    total: { type: 'number', required: false, visible: true },
                     tipo: {
                         type: 'select',
                         required: true,
+                        visible: true,
                         options: [
                             { value: 'recibo-x', label: 'Recibo Especial', idRow: 'REC-2026-0001', blockRow: true },
                             { value: 'vale-y', label: 'Vale Interno', idRow: 'VALE-001', blockRow: false },
@@ -2240,42 +2247,47 @@
                 if (afterOpenEnabled) {
                     schema.__afterOpen = (ctx) => {
                         log('🌐 __afterOpen global disparado', 'info');
-                        log(`   dialog: <${ctx.dialog.tagName.toLowerCase()}.${ctx.dialog.className}>`);
-                        log(`   valores iniciales: ${JSON.stringify(ctx.getAllValues())}`);
                     };
 
                     schema.codigo.afterOpen = (field, ctx) => {
                         const n = String(Date.now() % 100000).padStart(5, '0');
-                        ctx.setValue({ colKey: 'codigo', val: `AUTO-${n}`, trigger: false });
-                        log(`📌 afterOpen codigo → autogenerado "AUTO-${n}"`, 'info');
+                        ctx.setValue({
+                            colKey: 'codigo',
+                            val: `AUTO-${n}`,
+                            trigger: false,
+                            placeholder: 'Se genera automáticamente'
+                        });
+                        log(`📌 afterOpen codigo → setValue con placeholder`, 'info');
                         field.focus();
                         field.select();
+                    };
+
+                    schema.nombre.afterOpen = (field, ctx) => {
+                        ctx.setValue({
+                            colKey: 'nombre',
+                            val: ctx.getValue('nombre') || '',
+                            trigger: false,
+                            placeholder: 'Ej: Juan Pérez'
+                        });
+                        log('📌 afterOpen nombre → setValue con placeholder', 'info');
                     };
 
                     schema.total.afterOpen = (field, ctx) => {
                         const totals = ctx.getTotalAllColumn();
                         const raw = totals?.__raw?.total;
-                        if (typeof raw === 'number' && raw > 0) {
-                            ctx.setValue({ colKey: 'total', val: String(raw), trigger: false });
-                            log(`📌 afterOpen total → pre-rellenado con ${raw}`, 'info');
-                        }
+                        ctx.setValue({
+                            colKey: 'total',
+                            val: (typeof raw === 'number' && raw > 0) ? String(raw) : '',
+                            trigger: false,
+                            placeholder: '0.00'
+                        });
+                        log('📌 afterOpen total → setValue con placeholder', 'info');
                     };
                 }
 
                 return schema;
             };
 
-            /* ─────────────────────────────────────────────────────────
-             *  onChange de la demo
-             *
-             *  Simula el caso real: al insertar una fila RETENCION,
-             *  el callback elimina cualquier fila RETENCION previa
-             *  (idempotencia: sólo debe existir una). Sin silent, esto
-             *  produce un loop: insert → onChange insert → removeRow →
-             *  onChange remove → (callback ve 'remove' y no hace nada en
-             *  el caso simple, pero si tuviera más lógica podría volver a
-             *  insertar). El silent corta el ciclo de raíz.
-             * ───────────────────────────────────────────────────────── */
             const buildOnChange = () => {
                 const onChangeEnabled = $('cfg-onchange').value === 'on';
                 if (!onChangeEnabled) return null;
@@ -2295,9 +2307,6 @@
                     const extra = ctx.colKey ? ` · col="${ctx.colKey}" · val="${ctx.value}"` : '';
                     log(`${badge[0]} · ${rowInfo}${extra}`, badge[1]);
 
-                    // ─── Regla: sólo una fila RETENCION ───
-                    // Si acabamos de insertar una, borramos las demás RETENCION.
-                    // Con silent evitamos que cada removeRow dispare otro onChange.
                     if (ctx.action === 'insert') {
                         const allRows = ctx.getData({ includeEmpty: false }).rows;
                         const retenciones = allRows.filter(r =>
@@ -2359,8 +2368,10 @@
                     table = new DynamicTable(container, {
                         insertPosition: $('cfg-position').value,
                         debug: $('cfg-debug').value === 'true',
+                        Styles: buildStyles(),
                         ...(onChangeFn ? { onChange: onChangeFn } : {})
                     });
+                    window.tabla = table;
                     table.setHeaders(HEADERS);
                     table.setFieldSchema(buildSchema());
                     table.updateTFoot({ sumAllColumn: { total: true }, LabelTotal: { tipo: true } });
@@ -2373,6 +2384,7 @@
                 } catch (err) {
                     log(`❌ Error al crear: ${err.message}`, 'err');
                     table = null;
+                    window.tabla = null;
                 }
             };
 
@@ -2383,6 +2395,7 @@
                 if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
                 table.destroy();
                 table = null;
+                window.tabla = null;
                 if (observer) { observer.disconnect(); observer = null; }
                 refreshStats();
                 log('🗑️ destroy() ejecutado', 'warn');
@@ -2395,7 +2408,6 @@
                 table.openInsertDialog();
             });
 
-            // 1 · option.idRow
             $('btn-sim-idrow').addEventListener('click', () => {
                 if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
                 const n = Date.now() % 10000;
@@ -2413,7 +2425,6 @@
                 if (!tr) log('🛑 Bloqueada: id "REC-2026-0001" ya existe', 'warn');
             });
 
-            // 2 · idSlug + blockRow
             $('btn-sim-factura').addEventListener('click', () => {
                 if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
                 const n = Date.now() % 10000;
@@ -2431,7 +2442,6 @@
                 if (!tr) log('🛑 Bloqueada: id "factura-a" ya existe', 'warn');
             });
 
-            // 3 · idSlug + blockRow:false
             $('btn-sim-nota').addEventListener('click', () => {
                 if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
                 const n = Date.now() % 10000;
@@ -2448,7 +2458,6 @@
                 });
             });
 
-            // 4 · Combo
             $('btn-sim-combo').addEventListener('click', () => {
                 if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
                 const n = Date.now() % 10000;
@@ -2461,7 +2470,6 @@
                 }
             });
 
-            // 5 · Vale
             $('btn-sim-vale').addEventListener('click', () => {
                 if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
                 const n = Date.now() % 10000;
@@ -2470,7 +2478,6 @@
                 });
             });
 
-            // 6 · updateCellValue
             $('btn-sim-update').addEventListener('click', () => {
                 if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
                 const data = table.getData();
@@ -2481,7 +2488,6 @@
                 table.updateCellValue(target.__rowId, 'codigo', newVal);
             });
 
-            // 7 · removeRow
             $('btn-sim-remove').addEventListener('click', () => {
                 if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
                 const data = table.getData();
@@ -2491,7 +2497,6 @@
                 table.removeRow(target.__rowId);
             });
 
-            // 8 · insertRow directo
             $('btn-sim-insert-direct').addEventListener('click', () => {
                 if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
                 const n = Date.now() % 10000;
@@ -2502,7 +2507,6 @@
                 });
             });
 
-            // ─── Loop demo ───
             $('btn-loop-insert').addEventListener('click', () => {
                 if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
                 loopGuardEnabled = true;
@@ -2530,7 +2534,6 @@
                 loopGuardEnabled = true;
             });
 
-            // Utilidades
             $('btn-clear-body').addEventListener('click', () => {
                 if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
                 table.clearBody();
@@ -2551,13 +2554,31 @@
                 log('🔓 enableTable()', 'ok');
             });
 
+            $('btn-getdata-all').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                const obj = table.getData();
+                console.log("obj:", JSON.stringify(obj))
+                log(`getData() → ${obj.rows.length} fila(s) · tfoot=${JSON.stringify(obj.tfoot)}`, 'info');
+            });
+
+            $('btn-getdata-col').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                const vals = table.getData('codigo');
+                log(`getData('codigo') → ${JSON.stringify(vals)}`, 'info');
+            });
+
+            $('btn-getdata-bad').addEventListener('click', () => {
+                if (!table) { log('⚠️ No hay tabla.', 'warn'); return; }
+                const vals = table.getData('nope');
+                log(`getData('nope') → ${vals === null ? 'null' : JSON.stringify(vals)}`, 'info');
+            });
+
             $('btn-clear-log').addEventListener('click', () => {
                 logEl.innerHTML = '';
                 log('🧼 Log limpiado');
             });
 
-            /* ---------- Arranque ---------- */
-            log('👋 Demo listo. Prueba "🔁 Insertar RETENCION" (silent) vs "⚠️ sin silent".', 'info');
+            log('👋 Demo listo. Prueba "getData(\'codigo\') → array" vs "getData(\'nope\') → null".', 'info');
             buildTable();
         })();
     </script>

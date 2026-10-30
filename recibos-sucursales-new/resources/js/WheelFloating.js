@@ -87,7 +87,7 @@ class WheelFloating {
         if (!this.closeButton) return;
 
         if (getComputedStyle(this.el).position === 'static') {
-            this.el.style.position = 'fixed';
+            //this.el.style.position = 'fixed';
         }
 
         const btn = document.createElement('button');

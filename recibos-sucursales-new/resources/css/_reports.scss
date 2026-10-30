@@ -1,0 +1,29 @@
+.print-report {
+    @media screen {
+        & {
+            background-color: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100lvw;
+            height: 100lvh;
+            z-index: 9999999999;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: center;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+        }
+    }
+
+    .print-area {
+        background-color: #fff;
+        width: 80lvw;
+        max-width: 1024px;
+        height: 80lvh;
+        border-radius: 5px;
+    }
+}

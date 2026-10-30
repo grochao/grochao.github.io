@@ -41,6 +41,21 @@
 
 }
 
+.mdl-msgbox__content {
+
+    &,
+    * {
+        white-space: pre-line;
+    }
+
+    .row {
+        input {
+            width: 100%;
+            text-align: center;
+        }
+    }
+}
+
 .previous-receipt p {
     font-weight: 300;
     color: #fff !important;
